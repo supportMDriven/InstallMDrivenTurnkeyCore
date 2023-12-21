@@ -1,0 +1,106 @@
+﻿@page "/"
+@using StreamingApp
+@using Eco.MVC
+@using System.IO;
+@using StreamingAppGenericAPIAndControllers;
+@using TurnkeyWebAppGeneric.Controllers
+
+@inject StreamingAppScopedService streamingAppScopedService
+
+
+@{
+  Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href='@Url.Content("~/")' />
+  <title>@ViewBag.ApplicationName - MDriven Turnkey</title>
+  <link href="~/Content/angular-components-styles.min.css" rel="stylesheet" type="text/css" />
+  @if (System.IO.File.Exists(MapPathService.MapPath("~/Content/core.css"))) // this is the override css for the site produced by transpiling ~/Content/scss/app.scss
+  {
+    <link href="@Url.Content("~/Content/core.css")" rel="stylesheet" type="text/css" />
+  }
+  @if (System.IO.File.Exists(MapPathService.MapPath("~/Content/scss/theme-user.css")))// this is the default css for the site that is checked in
+  {
+    <link href="@Url.Content("~/Content/scss/theme-user.css")" rel="stylesheet" type="text/css" />
+  }
+  else if (System.IO.File.Exists(MapPathService.MapPath("~/Content/theme-user.css")))
+  {
+    <link href="@Url.Content("~/Content/theme-user.css")" rel="stylesheet" type="text/css" />
+  }
+  else if (System.IO.File.Exists(MapPathService.MapPath("~/Content/theme-default.css")))
+  {
+    <link href="@Url.Content("~/Content/theme-default.css")" rel="stylesheet" type="text/css" />
+  }
+  <script src="~/Scripts/modernizr-2.8.3.js"></script>
+  @if (System.IO.File.Exists(MapPathService.MapPath("~/Content/tkusercss.css")))
+  {
+    <link href="@Url.Content("~/Content/tkusercss.css")" rel="stylesheet" type="text/css" />
+  }
+  @ViewOverrideLogic.Get_EXT_ComponentsCSS()
+
+  @if (System.IO.File.Exists(MapPathService.MapPath("~/EXT_Scripts/AppWideHeadScript.js")))
+  {
+    <script src="~/EXT_Scripts/AppWideHeadScript.js"></script>
+  }
+</head>
+
+<body>
+
+  <div id="bodyWrapper">
+    <!-- The entire browser viewport -->
+    <div id="globalNavWrapper">
+      <!-- global actions (usually on top) -->
+      <div class="navbar" role="navigation">
+
+        @* Top row (mostly a menu) *@
+        <div class="navbar__header">
+          @* Left top menu button *@
+          <button type="button" id="LeftMenuButton" class="navbar__toggle navbar__toggle--sidebar ripple-effect">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          @if (System.IO.File.Exists(MapPathService.MapPath("~/SiteAssets/logo.png")))
+          {
+            <a href="/" class="navbar__logo">
+              <img src="~/SiteAssets/logo.png" width="auto" height="35" alt="@ViewBag.ApplicationName" />
+            </a>
+          }
+          else if (System.IO.File.Exists(MapPathService.MapPath("~/SiteAssets/logo.svg")))
+          {
+            <a href="/" class="navbar__logo">
+              <img src="~/SiteAssets/logo.svg" width="auto" height="40" alt="@ViewBag.ApplicationName" />
+            </a>
+          }
+          @Html.ActionLink((string)(string)(ViewBag.ApplicationName != null ? ViewBag.ApplicationName : "InvestigateEmpty"), "Index", TurnkeyController.ControllerName, new { area = "" }, new { @class = "navbar__brand" })
+          @* Right top menu button *@
+          <button type="button" class="navbar__toggle navbar__toggle--default ripple-effect" data-toggle="collapse" data-target=".navbar__wrapper">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar__wrapper collapse">
+          <component type="typeof(StreaminAppCoreWebApp.Views.BlaApp.GenericBlaappGlobalMenu)" render-mode="ServerPrerendered" param-BlazorEntryPointId="@ViewBag.BlazorEntryPointId" />
+          @Html.Partial("_LoginPartial") @* Inject login/logout section in the top right *@
+        </div>
+      </div>
+
+    </div> @* End of globalNavWrapper *@
+    <div id="globalContentWrapper">
+
+      <div id="viewmodelWrapper">
+        <component type="typeof(StreaminAppCoreWebApp.Views.BlaApp.GenericBlaapp)" render-mode="ServerPrerendered" param-BlazorEntryPointId="@ViewBag.BlazorEntryPointId" />
+        <!-- (Html.RenderComponentAsync<StreaminAppCoreWebApp.Views.BlaApp.GenericBlaapp>(RenderMode.ServerPrerendered,new {  ScopedService= streamingAppScopedService }).Result) -->
+
+      </div>
+    </div>
+
+    <script src="_framework/blazor.server.js"></script>
+    @ViewOverrideLogic.Get_EXT_AppWideIncludes()
+    @ViewOverrideLogic.Get_EXT_ComponentsScripts()
+
+</body>
+</html>

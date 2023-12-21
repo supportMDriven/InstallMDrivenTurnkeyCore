@@ -1,0 +1,13 @@
+﻿@using Eco.MVC
+@using StreamingAppGenericAPIAndControllers
+
+@model AngularModel
+
+@Html.AngularUITurnkeyViewOverrideCss()
+
+<div ng-model-options="{'updateOn': 'default blur click', 'debounce': {'default': 500, 'blur': 0, 'click': 50}}">
+  <!-- Wait 2 seconds before sending changes to server (if not user leaves control) -->
+  <!-- Here is the ViewModel Angular body inserted -->
+  @Html.AngularUITurnkeyViewOverride() @* Here the generated Angular html is inserted OR the overridden page from the folder EXT_OverridePages *@
+  <!-- End of inserted ViewModel Angular body -->
+</div>
