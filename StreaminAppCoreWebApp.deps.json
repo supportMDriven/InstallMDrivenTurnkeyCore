@@ -1756,7 +1756,7 @@
           "lib/net5.0/HtmlTags.dll": {}
         }
       },
-      "log4net/2.0.12": {
+      "log4net/2.0.15": {
         "dependencies": {
           "System.Configuration.ConfigurationManager": "6.0.1"
         },
@@ -3397,7 +3397,7 @@
           "System.Runtime": "4.3.1",
           "TurnkeyInterfaces.core": "1.0.0",
           "ZXing.Net": "0.16.5",
-          "log4net": "2.0.12"
+          "log4net": "2.0.15"
         },
         "compile": {
           "StreamingAppGenericAPIAndControllers.core.dll": {}
@@ -5105,14 +5105,14 @@
           }
         }
       },
-      "log4net/2.0.12": {
+      "log4net/2.0.15": {
         "dependencies": {
           "System.Configuration.ConfigurationManager": "6.0.1"
         },
         "runtime": {
           "lib/netstandard2.0/log4net.dll": {
-            "assemblyVersion": "2.0.12.0",
-            "fileVersion": "2.0.12.0"
+            "assemblyVersion": "2.0.15.0",
+            "fileVersion": "2.0.15.0"
           }
         }
       },
@@ -7168,7 +7168,7 @@
           "System.Runtime": "4.3.1",
           "TurnkeyInterfaces.core": "1.0.0",
           "ZXing.Net": "0.16.5",
-          "log4net": "2.0.12"
+          "log4net": "2.0.15"
         },
         "runtime": {
           "StreamingAppGenericAPIAndControllers.core.dll": {}
@@ -7241,12 +7241,12 @@
       "path": "htmltags/8.1.1",
       "hashPath": "htmltags.8.1.1.nupkg.sha512"
     },
-    "log4net/2.0.12": {
+    "log4net/2.0.15": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-9P67BCftJ7KG+B7rNOM1A9KczUwyEDed6zbAddy5Cj/73xVkzi+rEAHeOgUnW5wDqy1JFlY8+oTP0m1PgJ03Tg==",
-      "path": "log4net/2.0.12",
-      "hashPath": "log4net.2.0.12.nupkg.sha512"
+      "sha512": "sha512-GahnO9ZgFka+xYcFwAfIFjW+k86P2nxFoaEpH6t3v4hiGj7tv2ksVZphxCVIHmJxoySS0HeU3dgCW+bSCcfD0A==",
+      "path": "log4net/2.0.15",
+      "hashPath": "log4net.2.0.15.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Antiforgery/2.2.0": {
       "type": "package",
