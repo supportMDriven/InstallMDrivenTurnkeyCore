@@ -42,12 +42,12 @@
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
           "Eco.Web.Providers.Model.netstandard": "1.0.0",
-          "MDriven.ASPNETIdentity.core": "7.0.0.15363",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.MVC.Core": "7.0.0.15363",
-          "MDriven.Net.Http.netStandard": "7.0.0.15363",
+          "MDriven.ASPNETIdentity.core": "1.0.0",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.MVC.Core": "1.0.0",
+          "MDriven.Net.Http.netStandard": "1.0.0",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "3.1.12",
           "Microsoft.AspNetCore.Identity.UI": "3.1.10",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "3.1.10",
@@ -3217,11 +3217,11 @@
           "AppCompleteGeneric.Model.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
           "Eco.Web.Providers.Model.netstandard": "1.0.0",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.Net.Http.netStandard": "7.0.0.15363",
-          "MDriven.Persistence.NetStandard": "7.0.0.15363"
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.Net.Http.netStandard": "1.0.0",
+          "MDriven.Persistence.NetStandard": "1.0.0"
         },
         "compile": {
           "AppCompleteGeneric.EcoSpace.netstandard.dll": {}
@@ -3231,10 +3231,10 @@
         "dependencies": {
           "Eco.ModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.Net.Http.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.Net.Http.netStandard": "1.0.0",
           "System.ServiceModel.Primitives": "4.8.0"
         },
         "compile": {
@@ -3243,9 +3243,9 @@
       },
       "Eco.ModelLayer.netstandard/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
           "System.Resources.Extensions": "5.0.0"
         },
         "compile": {
@@ -3255,9 +3255,9 @@
       "Eco.Modlr.ExtendedModelLayer.netstandard/1.0.0": {
         "dependencies": {
           "Eco.ModelLayer.netstandard": "1.0.0",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363"
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0"
         },
         "compile": {
           "Eco.Modlr.ExtendedModelLayer.netstandard.dll": {}
@@ -3267,10 +3267,10 @@
         "dependencies": {
           "Eco.ModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.Net.Http.netStandard": "7.0.0.15363"
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.Net.Http.netStandard": "1.0.0"
         },
         "compile": {
           "Eco.Modlr.ModelEditor.NoUI.netstandard.dll": {}
@@ -3278,19 +3278,19 @@
       },
       "Eco.Web.Providers.Model.netstandard/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363"
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "compile": {
           "Eco.Web.Providers.Model.netstandard.dll": {}
         }
       },
-      "MDriven.ASPNETIdentity.core/7.0.0.15363": {
+      "MDriven.ASPNETIdentity.core/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.MVC.Core": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.MVC.Core": "1.0.0",
           "Microsoft.AspNetCore.Identity": "2.2.0",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
           "Microsoft.AspNetCore.Owin": "2.2.0",
@@ -3304,9 +3304,9 @@
           "MDriven.ASPNETIdentity.core.dll": {}
         }
       },
-      "MDriven.Handles.netStandard/7.0.0.15363": {
+      "MDriven.Handles.netStandard/1.0.0": {
         "dependencies": {
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
+          "MDriven.Interfaces.netStandard": "1.0.0",
           "System.Buffers": "4.5.1",
           "System.Runtime.Serialization.Formatters": "4.3.0",
           "System.Security.Permissions": "8.0.0",
@@ -3316,7 +3316,7 @@
           "MDriven.Handles.netStandard.dll": {}
         }
       },
-      "MDriven.Interfaces.netStandard/7.0.0.15363": {
+      "MDriven.Interfaces.netStandard/1.0.0": {
         "dependencies": {
           "Microsoft.IO.RecyclableMemoryStream": "2.3.2",
           "System.Drawing.Common": "8.0.1",
@@ -3327,10 +3327,10 @@
           "MDriven.Interfaces.netStandard.dll": {}
         }
       },
-      "MDriven.LinqExtender.netStandard/7.0.0.15363": {
+      "MDriven.LinqExtender.netStandard/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
           "Microsoft.Data.SqlClient": "5.1.4",
           "Newtonsoft.Json": "13.0.3"
         },
@@ -3338,13 +3338,13 @@
           "MDriven.LinqExtender.netStandard.dll": {}
         }
       },
-      "MDriven.MVC.Core/7.0.0.15363": {
+      "MDriven.MVC.Core/1.0.0": {
         "dependencies": {
           "HtmlTags": "8.1.1",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.Net.Http.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.Net.Http.netStandard": "1.0.0",
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Localization": "2.2.0",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
@@ -3356,11 +3356,11 @@
           "MDriven.MVC.Core.dll": {}
         }
       },
-      "MDriven.Net.Http.netStandard/7.0.0.15363": {
+      "MDriven.Net.Http.netStandard/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
           "Microsoft.AspNetCore.SignalR.Client": "8.0.0",
           "Microsoft.AspNetCore.SignalR.Client.Core": "8.0.0",
           "Microsoft.IO.RecyclableMemoryStream": "2.3.2"
@@ -3369,10 +3369,10 @@
           "MDriven.Net.Http.netStandard.dll": {}
         }
       },
-      "MDriven.Persistence.NetStandard/7.0.0.15363": {
+      "MDriven.Persistence.NetStandard/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363"
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "compile": {
           "MDriven.Persistence.NetStandard.dll": {}
@@ -3386,11 +3386,11 @@
           "Ben.Demystifier": "0.4.1",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
-          "MDriven.ASPNETIdentity.core": "7.0.0.15363",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.MVC.Core": "7.0.0.15363",
+          "MDriven.ASPNETIdentity.core": "1.0.0",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.MVC.Core": "1.0.0",
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "Microsoft.AspNetCore.SignalR.Client": "8.0.0",
@@ -3405,8 +3405,8 @@
       },
       "TurnkeyInterfaces.core/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "System.Diagnostics.Debug": "4.3.0",
           "System.IO.FileSystem": "4.3.0",
@@ -3428,12 +3428,12 @@
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
           "Eco.Web.Providers.Model.netstandard": "1.0.0",
-          "MDriven.ASPNETIdentity.core": "7.0.0.15363",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.MVC.Core": "7.0.0.15363",
-          "MDriven.Net.Http.netStandard": "7.0.0.15363",
+          "MDriven.ASPNETIdentity.core": "1.0.0",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.MVC.Core": "1.0.0",
+          "MDriven.Net.Http.netStandard": "1.0.0",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "3.1.12",
           "Microsoft.AspNetCore.Identity.UI": "3.1.10",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "3.1.10",
@@ -6988,11 +6988,11 @@
           "AppCompleteGeneric.Model.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
           "Eco.Web.Providers.Model.netstandard": "1.0.0",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.Net.Http.netStandard": "7.0.0.15363",
-          "MDriven.Persistence.NetStandard": "7.0.0.15363"
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.Net.Http.netStandard": "1.0.0",
+          "MDriven.Persistence.NetStandard": "1.0.0"
         },
         "runtime": {
           "AppCompleteGeneric.EcoSpace.netstandard.dll": {}
@@ -7002,10 +7002,10 @@
         "dependencies": {
           "Eco.ModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.Net.Http.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.Net.Http.netStandard": "1.0.0",
           "System.ServiceModel.Primitives": "4.8.0"
         },
         "runtime": {
@@ -7014,9 +7014,9 @@
       },
       "Eco.ModelLayer.netstandard/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
           "System.Resources.Extensions": "5.0.0"
         },
         "runtime": {
@@ -7026,9 +7026,9 @@
       "Eco.Modlr.ExtendedModelLayer.netstandard/1.0.0": {
         "dependencies": {
           "Eco.ModelLayer.netstandard": "1.0.0",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363"
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0"
         },
         "runtime": {
           "Eco.Modlr.ExtendedModelLayer.netstandard.dll": {}
@@ -7038,10 +7038,10 @@
         "dependencies": {
           "Eco.ModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.Net.Http.netStandard": "7.0.0.15363"
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.Net.Http.netStandard": "1.0.0"
         },
         "runtime": {
           "Eco.Modlr.ModelEditor.NoUI.netstandard.dll": {}
@@ -7049,19 +7049,19 @@
       },
       "Eco.Web.Providers.Model.netstandard/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363"
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "runtime": {
           "Eco.Web.Providers.Model.netstandard.dll": {}
         }
       },
-      "MDriven.ASPNETIdentity.core/7.0.0.15363": {
+      "MDriven.ASPNETIdentity.core/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.MVC.Core": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.MVC.Core": "1.0.0",
           "Microsoft.AspNetCore.Identity": "2.2.0",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
           "Microsoft.AspNetCore.Owin": "2.2.0",
@@ -7075,9 +7075,9 @@
           "MDriven.ASPNETIdentity.core.dll": {}
         }
       },
-      "MDriven.Handles.netStandard/7.0.0.15363": {
+      "MDriven.Handles.netStandard/1.0.0": {
         "dependencies": {
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
+          "MDriven.Interfaces.netStandard": "1.0.0",
           "System.Buffers": "4.5.1",
           "System.Runtime.Serialization.Formatters": "4.3.0",
           "System.Security.Permissions": "8.0.0",
@@ -7087,7 +7087,7 @@
           "MDriven.Handles.netStandard.dll": {}
         }
       },
-      "MDriven.Interfaces.netStandard/7.0.0.15363": {
+      "MDriven.Interfaces.netStandard/1.0.0": {
         "dependencies": {
           "Microsoft.IO.RecyclableMemoryStream": "2.3.2",
           "System.Drawing.Common": "8.0.1",
@@ -7098,10 +7098,10 @@
           "MDriven.Interfaces.netStandard.dll": {}
         }
       },
-      "MDriven.LinqExtender.netStandard/7.0.0.15363": {
+      "MDriven.LinqExtender.netStandard/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
           "Microsoft.Data.SqlClient": "5.1.4",
           "Newtonsoft.Json": "13.0.3"
         },
@@ -7109,13 +7109,13 @@
           "MDriven.LinqExtender.netStandard.dll": {}
         }
       },
-      "MDriven.MVC.Core/7.0.0.15363": {
+      "MDriven.MVC.Core/1.0.0": {
         "dependencies": {
           "HtmlTags": "8.1.1",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.Net.Http.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.Net.Http.netStandard": "1.0.0",
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Localization": "2.2.0",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
@@ -7127,11 +7127,11 @@
           "MDriven.MVC.Core.dll": {}
         }
       },
-      "MDriven.Net.Http.netStandard/7.0.0.15363": {
+      "MDriven.Net.Http.netStandard/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
           "Microsoft.AspNetCore.SignalR.Client": "8.0.0",
           "Microsoft.AspNetCore.SignalR.Client.Core": "8.0.0",
           "Microsoft.IO.RecyclableMemoryStream": "2.3.2"
@@ -7140,10 +7140,10 @@
           "MDriven.Net.Http.netStandard.dll": {}
         }
       },
-      "MDriven.Persistence.NetStandard/7.0.0.15363": {
+      "MDriven.Persistence.NetStandard/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363"
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "runtime": {
           "MDriven.Persistence.NetStandard.dll": {}
@@ -7157,11 +7157,11 @@
           "Ben.Demystifier": "0.4.1",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
-          "MDriven.ASPNETIdentity.core": "7.0.0.15363",
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
-          "MDriven.LinqExtender.netStandard": "7.0.0.15363",
-          "MDriven.MVC.Core": "7.0.0.15363",
+          "MDriven.ASPNETIdentity.core": "1.0.0",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "MDriven.MVC.Core": "1.0.0",
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "Microsoft.AspNetCore.SignalR.Client": "8.0.0",
@@ -7176,8 +7176,8 @@
       },
       "TurnkeyInterfaces.core/1.0.0": {
         "dependencies": {
-          "MDriven.Handles.netStandard": "7.0.0.15363",
-          "MDriven.Interfaces.netStandard": "7.0.0.15363",
+          "MDriven.Handles.netStandard": "1.0.0",
+          "MDriven.Interfaces.netStandard": "1.0.0",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "System.Diagnostics.Debug": "4.3.0",
           "System.IO.FileSystem": "4.3.0",
@@ -8741,37 +8741,37 @@
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.ASPNETIdentity.core/7.0.0.15363": {
+    "MDriven.ASPNETIdentity.core/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.Handles.netStandard/7.0.0.15363": {
+    "MDriven.Handles.netStandard/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.Interfaces.netStandard/7.0.0.15363": {
+    "MDriven.Interfaces.netStandard/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.LinqExtender.netStandard/7.0.0.15363": {
+    "MDriven.LinqExtender.netStandard/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.MVC.Core/7.0.0.15363": {
+    "MDriven.MVC.Core/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.Net.Http.netStandard/7.0.0.15363": {
+    "MDriven.Net.Http.netStandard/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.Persistence.NetStandard/7.0.0.15363": {
+    "MDriven.Persistence.NetStandard/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
