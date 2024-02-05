@@ -448,8 +448,14 @@
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     max-width: 0;
     table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+    overflow: hidden;
+    //box-sizing: content-box;
   }
 
   .tk-data-table__header-cell {
@@ -481,6 +487,8 @@
     border-right: 1px solid rgba(218,220,224, 0.7);
     overflow-x: hidden;
     text-overflow: ellipsis;
+    border-collapse: collapse;
+    border-spacing: 0;
 
     //&:last-of-type {
     //  border-right: 0;
@@ -506,6 +514,11 @@
     .tk-checkbox__inner {
       display: inline-flex;
     }
+
+
+    //&:last-of-type {
+    //  border-right: 0;
+    //}
   }
 }
 
@@ -520,6 +533,7 @@
   cursor: col-resize;
   transition: all 100ms ease-out;
   opacity: 0;
+  box-sizing: border-box;
 
   &:hover {
     background: #dadce0;
@@ -531,6 +545,8 @@
     cursor: col-resize;
   }
 
+
+  //&::after is removed
   &::before,
   &::after {
     content: '';
@@ -540,6 +556,7 @@
     width: 15px;
     height: 100%;
     background: transparent;
+    box-sizing: border-box;
   }
 
   &::before {
