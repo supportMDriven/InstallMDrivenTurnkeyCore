@@ -61,18 +61,17 @@
 
 
 .tk-checkbox__content {
-  padding: 11px;
-
+  padding: 0.688em;
   display: inline-block;
   position: relative;
-
-  -ms-flex: 0 0 14px;
-  flex: 0 0 18px;
-
-  width: 18px;
-  height: 18px;
+  //flex: 0 0 18px;
+  flex: 0 0 1.125em;
+  //width: 18px;
+  //height: 18px;
+  width: 1.125em;
+  height: 1.125em;
   line-height: 0;
-
+  font-size: var(--base-checkbox-size, 16px);
   box-sizing: content-box;
   white-space: nowrap;
   vertical-align: bottom;
@@ -83,16 +82,12 @@
   &::before {
     content: "";
     position: absolute;
-
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-
     border-radius: 50%;
-
     transition: opacity 15ms linear,background-color 15ms linear;
-
     cursor: pointer;
   }
 
@@ -106,9 +101,9 @@
 
   &--disabled:hover,
   &--disabled:focus {
-   &::before {
-     background: transparent;
-   }
+    &::before {
+      background: transparent;
+    }
   }
 }
 
@@ -129,16 +124,22 @@
 
 .tk-checkbox__interactive {
   position: absolute;
-  top: 11px;
-  left: 11px;
+  //top: 11px;
+  //left: 11px;
+  top: 0.688em;
+  left: 0.688em;
   right: auto;
 
   display: inline-flex;
   justify-content: center;
   align-items: center;
 
-  width: 18px;
-  height: 18px;
+  //width: 18px;
+  //height: 18px;
+  width: 1.125em;
+  height: 1.125em;
+
+  font-size: inherit;
 
   background-color: transparent;
   border: 2px solid #757575;
@@ -154,10 +155,14 @@
   &::before {
     content: '';
     position: absolute;
-    top: -13px;
-    left: -13px;
-    width: 40px;
-    height: 40px;
+    //top: -13px;
+    //left: -13px;
+    top: -0.813em;
+    left: -0.813em;
+    //width: 40px;
+    //height: 40px;
+    width: 2.5em;
+    height: 2.5em;
     opacity: 0;
     border-radius: 50%;
     z-index: 1;
