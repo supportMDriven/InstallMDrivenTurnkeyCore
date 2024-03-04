@@ -1,0 +1,1 @@
+Get-Content .\*DEBUG.txt -Wait -tail 1
