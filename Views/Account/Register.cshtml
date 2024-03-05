@@ -3,6 +3,7 @@
 
 @{
   ViewBag.Title = "Register";
+  ViewBag.turnkeyView = "register-page";
 }
 
 <div class="tk-auth">
@@ -22,19 +23,19 @@
           {
               @Html.AntiForgeryToken()
 
-              <div class="tk-auth-form__group">
+              <div class="tk-auth-form__group tk-auth-form__group--email">
                   @Html.LabelFor(m => m.Email, new { @class = "tk-auth-form__label" })
-                  @Html.TextBoxFor(m => m.Email, new { @class = "tk-auth-form__input", placeholder = "Email adress" })
+                  @Html.TextBoxFor(m => m.Email, new { @class = "tk-auth-form__input", placeholder = "Email adress", inputmode = "email" })
                   @Html.ValidationMessageFor(m => m.Email, "")
               </div>
 
-              <div class="tk-auth-form__group">
+              <div class="tk-auth-form__group tk-auth-form__group--password">
                   @Html.LabelFor(m => m.Password, new { @class = "tk-auth-form__label" })
                   @Html.PasswordFor(m => m.Password, new { @class = "tk-auth-form__input", placeholder = "Password" })
                   @Html.ValidationMessageFor(m => m.Password, "")
               </div>
 
-              <div class="tk-auth-form__group">
+              <div class="tk-auth-form__group tk-auth-form__group--passconfirm">
                   @Html.LabelFor(m => m.ConfirmPassword, new { @class = "tk-auth-form__label" })
                   @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "tk-auth-form__input", placeholder = "Confirm password" })
                   @Html.ValidationMessageFor(m => m.ConfirmPassword, "")
@@ -52,11 +53,8 @@
         <p>Already have an account? Please, log in!</p>
         @Html.ActionLink("Login", "Login", new { }, new { @class = "tk-auth__link ripple-effect" })
       </div>
-      <span class="tk-auth__divider">or</span>
-      <div class="tk-auth-social">
-        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+        @await Html.PartialAsync("_ExternalLoginsListPartial", new ExternalLoginListViewModel { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
       </div>
     </div>
   </div>
-</div>
 

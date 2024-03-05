@@ -5,6 +5,10 @@
 @inject SignInManager<SysUserAdaptor> SignInManager
 @inject UserManager<SysUserAdaptor> UserManager
 
+@{
+  ViewBag.tunrkeyView = "manage-page";
+}
+
 <div class="manage">
   <div class="manage__header">
     <div class="manage__wrapper">
@@ -53,16 +57,16 @@
 
 
         <div class="account-add">
-          @Html.PartialAsync("_ExternalLoginsListManage", new ExternalLoginListViewModel { Action = "LinkLogin", ReturnUrl = "" })
+          @await Html.PartialAsync("_ExternalLoginsListManage", new ExternalLoginListViewModel { Action = "LinkLogin", ReturnUrl = "" })
         </div>
       </div>
       @if (ViewBag.HasLocalPassword)
       {
-        @Html.PartialAsync("_ChangePasswordPartial")
+        @await Html.PartialAsync("_ChangePasswordPartial")
       }
       else
       {
-        @Html.PartialAsync("_SetPasswordPartial")
+        @await Html.PartialAsync("_SetPasswordPartial")
       }
     </div>
   </div>
