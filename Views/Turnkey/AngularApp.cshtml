@@ -12,7 +12,7 @@
     var requestCulture = this.Context.Features.Get<IRequestCultureFeature>();
     if (requestCulture != null)
     {
-        userlanguage = requestCulture.RequestCulture.Culture.TwoLetterISOLanguageName;
+        userlanguage = requestCulture.RequestCulture.Culture.Name; // swithched from TwoLetterISOLanguageName
     }
     CultureInfo userCulture;
     try

@@ -84,13 +84,13 @@
           </button>
           @if (File.Exists(MapPathService.MapPath("~/SiteAssets/logo.png")))
           {
-            <a href="/" class="navbar__logo">
+            <a href="@Url.Action("Index", TurnkeyController.ControllerName)" class="navbar__logo">
               <img src="~/SiteAssets/logo.png" width="auto" height="35" alt="@ViewBag.ApplicationName" />
             </a>
           }
           else if (File.Exists(MapPathService.MapPath("~/SiteAssets/logo.svg")))
           {
-            <a href="/" class="navbar__logo">
+            <a href="@Url.Action("Index", TurnkeyController.ControllerName)" class="navbar__logo">
               <img src="~/SiteAssets/logo.svg" width="auto" height="40" alt="@ViewBag.ApplicationName" />
             </a>
           }
