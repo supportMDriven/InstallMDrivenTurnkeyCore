@@ -1,0 +1,138 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+///********************************************************/
+///* DeveloperInfo show only when hovering with the mouse */
+///********************************************************/
+//
+//.developer-info {
+//  padding: 5px;
+//  background-color: $info-color;
+//  position: fixed;
+//
+//  left: 5px;
+//  bottom: 5px;
+//
+//  display: flex;
+//  flex-direction: column;
+//
+//  max-width: 250px;
+//
+//  font-family: $application-font;
+//  font-size: $application-font-size;
+//
+//  border-radius: 4px;
+//
+//  @include shadow-2dp();
+//
+//  @media only screen and (min-width: 768px) {
+//    max-width: 300px;
+//  }
+//}
+//
+//.developer-info:not(:hover) .developer-info__wrapper {
+//  display: none;
+//  visibility: hidden;
+//}
+//
+//.developer-info:not(:focus) .developer-info__wrapper {
+//  display: none;
+//  visibility: hidden;
+//}
+//
+//
+//.developer-info:hover .developer-info__wrapper {
+//  display: flex;
+//  flex-direction: column;
+//
+//  visibility: visible;
+//  width: auto;
+//  height: auto;
+//}
+//
+//.developer-info:focus .developer-info__wrapper {
+//  display: flex;
+//  flex-direction: column;
+//
+//  visibility: visible;
+//  width: auto;
+//  height: auto;
+//}
+//
+//
+//
+//.developer-info__title {
+//  display: block;
+//  vertical-align: middle;
+//
+//  font-size: 0.7em;
+//  font-weight: 500;
+//
+//  & .mi {
+//    margin-bottom: 2px;
+//    font-size: inherit;
+//  }
+//}
+//
+//.developer-info__wrapper {
+//  display: none;
+//  visibility: hidden;
+//}
+//
+//
+//.developer-info:hover .developer-info__title {
+//  display: none;
+//  visibility: hidden;
+//}
+//
+//.developer-info__list {
+//  font-size: 0.7em;
+//}
+//
+//.developer-info__item span {
+//  font-weight: 500;
+//  color: $info-color-dark;
+//}
+//
+//.developer-info__btn {
+//  margin-top: 4px;
+//
+//  padding: 2px 0;
+//  display: block;
+//
+//  font-family: inherit;
+//  font-size: 0.7em;
+//  font-weight: 500;
+//  text-transform: uppercase;
+//
+//  background: #fff;
+//  border-radius: 4px;
+//
+//  transition: background-color 300ms ease-out;
+//
+//  &:hover,
+//  &:focus {
+//    background-color: rgba(0,0,0, 0.1);
+//  }
+//
+//  &:active {
+//    background-color: rgba(0,0,0, 0.2);
+//  }
+//}
+
+.developer-info {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  background-color: rgb(255,255,255);
+}
+
+.developer-info__toolbar .md-toolbar-tools {
+  justify-content: space-between;
+}
+
+.developer-info__dialog .developer-info__toolbar {
+  background-color: rgb(33, 33, 33);
+}

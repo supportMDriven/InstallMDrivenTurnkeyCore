@@ -1,0 +1,13 @@
+<button
+  ng-click="$ctrl.toggleVisibility($event)" 
+  ng-if="$ctrl.group.ActionGroupName || $ctrl.group.SubMenuGroupName"
+  aria-expanded="{{$ctrl.visible}}"
+  aria-controls="{{$ctrl.group.ActionGroupName || $ctrl.group.SubMenuGroupName || ''}}Group.id"
+  class="n-tk-sidebar-group__header">
+    <span>{{$ctrl.group.ActionGroupPresentation || $ctrl.group.SubMenuGroupName}}</span>
+    <tk-icon>{{$ctrl.visible ? 'expand_more' : 'chevron_right'}}</tk-icon>
+</button>
+<section ng-if="$ctrl.group.ActionList" class="n-tk-sidebar-group__content" ng-show="$ctrl.visible" id="{{$ctrl.group.ActionGroupName || $ctrl.group.SubMenuGroupName || ''}}Group.id">
+  <tk-sidebar-action ng-repeat="action in $ctrl.group.ActionList.Actions | orderBy: 'ActionSortKey'" action="action"></tk-sidebar-action>
+</section>
+<tk-sidebar-group ng-repeat="actionGroup in $ctrl.group.SubMenuGroups | orderBy: 'SubMenuGroupSortKey'" group="actionGroup" class="n-tk-sidebar-group" ng-show="$ctrl.visible"></tk-sidebar-group>

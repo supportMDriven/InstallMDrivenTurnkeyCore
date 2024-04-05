@@ -1,0 +1,1 @@
+Get-Content .\*ERRORS.txt -Wait -tail 1
