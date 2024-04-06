@@ -25,7 +25,6 @@
   justify-content: flex-start;
   align-items: center;
   height: $navbar-height;
-  height: var(--navbar-height, #{$navbar-height});
   -ms-flex-negative: 0;
   flex-shrink: 0;
   width: 100%;
@@ -254,6 +253,7 @@
 .navbar--desktop .navbar__wrapper {
   width: 100%;
   overflow-x: auto;
+  align-items: center;
 
   &.collapse {
     display: flex;
@@ -277,6 +277,18 @@
   &.right {
     width: auto;
     margin-left: auto;
+  }
+
+  &:not(.right) {
+    flex-wrap: wrap;
+    row-gap: 6px;
+    margin: 6px 0;
+  }
+
+  &.right .navbar__link span {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
