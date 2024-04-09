@@ -6,9 +6,10 @@
     <button type="button" 
             ng-repeat="action in $ctrl.actions | orderBy: '-'" 
             ng-click="action.Execute($event)" 
-            ng-class="{'primary': action.Presentation === 'Save', 'text': action.Presentation !== 'Save'}"
+            ng-class="{'primary': action.Presentation === 'Save', 'text': action.Presentation !== 'Save' }"
             ng-disabled="!action.Enable"
             size="small"
+            class="{{action.Presentation.toLowerCase()}}"
             tk-button
             >
         {{action.Presentation}}
