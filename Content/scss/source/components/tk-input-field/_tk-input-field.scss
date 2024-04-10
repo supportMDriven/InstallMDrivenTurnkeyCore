@@ -227,9 +227,18 @@ textarea.tk-input-field__native:read-only {
   height: 1.875rem;
   font-size: 0.875rem;
   border-width: 1px;
+  box-sizing: border-box;
 }
 
 .tk-input-field__container--in-grid .tk-input-field__icon {
   top: 0.4375rem;
   font-size: 1rem;
+}
+
+.tk-input-field__container--in-grid .tk-input-field__native {
+  
+  &:read-only, 
+  &[readonly] {
+    pointer-events: none;
+  }
 }
