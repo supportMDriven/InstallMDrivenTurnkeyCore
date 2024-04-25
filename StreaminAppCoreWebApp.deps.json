@@ -2735,6 +2735,8 @@
           "System.Buffers": "4.5.1"
         }
       },
+      "Microsoft.NET.ILLink.Tasks/8.0.0": {},
+      "Microsoft.NET.Sdk.WebAssembly.Pack/8.0.0": {},
       "Microsoft.NETCore.Platforms/7.0.4": {},
       "Microsoft.NETCore.Targets/1.1.3": {},
       "Microsoft.SqlServer.Server/1.0.0": {
@@ -3595,7 +3597,9 @@
       "TurnkeyBlaappComp/1.0.0": {
         "dependencies": {
           "MDriven.SharedInterfaces.WebAssembly": "1.0.0",
-          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.0"
+          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.0",
+          "Microsoft.NET.ILLink.Tasks": "8.0.0",
+          "Microsoft.NET.Sdk.WebAssembly.Pack": "8.0.0"
         },
         "compile": {
           "TurnkeyBlaappComp.dll": {}
@@ -6399,6 +6403,8 @@
           "System.Buffers": "4.5.1"
         }
       },
+      "Microsoft.NET.ILLink.Tasks/8.0.0": {},
+      "Microsoft.NET.Sdk.WebAssembly.Pack/8.0.0": {},
       "Microsoft.NETCore.Platforms/7.0.4": {},
       "Microsoft.NETCore.Targets/1.1.3": {},
       "Microsoft.SqlServer.Server/1.0.0": {
@@ -7358,7 +7364,9 @@
       "TurnkeyBlaappComp/1.0.0": {
         "dependencies": {
           "MDriven.SharedInterfaces.WebAssembly": "1.0.0",
-          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.0"
+          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.0",
+          "Microsoft.NET.ILLink.Tasks": "8.0.0",
+          "Microsoft.NET.Sdk.WebAssembly.Pack": "8.0.0"
         },
         "runtime": {
           "TurnkeyBlaappComp.dll": {}
@@ -8249,6 +8257,20 @@
       "sha512": "sha512-iZNkjYqlo8sIOI0bQfpsSoMTmB/kyvmV2h225ihyZT33aTp48ZpF6qYnXxzSXmHt8DpBAwBTX+1s1UFLbYfZKg==",
       "path": "microsoft.net.http.headers/2.2.0",
       "hashPath": "microsoft.net.http.headers.2.2.0.nupkg.sha512"
+    },
+    "Microsoft.NET.ILLink.Tasks/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-B3etT5XQ2nlWkZGO2m/ytDYrOmSsQG1XNBaM6ZYlX5Ch/tDrMFadr0/mK6gjZwaQc55g+5+WZMw4Cz3m8VEF7g==",
+      "path": "microsoft.net.illink.tasks/8.0.0",
+      "hashPath": "microsoft.net.illink.tasks.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.NET.Sdk.WebAssembly.Pack/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zIP/2rXQN1Q7xkqxJmDU31BvoISdhM6tH0o206ShlTCWgcmMKuGapPYIDcDcUmIZjZGHrLKM4z/MsgfLGi0VUw==",
+      "path": "microsoft.net.sdk.webassembly.pack/8.0.0",
+      "hashPath": "microsoft.net.sdk.webassembly.pack.8.0.0.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/7.0.4": {
       "type": "package",

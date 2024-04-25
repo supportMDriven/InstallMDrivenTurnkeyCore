@@ -6,7 +6,7 @@
 @using TurnkeyWebAppGeneric.Controllers
 @using TurnkeyBlaappComp.Components
 @using  Microsoft.AspNetCore.Components.Web;
-@using TurnkeyBlaappComp.Components
+@using StreaminAppCoreWebApp.Views.BlaApp
 @model AngularModel
 
 @Html.AngularUITurnkeyViewOverrideCss()
@@ -96,17 +96,27 @@
     <div id="globalContentWrapper">
 
       <div id="viewmodelWrapper">
+        <div>1111</div>
+        <!-- Html.BlazorUITurnkeyViewOverride() -->
+        <div>222</div>
         <!-- Html.BlazorUITurnkeyViewOverride() -->  @* Here the generated Blazo html is inserted OR the overridden page from the folder EXT_OverridePages *@
 
         <!--component type="typeof(StreaminAppCoreWebApp.Views.BlaApp.GenericBlaapp)" render-mode=Static param-BlazorEntryPointId="@ViewBag.BlazorEntryPointId" />
         (await Html.RenderComponentAsync<StreaminAppCoreWebApp.Views.BlaApp.GenericBlaapp>(Microsoft.AspNetCore.Mvc.Rendering.RenderMode.InteractiveAuto, new { ScopedService = streamingAppScopedService }))-->
 
-        <GenericBlaappLoc ScopedService=streamingAppScopedService></GenericBlaappLoc>
+        <div>333</div>
+
+        @(await Html.RenderComponentAsync<TurnkeyBlaappComp.Components.GenericBlaappLoc>(Microsoft.AspNetCore.Mvc.Rendering.RenderMode.ServerPrerendered,new {BlazorEntryPointId = @ViewBag.BlazorEntryPointId }))
       </div>
+
+      <div>444</div>
+      <Routes />
+      <div>555</div>
+
     </div>
 
     <script src="/Scripts/jquery-3.1.1.js"></script>
-    <script src="~/_framework/blazor.web.js"></script>
+    <script src="_framework/blazor.web.js"></script>
     <script src="/client-app-bundles/static.bundle.js"></script>
     <script src="~/Scripts/signalr/signalr.js"></script>
     @ViewOverrideLogic.Get_EXT_AppWideIncludes()
