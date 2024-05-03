@@ -114,3 +114,12 @@
 .tk-state-action.redo-action::before {
   content: '\e15a';
 }
+
+.tk-state-action.lock-action::before {
+  content: '\e897';
+}
+
+.tk-state-action.unlock-action::before {
+  content: '\e898';
+}
+
