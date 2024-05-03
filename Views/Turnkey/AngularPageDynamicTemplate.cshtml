@@ -109,7 +109,7 @@
 
       <ul class="navbar__list" style="background-color:lawngreen;display:flex;flex-direction:row;justify-content: flex-start;width:auto;flex-wrap:wrap;">
         <!-- Action group with actions -->
-        <li class="navbar__item" style="width:auto;"  ng-repeat="submenugroup in ViewData.ActionSubMenuGroupsToolbar() | orderBy: 'SubMenuGroupSortKey'" ng-if="(submenugroup.SubMenuGroupName!='')">
+        <li class="navbar__item" style="width:auto;" ng-repeat="submenugroup in ViewData.ActionSubMenuGroupsToolbar() | orderBy: 'SubMenuGroupSortKey'" ng-if="(submenugroup.SubMenuGroupName!='') && submenugroup.ActionList.NotEmpty()">
           <a href="#" data-toggle="dropdown"  class="navbar__link ripple-effect" aria-expanded="false" >
             <span class="tk-sidebar__group-name" style="line-height:20px;">{{submenugroup.SubMenuGroupName}}</span>
             <span class="mi">arrow_drop_down</span>
