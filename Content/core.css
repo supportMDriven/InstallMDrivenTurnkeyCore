@@ -1847,7 +1847,7 @@ button.tk-button__native.close {
 }
 
 .tk-state-action.unlock-action::before {
-  content: "\e898";
+  content: "\e3c9";
 }
 
 .tk-link {

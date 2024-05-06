@@ -105,26 +105,26 @@
   </tk-validation-card>
 
   <div id="viewmodelWrapper">
-    <div id="contentToolbar" style="background-color:blue;height:auto;width:auto;display:flex;flex-direction:row;justify-content: space-between;flex-wrap:wrap;" ng-if="ViewData.GetUsesTheToolbar()==true">
+    <div id="contentToolbar" ng-if="ViewData.GetUsesTheToolbar()==true">
 
-      <ul class="navbar__list" style="background-color:lawngreen;display:flex;flex-direction:row;justify-content: flex-start;width:auto;flex-wrap:wrap;">
+      <ul class="toolbar__list" >
         <!-- Action group with actions -->
-        <li class="navbar__item" style="width:auto;" ng-repeat="submenugroup in ViewData.ActionSubMenuGroupsToolbar() | orderBy: 'SubMenuGroupSortKey'" ng-if="(submenugroup.SubMenuGroupName!='') && submenugroup.ActionList.NotEmpty()">
-          <a href="#" data-toggle="dropdown"  class="navbar__link ripple-effect" aria-expanded="false" >
-            <span class="tk-sidebar__group-name" style="line-height:20px;">{{submenugroup.SubMenuGroupName}}</span>
+        <li class="toolbar__item"  ng-repeat="submenugroup in ViewData.ActionSubMenuGroupsToolbar() | orderBy: 'SubMenuGroupSortKey'" ng-if="(submenugroup.SubMenuGroupName!='') && submenugroup.ActionList.NotEmpty()">
+          <a href="#" data-toggle="dropdown"  class="toolbar__link ripple-effect" aria-expanded="false" >
+            <span class="tk-sidebar__group-name">{{submenugroup.SubMenuGroupName}}</span>
             <span class="mi">arrow_drop_down</span>
           </a>
           <ul class="dropdown__menu">
             <li class="dropdown__item" ng-repeat="oneaction in submenugroup.ActionList.Actions | orderBy: 'ActionSortKey'">
-              <button type="button" class="tk-sidebar__item ripple-effect" ng-class="oneaction.ActionDisableAndDesignedClass();" ng-click="oneaction.Execute($event);" ng-disabled="!oneaction.Enable" title="{{oneaction.Presentation}}">
+              <button type="button" class="toolbar-drop__button ripple-effect" ng-class="oneaction.ActionDisableAndDesignedClass();" ng-click="oneaction.Execute($event);" ng-disabled="!oneaction.Enable" title="{{oneaction.Presentation}}">
                 <md-tooltip ng-if="oneaction.HintWhenEnabled" md-direction="right">{{oneaction.HintWhenEnabled}}</md-tooltip>
                 {{oneaction.Presentation}}
               </button>
             </li>
           </ul>
         </li>
-        <li class="navbar__item" style="width:auto;height:30px;" ng-repeat="oneaction in ViewData.ActionListTopLevelToolbar() | orderBy: 'ActionSortKey'">
-          <button style="height:18px" type="button" class="tk-sidebar__item ripple-effect" ng-class="oneaction.ActionDisableAndDesignedClass();" ng-click="oneaction.Execute($event);" ng-disabled="!oneaction.Enable" title="{{oneaction.Presentation}}">
+        <li class="toolbar__item" ng-repeat="oneaction in ViewData.ActionListTopLevelToolbar() | orderBy: 'ActionSortKey'">
+          <button type="button" class="tk-toolbar__button ripple-effect" ng-class="oneaction.ActionDisableAndDesignedClass();" ng-click="oneaction.Execute($event);" ng-disabled="!oneaction.Enable" title="{{oneaction.Presentation}}">
             <md-tooltip ng-if="oneaction.HintWhenEnabled" md-direction="right">{{oneaction.HintWhenEnabled}}</md-tooltip>
             {{oneaction.Presentation}}
           </button>
@@ -132,9 +132,9 @@
       </ul>
 
 
-      <ul class="navbar__list" style="background-color:yellow;width:auto;display:flex;flex-direction:row;justify-content: flex-end;">
-        <li class="navbar__item" style="width:auto;"  ng-repeat="oneaction in ViewData.StateActions()">
-          <button type="button" style="height:24px;min-height:18px;margin:4px;"
+      <ul class="vmactions__list">
+         <li class="vmactions__item" ng-repeat="oneaction in ViewData.StateActions()">
+          <button type="button" 
                   class="tk-state-action ripple-effect"
                   ng-class="oneaction.Class"                  
                   ng-click="oneaction.Execute($event); controller.hideSidebar"
