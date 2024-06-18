@@ -108,7 +108,7 @@
 
     <!--Toolbar-->
 
-    <div id="contentToolbar" ng-if="ViewData.GetUsesTheToolbar()==true">
+        <div id="contentToolbar" ng-if="ViewData.GetUsesTheToolbar()==true && ViewData.ActionSubMenuGroupsToolbar().length > 0">
        <div class="toolbar__container">
         <ul class="toolbar__list" >
           <!-- Action group with actions -->
