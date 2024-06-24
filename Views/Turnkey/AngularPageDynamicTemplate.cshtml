@@ -110,7 +110,6 @@
 
         <div id="contentToolbar" ng-if="ViewData.GetUsesTheToolbar()==true">
        <div class="toolbar__container">
-         <h2>Vie</h2>
         <ul class="toolbar__list" >
           <!-- Action group with actions -->
           <li class="toolbar__item"  ng-repeat="submenugroup in ViewData.ActionSubMenuGroupsToolbar() | orderBy: 'SubMenuGroupSortKey'" ng-if="(submenugroup.SubMenuGroupName!='') && submenugroup.ActionList.NotEmpty()">
