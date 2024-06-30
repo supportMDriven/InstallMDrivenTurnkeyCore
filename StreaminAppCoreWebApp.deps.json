@@ -3565,9 +3565,6 @@
         }
       },
       "MDriven.SharedInterfaces.WebAssembly/1.0.0": {
-        "dependencies": {
-          "MDriven.Interfaces.netStandard": "1.0.0"
-        },
         "compile": {
           "MDriven.SharedInterfaces.WebAssembly.dll": {}
         }
@@ -7335,9 +7332,6 @@
         }
       },
       "MDriven.SharedInterfaces.WebAssembly/1.0.0": {
-        "dependencies": {
-          "MDriven.Interfaces.netStandard": "1.0.0"
-        },
         "runtime": {
           "MDriven.SharedInterfaces.WebAssembly.dll": {}
         }
