@@ -1,0 +1,7 @@
+.tk-image-upload__progress {
+  @include color-declaration(background-color, $primary-color, --primary-color);
+}
+
+.tk-image-upload__validation-state {
+  @include color-declaration(color, $danger-color, --danger-color);
+}
