@@ -95,6 +95,31 @@
     <a class="dismiss">🗙</a>
   </div>
   <script src="/_framework/blazor.webassembly.js" autostart=" true"></script>
+  <script>
+    window.registerViewportChangeCallback = (dotnetHelper) => {
+      window.addEventListener('load', () => {
+        dotnetHelper.invokeMethodAsync('OnResize', window.innerWidth, window.innerHeight);
+      });
+      window.addEventListener('resize', () => {
+        dotnetHelper.invokeMethodAsync('OnResize', window.innerWidth, window.innerHeight);
+      });
+    }
+
+    window.getDimensions = function () {
+      return {
+        width: window.innerWidth,
+        height: window.innerHeight
+      };
+    };
+
+    window.getBoundingClientRectMDriven = function (elementId) {
+      let elem = document.getElementById(elementId);
+      if (elem != null)
+        return elem.getBoundingClientRect();
+      return null;
+    };
+
+  </script>
 </body>
 
 </html>
