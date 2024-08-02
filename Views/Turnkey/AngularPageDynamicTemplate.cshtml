@@ -117,7 +117,7 @@
               <span class="tk-sidebar__group-name">{{submenugroup.SubMenuGroupName}}</span>
               <span class="mi">arrow_drop_down</span>
             </a>
-            <ul class="dropdown__menu">
+            <ul class="dropdown__menu toolbar">
               <li class="dropdown__item" ng-repeat="oneaction in submenugroup.ActionList.Actions | orderBy: 'ActionSortKey'">
                 <button type="button" class="toolbar-drop__button ripple-effect" ng-class="oneaction.ActionDisableAndDesignedClass();" ng-click="oneaction.Execute($event);" ng-disabled="!oneaction.Enable" title="{{oneaction.Presentation}}">
                   <md-tooltip ng-if="oneaction.HintWhenEnabled" md-direction="right">{{oneaction.HintWhenEnabled}}</md-tooltip>

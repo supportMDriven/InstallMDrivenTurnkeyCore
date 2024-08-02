@@ -96,14 +96,25 @@
   </div>
   <script src="/_framework/blazor.webassembly.js" autostart=" true"></script>
   <script>
+
+    let _dotnethelper = null;
+
+    function TheResizeCallback() {
+      if (_dotnethelper) {
+        _dotnethelper.invokeMethodAsync('OnResize', window.innerWidth, window.innerHeight);
+      }
+    };
+
     window.registerViewportChangeCallback = (dotnetHelper) => {
-      window.addEventListener('load', () => {
-        dotnetHelper.invokeMethodAsync('OnResize', window.innerWidth, window.innerHeight);
-      });
-      window.addEventListener('resize', () => {
-        dotnetHelper.invokeMethodAsync('OnResize', window.innerWidth, window.innerHeight);
-      });
-    }
+      _dotnethelper = dotnetHelper;
+      window.addEventListener('resize', TheResizeCallback);
+    };
+
+    window.unRegisterViewportChangeCallback = function () {
+      window.removeEventListener('resize', TheResizeCallback);
+      _dotnethelper = null;
+    };
+
 
     window.getDimensions = function () {
       return {
@@ -119,7 +130,11 @@
       return null;
     };
 
+    window.setCssVarMDriven = function (varname, varvalue) {
+      document.documentElement.style.setProperty(varname, varvalue);
+    };
   </script>
+
 </body>
 
 </html>
