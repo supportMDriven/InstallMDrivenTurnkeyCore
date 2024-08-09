@@ -139,6 +139,11 @@
   }
 }
 
+.numeric .tk-input-field__native {
+  text-align: right;
+}
+
+
 
 textarea.tk-input-field__native:read-only {
   resize: none;

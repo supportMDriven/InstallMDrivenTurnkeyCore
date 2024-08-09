@@ -13,6 +13,14 @@
   font-family: $base-font-family;
 }
 
+.numeric .tk-static-text {
+  text-align: right;
+}
+
+.numeric .tk-static-text__native {
+  text-align: right;
+}
+
 
 .tk-static-text__native {
   padding: 5px 0;

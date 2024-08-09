@@ -108,14 +108,19 @@
 }
 
 /* The extra div that comes from MDCompHolder , it must be made to fill table cell*/
-  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell>div {
+  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div {
     pointer-events: all;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow: hidden;
     height: var(--data-table-row-height, 56px); /**/
     // must have height in div to get correct centering
   }
+
+[b-cjn554j5ck] .numeric .col-title-text {
+  text-align: right;
+}
 
 /* _content/MDriven.Components.WebAssembly/ViewModelContextMenu.razor.rz.scp.css */
 /* _content/MDriven.Components.WebAssembly/ViewModelModalAndPopup.razor.rz.scp.css */
