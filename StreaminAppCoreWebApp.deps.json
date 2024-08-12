@@ -55,7 +55,7 @@
           "MDriven.Turnkey.ClientCSharp": "7.0.0.15838",
           "MDrivenTurnkeyBlazorApp.Client": "1.0.0",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "3.1.12",
-          "Microsoft.AspNetCore.Components.WebAssembly.Server": "8.0.3",
+          "Microsoft.AspNetCore.Components.WebAssembly.Server": "8.0.7",
           "Microsoft.AspNetCore.Identity.UI": "3.1.10",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "3.1.10",
           "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": "3.1.10",
@@ -1990,7 +1990,7 @@
           "lib/net8.0/Microsoft.AspNetCore.Components.WebAssembly.dll": {}
         }
       },
-      "Microsoft.AspNetCore.Components.WebAssembly.Server/8.0.3": {
+      "Microsoft.AspNetCore.Components.WebAssembly.Server/8.0.7": {
         "compile": {
           "lib/net8.0/Microsoft.AspNetCore.Components.WebAssembly.Server.dll": {}
         }
@@ -3641,7 +3641,7 @@
           "MDriven.Turnkey.ClientCSharp": "7.0.0.15838",
           "MDrivenTurnkeyBlazorApp.Client": "1.0.0",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "3.1.12",
-          "Microsoft.AspNetCore.Components.WebAssembly.Server": "8.0.3",
+          "Microsoft.AspNetCore.Components.WebAssembly.Server": "8.0.7",
           "Microsoft.AspNetCore.Identity.UI": "3.1.10",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "3.1.10",
           "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": "3.1.10",
@@ -5413,11 +5413,11 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Components.WebAssembly.Server/8.0.3": {
+      "Microsoft.AspNetCore.Components.WebAssembly.Server/8.0.7": {
         "runtime": {
           "lib/net8.0/Microsoft.AspNetCore.Components.WebAssembly.Server.dll": {
-            "assemblyVersion": "8.0.3.0",
-            "fileVersion": "8.0.324.11615"
+            "assemblyVersion": "8.0.7.0",
+            "fileVersion": "8.0.724.31402"
           }
         }
       },
@@ -7595,12 +7595,12 @@
       "path": "microsoft.aspnetcore.components.webassembly/8.0.7",
       "hashPath": "microsoft.aspnetcore.components.webassembly.8.0.7.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Components.WebAssembly.Server/8.0.3": {
+    "Microsoft.AspNetCore.Components.WebAssembly.Server/8.0.7": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-t2G7KRvoKiHIRtQwYXrxyoTm0KAItB2HLUAk0rgIAZm7RvHgJpBYBIo+IfZu4S5870s+NGpwybScfNCecKatuA==",
-      "path": "microsoft.aspnetcore.components.webassembly.server/8.0.3",
-      "hashPath": "microsoft.aspnetcore.components.webassembly.server.8.0.3.nupkg.sha512"
+      "sha512": "sha512-vgzkvrcVDOMhWJR3VYs6I5hN/CGXAZxoxWFzacr1YBZR82Q7dKxYa9LbkO3aBrcV4m0OAW4N4TSexYI21rgVJg==",
+      "path": "microsoft.aspnetcore.components.webassembly.server/8.0.7",
+      "hashPath": "microsoft.aspnetcore.components.webassembly.server.8.0.7.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Connections.Abstractions/8.0.7": {
       "type": "package",
