@@ -108,7 +108,7 @@
 }
 
 /* The extra div that comes from MDCompHolder , it must be made to fill table cell*/
-  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div {
+[b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div:has(.tk-component) {
     pointer-events: all;
     display: flex;
     flex-direction: column;
@@ -116,10 +116,26 @@
     overflow: hidden;
     height: var(--data-table-row-height, 56px); /**/
     // must have height in div to get correct centering
-  }
+  } 
 
 [b-cjn554j5ck] .numeric .col-title-text {
   text-align: right;
+}
+
+[b-cjn554j5ck] .isgridrowdiv {
+  position: relative;
+}
+
+[b-cjn554j5ck] .gridrowcontentbutton {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+} 
+
+[b-cjn554j5ck] .isgridrowdiv:hover .gridrowcontentbutton {
+  display: inline-block;
 }
 
 /* _content/MDriven.Components.WebAssembly/ViewModelContextMenu.razor.rz.scp.css */
