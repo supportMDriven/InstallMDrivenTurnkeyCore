@@ -76,11 +76,8 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-
   -ms-grid-row: 2;
   grid-row: 2;
-
-
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -169,6 +166,7 @@
 
 .tk-sidebar__list {
   overflow-y: auto;
+  overflow-x: hidden;
   height: 100%;
 }
 
@@ -322,6 +320,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width:100%;
   // border-radius: $base-border-radius;
   outline: 0;
   overflow: hidden;

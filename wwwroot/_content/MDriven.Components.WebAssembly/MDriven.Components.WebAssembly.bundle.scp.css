@@ -31,6 +31,13 @@
     vertical-align: bottom;
   }
 
+  [b-cjn554j5ck] .quickgrid[theme=default] .col-title {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+
+
 /*Header row */
 [b-cjn554j5ck] tr:has(th) {
   height: var(--data-table-header-height, 56px);
@@ -54,7 +61,7 @@
 [b-cjn554j5ck] thead tr th {
   color: rgba(var(--data-table-header-text-color, 0, 0, 0), 0.9);
   background-color: rgb(var(--data-table-header-bg-color, 255, 255, 255));
-  border: 1px solid #dadce0;
+  outline: 1px solid #dadce0;
   padding: 0 8px;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
@@ -98,13 +105,8 @@
 
 /* cell */
 [b-cjn554j5ck] tbody tr .tk-quickgrid-cell {
-  border-right: 1px solid rgba(218, 220, 224, 0.7);
   text-overflow: ellipsis;
-  border-collapse: collapse;
-  border-spacing: 0;
-  border-bottom-color: rgba(0, 0, 0, 0.12);
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
+  box-shadow: 1px 0 0 0 rgba(218, 220, 224, 0.7), 0 1px 0 0 rgba(218, 220, 224, 0.7);
 }
 
 /* The extra div that comes from MDCompHolder , it must be made to fill table cell*/
