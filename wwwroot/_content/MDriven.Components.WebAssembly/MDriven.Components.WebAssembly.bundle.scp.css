@@ -18,7 +18,7 @@
 
 [b-cjn554j5ck] .quickgrid {
   max-width: unset; /* fattar inte varför vi har max-width satt till 0*/
-  position: relative;
+  position: absolute; /* tk-data-table__native  */
   width: 100%;
   overflow: auto;
   border-radius: 4px;
