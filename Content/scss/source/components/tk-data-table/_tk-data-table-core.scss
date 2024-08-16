@@ -45,8 +45,9 @@
     overflow-y: auto;
 
     &.full-height {
-        height: calc(100vh - (#{$navbar-height} - 30px)); //Set full height + paddings for correct presentation of the data-tables
-        height: calc(100vh - var(--navbar-height, #{$navbar-height}) - 30px);
+        height:100%; 
+        //This will not work when we have toolbar height: calc(100vh - (#{$navbar-height} - 30px)); //Set full height + paddings for correct presentation of the data-tables
+        //height: calc(100vh - var(--navbar-height, #{$navbar-height}) - 30px);
         min-height: unset !important;
         max-height: unset !important;
 
