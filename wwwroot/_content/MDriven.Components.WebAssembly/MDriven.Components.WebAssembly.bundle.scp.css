@@ -140,6 +140,17 @@
   display: inline-block;
 }
 
+[b-cjn554j5ck] .vmRenderedByAction 
+{
+  display: inline-block;
+  border-bottom: 1px dashed #212121;
+  cursor: pointer;
+}
+
+[b-cjn554j5ck] a {
+  text-decoration: none;
+}
+
 /* _content/MDriven.Components.WebAssembly/ViewModelContextMenu.razor.rz.scp.css */
 /* _content/MDriven.Components.WebAssembly/ViewModelModalAndPopup.razor.rz.scp.css */
 

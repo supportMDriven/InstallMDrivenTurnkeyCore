@@ -18,7 +18,7 @@
   {
     @await Html.PartialAsync("~/Views/EXT_OverridePages/__ExtraMetaTags.cshtml")
   }
-  <base href='@Url.Content("~/")' />
+  <base href='~/' />
   <title>@ViewBag.ApplicationName</title>
 
   @if (File.Exists(MapPathService.MapPath("~/favicon.ico")))
