@@ -10,11 +10,11 @@
         // Function to check if the server is ready
         function checkServerStatus() {
 		    //debugger;
-            fetch('/app/AppReady')
+            fetch('app/AppReady')
                 .then(response => {
                     if (response.status === 200) {
                         // Server is ready, redirect to the index page
-                        window.location.href = '/app/index';
+                        window.location.href = 'app/index';
                     } else {
                         // Server is not ready, retry after 5 seconds
                         setTimeout(checkServerStatus, 5000);
