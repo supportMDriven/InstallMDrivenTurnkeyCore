@@ -16,13 +16,13 @@
                         // Server is ready, redirect to the index page
                         window.location.href = 'app/index';
                     } else {
-                        // Server is not ready, retry after 5 seconds
-                        setTimeout(checkServerStatus, 5000);
+                        // Server is not ready, retry after 1 seconds, server will hold 10 sec at most, but answer directly when done
+                        setTimeout(checkServerStatus, 1000);
                     }
                 })
                 .catch(error => {
-                    // Server is not ready, retry after 5 seconds
-                    setTimeout(checkServerStatus, 5000);
+                  // Server is not ready, retry after 1 seconds, server will hold 10 sec at most, but answer directly when done
+                    setTimeout(checkServerStatus, 1000);
                 });
         }
 
