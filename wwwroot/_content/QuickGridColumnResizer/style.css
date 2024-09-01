@@ -1,0 +1,9 @@
+﻿table.quickgrid .column-resizer {
+    cursor: ew-resize;
+    border: none;
+    background: transparent;
+}
+
+    table.quickgrid .column-resizer::before {
+        content: "|";
+    }

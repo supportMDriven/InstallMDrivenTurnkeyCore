@@ -62,7 +62,7 @@
   color: rgba(var(--data-table-header-text-color, 0, 0, 0), 0.9);
   background-color: rgb(var(--data-table-header-bg-color, 255, 255, 255));
   outline: 1px solid #dadce0;
-  padding: 0 8px;
+  /*padding: 0 8px;*/
   font-family: "Roboto", sans-serif;
   font-weight: 500;
   font-size: 0.875rem;
@@ -74,6 +74,8 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
+
+
 /*content row background*/
 :: deep tr:has(.tk-quickgrid-cell)[b-cjn554j5ck] {
   /* background-color: lightcoral;*/
@@ -150,6 +152,39 @@
 [b-cjn554j5ck] a {
   text-decoration: none;
 }
+
+/*Resizer*/
+[b-cjn554j5ck] table.quickgrid .column-resizer {
+  cursor: ew-resize;
+  border: none;
+  background: transparent;
+  /**/
+  --resizer-width: 4px;
+  position: relative;
+  right: 0;
+  width: var(--resizer-width);
+  display: flex;
+  background: transparent;
+  cursor: col-resize;
+  transition: all 100ms ease-out;
+  opacity: 0;
+  box-sizing: border-box;
+  top: 0px;
+  height: 60px;
+}
+
+  [b-cjn554j5ck] table.quickgrid .column-resizer::before {
+    content: "|";
+    position: absolute;
+    top: -20px;
+    height: 60px;
+    width: var(--resizer-width);
+  }
+  [b-cjn554j5ck] table.quickgrid .column-resizer:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+  }
+
 
 /* _content/MDriven.Components.WebAssembly/ViewModelContextMenu.razor.rz.scp.css */
 /* _content/MDriven.Components.WebAssembly/ViewModelModalAndPopup.razor.rz.scp.css */
