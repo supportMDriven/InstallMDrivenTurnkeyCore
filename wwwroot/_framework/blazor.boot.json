@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "MDrivenTurnkeyBlazorApp.Client",
   "resources": {
-    "hash": "sha256-81u6utjqMD9mFmveLUzU+PK86oJUBmbLBLZyTzPVvd0=",
+    "hash": "sha256-eu8mK/BoQjiAUAMTDPkJK1wCKyo1vep9ZrmJiQAzJQk=",
     "jsModuleNative": {
       "dotnet.native.8.0.4.lm00wy3k8h.js": "sha256-ju0+XWE0ihz554eKEj0HQ8Opa61xpbUIaX5/MNo8we4="
     },
@@ -18,10 +18,10 @@
     },
     "assembly": {
       "BlazorUtils.QuickGrid.wasm": "sha256-HG4q3JqfjWLlpk3XxMNT4WV2ySQlRPkf7fPgGifvH04=",
-      "MDriven.Components.WebAssembly.wasm": "sha256-Aod0H8vctWSA9BYtdHdod39dm9IeV10HIEq9Khg/SZ0=",
-      "MDriven.SharedInterfaces.WebAssembly.wasm": "sha256-nLLs00LDIbxdFNZZXIe37E2TsXniGURk0sH/043qzxg=",
-      "MDriven.Turnkey.ClientCSharp.wasm": "sha256-uITchVpIcLj/t9BS/K/F6Qag/b/UcnhTaEwE9wMTikI=",
-      "MDrivenTurnkeyBlazorApp.Client.wasm": "sha256-wZJYf4JrGBHz7vkYl7VCfqKuCRaou6oK4Uz5RBXAwv0=",
+      "MDriven.Components.WebAssembly.wasm": "sha256-RjPvsDqHznepiB55aiHj5MYhzQ+DFIWfoEX/ZTo2pbU=",
+      "MDriven.SharedInterfaces.WebAssembly.wasm": "sha256-K9FHvr9anm9lHYQxVbh5b+hHzi2zJb03yPhr5/+jPM8=",
+      "MDriven.Turnkey.ClientCSharp.wasm": "sha256-AMdUQ/eeg3JqZpEL5vMIdFxKKttjG3OIaL+AMRegrPs=",
+      "MDrivenTurnkeyBlazorApp.Client.wasm": "sha256-9SS+QRuMViAOjLWxNri1cpUvZMMZDnMUYxl2Aft5yNw=",
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-4ed+YbA4zFgFuvAnFh6dFjG6dbUOscDJA7ycfIz6/8Y=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-6tzEF3G+Htj6MmDHpKcxM/Uvp+xiJpVQ/pXlOOAqkOc=",
       "Microsoft.AspNetCore.Components.Web.wasm": "sha256-QStoVJ4SrvEu1hQNDJVEvaDKM3VRWnHwRhvmDLmozck=",
