@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "MDrivenTurnkeyBlazorApp.Client",
   "resources": {
-    "hash": "sha256-ZKyHzmSzaZfpQCOfbPyldud/Xig8xlUMZol/nmIIbK8=",
+    "hash": "sha256-b9Ogjm31hSrOGs+EZeVY+cWKW7yYy3sFkRQoQi4/aE8=",
     "jsModuleNative": {
       "dotnet.native.8.0.4.lm00wy3k8h.js": "sha256-ju0+XWE0ihz554eKEj0HQ8Opa61xpbUIaX5/MNo8we4="
     },
@@ -18,7 +18,7 @@
     },
     "assembly": {
       "BlazorUtils.QuickGrid.wasm": "sha256-HG4q3JqfjWLlpk3XxMNT4WV2ySQlRPkf7fPgGifvH04=",
-      "MDriven.Components.WebAssembly.wasm": "sha256-sofGADFywnVPC2aVomiON1gWf70GOWKtWA6SjD9JwZs=",
+      "MDriven.Components.WebAssembly.wasm": "sha256-RFo+EruHF2FfnmopsW9wqvXwActUiiumXV9P/DedSjA=",
       "MDriven.SharedInterfaces.WebAssembly.wasm": "sha256-HDuoQ13UDKctX5c3lKbX/ecHD/xTRPrIveC9cnILxWg=",
       "MDriven.Turnkey.ClientCSharp.wasm": "sha256-o95n+kR+AEZ2MpVnSO3ylL+yuQO9Cyw8S8rHRHF4NWk=",
       "MDrivenTurnkeyBlazorApp.Client.wasm": "sha256-HP0se4SxeTKVJmbeKefb/1wMW2ffBtMOrtd6neFkJ6Q=",
