@@ -26,7 +26,14 @@
   background: #fff;
 }
 
-  [b-cjn554j5ck] .quickgrid[theme=default] > tbody > tr > td {
+  /*the grid flickerd alot*/ 
+[b-cjn554j5ck] .quickgrid.loading {
+  transition: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+  :: deep .quickgrid[theme=default] > tbody > tr > td[b-cjn554j5ck] {
     padding: unset;
     vertical-align: bottom;
   }
