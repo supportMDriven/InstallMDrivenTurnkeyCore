@@ -109,13 +109,11 @@
 }
 
 .tk-data-table__seekmore {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-
-    width: 100%;
-
-    position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative;
 }
 
 

@@ -3237,7 +3237,7 @@ a.tk-link__native:not(.tk-button__native).warning::after, a.tk-link__native:not(
 
 .tk-data-table__seekmore {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   position: relative;
