@@ -30,7 +30,7 @@
   }
   else
   {
-    <aside id="sidebar" ng-if="ViewData.ActionsExist" ng-class="controller.isSidebarVisible ? 'onscreen' : 'offscreen'" class="tk-sidebar">
+    <aside id="sidebar" ng-if="ViewData.ActionsExist && controller.isSidebarVisible" ng-class="controller.isSidebarVisible ? 'onscreen' : 'offscreen'" class="tk-sidebar">
       <div class="tk-sidebar__header">
         <button class="tk-sidebar__close ripple-effect" type="button" ng-click="controller.toggleSidebar()">
           <i class="mi">close</i>

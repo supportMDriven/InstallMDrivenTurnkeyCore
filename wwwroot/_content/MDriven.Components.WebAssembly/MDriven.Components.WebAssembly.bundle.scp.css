@@ -33,8 +33,12 @@
   transform: none !important;
 }
 
-  :: deep .quickgrid[theme=default] > tbody > tr > td[b-cjn554j5ck] {
-    padding: unset;
+[b-cjn554j5ck] .quickgrid[theme=default] > tbody > tr > td {
+  padding: 0px 0px 0px 0px;
+}
+[b-cjn554j5ck] .quickgrid[theme=default] > tbody > tr > td {
+    padding-bottom: 0px;
+    padding-top: 0px;
     vertical-align: bottom;
   }
 
@@ -46,10 +50,13 @@
 
 
 /*Header row */
+
 [b-cjn554j5ck] tr:has(th) {
-  height: var(--data-table-header-height, 56px);
+  height: calc(var(--data-table-header-height, 56px)*0.8);
   vertical-align: inherit;
 }
+
+
 
 
 /*Header row background*/
@@ -59,6 +66,42 @@
   z-index: 20;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
+
+@media only screen and (max-width: 768px) {
+  .isgridrowdiv[b-cjn554j5ck] {
+    padding: 0 10px;
+    font-size: 0.75rem;
+  }
+}
+
+
+
+
+
+[b-cjn554j5ck] .isgridrowdiv {
+  --col-gap: 0.2rem;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.018em;
+  text-align: left;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+[b-cjn554j5ck] .tk-static-text__native {
+  font-size: unset;
+  white-space: unset;
+  display: inline-block;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 
 [b-cjn554j5ck] .quickgrid[theme=default] {
   --col-gap: 0.2rem;
@@ -97,10 +140,6 @@
   background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
 }
 
-/*row , this made checkbox stretched*/
-[b-cjn554j5ck] tr:has(.tk-quickgrid-cell) {
-  height: var(--data-table-row-height, 56px);
-}
 
 
 /*content row background current*/
@@ -119,13 +158,13 @@
 }
 
 /* The extra div that comes from MDCompHolder , it must be made to fill table cell*/
-[b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div:has(.tk-component) {
+  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div:has(.tk-component) {
     pointer-events: all;
     display: flex;
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
-    height: var(--data-table-row-height, 56px); /**/
+    height: calc(var(--data-table-row-height, 56px)*0.8); /**/
     // must have height in div to get correct centering
   } 
 
@@ -177,7 +216,7 @@
   opacity: 0;
   box-sizing: border-box;
   top: 0px;
-  height: 60px;
+  height: calc(var(--data-table-header-height, 56px)*0.8);
 }
 
   [b-cjn554j5ck] table.quickgrid .column-resizer::before {
