@@ -15,6 +15,17 @@
 }
 /* _content/MDriven.Components.WebAssembly/MDCompDataGrid.razor.rz.scp.css */
 
+.tk-data-table__header-cell[b-cjn554j5ck] {
+  width: 100%;
+  overflow: hidden;
+  margin-right: -2px;
+  display: flex;
+  align-items: center;
+}
+
+[b-cjn554j5ck] .col-header-content {
+  justify-items: stretch;
+}
 
 [b-cjn554j5ck] .quickgrid {
   max-width: unset; /* fattar inte varför vi har max-width satt till 0*/
@@ -206,7 +217,7 @@
   background: transparent;
   /**/
   --resizer-width: 4px;
-  position: relative;
+  position: absolute;
   right: 0;
   width: var(--resizer-width);
   display: flex;
