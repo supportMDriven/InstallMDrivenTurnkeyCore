@@ -34,3 +34,10 @@ window.getBoundingClientRectMDriven = function (elementId) {
 window.setCssVarMDriven = function (varname, varvalue) {
   document.documentElement.style.setProperty(varname, varvalue);
 };
+
+window.getCurrentPositionMDriven = async () => {
+  const pos = await new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+  return [pos.coords.longitude, pos.coords.latitude];
+};

@@ -25,6 +25,7 @@
 
 [b-cjn554j5ck] .col-header-content {
   justify-items: stretch;
+  height: calc(var(--data-table-header-height, 56px)* 0.8); /* must set size so that resize button now what 100% is*/
 }
 
 [b-cjn554j5ck] .quickgrid {
@@ -234,7 +235,7 @@
     content: "|";
     position: absolute;
     top: -20px;
-    height: 60px;
+    height: calc(var(--data-table-header-height, 56px)*0.8);
     width: var(--resizer-width);
   }
   [b-cjn554j5ck] table.quickgrid .column-resizer:hover {
