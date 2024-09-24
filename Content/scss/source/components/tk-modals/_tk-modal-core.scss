@@ -125,30 +125,41 @@
 .tk-modal__content #viewmodelSection {
   height: auto;
 }
+.tk-modal__buttons {
+  display: flex;
+  justify-content: space-between;
+  order:2;
+}
 
 .tk-modal__actions {
+  margin: 0;
+  padding: 8px;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  min-height: 52px;
+  border-top: 1px solid rgba(0,0,0, 0.12);
+  box-sizing: border-box;
+}
+
+.tk-modal__standalone {
   margin: 0;
   padding: 8px;
 
   position: relative;
 
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   flex-shrink: 0;
-  flex-wrap: wrap;
-
-  min-height: 52px;
-
-  border-top: 1px solid rgba(0,0,0, 0.12);
-
-  box-sizing: border-box;
 }
 
 .tk-modal__actions .tk-button__native.outlined.success {
   margin-left: 10px;
   min-width: 50px;
-
   transition: all $anim-duration-dialog-fadein $easing-standard;
 
   .ripple-container {
