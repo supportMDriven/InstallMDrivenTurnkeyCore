@@ -127,7 +127,7 @@
 }
 .tk-modal__buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   order:2;
 }
 
@@ -145,17 +145,6 @@
   box-sizing: border-box;
 }
 
-.tk-modal__standalone {
-  margin: 0;
-  padding: 8px;
-
-  position: relative;
-
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-shrink: 0;
-}
 
 .tk-modal__actions .tk-button__native.outlined.success {
   margin-left: 10px;

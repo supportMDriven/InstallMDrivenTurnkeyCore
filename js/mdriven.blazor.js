@@ -1,4 +1,6 @@
 ﻿let _dotnethelper = null;
+let _timeoutworker = null;
+let _delayBeforeTimeout = 0;
 
 function TheResizeCallback() {
   if (_dotnethelper) {
@@ -41,3 +43,32 @@ window.getCurrentPositionMDriven = async () => {
   });
   return [pos.coords.longitude, pos.coords.latitude];
 };
+
+  // ****************************
+  // Handle Timeout functionality
+  // ****************************
+
+
+window.SetupTimeoutTimerToCheckIn1Minute=async ()=> {
+  if (_timeoutworker)
+    _timeoutworker.terminate();
+
+  // Create WebWorker if browser supports it
+  if (window.Worker) {
+    _timeoutworker = new Worker('js/worker.js');
+    _timeoutworker.postMessage([1]);
+    _timeoutworker.onmessage = (e) => {
+      _timeoutworker.terminate();
+      _timeoutworker = null;
+      if (_dotnethelper) {
+        _dotnethelper.invokeMethodAsync('OnTimeout');
+      }
+    };
+
+    _timeoutworker.onerror = (error) => {
+      console.error('Worker error:', error);
+      _timeoutworker.terminate();
+      _timeoutworker = null;
+    };
+  }
+}

@@ -15,6 +15,12 @@
   @if (!Model.IsPopUp)
   {
     <div class="tk-modal__header">
+      @if (Model.GlobalModalOfferOpenStandalone)
+      {
+        <button class="tk-button__native flat fab ripple-effect" ng-click="controller.openStandaloneModal()">
+          <i class="mi">open_in_new</i>
+        </button>
+      }
       <button type="button" class="tk-button__native flat fab ripple-effect" ng-click="controller.cancelModal()">
         <i class="mi">close</i>
       </button>
@@ -36,12 +42,6 @@
   @if (!Model.IsPopUp)
   {
     <div class="tk-modal__buttons">
-      <div class="tk-modal__standalone">
-        @if (Model.GlobalModalOfferOpenStandalone)
-        {
-          <button class="tk-button__native narrow outlined success ripple-effect" ng-click="controller.openStandaloneModal()">Standalone...</button>
-        }
-      </div>
       <div class="tk-modal__actions">
         <tk-validation-card class="validation-card modal" ng-show="controller.errorCount > 0" error-count="controller.errorCount" on-click="controller.showConstraints($event)"></tk-validation-card>
         <button class="tk-button__native narrow outlined danger ripple-effect" ng-click="controller.cancelModal()" ng-show="ViewClient.GetIsDirty()">@Html.GetTranslatedText("Cancel")</button>
