@@ -51,12 +51,8 @@
   {
     <link href="@Url.Content("~/Content/tkusercss.css")" rel="stylesheet" type="text/css" />
   }
-  @ViewOverrideLogic.Get_EXT_ComponentsCSS()
+  @ViewOverrideLogic.Get_EXT_ComponentsRazorCSS()
 
-  @if (File.Exists(MapPathService.MapPath("~/EXT_Scripts/AppWideHeadScript.js")))
-  {
-    <script src="~/EXT_Scripts/AppWideHeadScript.js"></script>
-  }
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="~/_content/QuickGridColumnResizer/style.css" rel="stylesheet" />
@@ -98,6 +94,10 @@
   <script src="~/_framework/blazor.webassembly.js" autostart=" true"></script>
   <script src="~/_content/QuickGridColumnResizer/script.js"></script>
   <script src="~/js/mdriven.blazor.js" ></script>
+
+  @ViewOverrideLogic.Get_EXT_AppWideRazorIncludes()
+  @ViewOverrideLogic.Get_EXT_ComponentsRazorScripts()
+
 
   <script>
 
