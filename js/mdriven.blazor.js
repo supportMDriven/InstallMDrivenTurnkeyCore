@@ -44,6 +44,15 @@ window.getCurrentPositionMDriven = async () => {
   return [pos.coords.longitude, pos.coords.latitude];
 };
 
+window.CopyToClipbookMDriven = (text) => {
+  navigator.clipboard.writeText(text).then(function () {
+    console.log('Copied to clipboard successfully!');
+  }, function (err) {
+    console.error('Could not copy text: ', err);
+  });
+}
+
+
   // ****************************
   // Handle Timeout functionality
   // ****************************
