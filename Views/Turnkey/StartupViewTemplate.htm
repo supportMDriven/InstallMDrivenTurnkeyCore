@@ -13,17 +13,13 @@
       fetch('app/AppReady')
         .then(response => {
           if (response.status === 200) {
-            // Server is ready, redirect to the index page
+            // Server is ready, redirect where we wanted, either in angular or other complete url                    
             let hash = window.location.hash;
-            let queryString = window.location.search;
-            console.log(hash);
-            console.log(queryString);
+            debugger;
             if (hash != "")
               window.location.href = 'app' + hash;
-            else if (queryString != "")
-              window.location.href = 'app' + queryString;
             else
-              window.location.href = 'app/index';
+              window.location.href = window.location.href = '###GOALURL###';
           } else {
             // Server is not ready, retry after 1 seconds
             setTimeout(checkServerStatus, 1000);
