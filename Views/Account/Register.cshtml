@@ -1,0 +1,60 @@
+﻿@using MDriven.ASPNETIdentity
+@model RegisterViewModel
+
+@{
+  ViewBag.Title = "Register";
+  ViewBag.turnkeyView = "register-page";
+}
+
+<div class="tk-auth">
+
+  <div class="tk-auth__inner">
+
+      <div class="tk-auth__action">
+
+          <h1 class="tk-auth__header">@ViewBag.Title</h1>
+          <p class="tk-auth__caption">Create a new local account</p>
+
+          <div class="tk-auth__validation-summary">
+              @Html.ValidationSummary()
+          </div>
+
+          @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "auth-form", role = "form" }))
+          {
+              @Html.AntiForgeryToken()
+
+              <div class="tk-auth-form__group tk-auth-form__group--email">
+                  @Html.LabelFor(m => m.Email, new { @class = "tk-auth-form__label" })
+                  @Html.TextBoxFor(m => m.Email, new { @class = "tk-auth-form__input", placeholder = "Email adress", inputmode = "email" })
+                  @Html.ValidationMessageFor(m => m.Email, "")
+              </div>
+
+              <div class="tk-auth-form__group tk-auth-form__group--password">
+                  @Html.LabelFor(m => m.Password, new { @class = "tk-auth-form__label" })
+                  @Html.PasswordFor(m => m.Password, new { @class = "tk-auth-form__input", placeholder = "Password" })
+                  @Html.ValidationMessageFor(m => m.Password, "")
+              </div>
+
+              <div class="tk-auth-form__group tk-auth-form__group--passconfirm">
+                  @Html.LabelFor(m => m.ConfirmPassword, new { @class = "tk-auth-form__label" })
+                  @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "tk-auth-form__input", placeholder = "Confirm password" })
+                  @Html.ValidationMessageFor(m => m.ConfirmPassword, "")
+              </div>
+              <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl">
+              <div class="tk-auth-form__group inline">
+                  <button type="submit" class="tk-button__native narrow primary ripple-effect">Register</button>
+              </div>
+          }
+
+      </div>
+
+    <div class="tk-auth__info">
+      <div class="tk-auth__advice">
+        <p>Already have an account? Please, log in!</p>
+        @Html.ActionLink("Login", "Login", new { }, new { @class = "tk-auth__link ripple-effect" })
+      </div>
+        @await Html.PartialAsync("_ExternalLoginsListPartial", new ExternalLoginListViewModel { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+      </div>
+    </div>
+  </div>
+

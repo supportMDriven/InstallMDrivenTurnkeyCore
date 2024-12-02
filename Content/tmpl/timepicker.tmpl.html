@@ -1,0 +1,23 @@
+<label for="{{$ctrl.id}}" ng-if="$ctrl.label" class="n-tk-timepicker__label">
+  <span class="n-tk-timepicker__label-text">{{$ctrl.label}}</span>
+</label>
+<div class="n-tk-timepicker__container">
+  <input type="time" 
+    id="{{$ctrl.id}}" 
+    ng-model="$ctrl.ngModel" 
+    ng-readonly="$ctrl.ngReadonly" 
+    aria-labelledby="{{$ctrl.id}}"
+    ng-class="$ctrl.ngClass"
+    class="n-tk-timepicker__input">
+</div>
+<span ng-if="$ctrl.helpertext && !$ctrl.validationError"
+  class="n-tk-timepicker__helpertext"
+  id="{{$ctrl.id}}.HelperText">
+  {{$ctrl.helpertext}}
+</span>
+<span ng-if="$ctrl.validationError"
+  class="n-tk-timepicker__helpertext"
+  id="{{$ctrl.id}}.ErrorText">
+  <tk-icon>error</tk-icon>
+  {{$ctrl.validationMessage}}
+</span>

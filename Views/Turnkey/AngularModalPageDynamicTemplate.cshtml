@@ -1,0 +1,57 @@
+﻿@using Eco.MVC
+@using StreamingAppGenericAPIAndControllers
+
+@model AngularModel
+
+@Html.AngularUITurnkeyViewOverrideCss()
+
+@* This page is returned when called by the Angular JavaScript requesting a page. This content is inserted in AngularApp.cshtml at the ng-view property *@
+@* In JavaScript, the MDrivenAngularApp routeprovider, intercepts "intra-angular" clicks and requests and inserts the resulting HTML into the DOM.*@
+@* NOTE!! this page is rendered by calls from Angular client code, NOT when rendering AngularApp.cshtml *@
+
+<div class="tk-modal__surface lg">
+  <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+  <!--The only reason for having a form is the ability to simulate a postback so that validation is triggered and the error bubbles may show-->
+  @if (!Model.IsPopUp)
+  {
+    <div class="tk-modal__header">
+      @if (Model.GlobalModalOfferOpenStandalone)
+      {
+        <button class="tk-button__native flat fab ripple-effect" ng-click="controller.openStandaloneModal()">
+          <i class="mi">open_in_new</i>
+        </button>
+      }
+      <button type="button" class="tk-button__native flat fab ripple-effect" ng-click="controller.cancelModal()">
+        <i class="mi">close</i>
+      </button>
+    </div>
+  }
+  <!--Body content-->
+  <div class="tk-modal__content">
+    <!-- ng-class="ViewClient.ActionsExist ? 'col-md-9' : 'col-md-12'" (deprecated) -->
+    <div ng-model-options="{'updateOn': 'default blur click', 'debounce': {'default': 500, 'blur': 0, 'click': 50}}">
+      <!-- Wait 2 seconds before sending changes to server (if not user leaves control) -->
+      <!-- Here is the ViewModel Angular body inserted -->
+      @Html.AngularUITurnkeyViewOverride() @* Here the generated Angular html is inserted OR the overridden page from the folder EXT_OverridePages *@
+      <!-- End of inserted ViewModel Angular body -->
+    </div>
+    @*<div class="viewmodel-modal__validation">
+    Html.DisplayErrorsWarningsInfos(Model)@*Error,Warning,Info constraints
+    </div>*@
+  </div>
+  @if (!Model.IsPopUp)
+  {
+    <div class="tk-modal__buttons">
+      <div class="tk-modal__actions">
+        <tk-validation-card class="validation-card modal" ng-show="controller.errorCount > 0" error-count="controller.errorCount" on-click="controller.showConstraints($event)"></tk-validation-card>
+        <button class="tk-button__native narrow outlined danger ripple-effect" ng-click="controller.cancelModal()" ng-show="ViewClient.GetIsDirty()">@Html.GetTranslatedText("Cancel")</button>
+        <button class="tk-button__native narrow outlined success ripple-effect" ng-click="controller.okModal()" ng-disabled="!ViewModelRoot.VM_Status.ModalOk_Enable">@Html.GetTranslatedText("OK")</button>
+      </div>
+    </div>
+  }
+</div>
+@* @if (ViewBag.ShowDebugInfo)
+{
+    @Html.Partial("_DeveloperInfoPartial")
+} *@
+@Html.AngularUITurnkeyViewOverrideScript()
