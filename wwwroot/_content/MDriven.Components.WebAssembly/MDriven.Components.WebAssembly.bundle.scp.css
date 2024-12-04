@@ -155,8 +155,20 @@
   background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
 }
 
+/* Inputs should not have border unless current row*/
+[b-cjn554j5ck] .tk-quickgrid-cell .current .tk-input-field__native,
+[b-cjn554j5ck] .tk-quickgrid-cell .current .tk-select__native.ng-valid {
+  border-color: #D0D5DD;
+  background: white;
+}
 
-/*content row background current*/
+[b-cjn554j5ck] .tk-quickgrid-cell .tk-input-field__native,
+[b-cjn554j5ck] .tk-quickgrid-cell .tk-select__native.ng-valid {
+  border-color: transparent;
+  background: transparent;
+}
+
+  /*content row background current*/
 [b-cjn554j5ck] .tk-quickgrid-cell:has(.current) {
   /*background-color: yellow;*/
 }

@@ -2803,11 +2803,6 @@
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
         }
       },
-      "QuickGridColumnResizer/1.0.5": {
-        "compile": {
-          "lib/net8.0/QuickGridColumnResizer.dll": {}
-        }
-      },
       "runtime.any.System.Collections/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.1"
@@ -3398,7 +3393,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
           "MDriven.Net.Http.netStandard": "1.0.0",
-          "MDriven.Persistence.NetStandard": "1.0.0"
+          "MDriven.Persistence.netStandard": "1.0.0"
         },
         "compile": {
           "AppCompleteGeneric.EcoSpace.netstandard.dll": {}
@@ -3487,8 +3482,7 @@
           "MDriven.SharedInterfaces.WebAssembly": "1.0.0",
           "Microsoft.AspNetCore.Components": "8.0.11",
           "Microsoft.AspNetCore.Components.QuickGrid": "8.0.11",
-          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.11",
-          "QuickGridColumnResizer": "1.0.5"
+          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.11"
         },
         "compile": {
           "MDriven.Components.WebAssembly.dll": {}
@@ -3561,13 +3555,13 @@
           "MDriven.Net.Http.netStandard.dll": {}
         }
       },
-      "MDriven.Persistence.NetStandard/1.0.0": {
+      "MDriven.Persistence.netStandard/1.0.0": {
         "dependencies": {
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "compile": {
-          "MDriven.Persistence.NetStandard.dll": {}
+          "MDriven.Persistence.netStandard.dll": {}
         }
       },
       "MDriven.SharedInterfaces.WebAssembly/1.0.0": {
@@ -6649,14 +6643,6 @@
           }
         }
       },
-      "QuickGridColumnResizer/1.0.5": {
-        "runtime": {
-          "lib/net8.0/QuickGridColumnResizer.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "runtime.any.System.Collections/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.1"
@@ -7313,7 +7299,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
           "MDriven.Net.Http.netStandard": "1.0.0",
-          "MDriven.Persistence.NetStandard": "1.0.0"
+          "MDriven.Persistence.netStandard": "1.0.0"
         },
         "runtime": {
           "AppCompleteGeneric.EcoSpace.netstandard.dll": {}
@@ -7402,8 +7388,7 @@
           "MDriven.SharedInterfaces.WebAssembly": "1.0.0",
           "Microsoft.AspNetCore.Components": "8.0.11",
           "Microsoft.AspNetCore.Components.QuickGrid": "8.0.11",
-          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.11",
-          "QuickGridColumnResizer": "1.0.5"
+          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.11"
         },
         "runtime": {
           "MDriven.Components.WebAssembly.dll": {}
@@ -7476,13 +7461,13 @@
           "MDriven.Net.Http.netStandard.dll": {}
         }
       },
-      "MDriven.Persistence.NetStandard/1.0.0": {
+      "MDriven.Persistence.netStandard/1.0.0": {
         "dependencies": {
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "runtime": {
-          "MDriven.Persistence.NetStandard.dll": {}
+          "MDriven.Persistence.netStandard.dll": {}
         }
       },
       "MDriven.SharedInterfaces.WebAssembly/1.0.0": {
@@ -8570,13 +8555,6 @@
       "path": "nuget.frameworks/4.7.0",
       "hashPath": "nuget.frameworks.4.7.0.nupkg.sha512"
     },
-    "QuickGridColumnResizer/1.0.5": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-czGkPZ3dWysQpvZxkp5BVInkgl8OPak6koqggfzxUOuXTCcTNwb8USZpUc4KD5wp7HgR6boO+lNyE6BxAz1JyA==",
-      "path": "quickgridcolumnresizer/1.0.5",
-      "hashPath": "quickgridcolumnresizer.1.0.5.nupkg.sha512"
-    },
     "runtime.any.System.Collections/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -9279,7 +9257,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.Persistence.NetStandard/1.0.0": {
+    "MDriven.Persistence.netStandard/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
