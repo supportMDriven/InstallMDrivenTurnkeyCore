@@ -24,13 +24,27 @@
   background: transparent;
 }
 
+[b-cjn554j5ck] .multiselectcol {
+  width: 40px;
+}
+
+/* struggeling with combo in table*/
+[b-cjn554j5ck] table  .tk-select__dropdown-icon {
+  top: 5px;
+}
+[b-cjn554j5ck] table .tk-select__native {
+ padding:4px;
+}
+
+
+
 [b-cjn554j5ck] .tk-data-table__content--advanced .tk-data-table__header-cell {
-  border-right: 0px solid ;
+  border-right: 0px solid;
 }
 
 [b-cjn554j5ck] .col-header-content {
   justify-items: stretch;
-  height: calc(var(--data-table-header-height,56px) + var(--data-table-header-height-blazorextra,0px)); /* must set size so that resize button now what 100% is*/
+  height: var(--data-table-header-height-blazor,56px); /* must set size so that resize button now what 100% is*/
   background: transparent;
 }
 
@@ -70,7 +84,7 @@
 /*Header row */
 
 [b-cjn554j5ck] tr:has(th) {
-  height: calc(var(--data-table-header-height,44.8px) + var(--data-table-header-height-blazorextra,0px));
+  height: var(--data-table-header-height-blazor,56px);
   vertical-align: inherit;
 }
 
@@ -156,26 +170,27 @@
 }
 
 /* Inputs should not have border unless current row*/
-[b-cjn554j5ck] .tk-quickgrid-cell .current .tk-input-field__native,
-[b-cjn554j5ck] .tk-quickgrid-cell .current .tk-select__native.ng-valid {
+[b-cjn554j5ck] tr:hover .tk-quickgrid-cell .tk-input-field__native:not([disabled]),
+[b-cjn554j5ck] tr:hover .tk-quickgrid-cell .tk-select__native:not([disabled]),
+[b-cjn554j5ck] .tk-quickgrid-cell .current .tk-input-field__native:not([disabled]),
+[b-cjn554j5ck] .tk-quickgrid-cell .current .tk-select__native:not([disabled]) {
   border-color: #D0D5DD;
   background: white;
 }
 
 [b-cjn554j5ck] .tk-quickgrid-cell .tk-input-field__native,
-[b-cjn554j5ck] .tk-quickgrid-cell .tk-select__native.ng-valid {
+[b-cjn554j5ck] .tk-quickgrid-cell .tk-select__native {
   border-color: transparent;
   background: transparent;
 }
 
-  /*content row background current*/
-[b-cjn554j5ck] .tk-quickgrid-cell:has(.current) {
-  /*background-color: yellow;*/
+[b-cjn554j5ck] .tk-quickgrid-cell .current  .tk-select__dropdown-icon {
+  display:block;
 }
-/*content row background selected*/
-[b-cjn554j5ck] .tk-quickgrid-cell:has(.selected) {
-  /*background-color: yellow;*/
+[b-cjn554j5ck] .tk-quickgrid-cell .tk-select__dropdown-icon {
+  display: none;
 }
+
 
 /* cell */
 [b-cjn554j5ck] tbody tr .tk-quickgrid-cell {
@@ -202,23 +217,35 @@
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
-    height: var(--data-table-row-height, 56px); /*must have height in div to get correct centering*/
+    height: var(--data-table-row-height-blazor, 56px); /*must have height in div to get correct centering*/
     position: relative; /* this is so the "the marker to the left of the current row" can use absolute*/
   }
 
-  /* the marker to the left of the current row*/
-  [b-cjn554j5ck] tr:has(.tk-quickgrid-cell .current) > td:first-child > div::before {
-    top: 7.5%;
-    height: 85%;
-    left: 0px;
-    width: 5px;
-    border-top-right-radius: 8px; 
-    border-bottom-right-radius: 8px;
-    content: '';
-    display: inline-block;
-    position: absolute;
-    background-color: rgb(var(--primary-color, 245, 156, 26));
+  /*aco*/
+  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell .tk-component {
+    padding: 2px; 
   }
+  /*aco*/
+  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell .tk-select .tk-input-field__container {
+      height: 22px;    
+      justify-content: center;
+    }
+
+
+
+/* the marker to the left of the current row*/
+[b-cjn554j5ck] tr:has(.tk-quickgrid-cell .current) > td:first-child > div::before {
+  top: 7.5%;
+  height: 85%;
+  left: 0px;
+  width: 5px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  content: '';
+  display: inline-block;
+  position: absolute;
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
 
 
 
@@ -275,16 +302,8 @@
   opacity: 0;
   box-sizing: border-box;
   top: 0px;
-  height: calc((var(--data-table-header-height,56px) + var(--data-table-header-height-blazorextra,0px))*0.98);
+  height: calc((var(--data-table-header-height-blazor,56px) )*0.98);
 }
-  /* 
-  ::deep table.quickgrid .column-resizer::before {
-    content: "|";
-    position: absolute;
-    top: -20px;
-    height: calc((var(--data-table-header-height,56px) + var(--data-table-header-height-blazorextra,0px))*0.98);
-    width: var(--resizer-width);
-  }*/
   
 [b-cjn554j5ck] table.quickgrid .column-resizer:hover {
     background-color: rgba(0, 0, 0, 0.5);
@@ -297,26 +316,31 @@
     font-size: 0.75rem;
   }
 
+  [b-cjn554j5ck] tr:has(th) {
+    height: var(--data-table-header-height-blazor-smalllscreen,44.3px);
+    vertical-align: inherit;
+  }
+
   [b-cjn554j5ck] table.quickgrid .column-resizer::before {
-    height: calc((var(--data-table-header-height,56px) + var(--data-table-header-height-blazorextra,0px))*0.98*0.8);
+    height: var(--data-table-header-height-blazor-smalllscreen,44.3px);
   }
 
   [b-cjn554j5ck] table.quickgrid .column-resizer {
-    height: calc((var(--data-table-header-height,56px) + var(--data-table-header-height-blazorextra,0px))*0.98*0.8);
-  }
-
-
-  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div:has(.tk-component) {
-    height: calc(var(--data-table-row-height, 56px)*0.8); /*must have height in div to get correct centering*/
+    height: var(--data-table-header-height-blazor-smalllscreen,44.3px);
   }
 
   [b-cjn554j5ck] .col-header-content {
-    height: calc((var(--data-table-header-height,56px) + var(--data-table-header-height-blazorextra,0px))*0.8); /* must set size so that resize button now what 100% is*/
+    height: var(--data-table-header-height-blazor-smalllscreen,44.3px); /* must set size so that resize button now what 100% is*/
+  }
+
+  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div:has(.tk-component) {
+    height: var(--data-table-row-height-blazor-smalllscreen, 43.8px); /*must have height in div to get correct centering*/
   }
 
 
+
   [b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div:has(.tk-component) {
-    height: calc(var(--data-table-row-height, 56px)*0.8); /*must have height in div to get correct centering*/
+    height: var(--data-table-row-height-blazor-smalllscreen, 43.8px); /*must have height in div to get correct centering*/
   }
 
   [b-cjn554j5ck] table td {
