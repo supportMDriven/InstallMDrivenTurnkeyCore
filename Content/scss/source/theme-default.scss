@@ -70,5 +70,12 @@ $data-table-row-height: 56px;
 $data-table-body-bg-color: 255,255,255;
 $data-table-body-text-color: 0,0,0;
 
+// Blazor use QuickGrid, the bullshit calc stuff from angular will be too hard 
+$data-table-row-height-blazor:56px;
+$data-table-header-height-blazor:56px;
+$data-table-header-height-blazor-smalllscreen:44.3px;
+$data-table-row-height-blazor-smalllscreen:43.8px;
+
+
 @import "tk-core-theme";
 

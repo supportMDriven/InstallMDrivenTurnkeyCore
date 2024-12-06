@@ -79,6 +79,11 @@
   }
 }
 
+.tk-data-table__cell .cellselect {
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+}
+
+
 .tk-data-table__highlite {
     background-image: linear-gradient(to top, #E6E9F0 0%, #EEF1F5 100%);
 }

@@ -78,7 +78,7 @@ window.stopPropagationMDriven=function(event) {
 };
 */
 
-/////////////// Column resize
+/////////////// Column resize, does resize in % until last column is forcefully dragged of screen - then switch to px - stay on px as long as all columns sum to wider than outer div
 
 // Observer of changes within the document
 const observer = new MutationObserver(mutations => {
@@ -89,6 +89,11 @@ const observer = new MutationObserver(mutations => {
         if (node.matches('.col-header-content') && node.closest('table.quickgrid')) {
           insertDraggableButton(node);
         }
+        if (node.matches('.tk-data-table__native')) {
+          if (window.TableKeyDownMDriven)
+            window.TableKeyDownMDriven(node);
+        }
+
       }
     });
   });
@@ -96,6 +101,7 @@ const observer = new MutationObserver(mutations => {
 
 // Start observing document changes
 observer.observe(document.body, { childList: true, subtree: true });
+
 
 
 // Inserts a draggable button into the given div

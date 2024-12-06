@@ -156,10 +156,10 @@
   /* background-color: lightcoral;*/
 }
 
-/*current row*/
-[b-cjn554j5ck] tr:has(.tk-quickgrid-cell .current) {
+/*current row, thin line around current row 
+::deep tr:has(.tk-quickgrid-cell .current) {
   box-shadow: inset 0px 0px 0px 1px rgb(var(--primary-color, 245, 156, 26));
-}
+}*/
 
 [b-cjn554j5ck] tr:has(.tk-quickgrid-cell .selected) {
   background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
