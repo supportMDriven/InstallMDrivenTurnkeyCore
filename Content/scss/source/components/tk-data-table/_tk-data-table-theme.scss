@@ -79,8 +79,10 @@
   }
 }
 
-.tk-data-table__cell .cellselect {
+.tk-data-table__cell.cellselect {
   background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+  user-select: none;
+  outline: none;
 }
 
 

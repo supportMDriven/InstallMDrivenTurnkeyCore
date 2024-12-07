@@ -12,8 +12,8 @@
 
 #contentWrapper.actions-visible #viewmodelSection {
   @media only screen and (max-width: 767px) {
-    height: calc(100vh - (#{$navbar-height} + env(safe-area-inset-bottom));
-    height: calc(100vh - (var(--navbar-height, #{$navbar-height}) + env(safe-area-inset-bottom));
+    height: calc(100vh - #{$navbar-height});
+    height: calc(100vh - var(--navbar-height, #{$navbar-height}));
   }
 }
 

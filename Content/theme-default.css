@@ -1,878 +1,1087 @@
 ﻿html, body {
   font-size: 16px !important;
-  font-size: var(--base-font-size, 16px) !important; }
+  font-size: var(--base-font-size, 16px) !important;
+}
 
 #bodyWrapper {
   -ms-grid-rows: 50px auto;
   grid-template-rows: 50px auto;
-  grid-template-rows: var(--navbar-height, 50px) auto; }
+  grid-template-rows: var(--navbar-height, 50px) auto;
+}
 
 #contentWrapper {
   height: calc(100vh - 50px);
-  height: calc(100vh - var(--navbar-height, 50px)); }
+  height: calc(100vh - var(--navbar-height, 50px));
+}
 
 @media only screen and (max-width: 767px) {
   #contentWrapper.actions-visible #viewmodelSection {
-    height: calc(100vh - (50px + env(safe-area-inset-bottom)));
-    height: calc(100vh - (var(--navbar-height, 50px) + env(safe-area-inset-bottom))); } }
+    height: calc(100vh - 50px);
+    height: calc(100vh - var(--navbar-height, 50px));
+  }
+}
 
 #sidebar {
   height: calc(100vh - 50px);
-  height: calc(100vh - var(--navbar-height, 50px)); }
-  @media only screen and (max-width: 767px) {
-    #sidebar {
-      height: 100vh; } }
+  height: calc(100vh - var(--navbar-height, 50px));
+}
+@media only screen and (max-width: 767px) {
+  #sidebar {
+    height: 100vh;
+  }
+}
 
 #contentWrapper.mvc-rendered #viewmodelWrapper {
   height: calc(100vh - 50px);
-  height: calc(100vh - var(--navbar-height, 50px)); }
+  height: calc(100vh - var(--navbar-height, 50px));
+}
 
 #viewmodelWrapper {
   height: calc(100vh - 50px);
-  height: calc(100vh - var(--navbar-height, 50px)); }
+  height: calc(100vh - var(--navbar-height, 50px));
+}
 
 .tk-spinner__element {
   border-top-color: rgb(245, 156, 26);
-  border-top-color: rgb(var(--primary-color, 245, 156, 26)); }
+  border-top-color: rgb(var(--primary-color, 245, 156, 26));
+}
 
 button.tk-button__native,
 a.tk-button__native {
   background: #eaeaea;
   color: #000000;
-  height: 36px; }
-  button.tk-button__native:hover, button.tk-button__native:focus,
-  a.tk-button__native:hover,
-  a.tk-button__native:focus {
-    background: #eaeaea; }
-  button.tk-button__native .ripple-container,
-  a.tk-button__native .ripple-container {
-    background-color: rgba(0, 0, 0, 0.1); }
+  height: 36px;
+}
+button.tk-button__native:hover, button.tk-button__native:focus,
+a.tk-button__native:hover,
+a.tk-button__native:focus {
+  background: #eaeaea;
+}
+button.tk-button__native .ripple-container,
+a.tk-button__native .ripple-container {
+  background-color: rgba(0, 0, 0, 0.1);
+}
 
 button.tk-button__native.primary,
 a.tk-button__native.primary {
   background: rgb(245, 156, 26);
   background: rgb(var(--primary-color, 245, 156, 26));
   color: rgb(255, 255, 255);
-  color: rgb(var(--text-on-primary, 255, 255, 255)); }
-  button.tk-button__native.primary:hover, button.tk-button__native.primary:focus,
-  a.tk-button__native.primary:hover,
-  a.tk-button__native.primary:focus {
-    background: rgb(235, 144, 10);
-    background: rgb(var(--primary-color-dark, 235, 144, 10)); }
-  button.tk-button__native.primary .ripple-container,
-  a.tk-button__native.primary .ripple-container {
-    background: rgba(255, 255, 255, 0.3);
-    background: rgba(var(--text-on-primary, 255, 255, 255), 0.3); }
+  color: rgb(var(--text-on-primary, 255, 255, 255));
+}
+button.tk-button__native.primary:hover, button.tk-button__native.primary:focus,
+a.tk-button__native.primary:hover,
+a.tk-button__native.primary:focus {
+  background: rgb(235, 144, 10);
+  background: rgb(var(--primary-color-dark, 235, 144, 10));
+}
+button.tk-button__native.primary .ripple-container,
+a.tk-button__native.primary .ripple-container {
+  background: rgba(255, 255, 255, 0.3);
+  background: rgba(var(--text-on-primary, 255, 255, 255), 0.3);
+}
 
 button.tk-button__native.danger,
 a.tk-button__native.danger {
   background: rgb(211, 46, 46);
   background: rgb(var(--danger-color, 211, 46, 46));
   color: rgb(255, 255, 255);
-  color: rgb(var(--text-on-danger, 255, 255, 255)); }
-  button.tk-button__native.danger:hover, button.tk-button__native.danger:focus,
-  a.tk-button__native.danger:hover,
-  a.tk-button__native.danger:focus {
-    background: rgb(191, 40, 40);
-    background: rgb(var(--danger-color-dark, 191, 40, 40)); }
-  button.tk-button__native.danger .ripple-container,
-  a.tk-button__native.danger .ripple-container {
-    background-color: rgba(255, 255, 255, 0.3);
-    background-color: rgba(var(--text-on-danger, 255, 255, 255), 0.3); }
+  color: rgb(var(--text-on-danger, 255, 255, 255));
+}
+button.tk-button__native.danger:hover, button.tk-button__native.danger:focus,
+a.tk-button__native.danger:hover,
+a.tk-button__native.danger:focus {
+  background: rgb(191, 40, 40);
+  background: rgb(var(--danger-color-dark, 191, 40, 40));
+}
+button.tk-button__native.danger .ripple-container,
+a.tk-button__native.danger .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--text-on-danger, 255, 255, 255), 0.3);
+}
 
 button.tk-button__native.warning,
 a.tk-button__native.warning {
   background: rgb(240, 173, 78);
   background: rgb(var(--warning-color, 240, 173, 78));
   color: rgb(255, 255, 255);
-  color: rgb(var(--text-on-warning, 255, 255, 255)); }
-  button.tk-button__native.warning:hover, button.tk-button__native.warning:focus,
-  a.tk-button__native.warning:hover,
-  a.tk-button__native.warning:focus {
-    background: rgb(238, 162, 54);
-    background: rgb(var(--warning-color-dark, 238, 162, 54)); }
-  button.tk-button__native.warning .ripple-container,
-  a.tk-button__native.warning .ripple-container {
-    background-color: rgba(255, 255, 255, 0.3);
-    background-color: rgba(var(--text-on-warning, 255, 255, 255), 0.3); }
+  color: rgb(var(--text-on-warning, 255, 255, 255));
+}
+button.tk-button__native.warning:hover, button.tk-button__native.warning:focus,
+a.tk-button__native.warning:hover,
+a.tk-button__native.warning:focus {
+  background: rgb(238, 162, 54);
+  background: rgb(var(--warning-color-dark, 238, 162, 54));
+}
+button.tk-button__native.warning .ripple-container,
+a.tk-button__native.warning .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--text-on-warning, 255, 255, 255), 0.3);
+}
 
 button.tk-button__native.success,
 a.tk-button__native.success {
   background: rgb(93, 184, 91);
   background: rgb(var(--success-color, 93, 184, 91));
   color: rgb(255, 255, 255);
-  color: rgb(var(--text-on-success, 255, 255, 255)); }
-  button.tk-button__native.success:hover, button.tk-button__native.success:focus,
-  a.tk-button__native.success:hover,
-  a.tk-button__native.success:focus {
-    background: rgb(78, 174, 75);
-    background: rgb(var(--success-color-dark, 78, 174, 75)); }
-  button.tk-button__native.success .ripple-container,
-  a.tk-button__native.success .ripple-container {
-    background-color: rgba(255, 255, 255, 0.3);
-    background-color: rgba(var(--text-on-success, 255, 255, 255), 0.3); }
+  color: rgb(var(--text-on-success, 255, 255, 255));
+}
+button.tk-button__native.success:hover, button.tk-button__native.success:focus,
+a.tk-button__native.success:hover,
+a.tk-button__native.success:focus {
+  background: rgb(78, 174, 75);
+  background: rgb(var(--success-color-dark, 78, 174, 75));
+}
+button.tk-button__native.success .ripple-container,
+a.tk-button__native.success .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--text-on-success, 255, 255, 255), 0.3);
+}
 
 button.tk-button__native.info,
 a.tk-button__native.info {
   background: #0b5461;
-  color: #ffffff; }
-  button.tk-button__native.info:hover, button.tk-button__native.info:focus,
-  a.tk-button__native.info:hover,
-  a.tk-button__native.info:focus {
-    background: #08404a; }
-  button.tk-button__native.info .ripple-container,
-  a.tk-button__native.info .ripple-container {
-    background-color: rgba(255, 255, 255, 0.3); }
+  color: #ffffff;
+}
+button.tk-button__native.info:hover, button.tk-button__native.info:focus,
+a.tk-button__native.info:hover,
+a.tk-button__native.info:focus {
+  background: #08404a;
+}
+button.tk-button__native.info .ripple-container,
+a.tk-button__native.info .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+}
 
 button.tk-button__native.outlined,
 a.tk-button__native.outlined {
   border-color: #000000;
-  color: #000000; }
-  button.tk-button__native.outlined:hover,
-  a.tk-button__native.outlined:hover {
-    background: rgba(0, 0, 0, 0.05); }
-  button.tk-button__native.outlined .ripple-container,
-  a.tk-button__native.outlined .ripple-container {
-    background-color: rgba(0, 0, 0, 0.2); }
+  color: #000000;
+}
+button.tk-button__native.outlined:hover,
+a.tk-button__native.outlined:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+button.tk-button__native.outlined .ripple-container,
+a.tk-button__native.outlined .ripple-container {
+  background-color: rgba(0, 0, 0, 0.2);
+}
 
 button.tk-button__native.outlined.danger,
 a.tk-button__native.outlined.danger {
   border-color: rgb(211, 46, 46);
   border-color: rgb(var(--danger-color, 211, 46, 46));
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-  button.tk-button__native.outlined.danger:hover, button.tk-button__native.outlined.danger:focus,
-  a.tk-button__native.outlined.danger:hover,
-  a.tk-button__native.outlined.danger:focus {
-    background: rgba(211, 46, 46, 0.05);
-    background: rgba(var(--danger-color, 211, 46, 46), 0.05); }
-  button.tk-button__native.outlined.danger .ripple-container,
-  a.tk-button__native.outlined.danger .ripple-container {
-    background-color: rgba(211, 46, 46, 0.2);
-    background-color: rgba(var(--danger-color, 211, 46, 46), 0.2); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+button.tk-button__native.outlined.danger:hover, button.tk-button__native.outlined.danger:focus,
+a.tk-button__native.outlined.danger:hover,
+a.tk-button__native.outlined.danger:focus {
+  background: rgba(211, 46, 46, 0.05);
+  background: rgba(var(--danger-color, 211, 46, 46), 0.05);
+}
+button.tk-button__native.outlined.danger .ripple-container,
+a.tk-button__native.outlined.danger .ripple-container {
+  background-color: rgba(211, 46, 46, 0.2);
+  background-color: rgba(var(--danger-color, 211, 46, 46), 0.2);
+}
 
 button.tk-button__native.outlined.warning,
 a.tk-button__native.outlined.warning {
   border-color: rgb(240, 173, 78);
   border-color: rgb(var(--warning-color, 240, 173, 78));
   color: rgb(240, 173, 78);
-  color: rgb(var(--warning-color, 240, 173, 78)); }
-  button.tk-button__native.outlined.warning:hover, button.tk-button__native.outlined.warning:focus,
-  a.tk-button__native.outlined.warning:hover,
-  a.tk-button__native.outlined.warning:focus {
-    background: rgba(240, 173, 78, 0.05);
-    background: rgba(var(--warning-color, 240, 173, 78), 0.05); }
-  button.tk-button__native.outlined.warning .ripple-container,
-  a.tk-button__native.outlined.warning .ripple-container {
-    background: rgba(240, 173, 78, 0.2);
-    background: rgba(var(--warning-color, 240, 173, 78), 0.2); }
+  color: rgb(var(--warning-color, 240, 173, 78));
+}
+button.tk-button__native.outlined.warning:hover, button.tk-button__native.outlined.warning:focus,
+a.tk-button__native.outlined.warning:hover,
+a.tk-button__native.outlined.warning:focus {
+  background: rgba(240, 173, 78, 0.05);
+  background: rgba(var(--warning-color, 240, 173, 78), 0.05);
+}
+button.tk-button__native.outlined.warning .ripple-container,
+a.tk-button__native.outlined.warning .ripple-container {
+  background: rgba(240, 173, 78, 0.2);
+  background: rgba(var(--warning-color, 240, 173, 78), 0.2);
+}
 
 button.tk-button__native.outlined.success,
 a.tk-button__native.outlined.success {
   border-color: rgb(93, 184, 91);
   border-color: rgb(var(--success-color, 93, 184, 91));
   color: rgb(93, 184, 91);
-  color: rgb(var(--success-color, 93, 184, 91)); }
-  button.tk-button__native.outlined.success:hover, button.tk-button__native.outlined.success:focus,
-  a.tk-button__native.outlined.success:hover,
-  a.tk-button__native.outlined.success:focus {
-    background: rgba(93, 184, 91, 0.05);
-    background: rgba(var(--success-color, 93, 184, 91), 0.05); }
-  button.tk-button__native.outlined.success .ripple-container,
-  a.tk-button__native.outlined.success .ripple-container {
-    background: rgba(93, 184, 91, 0.2);
-    background: rgba(var(--success-color, 93, 184, 91), 0.2); }
+  color: rgb(var(--success-color, 93, 184, 91));
+}
+button.tk-button__native.outlined.success:hover, button.tk-button__native.outlined.success:focus,
+a.tk-button__native.outlined.success:hover,
+a.tk-button__native.outlined.success:focus {
+  background: rgba(93, 184, 91, 0.05);
+  background: rgba(var(--success-color, 93, 184, 91), 0.05);
+}
+button.tk-button__native.outlined.success .ripple-container,
+a.tk-button__native.outlined.success .ripple-container {
+  background: rgba(93, 184, 91, 0.2);
+  background: rgba(var(--success-color, 93, 184, 91), 0.2);
+}
 
 button.tk-button__native.outlined.info,
 a.tk-button__native.outlined.info {
   border-color: #0b5461;
-  color: #0b5461; }
-  button.tk-button__native.outlined.info:hover, button.tk-button__native.outlined.info:focus,
-  a.tk-button__native.outlined.info:hover,
-  a.tk-button__native.outlined.info:focus {
-    background: rgba(11, 84, 97, 0.05); }
-  button.tk-button__native.outlined.info .ripple-container,
-  a.tk-button__native.outlined.info .ripple-container {
-    background-color: rgba(11, 84, 97, 0.2); }
+  color: #0b5461;
+}
+button.tk-button__native.outlined.info:hover, button.tk-button__native.outlined.info:focus,
+a.tk-button__native.outlined.info:hover,
+a.tk-button__native.outlined.info:focus {
+  background: rgba(11, 84, 97, 0.05);
+}
+button.tk-button__native.outlined.info .ripple-container,
+a.tk-button__native.outlined.info .ripple-container {
+  background-color: rgba(11, 84, 97, 0.2);
+}
 
 button.tk-button__native.outlined.primary,
 a.tk-button__native.outlined.primary {
   border-color: rgb(245, 156, 26);
   border-color: rgb(var(--primary-color, 245, 156, 26));
   color: rgb(245, 156, 26);
-  color: rgb(var(--primary-color, 245, 156, 26)); }
-  button.tk-button__native.outlined.primary:hover, button.tk-button__native.outlined.primary:focus,
-  a.tk-button__native.outlined.primary:hover,
-  a.tk-button__native.outlined.primary:focus {
-    background: rgba(245, 156, 26, 0.05);
-    background: rgba(var(--primary-color, 245, 156, 26), 0.05); }
-  button.tk-button__native.outlined.primary .ripple-container,
-  a.tk-button__native.outlined.primary .ripple-container {
-    background: rgba(245, 156, 26, 0.2);
-    background: rgba(var(--primary-color, 245, 156, 26), 0.2); }
+  color: rgb(var(--primary-color, 245, 156, 26));
+}
+button.tk-button__native.outlined.primary:hover, button.tk-button__native.outlined.primary:focus,
+a.tk-button__native.outlined.primary:hover,
+a.tk-button__native.outlined.primary:focus {
+  background: rgba(245, 156, 26, 0.05);
+  background: rgba(var(--primary-color, 245, 156, 26), 0.05);
+}
+button.tk-button__native.outlined.primary .ripple-container,
+a.tk-button__native.outlined.primary .ripple-container {
+  background: rgba(245, 156, 26, 0.2);
+  background: rgba(var(--primary-color, 245, 156, 26), 0.2);
+}
 
 button.tk-button__native.flat,
 a.tk-button__native.flat {
-  color: #000000; }
-  button.tk-button__native.flat:hover,
-  a.tk-button__native.flat:hover {
-    background: rgba(0, 0, 0, 0.04); }
-  button.tk-button__native.flat:focus:not(:active),
-  a.tk-button__native.flat:focus:not(:active) {
-    background: rgba(0, 0, 0, 0.05); }
-  button.tk-button__native.flat .ripple-container,
-  a.tk-button__native.flat .ripple-container {
-    background-color: rgba(0, 0, 0, 0.055); }
+  color: #000000;
+}
+button.tk-button__native.flat:hover,
+a.tk-button__native.flat:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+button.tk-button__native.flat:focus:not(:active),
+a.tk-button__native.flat:focus:not(:active) {
+  background: rgba(0, 0, 0, 0.05);
+}
+button.tk-button__native.flat .ripple-container,
+a.tk-button__native.flat .ripple-container {
+  background-color: rgba(0, 0, 0, 0.055);
+}
 
 button.tk-button__native.flat.danger,
 a.tk-button__native.flat.danger {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-  button.tk-button__native.flat.danger:hover,
-  a.tk-button__native.flat.danger:hover {
-    background: rgba(211, 46, 46, 0.04);
-    background: rgba(var(--danger-color, 211, 46, 46), 0.04); }
-  button.tk-button__native.flat.danger:focus:not(:active),
-  a.tk-button__native.flat.danger:focus:not(:active) {
-    background: rgba(211, 46, 46, 0.05);
-    background: rgba(var(--danger-color, 211, 46, 46), 0.05); }
-  button.tk-button__native.flat.danger .ripple-container,
-  a.tk-button__native.flat.danger .ripple-container {
-    background-color: rgba(211, 46, 46, 0.055);
-    background-color: rgba(var(--danger-color, 211, 46, 46), 0.055); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+button.tk-button__native.flat.danger:hover,
+a.tk-button__native.flat.danger:hover {
+  background: rgba(211, 46, 46, 0.04);
+  background: rgba(var(--danger-color, 211, 46, 46), 0.04);
+}
+button.tk-button__native.flat.danger:focus:not(:active),
+a.tk-button__native.flat.danger:focus:not(:active) {
+  background: rgba(211, 46, 46, 0.05);
+  background: rgba(var(--danger-color, 211, 46, 46), 0.05);
+}
+button.tk-button__native.flat.danger .ripple-container,
+a.tk-button__native.flat.danger .ripple-container {
+  background-color: rgba(211, 46, 46, 0.055);
+  background-color: rgba(var(--danger-color, 211, 46, 46), 0.055);
+}
 
 button.tk-button__native.flat.warning,
 a.tk-button__native.flat.warning {
   color: rgb(240, 173, 78);
-  color: rgb(var(--warning-color, 240, 173, 78)); }
-  button.tk-button__native.flat.warning:hover,
-  a.tk-button__native.flat.warning:hover {
-    background: rgba(240, 173, 78, 0.04);
-    background: rgba(var(--warning-color, 240, 173, 78), 0.04); }
-  button.tk-button__native.flat.warning:focus:not(:active),
-  a.tk-button__native.flat.warning:focus:not(:active) {
-    background: rgba(240, 173, 78, 0.05);
-    background: rgba(var(--warning-color, 240, 173, 78), 0.05); }
-  button.tk-button__native.flat.warning .ripple-container,
-  a.tk-button__native.flat.warning .ripple-container {
-    background-color: rgba(240, 173, 78, 0.055);
-    background-color: rgba(var(--warning-color, 240, 173, 78), 0.055); }
+  color: rgb(var(--warning-color, 240, 173, 78));
+}
+button.tk-button__native.flat.warning:hover,
+a.tk-button__native.flat.warning:hover {
+  background: rgba(240, 173, 78, 0.04);
+  background: rgba(var(--warning-color, 240, 173, 78), 0.04);
+}
+button.tk-button__native.flat.warning:focus:not(:active),
+a.tk-button__native.flat.warning:focus:not(:active) {
+  background: rgba(240, 173, 78, 0.05);
+  background: rgba(var(--warning-color, 240, 173, 78), 0.05);
+}
+button.tk-button__native.flat.warning .ripple-container,
+a.tk-button__native.flat.warning .ripple-container {
+  background-color: rgba(240, 173, 78, 0.055);
+  background-color: rgba(var(--warning-color, 240, 173, 78), 0.055);
+}
 
 button.tk-button__native.flat.success,
 a.tk-button__native.flat.success {
   color: rgb(93, 184, 91);
-  color: rgb(var(--success-color, 93, 184, 91)); }
-  button.tk-button__native.flat.success:hover,
-  a.tk-button__native.flat.success:hover {
-    background: rgba(93, 184, 91, 0.04);
-    background: rgba(var(--success-color, 93, 184, 91), 0.04); }
-  button.tk-button__native.flat.success:focus:not(:active),
-  a.tk-button__native.flat.success:focus:not(:active) {
-    background: rgba(93, 184, 91, 0.05);
-    background: rgba(var(--success-color, 93, 184, 91), 0.05); }
-  button.tk-button__native.flat.success .ripple-container,
-  a.tk-button__native.flat.success .ripple-container {
-    background-color: rgba(93, 184, 91, 0.055);
-    background-color: rgba(var(--success-color, 93, 184, 91), 0.055); }
+  color: rgb(var(--success-color, 93, 184, 91));
+}
+button.tk-button__native.flat.success:hover,
+a.tk-button__native.flat.success:hover {
+  background: rgba(93, 184, 91, 0.04);
+  background: rgba(var(--success-color, 93, 184, 91), 0.04);
+}
+button.tk-button__native.flat.success:focus:not(:active),
+a.tk-button__native.flat.success:focus:not(:active) {
+  background: rgba(93, 184, 91, 0.05);
+  background: rgba(var(--success-color, 93, 184, 91), 0.05);
+}
+button.tk-button__native.flat.success .ripple-container,
+a.tk-button__native.flat.success .ripple-container {
+  background-color: rgba(93, 184, 91, 0.055);
+  background-color: rgba(var(--success-color, 93, 184, 91), 0.055);
+}
 
 button.tk-button__native.flat.info,
 a.tk-button__native.flat.info {
-  color: #0b5461; }
-  button.tk-button__native.flat.info:hover,
-  a.tk-button__native.flat.info:hover {
-    background: rgba(11, 84, 97, 0.04); }
-  button.tk-button__native.flat.info:focus:not(:active),
-  a.tk-button__native.flat.info:focus:not(:active) {
-    background: rgba(11, 84, 97, 0.05); }
-  button.tk-button__native.flat.info .ripple-container,
-  a.tk-button__native.flat.info .ripple-container {
-    background-color: rgba(11, 84, 97, 0.055); }
+  color: #0b5461;
+}
+button.tk-button__native.flat.info:hover,
+a.tk-button__native.flat.info:hover {
+  background: rgba(11, 84, 97, 0.04);
+}
+button.tk-button__native.flat.info:focus:not(:active),
+a.tk-button__native.flat.info:focus:not(:active) {
+  background: rgba(11, 84, 97, 0.05);
+}
+button.tk-button__native.flat.info .ripple-container,
+a.tk-button__native.flat.info .ripple-container {
+  background-color: rgba(11, 84, 97, 0.055);
+}
 
 button.tk-button__native.flat.primary,
 a.tk-button__native.flat.primary {
   color: rgb(245, 156, 26);
-  color: rgb(var(--primary-color, 245, 156, 26)); }
-  button.tk-button__native.flat.primary:hover,
-  a.tk-button__native.flat.primary:hover {
-    background: rgba(245, 156, 26, 0.04);
-    background: rgba(var(--primary-color, 245, 156, 26), 0.04); }
-  button.tk-button__native.flat.primary:focus:not(:active),
-  a.tk-button__native.flat.primary:focus:not(:active) {
-    background: rgba(245, 156, 26, 0.05);
-    background: rgba(var(--primary-color, 245, 156, 26), 0.05); }
-  button.tk-button__native.flat.primary .ripple-container,
-  a.tk-button__native.flat.primary .ripple-container {
-    background-color: rgba(245, 156, 26, 0.055);
-    background-color: rgba(var(--primary-color, 245, 156, 26), 0.055); }
+  color: rgb(var(--primary-color, 245, 156, 26));
+}
+button.tk-button__native.flat.primary:hover,
+a.tk-button__native.flat.primary:hover {
+  background: rgba(245, 156, 26, 0.04);
+  background: rgba(var(--primary-color, 245, 156, 26), 0.04);
+}
+button.tk-button__native.flat.primary:focus:not(:active),
+a.tk-button__native.flat.primary:focus:not(:active) {
+  background: rgba(245, 156, 26, 0.05);
+  background: rgba(var(--primary-color, 245, 156, 26), 0.05);
+}
+button.tk-button__native.flat.primary .ripple-container,
+a.tk-button__native.flat.primary .ripple-container {
+  background-color: rgba(245, 156, 26, 0.055);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.055);
+}
 
 .tk-checkbox__native:checked ~ .tk-checkbox__interactive,
 .tk-checkbox__native:indeterminate ~ .tk-checkbox__interactive {
   background-color: rgb(245, 156, 26);
   background-color: rgb(var(--primary-color, 245, 156, 26));
   border-color: rgb(245, 156, 26);
-  border-color: rgb(var(--primary-color, 245, 156, 26)); }
-  .tk-checkbox__native:checked ~ .tk-checkbox__interactive::before,
-  .tk-checkbox__native:indeterminate ~ .tk-checkbox__interactive::before {
-    background-color: rgb(245, 156, 26);
-    background-color: rgb(var(--primary-color, 245, 156, 26)); }
+  border-color: rgb(var(--primary-color, 245, 156, 26));
+}
+.tk-checkbox__native:checked ~ .tk-checkbox__interactive::before,
+.tk-checkbox__native:indeterminate ~ .tk-checkbox__interactive::before {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
 
 .tk-checkbox__mixedmark {
-  border-color: #fff; }
+  border-color: #fff;
+}
 
 .tk-checkbox__content .ripple-container {
   background-color: rgba(245, 156, 26, 0.3);
-  background-color: rgba(var(--primary-color, 245, 156, 26), 0.3); }
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.3);
+}
 
 .tk-checkbox.has-error .tk-checkbox__label {
-  color: rgb(211, 46, 46); }
+  color: rgb(211, 46, 46);
+}
 
 .tk-checkbox__validation-state {
-  color: rgb(211, 46, 46); }
+  color: rgb(211, 46, 46);
+}
 
 .tk-switch__interactive::before, .tk-switch__interactive::after {
   background-color: rgb(245, 156, 26);
-  background-color: rgb(var(--primary-color, 245, 156, 26)); }
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
 
 .tk-switch__native:checked ~ .tk-switch__content .tk-switch__track {
   background-color: rgb(245, 156, 26);
   background-color: rgb(var(--primary-color, 245, 156, 26));
   border-color: rgb(245, 156, 26);
-  border-color: rgb(var(--primary-color, 245, 156, 26)); }
-
+  border-color: rgb(var(--primary-color, 245, 156, 26));
+}
 .tk-switch__native:checked ~ .tk-switch__content .tk-switch__interactive span {
   background-color: rgb(245, 156, 26);
   background-color: rgb(var(--primary-color, 245, 156, 26));
   border-color: rgb(245, 156, 26);
-  border-color: rgb(var(--primary-color, 245, 156, 26)); }
+  border-color: rgb(var(--primary-color, 245, 156, 26));
+}
 
 .tk-switch__validation-state {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .navbar {
   min-height: 50px;
   min-height: var(--navbar-height, 50px);
   background-color: rgb(33, 33, 33);
-  background-color: rgb(var(--navbar-bg-color, 33, 33, 33)); }
+  background-color: rgb(var(--navbar-bg-color, 33, 33, 33));
+}
 
 .navbar__toggle:hover, .navbar__toggle:focus:not(:active) {
   background-color: rgba(255, 255, 255, 0.1);
-  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1); }
-
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1);
+}
 .navbar__toggle .ripple-container {
   background-color: rgba(255, 255, 255, 0.25);
-  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.25); }
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.25);
+}
 
 .navbar__toggle {
   color: rgb(255, 255, 255);
-  color: rgb(var(--navbar-link-color, 255, 255, 255)); }
+  color: rgb(var(--navbar-link-color, 255, 255, 255));
+}
 
 .navbar__toggle .icon-bar {
   background-color: rgb(255, 255, 255);
-  background-color: rgb(var(--navbar-link-color, 255, 255, 255)); }
+  background-color: rgb(var(--navbar-link-color, 255, 255, 255));
+}
 
 .navbar__toggle--sidebar .icon-bar {
   background-color: rgb(245, 156, 26);
-  background-color: rgb(var(--primary-color, 245, 156, 26)); }
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
 
 .navbar__brand {
   color: rgb(255, 255, 255);
-  color: rgb(var(--navbar-brand-color, 255, 255, 255)); }
+  color: rgb(var(--navbar-brand-color, 255, 255, 255));
+}
 
 .navbar__link {
   color: rgb(255, 255, 255);
-  color: rgb(var(--navbar-link-color, 255, 255, 255)); }
-  .navbar__link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1); }
-  .navbar__link:focus:not(:active) {
-    background-color: rgba(255, 255, 255, 0.1);
-    background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1); }
-  .navbar__link:active {
-    background-color: rgba(255, 255, 255, 0.25);
-    background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.25); }
-  .navbar__link .mi {
-    color: rgb(255, 255, 255);
-    color: rgb(var(--navbar-link-color, 255, 255, 255)); }
+  color: rgb(var(--navbar-link-color, 255, 255, 255));
+}
+.navbar__link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1);
+}
+.navbar__link:focus:not(:active) {
+  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1);
+}
+.navbar__link:active {
+  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.25);
+}
+.navbar__link .mi {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--navbar-link-color, 255, 255, 255));
+}
 
 .navbar__link--colored {
   background-color: rgb(245, 156, 26);
   background-color: rgb(var(--primary-color, 245, 156, 26));
   color: rgb(255, 255, 255);
-  color: rgb(var(--text-on-primary, 255, 255, 255)); }
+  color: rgb(var(--text-on-primary, 255, 255, 255));
+}
+.navbar__link--colored:hover, .navbar__link--colored:focus:not(:active) {
+  background-color: rgb(235, 144, 10);
+  background-color: rgb(var(--primary-color-dark, 235, 144, 10));
+}
+.navbar__link--colored .mi {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-primary, 255, 255, 255));
+}
+@media only screen and (max-width: 768px) {
+  .navbar__link--colored {
+    background: none;
+    color: rgb(255, 255, 255);
+    color: rgb(var(--navbar-link-color, 255, 255, 255));
+  }
   .navbar__link--colored:hover, .navbar__link--colored:focus:not(:active) {
-    background-color: rgb(235, 144, 10);
-    background-color: rgb(var(--primary-color-dark, 235, 144, 10)); }
+    background-color: rgba(255, 255, 255, 0.1);
+  }
   .navbar__link--colored .mi {
     color: rgb(255, 255, 255);
-    color: rgb(var(--text-on-primary, 255, 255, 255)); }
-  @media only screen and (max-width: 768px) {
-    .navbar__link--colored {
-      background: none;
-      color: rgb(255, 255, 255);
-      color: rgb(var(--navbar-link-color, 255, 255, 255)); }
-      .navbar__link--colored:hover, .navbar__link--colored:focus:not(:active) {
-        background-color: rgba(255, 255, 255, 0.1); }
-      .navbar__link--colored .mi {
-        color: rgb(255, 255, 255);
-        color: rgb(var(--navbar-link-color, 255, 255, 255)); } }
+    color: rgb(var(--navbar-link-color, 255, 255, 255));
+  }
+}
 
 #sidebar {
   background-color: rgb(255, 255, 255);
-  background-color: rgb(var(--sidebar-bg-color, 255, 255, 255)); }
+  background-color: rgb(var(--sidebar-bg-color, 255, 255, 255));
+}
 
 .tk-sidebar__group-header,
 .tk-sidebar__subgroup-header {
   color: rgb(33, 33, 33);
-  color: rgb(var(--sidebar-item-text-color, 33, 33, 33)); }
+  color: rgb(var(--sidebar-item-text-color, 33, 33, 33));
+}
 
 .tk-sidebar__item {
   height: 40px;
   height: var(--sidebar-item-height, 40px);
   color: rgb(33, 33, 33);
   color: rgb(var(--sidebar-item-text-color, 33, 33, 33));
-  background: transparent; }
-  .tk-sidebar__item:hover, .tk-sidebar__item:focus {
-    color: rgb(245, 156, 26);
-    color: rgb(var(--primary-color, 245, 156, 26));
-    background-color: rgba(245, 156, 26, 0.2);
-    background-color: rgba(var(--primary-color, 245, 156, 26), 0.2); }
-  .tk-sidebar__item .ripple-container {
-    background-color: rgba(245, 156, 26, 0.2);
-    background-color: rgba(var(--primary-color, 245, 156, 26), 0.2); }
+  background: transparent;
+}
+.tk-sidebar__item:hover, .tk-sidebar__item:focus {
+  color: rgb(245, 156, 26);
+  color: rgb(var(--primary-color, 245, 156, 26));
+  background-color: rgba(245, 156, 26, 0.2);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.2);
+}
+.tk-sidebar__item .ripple-container {
+  background-color: rgba(245, 156, 26, 0.2);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.2);
+}
 
 .tk-state-action.save-action:not(:disabled) {
   color: rgb(255, 255, 255);
   color: rgb(var(--save-action-text-color, 255, 255, 255));
   background-color: rgb(240, 173, 78);
-  background-color: rgb(var(--save-action-bg-color, 240, 173, 78)); }
-
-.tk-state-action.save-action.keepopen:not(:disabled) {
-  background-color: rgb(102,204,0);
+  background-color: rgb(var(--save-action-bg-color, 240, 173, 78));
+}
+.tk-state-action.save-action:not(:disabled):hover, .tk-state-action.save-action:not(:disabled):focus, .tk-state-action.save-action:not(:disabled):active {
+  background-color: rgb(235, 148, 24);
+  background-color: rgb(var(--save-action-bg-color-dark, 235, 148, 24));
+}
+.tk-state-action.save-action:not(:disabled) .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--save-action-text-color, 255, 255, 255), 0.3);
 }
 
-  .tk-state-action.save-action:not(:disabled):hover, .tk-state-action.save-action:not(:disabled):focus, .tk-state-action.save-action:not(:disabled):active {
-    background-color: rgb(235, 148, 24);
-    background-color: rgb(var(--save-action-bg-color-dark, 235, 148, 24)); }
-  .tk-state-action.save-action:not(:disabled) .ripple-container {
-    background-color: rgba(255, 255, 255, 0.3);
-    background-color: rgba(var(--save-action-text-color, 255, 255, 255), 0.3); }
-
 .tk-state-action.update-action:not(:disabled) {
-  color: #ffffff;
-  background-color: #f0ad4e; }
-  .tk-state-action.update-action:not(:disabled):hover, .tk-state-action.update-action:not(:disabled):focus, .tk-state-action.update-action:not(:disabled):active {
-    background-color: #eea236; }
-  .tk-state-action.update-action:not(:disabled) .ripple-container {
-    background-color: rgba(255, 255, 255, 0.3); }
+  color: rgb(#f0ad4e);
+  color: rgb(var(--save-action-text-color, #f0ad4e));
+  background-color: rgb(#f0ad4e);
+  background-color: rgb(var(--save-action-bg-color, #f0ad4e));
+}
+.tk-state-action.update-action:not(:disabled):hover, .tk-state-action.update-action:not(:disabled):focus, .tk-state-action.update-action:not(:disabled):active {
+  background-color: rgb(#eea236);
+  background-color: rgb(var(--save-action-bg-color-dark, #eea236));
+}
+.tk-state-action.update-action:not(:disabled) .ripple-container {
+  background-color: rgba(#f0ad4e, 0.3);
+  background-color: rgba(var(--save-action-text-color, #f0ad4e), 0.3);
+}
 
 .tk-state-action.cancel-action:not(:disabled) {
   color: rgb(255, 255, 255);
   color: rgb(var(--cancel-action-text-color, 255, 255, 255));
   background-color: rgb(211, 46, 46);
-  background-color: rgb(var(--cancel-action-bg-color, 211, 46, 46)); }
-  .tk-state-action.cancel-action:not(:disabled):hover, .tk-state-action.cancel-action:not(:disabled):focus, .tk-state-action.cancel-action:not(:disabled):active {
-    background-color: rgb(180, 38, 38);
-    background-color: rgb(var(--cancel-action-bg-color-dark, 180, 38, 38)); }
-  .tk-state-action.cancel-action:not(:disabled) .ripple-container {
-    background-color: rgba(255, 255, 255, 0.3);
-    background-color: rgba(var(--cancel-action-text-color, 255, 255, 255), 0.3); }
+  background-color: rgb(var(--cancel-action-bg-color, 211, 46, 46));
+}
+.tk-state-action.cancel-action:not(:disabled):hover, .tk-state-action.cancel-action:not(:disabled):focus, .tk-state-action.cancel-action:not(:disabled):active {
+  background-color: rgb(180, 38, 38);
+  background-color: rgb(var(--cancel-action-bg-color-dark, 180, 38, 38));
+}
+.tk-state-action.cancel-action:not(:disabled) .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--cancel-action-text-color, 255, 255, 255), 0.3);
+}
 
 .tk-state-action.undo-action:not(:disabled) {
   color: rgb(0, 0, 0);
   color: rgb(var(--undo-action-text-color, 0, 0, 0));
   background-color: rgb(255, 255, 255);
-  background-color: rgb(var(--undo-action-bg-color, 255, 255, 255)); }
-  .tk-state-action.undo-action:not(:disabled):hover, .tk-state-action.undo-action:not(:disabled):focus, .tk-state-action.undo-action:not(:disabled):active {
-    background-color: rgb(242, 242, 242);
-    background-color: rgb(var(--undo-action-bg-color-dark, 242, 242, 242)); }
-  .tk-state-action.undo-action:not(:disabled) .ripple-container {
-    background-color: rgba(0, 0, 0, 0.3);
-    background-color: rgba(var(--undo-action-text-color, 0, 0, 0), 0.3); }
+  background-color: rgb(var(--undo-action-bg-color, 255, 255, 255));
+}
+.tk-state-action.undo-action:not(:disabled):hover, .tk-state-action.undo-action:not(:disabled):focus, .tk-state-action.undo-action:not(:disabled):active {
+  background-color: rgb(242, 242, 242);
+  background-color: rgb(var(--undo-action-bg-color-dark, 242, 242, 242));
+}
+.tk-state-action.undo-action:not(:disabled) .ripple-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(var(--undo-action-text-color, 0, 0, 0), 0.3);
+}
 
 .tk-state-action.redo-action:not(:disabled) {
   color: rgb(0, 0, 0);
   color: rgb(var(--redo-action-text-color, 0, 0, 0));
   background-color: rgb(255, 255, 255);
-  background-color: rgb(var(--redo-action-bg-color, 255, 255, 255)); }
-  .tk-state-action.redo-action:not(:disabled):hover, .tk-state-action.redo-action:not(:disabled):focus, .tk-state-action.redo-action:not(:disabled):active {
-    background-color: rgb(242, 242, 242);
-    background-color: rgb(var(--redo-action-bg-color-dark, 242, 242, 242)); }
-  .tk-state-action.redo-action:not(:disabled) .ripple-container {
-    background-color: rgba(0, 0, 0, 0.3);
-    background-color: rgba(var(--redo-action-text-color, 0, 0, 0), 0.3); }
+  background-color: rgb(var(--redo-action-bg-color, 255, 255, 255));
+}
+.tk-state-action.redo-action:not(:disabled):hover, .tk-state-action.redo-action:not(:disabled):focus, .tk-state-action.redo-action:not(:disabled):active {
+  background-color: rgb(242, 242, 242);
+  background-color: rgb(var(--redo-action-bg-color-dark, 242, 242, 242));
+}
+.tk-state-action.redo-action:not(:disabled) .ripple-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(var(--redo-action-text-color, 0, 0, 0), 0.3);
+}
 
 .dropdown__menu {
   background-color: rgb(33, 33, 33);
-  background-color: rgb(var(--navbar-bg-color, 33, 33, 33)); }
-  @media only screen and (min-width: 768px) {
-    .dropdown__menu {
-      background-color: #fff; } }
+  background-color: rgb(var(--navbar-bg-color, 33, 33, 33));
+}
+@media only screen and (min-width: 768px) {
+  .dropdown__menu {
+    background-color: #fff;
+  }
+}
 
 .dropdown__link {
   color: rgb(255, 255, 255);
-  color: rgb(var(--navbar-link-color, 255, 255, 255)); }
-  .dropdown__link .ripple-container {
-    background-color: rgba(255, 255, 255, 0.1);
-    background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1); }
-  @media only screen and (min-width: 768px) {
-    .dropdown__link {
-      color: #000; }
-      .dropdown__link:hover, .dropdown__link:focus {
-        background-color: rgba(0, 0, 0, 0.05); }
-      .dropdown__link:active {
-        background-color: rgba(0, 0, 0, 0.08); } }
+  color: rgb(var(--navbar-link-color, 255, 255, 255));
+}
+.dropdown__link .ripple-container {
+  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1);
+}
+@media only screen and (min-width: 768px) {
+  .dropdown__link {
+    color: #000;
+  }
+  .dropdown__link:hover, .dropdown__link:focus {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  .dropdown__link:active {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+}
 
 .tk-text-field__native {
-  height: 36px; }
-  .tk-text-field__native:focus {
-    box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
-    box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6); }
+  height: 36px;
+}
+.tk-text-field__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
 
 .tk-text-field.has-error .tk-text-field__label {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 .tk-text-field.has-error .tk-text-field__native {
   box-shadow: 0 0 0 2px rgb(211, 46, 46);
-  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46)); }
-  .tk-text-field.has-error .tk-text-field__native:hover, .tk-text-field.has-error .tk-text-field__native:active, .tk-text-field.has-error .tk-text-field__native:focus {
-    box-shadow: 0 0 0 2px rgb(211, 46, 46);
-    box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46)); }
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-text-field.has-error .tk-text-field__native:hover, .tk-text-field.has-error .tk-text-field__native:active, .tk-text-field.has-error .tk-text-field__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-text-field__validation-state {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-number-field__native {
-  height: 36px; }
-  .tk-number-field__native:focus {
-    box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
-    box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6); }
+  height: 36px;
+}
+.tk-number-field__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
 
 .tk-number-field.has-error .tk-number-field__label {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 .tk-number-field.has-error .tk-number-field__native {
   box-shadow: 0 0 0 2px rgb(211, 46, 46);
-  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46)); }
-  .tk-number-field.has-error .tk-number-field__native:hover, .tk-number-field.has-error .tk-number-field__native:active, .tk-number-field.has-error .tk-number-field__native:focus {
-    box-shadow: 0 0 0 2px rgb(211, 46, 46);
-    box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46)); }
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-number-field.has-error .tk-number-field__native:hover, .tk-number-field.has-error .tk-number-field__native:active, .tk-number-field.has-error .tk-number-field__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-number-field__validation-state {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-float-field__native {
-  height: 36px; }
-  .tk-float-field__native:focus {
-    box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
-    box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6); }
+  height: 36px;
+}
+.tk-float-field__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
 
 .tk-float-field.has-error .tk-float-field__label {
-  color: rgb(211, 46, 46); }
-
+  color: rgb(211, 46, 46);
+}
 .tk-float-field.has-error .tk-float-field__native {
   box-shadow: 0 0 0 2px rgb(211, 46, 46);
-  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46)); }
-  .tk-float-field.has-error .tk-float-field__native:hover, .tk-float-field.has-error .tk-float-field__native:active, .tk-float-field.has-error .tk-float-field__native:focus {
-    box-shadow: 0 0 0 2px rgb(211, 46, 46);
-    box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46)); }
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
+.tk-float-field.has-error .tk-float-field__native:hover, .tk-float-field.has-error .tk-float-field__native:active, .tk-float-field.has-error .tk-float-field__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
 
 .tk-float-field__validation-state {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-textarea__native:focus {
   box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
-  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6); }
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
 
 .tk-textarea.has-error .tk-textarea__label {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 .tk-textarea.has-error .tk-textarea__native {
   box-shadow: 0 0 0 2px rgb(211, 46, 46);
-  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46)); }
-  .tk-textarea.has-error .tk-textarea__native:hover, .tk-textarea.has-error .tk-textarea__native:active, .tk-textarea.has-error .tk-textarea__native:focus {
-    box-shadow: 0 0 0 2px rgb(211, 46, 46);
-    box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46)); }
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-textarea.has-error .tk-textarea__native:hover, .tk-textarea.has-error .tk-textarea__native:active, .tk-textarea.has-error .tk-textarea__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-textarea__validation-state {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-static-text__label.danger {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 .tk-static-text__label.warning {
   color: rgb(240, 173, 78);
-  color: rgb(var(--warning-color, 240, 173, 78)); }
-
+  color: rgb(var(--warning-color, 240, 173, 78));
+}
 .tk-static-text__label.success {
   color: rgb(93, 184, 91);
-  color: rgb(var(--success-color, 93, 184, 91)); }
+  color: rgb(var(--success-color, 93, 184, 91));
+}
 
 .tk-static-text__native.danger {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 .tk-static-text__native.warning {
   color: rgb(240, 173, 78);
-  color: rgb(var(--warning-color, 240, 173, 78)); }
-
+  color: rgb(var(--warning-color, 240, 173, 78));
+}
 .tk-static-text__native.success {
   color: rgb(93, 184, 91);
-  color: rgb(var(--success-color, 93, 184, 91)); }
+  color: rgb(var(--success-color, 93, 184, 91));
+}
 
 .tk-modal__actions .tk-button__native.outlined.success:hover {
   color: rgb(255, 255, 255);
   color: rgb(var(--text-on-success, 255, 255, 255));
   background-color: rgb(93, 184, 91);
-  background-color: rgb(var(--success-color, 93, 184, 91)); }
+  background-color: rgb(var(--success-color, 93, 184, 91));
+}
 
 .tk-modal__actions .tk-button__native.outlined.danger:hover {
   color: rgb(255, 255, 255);
   color: rgb(var(--text-on-danger, 255, 255, 255));
   background-color: rgb(211, 46, 46);
-  background-color: rgb(var(--danger-color, 211, 46, 46)); }
+  background-color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-select__native:not(:disabled):focus {
   /*  border-color: unquote('rgba(var(--primary-color, 245, 156, 26), 0.87)');*/
-  border-color: rgb(var(--primary-color, 245,156,26)); }
+  border-color: rgb(var(--primary-color, 245,156,26));
+}
 
 .tk-select.has-error .tk-select__label {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 .tk-select.has-error .tk-select__native {
-  border-color: 0 0 0 1px rgb(211, 46, 46); }
+  border-color: 0 0 0 1px rgb(211, 46, 46);
+}
 
 .tk-select__validation-state {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-file-upload__interactive {
   color: #000000;
   background: #eaeaea;
-  height: 36px; }
-  .tk-file-upload__interactive.uploaded {
-    background: rgb(93, 184, 91);
-    background: rgb(var(--success-color, 93, 184, 91));
-    color: rgb(255, 255, 255);
-    color: rgb(var(--text-on-success, 255, 255, 255)); }
+  height: 36px;
+}
+.tk-file-upload__interactive.uploaded {
+  background: rgb(93, 184, 91);
+  background: rgb(var(--success-color, 93, 184, 91));
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-success, 255, 255, 255));
+}
 
 .tk-file-upload__progress {
   background-color: rgb(245, 156, 26);
-  background-color: rgb(var(--primary-color, 245, 156, 26)); }
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
 
 .tk-file-upload__validation-state {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 a.tk-link__native:not(.tk-button__native).primary {
   color: rgb(235, 144, 10);
-  color: rgb(var(--primary-color-dark, 235, 144, 10)); }
-  a.tk-link__native:not(.tk-button__native).primary:hover, a.tk-link__native:not(.tk-button__native).primary:focus {
-    background-color: rgba(245, 156, 26, 0.15);
-    background-color: rgba(var(--primary-color, 245, 156, 26), 0.15); }
-  a.tk-link__native:not(.tk-button__native).primary .ripple-container {
-    background-color: rgba(245, 156, 26, 0.3);
-    background-color: rgba(var(--primary-color, 245, 156, 26), 0.3); }
-
+  color: rgb(var(--primary-color-dark, 235, 144, 10));
+}
+a.tk-link__native:not(.tk-button__native).primary:hover, a.tk-link__native:not(.tk-button__native).primary:focus {
+  background-color: rgba(245, 156, 26, 0.15);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.15);
+}
+a.tk-link__native:not(.tk-button__native).primary .ripple-container {
+  background-color: rgba(245, 156, 26, 0.3);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.3);
+}
 a.tk-link__native:not(.tk-button__native).warning {
   padding: 0 20px 0 8px;
   color: rgb(238, 162, 54);
-  color: rgb(var(--warning-color-dark, 238, 162, 54)); }
-  a.tk-link__native:not(.tk-button__native).warning:hover, a.tk-link__native:not(.tk-button__native).warning:focus {
-    background-color: rgba(240, 173, 78, 0.15);
-    background-color: rgba(var(--warning-color, 240, 173, 78), 0.15); }
-  a.tk-link__native:not(.tk-button__native).warning .ripple-container {
-    background-color: rgba(240, 173, 78, 0.3);
-    background-color: rgba(var(--warning-color, 240, 173, 78), 0.3); }
-
+  color: rgb(var(--warning-color-dark, 238, 162, 54));
+}
+a.tk-link__native:not(.tk-button__native).warning:hover, a.tk-link__native:not(.tk-button__native).warning:focus {
+  background-color: rgba(240, 173, 78, 0.15);
+  background-color: rgba(var(--warning-color, 240, 173, 78), 0.15);
+}
+a.tk-link__native:not(.tk-button__native).warning .ripple-container {
+  background-color: rgba(240, 173, 78, 0.3);
+  background-color: rgba(var(--warning-color, 240, 173, 78), 0.3);
+}
 a.tk-link__native:not(.tk-button__native).danger {
   padding: 0 20px 0 8px;
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-  a.tk-link__native:not(.tk-button__native).danger:hover, a.tk-link__native:not(.tk-button__native).danger:focus {
-    background-color: rgba(211, 46, 46, 0.15);
-    background-color: rgba(var(--danger-color, 211, 46, 46), 0.15); }
-  a.tk-link__native:not(.tk-button__native).danger .ripple-container {
-    background-color: rgba(211, 46, 46, 0.3);
-    background-color: rgba(var(--danger-color, 211, 46, 46), 0.3); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+a.tk-link__native:not(.tk-button__native).danger:hover, a.tk-link__native:not(.tk-button__native).danger:focus {
+  background-color: rgba(211, 46, 46, 0.15);
+  background-color: rgba(var(--danger-color, 211, 46, 46), 0.15);
+}
+a.tk-link__native:not(.tk-button__native).danger .ripple-container {
+  background-color: rgba(211, 46, 46, 0.3);
+  background-color: rgba(var(--danger-color, 211, 46, 46), 0.3);
+}
 
 .tk-image-upload__progress {
   background-color: rgb(245, 156, 26);
-  background-color: rgb(var(--primary-color, 245, 156, 26)); }
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
 
 .tk-image-upload__validation-state {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-datepicker__native {
-  height: 36px; }
-  .tk-datepicker__native:focus {
-    box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
-    box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6); }
+  height: 36px;
+}
+.tk-datepicker__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
 
 .tk-datepicker.has-error .tk-datepicker__label {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 .tk-datepicker.has-error .tk-datepicker__native {
   box-shadow: 0 0 0 2px rgb(211, 46, 46);
-  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46)); }
-  .tk-datepicker.has-error .tk-datepicker__native:hover, .tk-datepicker.has-error .tk-datepicker__native:active, .tk-datepicker.has-error .tk-datepicker__native:focus {
-    box-shadow: 0 0 0 2px rgb(211, 46, 46);
-    box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46)); }
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
+.tk-datepicker.has-error .tk-datepicker__native:hover, .tk-datepicker.has-error .tk-datepicker__native:active, .tk-datepicker.has-error .tk-datepicker__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
 
 .tk-datepicker__validation-state {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-timespan__native {
-  height: 36px; }
-  .tk-timespan__native:focus {
-    box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
-    box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6); }
+  height: 36px;
+}
+.tk-timespan__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
 
 .tk-timespan.has-error .tk-timespan__label {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
-
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 .tk-timespan.has-error .tk-timespan__native {
   box-shadow: 0 0 0 2px rgb(211, 46, 46);
-  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46)); }
-  .tk-timespan.has-error .tk-timespan__native:hover, .tk-timespan.has-error .tk-timespan__native:active, .tk-timespan.has-error .tk-timespan__native:focus {
-    box-shadow: 0 0 0 2px rgb(211, 46, 46);
-    box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46)); }
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
+.tk-timespan.has-error .tk-timespan__native:hover, .tk-timespan.has-error .tk-timespan__native:active, .tk-timespan.has-error .tk-timespan__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
 
 .tk-timespan__validation-state {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .tk-data-table__content {
-  border-color: #dadce0; }
+  border-color: #dadce0;
+}
 
 .tk-data-table__header-cell {
   color: rgba(0, 0, 0, 0.9);
   color: rgba(var(--data-table-header-text-color, 0, 0, 0), 0.9);
   background-color: rgb(255, 255, 255);
-  background-color: rgb(var(--data-table-header-bg-color, 255, 255, 255)); }
+  background-color: rgb(var(--data-table-header-bg-color, 255, 255, 255));
+}
 
 .tk-data-table__header-row {
   height: 56px;
-  height: var(--data-table-header-height, 56px); }
-  @media only screen and (max-width: 767px) {
-    .tk-data-table__header-row {
-      height: calc(56px  *0.8);
-      height: calc(var(--data-table-header-height, 56px) * 0.8); } }
+  height: var(--data-table-header-height, 56px);
+}
+@media only screen and (max-width: 767px) {
+  .tk-data-table__header-row {
+    height: calc(56px *0.8);
+    height: calc(var(--data-table-header-height, 56px) * 0.8);
+  }
+}
 
 .tk-data-table__row {
   height: 56px;
-  height: var(--data-table-row-height, 56px); }
-  @media only screen and (max-width: 767px) {
-    .tk-data-table__row {
-      height: calc(56px  *0.8);
-      height: calc(var(--data-table-row-height, 56px) * 0.8); } }
+  height: var(--data-table-row-height, 56px);
+}
+@media only screen and (max-width: 767px) {
+  .tk-data-table__row {
+    height: calc(56px *0.8);
+    height: calc(var(--data-table-row-height, 56px) * 0.8);
+  }
+}
 
 .tk-data-table__seekmore {
   height: 56px;
-  height: var(--data-table-row-height, 56px); }
+  height: var(--data-table-row-height, 56px);
+}
 
 .tk-button__seekmore {
-  font-size: 1rem; }
+  font-size: 1rem;
+}
 
 .tk-data-table__row.vmCurrentRow {
   box-shadow: inset 0px 0px 0px 1px rgb(245, 156, 26);
-  box-shadow: inset 0px 0px 0px 1px rgb(var(--primary-color, 245, 156, 26)); }
-  .tk-data-table__row.vmCurrentRow td:first-child::before {
-    content: '';
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 5px;
-    height: 100%;
-    background-color: rgb(245, 156, 26);
-    background-color: rgb(var(--primary-color, 245, 156, 26)); }
+  box-shadow: inset 0px 0px 0px 1px rgb(var(--primary-color, 245, 156, 26));
+}
+.tk-data-table__row.vmCurrentRow td:first-child::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
 
 .tk-data-table__content tbody {
   /*@include color-declaration(background-color, $data-table-body-bg-color, --data-table-body-bg-color);*/
   color: rgb(0, 0, 0);
-  color: rgb(var(--data-table-body-text-color, 0, 0, 0)); }
+  color: rgb(var(--data-table-body-text-color, 0, 0, 0));
+}
 
 .tk-data-table__native.striped .tk-data-table__row:nth-of-type(odd).vmSelectedRow {
   background-color: rgba(245, 156, 26, 0.1);
-  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1); }
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+}
 
 .tk-data-table__row.vmSelectedRow {
   background-color: rgba(245, 156, 26, 0.1);
-  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1); }
-  .tk-data-table__row.vmSelectedRow:hover, .tk-data-table__row.vmSelectedRow:focus {
-    background-color: rgba(245, 156, 26, 0.2);
-    background-color: rgba(var(--primary-color, 245, 156, 26), 0.2); }
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+}
+.tk-data-table__row.vmSelectedRow:hover, .tk-data-table__row.vmSelectedRow:focus {
+  background-color: rgba(245, 156, 26, 0.2);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.2);
+}
+
+.tk-data-table__cell.cellselect {
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+  user-select: none;
+  outline: none;
+}
 
 .tk-data-table__highlite {
-  background-image: linear-gradient(to top, #E6E9F0 0%, #EEF1F5 100%); }
+  background-image: linear-gradient(to top, #E6E9F0 0%, #EEF1F5 100%);
+}
 
 .validation__item.danger {
   background-color: rgb(211, 46, 46);
   background-color: rgb(var(--danger-color, 211, 46, 46));
   color: rgb(255, 255, 255);
-  color: rgb(var(--text-on-danger, 255, 255, 255)); }
-
+  color: rgb(var(--text-on-danger, 255, 255, 255));
+}
 .validation__item.warning {
   background-color: rgb(240, 173, 78);
   background-color: rgb(var(--warning-color, 240, 173, 78));
   color: rgb(255, 255, 255);
-  color: rgb(var(--text-on-warning, 255, 255, 255)); }
-
+  color: rgb(var(--text-on-warning, 255, 255, 255));
+}
 .validation__item.info {
   background-color: #0b5461;
-  color: #fff; }
+  color: #fff;
+}
 
 .tk-progress-bar__indeterminate::before {
   background-color: rgb(245, 156, 26);
-  background-color: rgb(var(--primary-color, 245, 156, 26)); }
-
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
 .tk-progress-bar__indeterminate::after {
   background-color: rgb(245, 156, 26);
-  background-color: rgb(var(--primary-color, 245, 156, 26)); }
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
 
 .tk-auth-form__input:not(.input-validation-error):focus {
   box-shadow: 0 0 2px 0.15em rgba(245, 156, 26, 0.5);
-  box-shadow: 0 0 2px 0.15em rgba(var(--primary-color, 245, 156, 26), 0.5); }
+  box-shadow: 0 0 2px 0.15em rgba(var(--primary-color, 245, 156, 26), 0.5);
+}
 
 @media only screen and (min-width: 768px) {
   .tk-auth__info {
     background-color: rgb(245, 156, 26);
-    background-color: rgb(var(--primary-color, 245, 156, 26)); } }
+    background-color: rgb(var(--primary-color, 245, 156, 26));
+  }
+}
 
 @media only screen and (min-width: 768px) {
   .tk-auth__link {
     color: rgb(255, 255, 255);
     color: rgb(var(--text-on-primary, 255, 255, 255));
     background: rgb(235, 144, 10);
-    background: rgb(var(--primary-color-dark, 235, 144, 10)); }
-    .tk-auth__link .ripple-container {
-      background-color: rgba(255, 255, 255, 0.25);
-      background-color: rgba(var(--text-on-primary, 255, 255, 255), 0.25); } }
+    background: rgb(var(--primary-color-dark, 235, 144, 10));
+  }
+  .tk-auth__link .ripple-container {
+    background-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(var(--text-on-primary, 255, 255, 255), 0.25);
+  }
+}
 
 .tk-auth__validation-summary {
   background-color: rgba(211, 46, 46, 0.15);
-  background-color: rgba(var(--danger-color, 211, 46, 46), 0.15); }
+  background-color: rgba(var(--danger-color, 211, 46, 46), 0.15);
+}
 
 .validation-summary-errors {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
 .field-validation-error {
   color: rgb(211, 46, 46);
-  color: rgb(var(--danger-color, 211, 46, 46)); }
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
 
-/*# sourceMappingURL=data:application/json;base64,ewoJInZlcnNpb24iOiAzLAoJImZpbGUiOiAiQ29udGVudC9zY3NzL3NvdXJjZS90aGVtZS1kZWZhdWx0LmNzcyIsCgkic291cmNlcyI6IFsKCQkiQ29udGVudC9zY3NzL3NvdXJjZS90aGVtZS1kZWZhdWx0LnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL190ay1jb3JlLXRoZW1lLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL19jb2xvci1kZWZpbml0aW9ucy5zY3NzIiwKCQkiQ29udGVudC9zY3NzL3NvdXJjZS9fZnVuY3Rpb25zLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL2Z1bmN0aW9ucy9fY2hvb3NlLWNvbnRyYXN0LWNvbG9yLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL19taXhpbnMuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvbWl4aW5zL19lbGV2YXRpb24uc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvbWl4aW5zL190ay1yZXRpbmEuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvbWl4aW5zL19jcmVhdGUtdGV4dC1maWVsZC5zY3NzIiwKCQkiQ29udGVudC9zY3NzL3NvdXJjZS9nZW5lcmljL190ay1sYXlvdXQtdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1zcGlubmVyL190ay1zcGlubmVyLXRoZW1lLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL2NvbXBvbmVudHMvdGstYnV0dG9uL190ay1idXR0b24tdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1jaGVja2JveC9fdGstY2hlY2tib3gtdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1zd2l0Y2gvX3RrLXN3aXRjaC10aGVtZS5zY3NzIiwKCQkiQ29udGVudC9zY3NzL3NvdXJjZS9jb21wb25lbnRzL3RrLW5hdmJhci9fdGstbmF2YmFyLXRoZW1lLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL2NvbXBvbmVudHMvdGstc2lkZWJhci9fdGstc2lkZWJhci10aGVtZS5zY3NzIiwKCQkiQ29udGVudC9zY3NzL3NvdXJjZS9jb21wb25lbnRzL3RrLWFjdGlvbnMvX3RrLWFjdGlvbnMtdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1kcm9wZG93bi9fdGstZHJvcGRvd24tdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay10ZXh0LWZpZWxkL190ay10ZXh0LWZpZWxkLXRoZW1lLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL2NvbXBvbmVudHMvdGstbnVtYmVyLWZpZWxkL190ay1udW1iZXItZmllbGQtdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1mbG9hdC1maWVsZC9fdGstZmxvYXQtZmllbGQtdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay10ZXh0YXJlYS9fdGstdGV4dGFyZWEtdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1zdGF0aWMtdGV4dC9fdGstc3RhdGljLXRleHQtdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1tb2RhbHMvX3RrLW1vZGFsLXRoZW1lLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL2NvbXBvbmVudHMvdGstc2VsZWN0L190ay1zZWxlY3QtdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1maWxlLXVwbG9hZC9fdGstZmlsZS11cGxvYWQtdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1saW5rL190ay1saW5rLXRoZW1lLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL2NvbXBvbmVudHMvdGstaW1hZ2UtdXBsb2FkL190ay1pbWFnZS11cGxvYWQtdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1kYXRlcGlja2VyL190ay1kYXRlcGlja2VyLXRoZW1lLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL2NvbXBvbmVudHMvdGstdGltZXNwYW4vdGstdGltZXNwYW4tdGhlbWUuc2NzcyIsCgkJIkNvbnRlbnQvc2Nzcy9zb3VyY2UvY29tcG9uZW50cy90ay1kYXRhLXRhYmxlL190ay1kYXRhLXRhYmxlLXRoZW1lLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL2NvbXBvbmVudHMvdGstdmFsaWRhdGlvbi9fdGstdmFsaWRhdGlvbi10aGVtZS5zY3NzIiwKCQkiQ29udGVudC9zY3NzL3NvdXJjZS9jb21wb25lbnRzL3RrLXByb2dyZXNzLWJhci9fdGstcHJvZ3Jlc3MtYmFyLXRoZW1lLnNjc3MiLAoJCSJDb250ZW50L3Njc3Mvc291cmNlL3N0YXRpYy9fdGstc3RhdGljLXRoZW1lLnNjc3MiCgldLAoJIm5hbWVzIjogW10sCgkibWFwcGluZ3MiOiAiQUNJQSxBQUFBLElBQUksRUFBRSxBQUFBLElBQUksQ0FBQztFQUNWLFNBQVMsRURrQk8sSUFBSSxDQ2xCTyxVQUFVO0VBQ3JDLFNBQVMsRUFBRSwyQkFBeUMsQ0FBQyxVQUFVLEdBQy9EOztBUU5ELEFBQUEsWUFBWSxDQUFDO0VBQ1QsYUFBYSxFVDJCRCxJQUFJLENTM0JjLElBQUk7RUFDbEMsa0JBQWtCLEVUMEJOLElBQUksQ1MxQm1CLElBQUk7RUFDdkMsa0JBQWtCLEVBQUUsMEJBQXVDLENBQUMsSUFBSSxHQUNuRTs7QUFFRCxBQUFBLGVBQWUsQ0FBQztFQUNkLE1BQU0sRUFBRSxrQkFBK0I7RUFDdkMsTUFBTSxFQUFFLHdDQUFxRCxHQUM5RDs7QUFHQyxNQUFNLE1BQU0sTUFBTSxNQUFNLFNBQVMsRUFBRSxLQUFLO0VBRDFDLEFBQWdDLGVBQWpCLEFB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 */
+/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/_tk-core-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/generic/_tk-layout-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-spinner/_tk-spinner-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/_mixins.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-button/_tk-button-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/theme-default.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/_color-definitions.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-checkbox/_tk-checkbox-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-switch/_tk-switch-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-navbar/_tk-navbar-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-sidebar/_tk-sidebar-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-actions/_tk-actions-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-dropdown/_tk-dropdown-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-text-field/_tk-text-field-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-number-field/_tk-number-field-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-float-field/_tk-float-field-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-textarea/_tk-textarea-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-static-text/_tk-static-text-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-modals/_tk-modal-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-select/_tk-select-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-file-upload/_tk-file-upload-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-link/_tk-link-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-image-upload/_tk-image-upload-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-datepicker/_tk-datepicker-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-timespan/tk-timespan-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-data-table/_tk-data-table-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-validation/_tk-validation-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-progress-bar/_tk-progress-bar-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/static/_tk-static-theme.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%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%22%7D */
