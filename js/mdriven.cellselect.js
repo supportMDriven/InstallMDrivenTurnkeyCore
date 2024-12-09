@@ -10,8 +10,11 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
   thetable.addEventListener('mousedown', function (event) {
     let correcttarget = event.target;
     let isBlazor = false;
-    if (event.target.tagName == 'DIV' && event.target.parentElement.tagName == 'TD') {
-      correcttarget = event.target.parentElement; // blazor
+    if (correcttarget.tagName != 'TD') {
+      while (correcttarget && !(correcttarget.tagName === 'DIV' && correcttarget.parentElement && correcttarget.parentElement.tagName === 'TD')) {
+        correcttarget = correcttarget.parentElement; // Move to the parent element 
+      }
+      correcttarget = correcttarget.parentElement; // blazor
       isBlazor = true;
     }
     if (correcttarget.tagName == 'TD') {
@@ -97,7 +100,7 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
           break;
         case 'C', 'c':
           if (event.ctrlKey) {
-              CopyDataToClipFromCellSelectMDriven(thetable, angularscope);
+            CopyDataToClipFromCellSelectMDriven(thetable, angularscope);
           }
           break;
         case 'Enter': {
@@ -132,6 +135,54 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
 
 }
 
+function CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angularscope) {
+
+  if (!angularscope) {
+  }
+  else {
+    let listofitems = angularscope.$parent.root[angularscope.vcolName];
+
+    let isfirstrow = true;
+    let copydataheader = '';
+    let copydata = '';
+    listofitems.forEach(listitem => {
+      if (listitem.vCurrent || listitem.vSelected) {
+        let isfirst = true;
+        let rowdata = '';
+        Array.from(headerrowelement.children).forEach(header => {
+
+          if (header.attributes.colname) {
+            let membername = header.attributes.colname.value;
+            let memberitem = listitem[membername];
+            if (isfirstrow) {
+              if (!isfirst)
+                copydataheader += '\t';
+              copydataheader += membername;
+            }
+
+            if (!isfirst)
+              rowdata += '\t';
+            rowdata += memberitem;
+            isfirst = false;
+
+          }
+
+        });
+        if (!isfirstrow)
+          copydata += '\r\n';
+        copydata += rowdata;
+        isfirstrow = false;
+      }
+
+    });
+    if (!isfirstrow) {
+      let tot = copydataheader + '\r\n' + copydata;
+      angularscope.$parent.ViewData.RootVMClassObject["VM_Variables"]["vClipbookData"] = tot;
+      angularscope.$parent.$broadcast('__vClipbookDataChanged');
+    }
+  }
+}
+
 function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
 
   if (thetable._lastAnchor == null)
@@ -145,6 +196,11 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
   const maxCol = Math.max(thetable._lastAnchor.cellIndex, thetable._lastLast.cellIndex);
 
   let body = thetable._lastAnchor.parentElement.parentElement;
+  let headerrowelement = thetable.querySelector('thead').querySelector('tr');
+  if (minRow == maxRow && minCol == maxCol) {
+    CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angularscope);
+    return;
+  }
   let isfirstrow = true;
   let clipdata = '';
   for (var i = minRow; i <= maxRow; i++) {
@@ -157,7 +213,6 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
     if (!angularscope) {
     }
     else {
-      var headerrowelement = thetable.querySelector('thead').querySelector('tr');
       let angularelement = angular.element(cellelem);
       if (angularelement) {
         let listitem = angularelement.scope().row;
