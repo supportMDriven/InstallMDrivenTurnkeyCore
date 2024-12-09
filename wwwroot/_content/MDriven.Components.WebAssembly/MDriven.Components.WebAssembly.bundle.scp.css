@@ -167,6 +167,7 @@
 
 [b-cjn554j5ck] .tk-quickgrid-cell .cellselect {
   background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+  user-select: none;
 }
 
 /* Inputs should not have border unless current row*/
