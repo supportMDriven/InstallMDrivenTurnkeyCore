@@ -94,13 +94,22 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
           break;
         case 'V', 'v':
           if (event.ctrlKey) {
-            if (angularscope != null)
-              angularscope.$emit('cellPasteMDriven', null);
+            let data = navigator.clipboard.readText().then((text) => {
+              if (angularscope != null)
+                PossibleExcelPluginActionMDriven(text,angularscope);
+            });
           }
           break;
         case 'C', 'c':
           if (event.ctrlKey) {
             CopyDataToClipFromCellSelectMDriven(thetable, angularscope);
+          }
+          break;
+        case 'A', 'a':
+          if (event.ctrlKey) {
+            SelectAllMDriven(thetable, angularscope);
+            event.preventDefault();
+            return;
           }
           break;
         case 'Enter': {
@@ -135,9 +144,24 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
 
 }
 
+function SelectAllMDriven(thetable, angularscope) {
+  if (!angularscope) {
+    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'SelectAll', thetable).then(response => {
+      console.log(response); // Outputs: Hello, Alice Johnson! 
+    });
+  }
+  else {
+    angularscope.$parent.selectAllRows(angularscope.$parent.root.VMClassId.VMClassName, angularscope.vcolName);
+  }
+}
+
+
 function CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angularscope) {
 
   if (!angularscope) {
+    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'RowsToClip', thetable).then(response => {
+      console.log(response); // Outputs: Hello, Alice Johnson! 
+    });
   }
   else {
     let listofitems = angularscope.$parent.root[angularscope.vcolName];
@@ -183,6 +207,13 @@ function CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angulars
   }
 }
 
+function PossibleExcelPluginActionMDriven(text, angularscope) {
+  if (!angularscope) {
+  } else {
+    angularscope.$parent.ViewClient.StreamingAppClient.ExcelPluginDataSend(angularscope.$parent.ViewClient.ViewData.VMId,text).then(() => { });
+  }
+}
+
 function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
 
   if (thetable._lastAnchor == null)
@@ -201,6 +232,15 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
     CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angularscope);
     return;
   }
+
+  if (!angularscope) {
+    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'CellsToClip', thetable, minCol, MaxCol, minRow, MaxCol).then(response => {
+      console.log(response); // Outputs: Hello, Alice Johnson! 
+    });
+    return;
+  }
+
+
   let isfirstrow = true;
   let clipdata = '';
   for (var i = minRow; i <= maxRow; i++) {
@@ -210,44 +250,37 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
     let rowdata = '';
 
 
-    if (!angularscope) {
-    }
-    else {
-      let angularelement = angular.element(cellelem);
-      if (angularelement) {
-        let listitem = angularelement.scope().row;
-        for (var x = minCol; x <= maxCol; x++) {
-          let membername = headerrowelement.children[x].attributes.colname.value;
-          let memberitem = listitem[membername];
-          if (memberitem && memberitem != '')
-            rowhasdata = true;
-          if (!isfirst)
-            rowdata += '\t';
+
+    let angularelement = angular.element(cellelem);
+    if (angularelement) {
+      let listitem = angularelement.scope().row;
+      for (var x = minCol; x <= maxCol; x++) {
+        let membername = headerrowelement.children[x].attributes.colname.value;
+        let memberitem = listitem[membername];
+        if (memberitem && memberitem != '')
+          rowhasdata = true;
+        if (!isfirst)
+          rowdata += '\t';
+        if (memberitem)
           rowdata += memberitem;
-          isfirst = false;
-        }
-
+        isfirst = false;
       }
-      if (rowhasdata) {
-        if (!isfirstrow)
-          clipdata += '\r\n';
-        clipdata += rowdata;
-        isfirstrow = false;
-      }
-
 
     }
+    if (rowhasdata) {
+      if (!isfirstrow)
+        clipdata += '\r\n';
+      clipdata += rowdata;
+      isfirstrow = false;
+    }
+
+
+
 
   }
+  angularscope.$parent.ViewData.RootVMClassObject["VM_Variables"]["vClipbookData"] = clipdata;
+  angularscope.$parent.$broadcast('__vClipbookDataChanged');
 
-  if (!angularscope) {
-
-  }
-  else {
-    angularscope.$parent.ViewData.RootVMClassObject["VM_Variables"]["vClipbookData"] = clipdata;
-    angularscope.$parent.$broadcast('__vClipbookDataChanged');
-
-  }
 }
 
 
