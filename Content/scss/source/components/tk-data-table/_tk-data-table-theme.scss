@@ -83,6 +83,24 @@
   background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
   user-select: none;
   outline: none;
+  animation: none !important;
+  transition: none !important;
+}
+
+.cellselect_top {
+  border-top: 2px solid gray;
+}
+
+.cellselect_left {
+  border-left: 2px solid gray;
+}
+
+.cellselect_right {
+  border-right: 2px solid gray !important;
+}
+
+.cellselect_bottom {
+  border-bottom: 2px solid gray;
 }
 
 

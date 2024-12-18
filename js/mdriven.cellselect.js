@@ -9,13 +9,12 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
 
   thetable.addEventListener('mousedown', function (event) {
     let correcttarget = event.target;
-    let isBlazor = false;
+    let isBlazor = window.hasOwnProperty('Blazor');
     if (correcttarget.tagName != 'TD') {
       while (correcttarget && !(correcttarget.tagName === 'DIV' && correcttarget.parentElement && correcttarget.parentElement.tagName === 'TD')) {
         correcttarget = correcttarget.parentElement; // Move to the parent element 
       }
       correcttarget = correcttarget.parentElement; // blazor
-      isBlazor = true;
     }
     if (correcttarget.tagName == 'TD') {
       let thecurrentcell = correcttarget;
@@ -33,7 +32,6 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
       }
 
       UpdateCellSelects(thetable, isBlazor);
-      //thecurrentcell.focus();
       thetable._mousedown = true;
 
     }
@@ -46,16 +44,16 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
 
   thetable.addEventListener('mousemove', function (event) {
     let correcttarget = event.target;
-    let isBlazor = false;
+    let isBlazor = window.hasOwnProperty('Blazor');
     if (event.target.tagName == 'DIV' && event.target.parentElement.tagName == 'TD') {
       correcttarget = event.target.parentElement; // blazor
-      isBlazor = true;
     }
     if (correcttarget.tagName == 'TD' && thetable._mousedown == true) {
       let thecurrentcell = correcttarget;
       thetable._cellLast = thecurrentcell;
       UpdateCellSelects(thetable, isBlazor);
     }
+    event.preventDefault();
   });
 
 
@@ -65,11 +63,10 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
     const activeElement = document.activeElement;
     if (activeElement == null)
       return;
-    let isBlazor = false;
+    let isBlazor = window.hasOwnProperty('Blazor');
     let correcttarget = activeElement;
     if (activeElement.tagName == 'DIV' && activeElement.parentElement.tagName == 'TD') {
       correcttarget = activeElement.parentElement; // blazor
-      isBlazor = true;
     }
 
 
@@ -96,13 +93,15 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
           if (event.ctrlKey) {
             let data = navigator.clipboard.readText().then((text) => {
               if (angularscope != null)
-                PossibleExcelPluginActionMDriven(text,angularscope);
+                PossibleExcelPluginActionMDriven(text, angularscope);
             });
           }
           break;
         case 'C', 'c':
           if (event.ctrlKey) {
             CopyDataToClipFromCellSelectMDriven(thetable, angularscope);
+            event.preventDefault();
+            return;
           }
           break;
         case 'A', 'a':
@@ -157,6 +156,7 @@ function SelectAllMDriven(thetable, angularscope) {
 
 
 function CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angularscope) {
+  console.log("CopyDataToClipFromRowSelectMDriven");
 
   if (!angularscope) {
     DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'RowsToClip', thetable).then(response => {
@@ -210,12 +210,13 @@ function CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angulars
 function PossibleExcelPluginActionMDriven(text, angularscope) {
   if (!angularscope) {
   } else {
-    angularscope.$parent.ViewClient.StreamingAppClient.ExcelPluginDataSend(angularscope.$parent.ViewClient.ViewData.VMId,text).then(() => { });
+    angularscope.$parent.ViewClient.StreamingAppClient.ExcelPluginDataSend(angularscope.$parent.ViewClient.ViewData.VMId, text).then(() => { });
   }
 }
 
 function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
 
+  console.log("CopyDataToClipFromCellSelectMDriven");
   if (thetable._lastAnchor == null)
     return;
   if (thetable._lastLast == null)
@@ -286,47 +287,121 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
 
 function UpdateCellSelects(thetable, isBlazor) {
 
-  if (thetable._lastLast == null)
-    thetable._lastLast = thetable._lastAnchor;
+  // Mouse move sends a lot even if in same cell
+  if (thetable._lastAnchor != thetable._cellAnchor || thetable._lastLast != thetable._cellLast) {
 
-  if (thetable._lastAnchor != null) {
-    let square = getSquareSelection(thetable._lastAnchor, thetable._lastLast);
-    let body = thetable._lastAnchor.parentElement.parentElement;
-    square.forEach(cell => {
-      let cellelem = body.rows[cell.row].cells[cell.col];
-      if (isBlazor)
-        cellelem.children[0].classList.remove('cellselect');
-      else
-        cellelem.classList.remove('cellselect');
+    if (thetable._lastLast == null)
+      thetable._lastLast = thetable._lastAnchor;
+
+    const effectedelements = [];
+    const effectedelementsborder = [];
+
+
+
+    if (thetable._lastAnchor != null) {
+      let square = getSquareSelection(thetable._lastAnchor, thetable._lastLast);
+      let body = thetable._lastAnchor.parentElement.parentElement;
+      square.forEach(cell => {
+        let cellelem = body.rows[cell.row].cells[cell.col];
+        let elementtostyle = cellelem;
+        if (isBlazor) {
+          elementtostyle = cellelem.children[0];
+        }
+        else {
+        }
+        effectedelements.push(elementtostyle);
+        effectedelementsborder.push(cellelem);
+        elementtostyle._cellselectstate = 'off';
+        elementtostyle._debug = '{' + cell.col + ';' + cell.row + '} ';
+        cellelem._cellselectstate = 'off';
+
+      });
+    }
+
+
+    if (thetable._cellLast == null)
+      thetable._cellLast = thetable._cellAnchor;
+
+    if (thetable._cellAnchor != null) {
+      let square = getSquareSelection(thetable._cellAnchor, thetable._cellLast);
+      let body = thetable._cellAnchor.parentElement.parentElement;
+      square.forEach(cell => {
+        let cellelem = body.rows[cell.row].cells[cell.col];
+        let elementtostyle = cellelem;
+        if (isBlazor) {
+          elementtostyle = cellelem.children[0];
+        }
+        else {
+        }
+
+        effectedelements.push(elementtostyle);
+        effectedelementsborder.push(cellelem);
+        elementtostyle._cellselectstate = 'on'
+        elementtostyle._debug = '{' + cell.col + ';' + cell.row + '} ';
+        cellelem._cellselectstate = 'on'
+        cellelem._bbottom = cell._bbottom;
+        cellelem._bleft = cell._bleft;
+        cellelem._btop = cell._btop;
+        cellelem._bright = cell._bright;
+
+      });
+    }
+
+    let countremoved = '';
+    let countadded = '';
+    effectedelements.forEach(elemToStyle => {
+      if (elemToStyle._cellselectstate == "on") {
+        elemToStyle.classList.add('cellselect');
+        countadded += elemToStyle._debug;
+      }
+      else {
+        elemToStyle.classList.remove('cellselect');
+        countremoved += elemToStyle._debug;
+      }     
     });
-    //thetable._lastAnchor.classList.remove('cellselect');
-  }
 
+    effectedelementsborder.forEach(elemToStyle => {
+      if (elemToStyle._cellselectstate == "on") {
+        if (elemToStyle._btop)
+          elemToStyle.classList.add('cellselect_top');
+        else
+          elemToStyle.classList.remove('cellselect_top');
+        if (elemToStyle._bleft)
+          elemToStyle.classList.add('cellselect_left');
+        else
+          elemToStyle.classList.remove('cellselect_left');
+        if (elemToStyle._bright)
+          elemToStyle.classList.add('cellselect_right');
+        else
+          elemToStyle.classList.remove('cellselect_right');
+        if (elemToStyle._bbottom)
+          elemToStyle.classList.add('cellselect_bottom');
+        else
+          elemToStyle.classList.remove('cellselect_bottom');
 
-  if (thetable._cellLast == null)
-    thetable._cellLast = thetable._cellAnchor;
-
-  if (thetable._cellAnchor != null) {
-    let square = getSquareSelection(thetable._cellAnchor, thetable._cellLast);
-    let body = thetable._cellAnchor.parentElement.parentElement;
-    square.forEach(cell => {
-      let cellelem = body.rows[cell.row].cells[cell.col];
-      if (isBlazor)
-        cellelem.children[0].classList.add('cellselect');
-      else
-        cellelem.classList.add('cellselect');
+        
+      }
+      else {
+        elemToStyle.classList.remove('cellselect_top');
+        elemToStyle.classList.remove('cellselect_left');
+        elemToStyle.classList.remove('cellselect_right');
+        elemToStyle.classList.remove('cellselect_bottom');
+      }
     });
+
+
+
+
+    thetable._lastAnchor = thetable._cellAnchor;
+    thetable._lastLast = thetable._cellLast;
+
+    console.log("UpdateCellSelects rem:" + countremoved + " add:" + countadded + " blazor:" + isBlazor);
   }
-
-
-
-  thetable._lastAnchor = thetable._cellAnchor;
-  thetable._lastLast = thetable._cellLast;
 }
 
 
 let selectedCells = [];
-class Cell { constructor(row, col) { this.row = row; this.col = col; } }
+class Cell { constructor(row, col, bleft, btop, bright, bbottom) { this.row = row; this.col = col; this._bleft = bleft; this._btop = btop; this._bright = bright; this._bbottom = bbottom; } }
 
 function getSquareSelection(cell1, cell2) {
   const minRow = Math.min(cell1.parentElement.rowIndex - 1, cell2.parentElement.rowIndex - 1);
@@ -335,9 +410,10 @@ function getSquareSelection(cell1, cell2) {
   const maxCol = Math.max(cell1.cellIndex, cell2.cellIndex);
 
   const selection = [];
+  let bleft = 0; let btop = 0; let bright = 0; let bbottom = 0;
   for (let row = minRow; row <= maxRow; row++) {
     for (let col = minCol; col <= maxCol; col++) {
-      selection.push(new Cell(row, col));
+      selection.push(new Cell(row, col, col == minCol, row == minRow, col == maxCol, row == maxRow));
     }
   }
   return selection;
