@@ -92,8 +92,8 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
         case 'V', 'v':
           if (event.ctrlKey) {
             let data = navigator.clipboard.readText().then((text) => {
-              if (angularscope != null)
-                PossibleExcelPluginActionMDriven(text, angularscope);
+              PossibleCellPasteMDriven(thetable, text, angularscope);
+              return;
             });
           }
           break;
@@ -138,7 +138,27 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
       else
         nextCell.focus();
       event.preventDefault();
+
     }
+    else {
+      // paste in header 
+      if (correcttarget.tagName === 'TD') {
+        switch (key) {
+          case 'V', 'v':
+            if (event.ctrlKey) {
+              let data = navigator.clipboard.readText().then((text) => {
+                PossibleExcelPluginActionMDriven(text, angularscope);
+              });
+            }
+            break;
+          default:
+            return; // Quit when this doesn't handle the key event.
+        }
+      }
+    }
+
+
+
   });
 
 }
@@ -207,6 +227,39 @@ function CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angulars
   }
 }
 
+
+function PossibleCellPasteMDriven(thetable, text, angularscope) {
+
+  if (thetable._cellAnchor) {
+    const rows = text.split('\r\n');
+
+    rows.forEach((row, rowIndex) => {
+      const cells = row.split('\t');
+      if (cells != "") {
+        cells.forEach((cell, cellIndex) => {
+          let inp = thetable.rows[rowIndex + thetable._cellAnchor.parentElement.rowIndex].cells[cellIndex + thetable._cellAnchor.cellIndex].querySelector('input');
+          if (inp) {
+            if (inp.type == "date") {
+              const cellasdate = new Date(cell);
+              const year = cellasdate.getFullYear();
+              const month = String(cellasdate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+              const day = String(cellasdate.getDate()).padStart(2, '0');
+              cell = `${year}-${month}-${day}`;
+            }
+            inp.value = cell;
+            if (angularscope) {
+              const event = new Event('input', { bubbles: true });
+              inp.dispatchEvent(event);  // to touch it like a user so that angular sees it
+            }
+          }
+
+        });
+      }
+    });
+
+  }
+}
+
 function PossibleExcelPluginActionMDriven(text, angularscope) {
   if (!angularscope) {
   } else {
@@ -262,8 +315,17 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
           rowhasdata = true;
         if (!isfirst)
           rowdata += '\t';
-        if (memberitem)
+        if (memberitem) {
+          if (memberitem instanceof Date) {
+            const year = memberitem.getFullYear();
+            const month = String(memberitem.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const day = String(memberitem.getDate()).padStart(2, '0');
+            const hours = String(memberitem.getHours()).padStart(2, '0');
+            const minutes = String(memberitem.getMinutes()).padStart(2, '0');
+            memberitem = `${year}-${month}-${day} ${hours}:${minutes}`;
+          }
           rowdata += memberitem;
+        }
         isfirst = false;
       }
 
@@ -357,7 +419,7 @@ function UpdateCellSelects(thetable, isBlazor) {
       else {
         elemToStyle.classList.remove('cellselect');
         countremoved += elemToStyle._debug;
-      }     
+      }
     });
 
     effectedelementsborder.forEach(elemToStyle => {
@@ -379,7 +441,7 @@ function UpdateCellSelects(thetable, isBlazor) {
         else
           elemToStyle.classList.remove('cellselect_bottom');
 
-        
+
       }
       else {
         elemToStyle.classList.remove('cellselect_top');
