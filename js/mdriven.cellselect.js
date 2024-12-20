@@ -238,7 +238,7 @@ function PossibleCellPasteMDriven(thetable, text, angularscope) {
       if (cells != "") {
         cells.forEach((cell, cellIndex) => {
           let inp = thetable.rows[rowIndex + thetable._cellAnchor.parentElement.rowIndex].cells[cellIndex + thetable._cellAnchor.cellIndex].querySelector('input');
-          if (inp) {
+          if (inp && (inp.disabled == nothing || disabled != 'disabled')) {
             if (inp.type == "date") {
               const cellasdate = new Date(cell);
               const year = cellasdate.getFullYear();
@@ -252,7 +252,6 @@ function PossibleCellPasteMDriven(thetable, text, angularscope) {
               inp.dispatchEvent(event);  // to touch it like a user so that angular sees it
             }
           }
-
         });
       }
     });
