@@ -1,0 +1,27 @@
+﻿<md-dialog class="n-tk-application-info">
+  <div class="n-tk-application-info__header">
+    <span>Application information</span>
+    <!--<button ng-click="$ctrl.hide()"></button>-->
+    <button tk-button="fab" class="text mini" ng-click="$ctrl.hide()">
+      <tk-icon icon="close"></tk-icon>
+    </button>
+
+    <tk-fab variant="text" size="small" click-handler="$ctrl.hide()">
+      <tk-icon>close</tk-icon>
+    </tk-fab>
+  </div>
+  <div class="n-tk-application-info__content">
+    <ul class="n-tk-application-info__list">
+      <li class="n-tk-application-info__option" ng-repeat="option in $ctrl.appInfo">
+        <tk-textfield id="{{option.id}}" label="{{option.name}}" ng-model="option.value" ng-readonly="true"></tk-textfield>
+        <tk-fab variant="text" size="small" click-handler="$ctrl.copyToClipboard($event, option)" class="n-tk-application-info__copy">
+          <tk-icon>content_copy</tk-icon>
+        </tk-fab>
+      </li>
+    </ul>
+  </div>
+  <div class="n-tk-application-info__actions">
+    <tk-button variant="text" on-click="$ctrl.hide()">close</tk-button>
+    <tk-button variant="text" on-click="$ctrl.reset()">reset</tk-button>
+  </div>
+</md-dialog>

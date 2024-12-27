@@ -1,0 +1,12 @@
+<label ng-show="$ctrl.label" for="{{$ctrl.id}}" id="{{$ctrl.id}}.Label" class="n-tk-textfield__label">{{$ctrl.label}}</label>
+<div class="n-tk-textfield__container">
+  <input type="{{$ctrl.type}}" id="{{$ctrl.id}}" ng-model="$ctrl.ngModel" ng-disabled="$ctrl.ngReadonly" aria-labelledby="{{$ctrl.id}}.Label" class="n-tk-textfield__input" placeholder="{{$ctrl.placeholder}}"/>
+</div>
+<span ng-if="$ctrl.helpertext && !$ctrl.validationError" id="{{$ctrl.id}}.HelperText" class="n-tk-textfield__helpertext">{{$ctrl.helpertext}}</span>
+<span ng-if="$ctrl.validationError" 
+  class="n-tk-textfield__helpertext" 
+  id="{{$ctrl.id}}.ErrorMessage">
+    <tk-icon>error</tk-icon>
+    {{$ctrl.validationMessage}}
+</span>
+

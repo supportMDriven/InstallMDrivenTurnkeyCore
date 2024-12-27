@@ -1,0 +1,24 @@
+.tk-switch__interactive {
+  &::before,
+  &::after {
+    @include color-declaration(background-color, $primary-color, --primary-color);
+  }
+}
+
+.tk-switch__native:checked ~ .tk-switch__content {
+  & .tk-switch__track {
+    @include color-declaration(background-color, $primary-color, --primary-color);
+    @include color-declaration(border-color, $primary-color, --primary-color);
+  }
+
+  & .tk-switch__interactive {
+    & span {
+      @include color-declaration(background-color, $primary-color, --primary-color);
+      @include color-declaration(border-color, $primary-color, --primary-color);
+    }
+  }
+}
+
+.tk-switch__validation-state {
+  @include color-declaration(color, $danger-color, --danger-color);
+}

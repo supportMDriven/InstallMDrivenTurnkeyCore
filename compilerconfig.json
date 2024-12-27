@@ -1,0 +1,18 @@
+[
+  {
+    "outputFile": "Content/core.css",
+    "inputFile": "Content/scss/source/tk-core.scss",
+    "minify": {
+      "enabled": false
+    },
+    "options": { "sourceMap": true }
+  },
+  {
+    "outputFile": "Content/theme-default.css",
+    "inputFile": "Content/scss/source/theme-default.scss",
+    "minify": {
+      "enabled": false
+    },
+    "options": { "sourceMap": true }
+  }
+]
