@@ -131,4 +131,10 @@
   display: grid;
 }
 
+/*To make dots scroll along*/
+
+#viewmodelSection {
+  position: relative;
+}
+
 /*Deep hierarchy, and listview rows*/
