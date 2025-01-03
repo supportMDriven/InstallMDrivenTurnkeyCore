@@ -137,4 +137,31 @@
   position: relative;
 }
 
+.selectanimationdot {
+  width: 50px;
+  height: 50px;
+  background-color: yellow;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: shrink 1s forwards;
+  z-index:1000;
+}
+
+@keyframes shrink {
+  from {
+    width: 50px;
+    height: 50px;
+    opacity: 1;
+  }
+
+  to {
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+  }
+}
+
 /*Deep hierarchy, and listview rows*/
