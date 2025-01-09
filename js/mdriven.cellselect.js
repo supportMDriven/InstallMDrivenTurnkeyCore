@@ -288,7 +288,7 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
 
   if (!angularscope) {
     DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'CellsToClip', thetable, minCol, MaxCol, minRow, MaxCol).then(response => {
-      console.log(response); // Outputs: Hello, Alice Johnson! 
+      console.log(response); 
     });
     return;
   }
