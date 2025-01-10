@@ -91,7 +91,11 @@ const observer = new MutationObserver(mutations => {
         }
         if (node.matches('.tk-data-table__native')) {
           if (window.TableKeyDownMDriven)
-            window.TableKeyDownMDriven(node);
+            window.TableKeyDownMDriven(node); //handle cellselect
+        }
+        if (node.matches('.seekeraction')) {
+          if (window.IsSeekerMDriven)
+            window.IsSeekerMDriven(node); //handle enter to search and ExcelPluginImport
         }
 
       }

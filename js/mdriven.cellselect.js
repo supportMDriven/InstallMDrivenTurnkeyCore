@@ -1,6 +1,12 @@
 ﻿// aim is to implement CellSelect, copy and paste to and from excel, also handle multi item search, and import to replace Excel-plugin
 
 
+window.IsSeekerMDriven = function (theMainSeekerButton) { //handle enter to search and ExcelPluginImport for Blazor
+  document.body.removeEventListener('keydown', checkSeekerForEnterAndExcelPasteKeyDown);
+  document.body.addEventListener('keydown', checkSeekerForEnterAndExcelPasteKeyDown);
+}
+
+
 
 //////////CELL SELECT
 window.TableKeyDownMDriven = function (thetable, angularscope) {
@@ -14,6 +20,8 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
       while (correcttarget && !(correcttarget.tagName === 'DIV' && correcttarget.parentElement && correcttarget.parentElement.tagName === 'TD')) {
         correcttarget = correcttarget.parentElement; // Move to the parent element 
       }
+      if (!correcttarget)
+        return; // click in header so we never find TD
       correcttarget = correcttarget.parentElement; // blazor
     }
     if (correcttarget.tagName == 'TD') {
@@ -21,6 +29,10 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
       let thecurrentrow = thecurrentcell.parentElement;
       let row = thecurrentrow.rowIndex - 1; // correct for header
       let col = thecurrentcell.cellIndex;
+      if (thecurrentrow.rowIndex == -1) {
+        //something fishy
+      }
+
 
       if (event.shiftKey) {
         thetable._cellLast = thecurrentcell;
@@ -30,6 +42,10 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
         thetable._cellLast = thecurrentcell;
 
       }
+      if (thetable._lastAnchor != null && thetable._lastAnchor.parentElement != null && thetable._lastAnchor.parentElement.parentElement==null) // if its a TD not belonging to a table
+        thetable._lastAnchor = null;
+      if (thetable._lastLast != null && thetable._lastLast.parentElement != null && thetable._lastLast.parentElement.parentElement==null) // if its a TD not belonging to a table
+        thetable._lastLast = null;
 
       UpdateCellSelects(thetable, isBlazor);
       thetable._mousedown = true;
@@ -59,6 +75,9 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
 
   thetable.addEventListener('keydown', function (event) {
     const key = event.key;
+    if (event.defaultPrevented)
+      return;
+
     // in angular the cell is the td 
     const activeElement = document.activeElement;
     if (activeElement == null)
@@ -106,13 +125,15 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
           break;
         case 'A', 'a':
           if (event.ctrlKey) {
-            SelectAllMDriven(thetable, angularscope);
-            event.preventDefault();
-            return;
+            if (thecurrentcell.tagName == 'DIV' || thecurrentcell.tagName == 'TD') {
+              SelectAllMDriven(thetable, angularscope);
+              event.preventDefault();
+            }
+            return; // controls have their own select-all
           }
           break;
         case 'Enter': {
-          const input = thecurrentcell.querySelector('input');
+          const input = thecurrentcell.querySelector('input,select');
           if (input) {
             input.focus();
             return;
@@ -142,7 +163,7 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
     }
     else {
       // paste in header 
-      if (correcttarget.tagName === 'TD') {
+      if (correcttarget.tagName === 'TH') {
         switch (key) {
           case 'V', 'v':
             if (event.ctrlKey) {
@@ -163,10 +184,64 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
 
 }
 
+function isInsideTable(element) {
+  while (element) {
+    if (element.tagName === 'TABLE') {
+      return true;
+    }
+    element = element.parentElement;
+  }
+  return false;
+}
+function checkSeekerForEnterAndExcelPasteKeyDown(event) {
+
+  const key = event.key;
+  if (event.defaultPrevented)
+    return;
+
+  switch (key) {
+    case 'V', 'v':
+      if (event.ctrlKey) {
+        if (event.activeElement) {
+          if (event.activeElement.tagName!='DIV') {
+            return; // inputs have their own paste
+          }
+        }
+        let theseekerbutton = document.body.querySelector('.seekeraction');
+        if (theseekerbutton) {
+          let data = navigator.clipboard.readText().then((text) => {
+            DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'ExcelPluginDataSend', text).then(response => {
+              console.log(response);
+            });
+            return;
+          });
+        }
+      }
+      break;
+    case 'Enter': {
+      
+      if (event.activeElement && isInsideTable(event.activeElement)) {
+        return;// avoid triggering search if we are in table, enters mean different things in a table
+      }
+      let theseekerbutton = document.body.querySelector('.seekeraction');
+      if (theseekerbutton) {
+        theseekerbutton.focus(); // If input box has focus, need to move out to send search text
+        theseekerbutton.click();
+        event.stopPropagation();
+        event.preventDefault();
+      }
+
+      break;
+    }
+    default:
+      return; // Quit when this doesn't handle the key event.
+  }
+}
+
 function SelectAllMDriven(thetable, angularscope) {
   if (!angularscope) {
-    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'SelectAll', thetable).then(response => {
-      console.log(response); // Outputs: Hello, Alice Johnson! 
+    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'SelectAll', thetable.id).then(response => {
+      console.log(response);
     });
   }
   else {
@@ -179,8 +254,8 @@ function CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angulars
   console.log("CopyDataToClipFromRowSelectMDriven");
 
   if (!angularscope) {
-    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'RowsToClip', thetable).then(response => {
-      console.log(response); // Outputs: Hello, Alice Johnson! 
+    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'RowsToClip', thetable.id).then(response => {
+      console.log(response);
     });
   }
   else {
@@ -237,20 +312,36 @@ function PossibleCellPasteMDriven(thetable, text, angularscope) {
       const cells = row.split('\t');
       if (cells != "") {
         cells.forEach((cell, cellIndex) => {
-          let inp = thetable.rows[rowIndex + thetable._cellAnchor.parentElement.rowIndex].cells[cellIndex + thetable._cellAnchor.cellIndex].querySelector('input');
-          if (inp && (inp.disabled == nothing || disabled != 'disabled')) {
-            if (inp.type == "date") {
-              const cellasdate = new Date(cell);
-              const year = cellasdate.getFullYear();
-              const month = String(cellasdate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-              const day = String(cellasdate.getDate()).padStart(2, '0');
-              cell = `${year}-${month}-${day}`;
+          let inp = thetable.rows[rowIndex + thetable._cellAnchor.parentElement.rowIndex].cells[cellIndex + thetable._cellAnchor.cellIndex].querySelector('input,select');
+          if (inp && (!inp.disabled) && (inp.disabled !== 'disabled')) {
+            if (inp.tagName == "SELECT") {
+              for (let i = 0; i < inp.options.length; i++) {
+                if (inp.options[i].textContent === cell) {
+                  inp.selectedIndex = i;
+                  break;
+                }
+              }
             }
-            inp.value = cell;
-            if (angularscope) {
+            else {
+              if (inp.type == "date") {
+                const cellasdate = new Date(cell);
+                const year = cellasdate.getFullYear();
+                const month = String(cellasdate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                const day = String(cellasdate.getDate()).padStart(2, '0');
+                cell = `${year}-${month}-${day}`;
+              }
+              inp.value = cell;
+            }
+
+            if (inp.tagName == "SELECT") {
+              const event = new Event('change', { bubbles: true });
+              inp.dispatchEvent(event);  // to touch it like a user so that angular and blazor sees it
+            }
+            else {
               const event = new Event('input', { bubbles: true });
-              inp.dispatchEvent(event);  // to touch it like a user so that angular sees it
+              inp.dispatchEvent(event);  // to touch it like a user so that angular and blazor sees it
             }
+
           }
         });
       }
@@ -261,8 +352,12 @@ function PossibleCellPasteMDriven(thetable, text, angularscope) {
 
 function PossibleExcelPluginActionMDriven(text, angularscope) {
   if (!angularscope) {
+    // this does not happen in Blazor because the keydown is not working in the menu. Instead we check in global keydown (checkSeekerForEnterAndExcelPasteKeyDown)
+    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'ExcelPluginDataSend', thetable.id, text).then(response => {
+      console.log(response);
+    });
   } else {
-    angularscope.$parent.ViewClient.StreamingAppClient.ExcelPluginDataSend(angularscope.$parent.ViewClient.ViewData.VMId, text).then(() => { });
+    angularscope.$parent.ViewClient.StreamingAppClient.ExcelPluginDataSend(angularscope.$parent.ViewClient.ViewData.VMId, text);
   }
 }
 
@@ -280,68 +375,65 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
   const maxCol = Math.max(thetable._lastAnchor.cellIndex, thetable._lastLast.cellIndex);
 
   let body = thetable._lastAnchor.parentElement.parentElement;
+  if (!body)
+    return;
   let headerrowelement = thetable.querySelector('thead').querySelector('tr');
   if (minRow == maxRow && minCol == maxCol) {
     CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angularscope);
     return;
   }
 
-  if (!angularscope) {
-    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'CellsToClip', thetable, minCol, MaxCol, minRow, MaxCol).then(response => {
-      console.log(response); 
-    });
-    return;
-  }
-
 
   let isfirstrow = true;
   let clipdata = '';
-  for (var i = minRow; i <= maxRow; i++) {
-    let cellelem = body.rows[i];
+  for (let y = minRow; y <= maxRow; y++) {
     let rowhasdata = false;
     let isfirst = true;
     let rowdata = '';
-
-
-
-    let angularelement = angular.element(cellelem);
-    if (angularelement) {
-      let listitem = angularelement.scope().row;
-      for (var x = minCol; x <= maxCol; x++) {
-        let membername = headerrowelement.children[x].attributes.colname.value;
-        let memberitem = listitem[membername];
-        if (memberitem && memberitem != '')
-          rowhasdata = true;
-        if (!isfirst)
-          rowdata += '\t';
-        if (memberitem) {
-          if (memberitem instanceof Date) {
-            const year = memberitem.getFullYear();
-            const month = String(memberitem.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-            const day = String(memberitem.getDate()).padStart(2, '0');
-            const hours = String(memberitem.getHours()).padStart(2, '0');
-            const minutes = String(memberitem.getMinutes()).padStart(2, '0');
-            memberitem = `${year}-${month}-${day} ${hours}:${minutes}`;
-          }
-          rowdata += memberitem;
-        }
-        isfirst = false;
+    const cells = body.rows[y].cells;
+    for (let x = minCol; x <= maxCol; x++) {
+      const inputElement = cells[x].querySelector('input,select');
+      let cellContent = '';
+      if (inputElement.tagName == "SELECT") {
+        cellContent = inputElement.options[inputElement.selectedIndex].textContent;
       }
+      else {
+        if (inputElement) {
+          cellContent = inputElement.value; // Get value of date input
+        }
+        else {
+          cellContent = cells[x].innerText;
+        }
+      }
+      if (cellContent && cellContent != '')
+        rowhasdata = true;
+      if (!isfirst)
+        rowdata += '\t';
+      if (cellContent && cellContent != '')
+        rowdata += cellContent;
+      isfirst = false;
 
+      console.log(`Cell [${x}, ${y}]:` + cellContent);
     }
+
     if (rowhasdata) {
       if (!isfirstrow)
         clipdata += '\r\n';
       clipdata += rowdata;
       isfirstrow = false;
     }
-
-
-
-
   }
-  angularscope.$parent.ViewData.RootVMClassObject["VM_Variables"]["vClipbookData"] = clipdata;
-  angularscope.$parent.$broadcast('__vClipbookDataChanged');
+
+  if (!angularscope) {
+    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'CellsToClip', thetable.id, clipdata).then(response => {
+      console.log(response);
+    });
+    return;
+  }
+  else {
+    angularscope.$parent.ViewData.RootVMClassObject["VM_Variables"]["vClipbookData"] = clipdata;
+    angularscope.$parent.$broadcast('__vClipbookDataChanged');
+  }
 
 }
 
@@ -362,6 +454,8 @@ function UpdateCellSelects(thetable, isBlazor) {
     if (thetable._lastAnchor != null) {
       let square = getSquareSelection(thetable._lastAnchor, thetable._lastLast);
       let body = thetable._lastAnchor.parentElement.parentElement;
+      if (!body)
+        return;
       square.forEach(cell => {
         let cellelem = body.rows[cell.row].cells[cell.col];
         let elementtostyle = cellelem;
