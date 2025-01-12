@@ -192,7 +192,9 @@
   display: none;
 }
 
-
+[b-cjn554j5ck] .tk-quickgrid-cell img {
+  max-height: 30px;
+}
 /* cell */
 [b-cjn554j5ck] tbody tr .tk-quickgrid-cell {
   text-overflow: ellipsis;
