@@ -394,7 +394,7 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
     for (let x = minCol; x <= maxCol; x++) {
       const inputElement = cells[x].querySelector('input,select');
       let cellContent = '';
-      if (inputElement.tagName == "SELECT") {
+      if (inputElement && inputElement.tagName == "SELECT") {
         cellContent = inputElement.options[inputElement.selectedIndex].textContent;
       }
       else {
