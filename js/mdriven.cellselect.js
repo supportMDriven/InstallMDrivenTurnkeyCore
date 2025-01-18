@@ -94,6 +94,7 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
       let thecurrentrow = correcttarget.parentElement;
       let row = thecurrentrow.rowIndex - 1; // correct for header
       let col = thecurrentcell.cellIndex;
+      let colCountTakenfromheadertoavoidextracells = thetable.querySelector('thead').rows[0].cells.length;
 
       switch (key) {
         case 'ArrowUp':
@@ -106,7 +107,7 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
           col = col > 0 ? col - 1 : col;
           break;
         case 'ArrowRight':
-          col = col < thecurrentrow.cells.length - 1 ? col + 1 : col;
+          col = col < colCountTakenfromheadertoavoidextracells - 1 ? col + 1 : col;
           break;
         case 'V', 'v':
           if (event.ctrlKey) {
@@ -127,6 +128,14 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
           if (event.ctrlKey) {
             if (thecurrentcell.tagName == 'DIV' || thecurrentcell.tagName == 'TD') {
               SelectAllMDriven(thetable, angularscope);
+              // also select all via cellselect to make it work even if mdriven is not multiselect in this case
+              if (thetable.rows.length>1) {
+                thetable._cellAnchor = thetable.rows[1].cells[0]; // avoid header
+                thetable._cellLast = thetable.rows[thetable.rows.length - 1].cells[colCountTakenfromheadertoavoidextracells - 1];;
+                UpdateCellSelects(thetable, isBlazor);
+              }
+
+
               event.preventDefault();
             }
             return; // controls have their own select-all
@@ -250,57 +259,6 @@ function SelectAllMDriven(thetable, angularscope) {
 }
 
 
-function CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angularscope) {
-  console.log("CopyDataToClipFromRowSelectMDriven");
-
-  if (!angularscope) {
-    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'RowsToClip', thetable.id).then(response => {
-      console.log(response);
-    });
-  }
-  else {
-    let listofitems = angularscope.$parent.root[angularscope.vcolName];
-
-    let isfirstrow = true;
-    let copydataheader = '';
-    let copydata = '';
-    listofitems.forEach(listitem => {
-      if (listitem.vCurrent || listitem.vSelected) {
-        let isfirst = true;
-        let rowdata = '';
-        Array.from(headerrowelement.children).forEach(header => {
-
-          if (header.attributes.colname) {
-            let membername = header.attributes.colname.value;
-            let memberitem = listitem[membername];
-            if (isfirstrow) {
-              if (!isfirst)
-                copydataheader += '\t';
-              copydataheader += membername;
-            }
-
-            if (!isfirst)
-              rowdata += '\t';
-            rowdata += memberitem;
-            isfirst = false;
-
-          }
-
-        });
-        if (!isfirstrow)
-          copydata += '\r\n';
-        copydata += rowdata;
-        isfirstrow = false;
-      }
-
-    });
-    if (!isfirstrow) {
-      let tot = copydataheader + '\r\n' + copydata;
-      angularscope.$parent.ViewData.RootVMClassObject["VM_Variables"]["vClipbookData"] = tot;
-      angularscope.$parent.$broadcast('__vClipbookDataChanged');
-    }
-  }
-}
 
 
 function PossibleCellPasteMDriven(thetable, text, angularscope) {
@@ -377,20 +335,38 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
   let body = thetable._lastAnchor.parentElement.parentElement;
   if (!body)
     return;
-  let headerrowelement = thetable.querySelector('thead').querySelector('tr');
-  if (minRow == maxRow && minCol == maxCol) {
-    CopyDataToClipFromRowSelectMDriven(thetable, headerrowelement, angularscope);
-    return;
+
+  let clipdata = '';
+
+  // SHould header be included, yes if copy is all cells
+  let headerrows = thetable.querySelector('thead').rows;
+  if (headerrows.length == 1 && minCol == 0 && maxCol >= headerrows[0].cells.length-1) {
+    clipdata = GetCellsFromList(headerrows, 0, 0, minCol, headerrows[0].cells.length - 1) + '\r\n';
   }
 
+  clipdata += GetCellsFromList(body.rows, minRow, maxRow, minCol, maxCol);
 
+  if (!angularscope) {
+    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'CellsToClip', thetable.id, clipdata).then(response => {
+      console.log(response);
+    });
+    return;
+  }
+  else {
+    angularscope.$parent.ViewData.RootVMClassObject["VM_Variables"]["vClipbookData"] = clipdata;
+    angularscope.$parent.$broadcast('__vClipbookDataChanged');
+  }
+
+}
+
+function GetCellsFromList(listtoiterate, minRow, maxRow,minCol, maxCol) {
   let isfirstrow = true;
   let clipdata = '';
   for (let y = minRow; y <= maxRow; y++) {
     let rowhasdata = false;
     let isfirst = true;
     let rowdata = '';
-    const cells = body.rows[y].cells;
+    const cells = listtoiterate[y].cells;
     for (let x = minCol; x <= maxCol; x++) {
       const inputElement = cells[x].querySelector('input,select');
       let cellContent = '';
@@ -423,19 +399,9 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
       isfirstrow = false;
     }
   }
-
-  if (!angularscope) {
-    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'CellsToClip', thetable.id, clipdata).then(response => {
-      console.log(response);
-    });
-    return;
-  }
-  else {
-    angularscope.$parent.ViewData.RootVMClassObject["VM_Variables"]["vClipbookData"] = clipdata;
-    angularscope.$parent.$broadcast('__vClipbookDataChanged');
-  }
-
+  return clipdata;
 }
+
 
 
 function UpdateCellSelects(thetable, isBlazor) {
