@@ -566,7 +566,41 @@ function updateSelection(newSelection) {
   selectedCells = newSelection;
 }
 
+function MDrivenCellSelectClear(element) {
+  console.log("MDrivenCellSelectClear");
+  if (!element)
+    return;
+  let isBlazor = window.hasOwnProperty('Blazor');
+  let table = null;
+  if (isBlazor) {
+    // in blazor the element is outside the table
+    table = element.children[0];
+  }
+  else {
+    // in angularjs the element is a child of the table
+    while (element && element.tagName != 'TABLE') {
+      element = element.parentElement;
+    }
+    if (element)
+      table = element;
+  }
 
+  if (table) {
+    for (let i = 0; i < table.rows.length; i++) {
+      let row = table.rows[i];
+      for (let j = 0; j < row.cells.length; j++) {
+        let cell = row.cells[j];
+        cell.classList.remove('cellselect');
+        if (cell.children.length > 0)
+          cell.children[0].classList.remove('cellselect'); // in blazor cell content has the cellselect 
+        cell.classList.remove('cellselect_top');
+        cell.classList.remove('cellselect_left');
+        cell.classList.remove('cellselect_bottom');
+        cell.classList.remove('cellselect_right');
+      }
+    }
+  }
+}
 
 ///////CELL SELECT END
 
