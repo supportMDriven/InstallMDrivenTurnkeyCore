@@ -402,10 +402,14 @@ function GetCellsFromList(listtoiterate, minRow, maxRow,minCol, maxCol) {
   return clipdata;
 }
 
-
+let _theLastKnownCellSelectTableMDriven = null;
 
 function UpdateCellSelects(thetable, isBlazor) {
 
+  if (_theLastKnownCellSelectTableMDriven && _theLastKnownCellSelectTableMDriven != thetable) {
+    MDrivenClearCellSelectFromThis(_theLastKnownCellSelectTableMDriven); // only one table on the screen should show cell-select
+  }
+  _theLastKnownCellSelectTableMDriven = thetable;
   // Mouse move sends a lot even if in same cell
   if (thetable._lastAnchor != thetable._cellAnchor || thetable._lastLast != thetable._cellLast) {
 
@@ -566,6 +570,25 @@ function updateSelection(newSelection) {
   selectedCells = newSelection;
 }
 
+function MDrivenClearCellSelectFromThis(table) {
+  if (table && table.tagName == 'TABLE') {
+    for (let i = 0; i < table.rows.length; i++) {
+      let row = table.rows[i];
+      for (let j = 0; j < row.cells.length; j++) {
+        let cell = row.cells[j];
+        cell.classList.remove('cellselect');
+        if (cell.children.length > 0)
+          cell.children[0].classList.remove('cellselect'); // in blazor cell content has the cellselect 
+        cell.classList.remove('cellselect_top');
+        cell.classList.remove('cellselect_left');
+        cell.classList.remove('cellselect_bottom');
+        cell.classList.remove('cellselect_right');
+      }
+    }
+  }
+
+}
+
 function MDrivenCellSelectClear(element) {
   console.log("MDrivenCellSelectClear");
   if (!element)
@@ -585,21 +608,8 @@ function MDrivenCellSelectClear(element) {
       table = element;
   }
 
-  if (table) {
-    for (let i = 0; i < table.rows.length; i++) {
-      let row = table.rows[i];
-      for (let j = 0; j < row.cells.length; j++) {
-        let cell = row.cells[j];
-        cell.classList.remove('cellselect');
-        if (cell.children.length > 0)
-          cell.children[0].classList.remove('cellselect'); // in blazor cell content has the cellselect 
-        cell.classList.remove('cellselect_top');
-        cell.classList.remove('cellselect_left');
-        cell.classList.remove('cellselect_bottom');
-        cell.classList.remove('cellselect_right');
-      }
-    }
-  }
+  MDrivenClearCellSelectFromThis(table);
+
 }
 
 ///////CELL SELECT END
