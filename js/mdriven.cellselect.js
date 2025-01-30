@@ -42,9 +42,9 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
         thetable._cellLast = thecurrentcell;
 
       }
-      if (thetable._lastAnchor != null && thetable._lastAnchor.parentElement != null && thetable._lastAnchor.parentElement.parentElement==null) // if its a TD not belonging to a table
+      if (thetable._lastAnchor != null && thetable._lastAnchor.parentElement != null && thetable._lastAnchor.parentElement.parentElement == null) // if its a TD not belonging to a table
         thetable._lastAnchor = null;
-      if (thetable._lastLast != null && thetable._lastLast.parentElement != null && thetable._lastLast.parentElement.parentElement==null) // if its a TD not belonging to a table
+      if (thetable._lastLast != null && thetable._lastLast.parentElement != null && thetable._lastLast.parentElement.parentElement == null) // if its a TD not belonging to a table
         thetable._lastLast = null;
 
       UpdateCellSelects(thetable, isBlazor);
@@ -129,7 +129,7 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
             if (thecurrentcell.tagName == 'DIV' || thecurrentcell.tagName == 'TD') {
               SelectAllMDriven(thetable, angularscope);
               // also select all via cellselect to make it work even if mdriven is not multiselect in this case
-              if (thetable.rows.length>1) {
+              if (thetable.rows.length > 1) {
                 thetable._cellAnchor = thetable.rows[1].cells[0]; // avoid header
                 thetable._cellLast = thetable.rows[thetable.rows.length - 1].cells[colCountTakenfromheadertoavoidextracells - 1];;
                 UpdateCellSelects(thetable, isBlazor);
@@ -212,7 +212,7 @@ function checkSeekerForEnterAndExcelPasteKeyDown(event) {
     case 'V', 'v':
       if (event.ctrlKey) {
         if (event.activeElement) {
-          if (event.activeElement.tagName!='DIV') {
+          if (event.activeElement.tagName != 'DIV') {
             return; // inputs have their own paste
           }
         }
@@ -228,7 +228,7 @@ function checkSeekerForEnterAndExcelPasteKeyDown(event) {
       }
       break;
     case 'Enter': {
-      
+
       if (event.activeElement && isInsideTable(event.activeElement)) {
         return;// avoid triggering search if we are in table, enters mean different things in a table
       }
@@ -288,6 +288,12 @@ function PossibleCellPasteMDriven(thetable, text, angularscope) {
                 const day = String(cellasdate.getDate()).padStart(2, '0');
                 cell = `${year}-${month}-${day}`;
               }
+              else if (inp.type == "checkbox") {
+                if (cell && cell.toLowerCase() == 'true')
+                  inp.checked = true;
+                else
+                  inp.checked = false;
+              }
               inp.value = cell;
             }
 
@@ -340,7 +346,7 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
 
   // SHould header be included, yes if copy is all cells
   let headerrows = thetable.querySelector('thead').rows;
-  if (headerrows.length == 1 && minCol == 0 && maxCol >= headerrows[0].cells.length-1) {
+  if (headerrows.length == 1 && minCol == 0 && maxCol >= headerrows[0].cells.length - 1) {
     clipdata = GetCellsFromList(headerrows, 0, 0, minCol, headerrows[0].cells.length - 1) + '\r\n';
   }
 
@@ -359,7 +365,7 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
 
 }
 
-function GetCellsFromList(listtoiterate, minRow, maxRow,minCol, maxCol) {
+function GetCellsFromList(listtoiterate, minRow, maxRow, minCol, maxCol) {
   let isfirstrow = true;
   let clipdata = '';
   for (let y = minRow; y <= maxRow; y++) {
@@ -375,7 +381,14 @@ function GetCellsFromList(listtoiterate, minRow, maxRow,minCol, maxCol) {
       }
       else {
         if (inputElement) {
-          cellContent = inputElement.value; // Get value of date input
+          if (inputElement.type == "checkbox") {
+            if (inputElement.checked)
+              cellContent = "true";
+            else
+              cellContent = "false";
+          }
+          else
+            cellContent = inputElement.value; // Get value of date input
         }
         else {
           cellContent = cells[x].innerText;
