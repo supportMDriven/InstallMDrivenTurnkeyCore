@@ -212,6 +212,22 @@
   height: auto;
 }
 
+
+// Modal and popup in blazor, remove inner scroll START
+.modal #viewmodelSection {
+  overflow-y: unset;
+}
+
+.modal.tk-modal__content {
+  overflow-y: unset;
+}
+
+.modal #viewmodelWrapper {
+  overflow-y: unset;
+}
+// Modal and popup in blazor, remove inner scroll STOP
+
+
 .vmGridboxAtTop, .vmGridboxAtBottom {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
