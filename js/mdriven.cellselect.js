@@ -314,10 +314,16 @@ function PossibleCellPasteMDriven(thetable, text, angularscope) {
   }
 }
 
+
+window.PossibleExcelPluginActionMDrivenTakeFromClip = function (angularscope) {
+  let data = navigator.clipboard.readText().then((text) => {
+    PossibleExcelPluginActionMDriven(text, angularscope);
+  });
+}
+
 function PossibleExcelPluginActionMDriven(text, angularscope) {
   if (!angularscope) {
-    // this does not happen in Blazor because the keydown is not working in the menu. Instead we check in global keydown (checkSeekerForEnterAndExcelPasteKeyDown)
-    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'ExcelPluginDataSend', thetable.id, text).then(response => {
+    DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'ExcelPluginDataSend',  text).then(response => {
       console.log(response);
     });
   } else {
