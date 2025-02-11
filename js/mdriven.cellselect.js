@@ -66,6 +66,9 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
     }
     if (correcttarget.tagName == 'TD' && thetable._mousedown == true) {
       let thecurrentcell = correcttarget;
+      if (thecurrentcell && thecurrentcell.classList.contains('tk-data-table__cell--context'))
+        return; // this is row contextmenu that is implemented as an extra cell in angular
+
       thetable._cellLast = thecurrentcell;
       UpdateCellSelects(thetable, isBlazor);
     }
@@ -374,6 +377,8 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
 function GetCellsFromList(listtoiterate, minRow, maxRow, minCol, maxCol) {
   let isfirstrow = true;
   let clipdata = '';
+  if (minCol == 0 && listtoiterate[minRow].cells[0].classList.contains('multiselectcol'))
+    minCol = 1; // Avoid the multiselect checkbox in clip
   for (let y = minRow; y <= maxRow; y++) {
     let rowhasdata = false;
     let isfirst = true;
@@ -539,7 +544,7 @@ function UpdateCellSelects(thetable, isBlazor) {
     thetable._lastAnchor = thetable._cellAnchor;
     thetable._lastLast = thetable._cellLast;
 
-    console.log("UpdateCellSelects rem:" + countremoved + " add:" + countadded + " blazor:" + isBlazor);
+    //console.log("UpdateCellSelects rem:" + countremoved + " add:" + countadded + " blazor:" + isBlazor);
   }
 }
 
