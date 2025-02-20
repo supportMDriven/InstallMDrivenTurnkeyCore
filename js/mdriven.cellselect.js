@@ -360,6 +360,7 @@ function CopyDataToClipFromCellSelectMDriven(thetable, angularscope) {
   }
 
   clipdata += GetCellsFromList(body.rows, minRow, maxRow, minCol, maxCol);
+  clipdata = clipdata.replace(/\u00A0/g, ' '); // replace the nbsp(non breaking space - or Excel will get confused)
 
   if (!angularscope) {
     DotNet.invokeMethodAsync('MDriven.Components.WebAssembly', 'CellsToClip', thetable.id, clipdata).then(response => {
