@@ -4,7 +4,7 @@
           class="tk-context-menu__button ripple-effect"
           ng-repeat="action in subMenuGroup.ActionList.Actions | orderBy: 'ActionSortKey'"
           ng-class="action.ActionDisableAndDesignedClass();"
-          ng-click="$ctrl.execute(action)"
+          ng-click="$ctrl.execute(action,$event)"
           ng-disabled="!action.Enable">
     {{action.Presentation}}
   </button>
