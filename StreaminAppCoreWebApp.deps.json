@@ -39,7 +39,7 @@
         "dependencies": {
           "AppCompleteGeneric.EcoSpace.netstandard": "1.0.0",
           "AppCompleteGeneric.Model.netstandard": "1.0.0",
-          "Azure.AI.OpenAI": "1.0.0-beta.8",
+          "Azure.AI.OpenAI": "1.0.0-beta.17",
           "Eco.ModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
@@ -1775,16 +1775,17 @@
           "WindowsBase.dll": {}
         }
       },
-      "Azure.AI.OpenAI/1.0.0-beta.8": {
+      "Azure.AI.OpenAI/1.0.0-beta.17": {
         "dependencies": {
-          "Azure.Core": "1.38.0",
+          "Azure.Core": "1.39.0",
+          "System.ClientModel": "1.0.0",
           "System.Text.Json": "8.0.5"
         },
         "compile": {
           "lib/netstandard2.0/Azure.AI.OpenAI.dll": {}
         }
       },
-      "Azure.Core/1.38.0": {
+      "Azure.Core/1.39.0": {
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "1.1.1",
           "System.ClientModel": "1.0.0",
@@ -1801,7 +1802,7 @@
       },
       "Azure.Identity/1.11.4": {
         "dependencies": {
-          "Azure.Core": "1.38.0",
+          "Azure.Core": "1.39.0",
           "Microsoft.Identity.Client": "4.61.3",
           "Microsoft.Identity.Client.Extensions.Msal": "4.61.3",
           "System.Memory": "4.5.5",
@@ -3627,7 +3628,7 @@
         "dependencies": {
           "AppCompleteGeneric.EcoSpace.netstandard": "1.0.0",
           "AppCompleteGeneric.Model.netstandard": "1.0.0",
-          "Azure.AI.OpenAI": "1.0.0-beta.8",
+          "Azure.AI.OpenAI": "1.0.0-beta.17",
           "Ben.Demystifier": "0.4.1",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
@@ -3667,7 +3668,7 @@
         "dependencies": {
           "AppCompleteGeneric.EcoSpace.netstandard": "1.0.0",
           "AppCompleteGeneric.Model.netstandard": "1.0.0",
-          "Azure.AI.OpenAI": "1.0.0-beta.8",
+          "Azure.AI.OpenAI": "1.0.0-beta.17",
           "Eco.ModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
@@ -5208,19 +5209,20 @@
           }
         }
       },
-      "Azure.AI.OpenAI/1.0.0-beta.8": {
+      "Azure.AI.OpenAI/1.0.0-beta.17": {
         "dependencies": {
-          "Azure.Core": "1.38.0",
+          "Azure.Core": "1.39.0",
+          "System.ClientModel": "1.0.0",
           "System.Text.Json": "8.0.5"
         },
         "runtime": {
           "lib/netstandard2.0/Azure.AI.OpenAI.dll": {
             "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.23.47102"
+            "fileVersion": "1.0.24.25302"
           }
         }
       },
-      "Azure.Core/1.38.0": {
+      "Azure.Core/1.39.0": {
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "1.1.1",
           "System.ClientModel": "1.0.0",
@@ -5233,14 +5235,14 @@
         },
         "runtime": {
           "lib/net6.0/Azure.Core.dll": {
-            "assemblyVersion": "1.38.0.0",
-            "fileVersion": "1.3800.24.12602"
+            "assemblyVersion": "1.39.0.0",
+            "fileVersion": "1.3900.24.21804"
           }
         }
       },
       "Azure.Identity/1.11.4": {
         "dependencies": {
-          "Azure.Core": "1.38.0",
+          "Azure.Core": "1.39.0",
           "Microsoft.Identity.Client": "4.61.3",
           "Microsoft.Identity.Client.Extensions.Msal": "4.61.3",
           "System.Memory": "4.5.5",
@@ -7559,7 +7561,7 @@
         "dependencies": {
           "AppCompleteGeneric.EcoSpace.netstandard": "1.0.0",
           "AppCompleteGeneric.Model.netstandard": "1.0.0",
-          "Azure.AI.OpenAI": "1.0.0-beta.8",
+          "Azure.AI.OpenAI": "1.0.0-beta.17",
           "Ben.Demystifier": "0.4.1",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
@@ -7611,19 +7613,19 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Azure.AI.OpenAI/1.0.0-beta.8": {
+    "Azure.AI.OpenAI/1.0.0-beta.17": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-xu0QIsD8YJakKsVM2odGBToXwwwI3XzjP8dggD40CQZ4ytKMFAFyboVmtRs0zPFJgGNISMdQIqn2Cg21pYSQ2A==",
-      "path": "azure.ai.openai/1.0.0-beta.8",
-      "hashPath": "azure.ai.openai.1.0.0-beta.8.nupkg.sha512"
+      "sha512": "sha512-cYTqSHxST4+xyXWa+J0TFid8r5/pX/qLxQ22jynSHY2ACe93rnZ5GPiNtZ06c4pWvm1TPX5aJntED6im6xnzCA==",
+      "path": "azure.ai.openai/1.0.0-beta.17",
+      "hashPath": "azure.ai.openai.1.0.0-beta.17.nupkg.sha512"
     },
-    "Azure.Core/1.38.0": {
+    "Azure.Core/1.39.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-IuEgCoVA0ef7E4pQtpC3+TkPbzaoQfa77HlfJDmfuaJUCVJmn7fT0izamZiryW5sYUFKizsftIxMkXKbgIcPMQ==",
-      "path": "azure.core/1.38.0",
-      "hashPath": "azure.core.1.38.0.nupkg.sha512"
+      "sha512": "sha512-9vaV4ZICtVQp+2wjOKrIAjEjMzBkUohaBbKGqqcTW993MRfHA0N4L1BszQjWynS7lRvlYQLxaFK4wh9ewNm4HQ==",
+      "path": "azure.core/1.39.0",
+      "hashPath": "azure.core.1.39.0.nupkg.sha512"
     },
     "Azure.Identity/1.11.4": {
       "type": "package",
