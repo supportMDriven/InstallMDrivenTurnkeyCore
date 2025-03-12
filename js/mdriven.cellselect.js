@@ -112,7 +112,8 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
         case 'ArrowRight':
           col = col < colCountTakenfromheadertoavoidextracells - 1 ? col + 1 : col;
           break;
-        case 'V', 'v':
+        case 'V':
+        case 'v':
           if (event.ctrlKey) {
             let data = navigator.clipboard.readText().then((text) => {
               PossibleCellPasteMDriven(thetable, text, angularscope);
@@ -120,14 +121,16 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
             });
           }
           break;
-        case 'C', 'c':
+        case 'C':
+        case 'c':
           if (event.ctrlKey) {
             CopyDataToClipFromCellSelectMDriven(thetable, angularscope);
             event.preventDefault();
             return;
           }
           break;
-        case 'A', 'a':
+        case 'A':
+        case 'a':
           if (event.ctrlKey) {
             if (thecurrentcell.tagName == 'DIV' || thecurrentcell.tagName == 'TD') {
               SelectAllMDriven(thetable, angularscope);
