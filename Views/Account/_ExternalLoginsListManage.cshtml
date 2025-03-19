@@ -20,9 +20,9 @@
             @Html.AntiForgeryToken()
             foreach (var p in loginProviders)
             {
-                <div class="account-add__item account-add__item--@p.AuthenticationType.ToLower()">
+        <div class="account-add__item account-add__item--@p.DisplayName.ToLower()">
                     <div class="account-add__logo"></div>
-                    <button class="account-add__btn" name="provider" id="@p.AuthenticationType" value="@p.AuthenticationType" title="Log in using your @p.Caption account.">&plus;</button>
+          <button class="account-add__btn" name="provider" id="@p.DisplayName" value="@p.DisplayName" title="Log in using your @p.DisplayName account.">&plus;</button>
                 </div>
             }
         }

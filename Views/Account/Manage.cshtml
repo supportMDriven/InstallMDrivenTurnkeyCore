@@ -25,7 +25,7 @@
   <div class="manage__content">
     <div class="manage__wrapper">
       <div class="account-linked">
-        @if (SignInManager.UserManager.GetLoginsAsync(ViewBag.User).Result.Count > 0)
+        @if (SignInManager.UserManager.FindByIdAsync(ViewBag.User.Id).Result!=null)
         {
           <p class="manage__text-header"><i class="mi mi-link"></i>Linked social accounts</p>
 
