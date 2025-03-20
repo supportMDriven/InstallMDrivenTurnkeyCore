@@ -72,6 +72,13 @@ window.setOrRemoveClassInElementFromIdMDriven = function (idstr, classname, set)
   }
 };
 
+window.setElementFocusMDriven = function (elementId) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.focus();
+  }
+};
+
 /* does not work
 window.stopPropagationMDriven=function(event) {
   event.stopPropagation();
