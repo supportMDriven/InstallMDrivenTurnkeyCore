@@ -146,7 +146,7 @@ a.tk-button__native.info {
 button.tk-button__native.info:hover, button.tk-button__native.info:focus,
 a.tk-button__native.info:hover,
 a.tk-button__native.info:focus {
-  background: #08404a;
+  background: rgb(8.4027777778, 64.1666666667, 74.0972222222);
 }
 button.tk-button__native.info .ripple-container,
 a.tk-button__native.info .ripple-container {
@@ -566,8 +566,8 @@ a.tk-button__native.flat.primary .ripple-container {
   background-color: rgb(var(--save-action-bg-color, #f0ad4e));
 }
 .tk-state-action.update-action:not(:disabled):hover, .tk-state-action.update-action:not(:disabled):focus, .tk-state-action.update-action:not(:disabled):active {
-  background-color: rgb(#eea236);
-  background-color: rgb(var(--save-action-bg-color-dark, #eea236));
+  background-color: rgb(rgb(238.0078125, 162.109375, 54.4921875));
+  background-color: rgb(var(--save-action-bg-color-dark, rgb(238.0078125, 162.109375, 54.4921875)));
 }
 .tk-state-action.update-action:not(:disabled) .ripple-container {
   background-color: rgba(#f0ad4e, 0.3);
@@ -947,7 +947,7 @@ a.tk-link__native:not(.tk-button__native).danger .ripple-container {
 }
 @media only screen and (max-width: 767px) {
   .tk-data-table__header-row {
-    height: calc(56px *0.8);
+    height: calc(56px * 0.8);
     height: calc(var(--data-table-header-height, 56px) * 0.8);
   }
 }
@@ -958,7 +958,7 @@ a.tk-link__native:not(.tk-button__native).danger .ripple-container {
 }
 @media only screen and (max-width: 767px) {
   .tk-data-table__row {
-    height: calc(56px *0.8);
+    height: calc(56px * 0.8);
     height: calc(var(--data-table-row-height, 56px) * 0.8);
   }
 }

@@ -124,32 +124,33 @@
 
 
 .tk-data-table__content {
-    margin-top: 10px;
-    position: relative;
-    width: 100%;
-    /*height: 100%;*/
-    overflow: auto;
-    border-radius: $base-border-radius;
-    border-radius: var(--base-border-radius, #{$base-border-radius});
-    border: 1px solid #dadce0;
-    background: #fff;
+  margin-top: 10px;
+  position: relative;
+  width: 100%;
+  /*height: 100%;*/
+  overflow: auto;
+  border-radius: $base-border-radius;
+  border-radius: var(--base-border-radius, #{$base-border-radius});
+  border: 1px solid #dadce0;
+  background: var(--table-bg-clr, #fff);
+  
 }
 
 .tk-data-table__native {
-    position: relative;
-    display: table;
-    width: 100%;
-    /*height: 100%;*/
-    font-family: $base-font-family;
-    white-space: nowrap;
-    border: 0;
-    border-collapse: separate;
-    background-color: #fff;
+  position: relative;
+  display: table;
+  width: 100%;
+  /*height: 100%;*/
+  font-family: $base-font-family;
+  white-space: nowrap;
+  border: 0;
+  border-collapse: separate;
+  background-color: var(--table-bg-clr, #fff);  
 
-    thead {
-        display: table-header-group;
-        vertical-align: middle;
-    }
+  thead {
+    display: table-header-group;
+    vertical-align: middle;
+  }
 }
 
 .tk-data-table__header-row {
