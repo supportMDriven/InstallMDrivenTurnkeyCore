@@ -1,6 +1,6 @@
 .tk-file-upload__interactive {
   color: $button-default-text-color;
-  background: rgb(var(--btn-default-clr));
+  @include color-declaration(background, $button-default-color, --btn-default-clr);
   height: $button-height;
 
   &.uploaded {

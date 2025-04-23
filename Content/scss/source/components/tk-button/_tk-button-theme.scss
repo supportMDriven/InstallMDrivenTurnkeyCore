@@ -1,16 +1,20 @@
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+
 button.tk-button__native,
 a.tk-button__native {
-  background: rgb(var(--btn-default-clr));
-  color: $button-default-text-color;
+  @include color-declaration(background, $button-default-color, --btn-default-clr);
+  @include color-declaration(color, $button-default-text-color, --text-on-primary);
   height: $button-height;
 
   &:hover,
   &:focus {
-    background: rgb(var(--btn-default-clr));
+    @include color-declaration(background, $button-default-color, --btn-default-clr);
   }
 
   .ripple-container {
-    background-color: rgba(choose-contrast-color(rgb(var(--btn-default-clr))), 0.10);
+    background-color: rgba(choose-contrast-color(var(--btn-default-clr)), 0.10);
   }
 }
 

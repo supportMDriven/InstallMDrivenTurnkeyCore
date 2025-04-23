@@ -52,7 +52,6 @@ a.tk-button__native {
   box-sizing: border-box;
   cursor: pointer;
   z-index: 1;
-
   @include elevation-2dp();
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
