@@ -76,14 +76,14 @@
 
 .tk-auth__header {
   font-size: 2rem;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-weight: 500;
   color: #838489;
 }
 
 .tk-auth__caption {
   margin-top: 5px;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 0.875rem;
   font-weight: 400;
   color: #838489;

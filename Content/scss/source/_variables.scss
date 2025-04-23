@@ -12,7 +12,8 @@ $int-hor-padding: 5px !default;
 
 //Base application settings
 $base-font-size: 16px !default;
-$base-font-family: 'Roboto', sans-serif !default;
+// cannot have it like this 'Roboto', sans-serif   because when the variable expands it break var(-- reference
+$base-font-family: 'Roboto' !default;
 $base-bg-color: #ffffff !default;
 $base-border-radius: 4px;
 //$base-progress-bar-color: $primary-color;

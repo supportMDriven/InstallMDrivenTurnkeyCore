@@ -4,7 +4,6 @@
 
 .tk-timespan {
   @include component-spacing();
-
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -18,8 +17,7 @@
   -webkit-box-align: start;
   -ms-flex-align: start;
   align-items: flex-start;
-
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
 }
 
 .tk-timespan__label {
@@ -63,6 +61,6 @@
 
 .tk-timespan__validation-state {
   margin-top: 5px;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 0.75rem;
 }

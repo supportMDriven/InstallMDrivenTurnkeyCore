@@ -17,7 +17,7 @@ a.tk-link__native:not(.tk-button__native) {
   justify-content: flex-start;
   align-items: center;
   height: $button-height;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 1rem;
   font-weight: 500;
   color: $color-info;

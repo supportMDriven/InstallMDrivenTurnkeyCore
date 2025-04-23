@@ -75,7 +75,7 @@
   padding-left: 14px;
   padding-right: 14px;
   text-align: left;
-  font-family: "Roboto", sans-serif;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 14px;
   font-weight: 400;
   /*color: rgb(32,33,36);*/
@@ -107,7 +107,7 @@
   padding-bottom: 5px;
   padding-left: 12px;
   padding-right: 24px;
-  font-family: "Roboto", sans-serif;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 12px;
   font-weight: 400;
   color: #3d3d3d;

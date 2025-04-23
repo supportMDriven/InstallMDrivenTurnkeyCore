@@ -153,13 +153,12 @@ textarea.tk-input-field__native:read-only {
   padding-left: 0.62rem;
   padding-right: 0.62rem;
   display: block;
-  font-family: "Roboto", sans-serif;
+  font-family: var(--base-font-family);
   font-weight: 400;
   font-size: 0.75rem;
   line-height: 1.4;
   letter-spacing: .0333333333em;
   color: rgb(121,121,121);
-
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
@@ -195,7 +194,7 @@ textarea.tk-input-field__native:read-only {
   padding-left: 0.62rem;
   padding-right: 0.62rem;
   display: block;
-  font-family: "Roboto", sans-serif;
+  font-family: var(--base-font-family);
   font-weight: 400;
   font-size: 0.75rem;
   line-height: 1.4;

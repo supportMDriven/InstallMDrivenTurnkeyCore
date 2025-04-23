@@ -13,8 +13,7 @@
 
 .tk-switch__label {
   margin-left: 10px;
-
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 1rem;
   font-weight: 500;
   white-space: nowrap;
@@ -158,6 +157,6 @@
 
 .tk-switch__validation-state {
   margin-top: 5px;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 0.75rem;
 }

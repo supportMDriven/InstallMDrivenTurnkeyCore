@@ -27,8 +27,7 @@
   /*padding: 5px 0;*/
   padding: 5px 16px;
   border-bottom: 1px solid rgba($color-info, 0.2);
-
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 0.875rem;
   font-weight: 500;
   color: $color-info;

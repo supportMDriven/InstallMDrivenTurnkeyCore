@@ -11,7 +11,7 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
 }
 
 .tk-auth-form__group {

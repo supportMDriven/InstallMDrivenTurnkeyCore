@@ -12,7 +12,7 @@
   -ms-flex-negative: 0;
   flex-shrink: 0;
   min-height: $navbar-height;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   z-index: 50;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -180,7 +180,7 @@
   flex-wrap: nowrap;
   position: relative;
   width: 100%;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 28px;

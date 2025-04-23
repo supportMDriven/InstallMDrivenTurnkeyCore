@@ -33,6 +33,6 @@
 
 .tk-float-field__validation-state {
   margin-top: 5px;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 0.75rem;
 }

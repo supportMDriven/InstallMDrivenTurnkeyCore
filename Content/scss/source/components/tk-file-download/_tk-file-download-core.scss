@@ -67,13 +67,12 @@
 }
 
 .tk-file-download__native {
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 1rem;
   font-weight: 500;
   line-height: 1;
   text-decoration: none;
   color: #1d1d1d;
-
   width: 100%;
   max-width: 200px;
   overflow: hidden;

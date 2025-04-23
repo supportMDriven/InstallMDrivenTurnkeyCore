@@ -45,7 +45,7 @@
 
 .tk-checkbox__label {
   margin-left: 10px;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-weight: 500;
   font-size: 1rem;
   white-space: normal;
@@ -224,7 +224,7 @@
 
 .tk-checkbox__validation-state {
   margin-top: 5px;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 0.75rem;
 }
 

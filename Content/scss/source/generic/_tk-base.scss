@@ -3,13 +3,11 @@
 //
 html, body {
   height: 100%;
-
-  font-family: $base-font-family, Arial, Helvetica, sans-serif ;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: $base-font-size !important;
   font-size: var(--base-font-size, #{$base-font-size}) !important;
-  
-  @include color-declaration(background, $base-bg-color, --base-bg-color);
 
+  @include color-declaration(background, $base-bg-color, --base-bg-color);
   -webkit-overflow-scrolling: touch;
 }
 
@@ -20,14 +18,13 @@ footer {
 }
 
 .tk-label {
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: $label-font-size;
   font-weight: 500;
   line-height: $label-line-height;
   letter-spacing: 0.025em;
   white-space: normal;
   color: $label-color;
-
   display: inline-flex;
   align-items: center;
 }
@@ -69,16 +66,12 @@ footer {
   align-items: center;
   border-radius: 16px;
   background-color: rgba(245, 156, 27, 0.1);
-
   box-shadow: 0 0 0 1px rgba(245, 156, 27, 0.3);
-
-
   transition: transform 200ms linear;
   transform: translateX(200px);
 
   &__text {
-
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--base-font-family,'Roboto'), sans-serif;
     font-size: 14px;
     font-weight: 500;
     color: #f59c1a;
@@ -88,7 +81,7 @@ footer {
     margin-left: 10px;
   }
 
-  .loading__progress path{
+  .loading__progress path {
     stroke: #f59c1a;
   }
 

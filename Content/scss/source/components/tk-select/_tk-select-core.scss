@@ -16,7 +16,7 @@
   -webkit-box-pack: start;
   -ms-flex-pack: start;
   justify-content: flex-start;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
 
   &--no-label {
     padding-top: 1.5rem;
@@ -41,17 +41,14 @@
 
 .tk-select__inner {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-
   display: flex;
   flex-direction: column;
   position: relative;
-
   height: auto;
-
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   border-radius: $base-border-radius;
-  border-radius: var(--base-border-radius, #{$base-border-radius});
+  border-radius: var(--select-border-radius, #{$base-border-radius});
 }
 
 .tk-select--focused .tk-select__dropdown-icon {
@@ -76,7 +73,7 @@
   white-space: nowrap;
   border: 2px solid rgb(224, 224, 224);
   border-radius: $base-border-radius;
-  border-radius: var(--base-border-radius, #{$base-border-radius});
+  border-radius: var(--select-border-radius, #{$base-border-radius});
   background: #fff;
   text-overflow: ellipsis;
   cursor: pointer;
@@ -133,7 +130,7 @@
 
 .tk-select__validation-state {
   margin-top: 5px;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 0.75rem;
 }
 

@@ -14,7 +14,7 @@
 
 .tk-auth-social__info {
   padding: 10px 10px;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-size: 12px;
   font-weight: 300;
   color: #3d3d3d;
@@ -36,7 +36,7 @@
   align-items: center;
   flex-grow: 1;
   justify-content: center;
-  font-family: $base-font-family;
+  font-family: var(--base-font-family, $base-font-family);
   font-weight: 500;
   white-space: nowrap;
   text-align: center;
