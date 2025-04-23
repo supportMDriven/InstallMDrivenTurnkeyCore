@@ -8,7 +8,7 @@ html, body {
 }
 
 // Buttons
-$button-default-text-color: choose-contrast-color($button-default-color);
+$button-default-text-color: choose-contrast-color(rgb(var(--btn-default-clr)));
 
 @import "generic/tk-layout-theme";
 

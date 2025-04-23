@@ -1,17 +1,16 @@
 button.tk-button__native,
-a.tk-button__native  {
-  background: $button-default-color;
+a.tk-button__native {
+  background: rgb(var(--btn-default-clr));
   color: $button-default-text-color;
-
   height: $button-height;
 
   &:hover,
   &:focus {
-    background: $button-default-color; // Need dark
+    background: rgb(var(--btn-default-clr));
   }
 
   .ripple-container {
-    background-color: rgba(choose-contrast-color($button-default-color), 0.10);
+    background-color: rgba(choose-contrast-color(rgb(var(--btn-default-clr))), 0.10);
   }
 }
 
