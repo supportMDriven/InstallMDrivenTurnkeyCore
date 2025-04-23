@@ -43,7 +43,8 @@
 
   @if (File.Exists(MapPathService.MapPath("~/Views/Shared/_Manifest.cshtml")))
   {
-    @await Html.PartialAsync("_Manifest");
+    @await Html.PartialAsync("_Manifest")
+    ;
   }
   <link href="@Url.Content("~/Content/angular.app.bundle.css")" rel="stylesheet" type="text/css" />
 
@@ -78,11 +79,22 @@
         right: 0.75rem;
         top: 0.5rem;
       }
+
+    .loading-bar {
+      width: var(--blazor-load-percentage);
+      height: 5px;
+      background-color: blue;
+      transition: width 0.1s ease-in-out;
+    }
   </style>
 
 
-  <div id="bodyWrapper">Loading...</div>
-
+  <div id="bodyWrapper">
+    <div style="width:400px;">
+      <div>Loading...</div>
+      <div class="loading-bar"></div>
+    </div>
+  </div>
   <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
@@ -91,7 +103,7 @@
   <script src="~/_framework/blazor.webassembly.js" autostart=" true"></script>
   <script src="@Url.Content("~/js/mdriven.cellselect.js?v=" + @ViewBag.Version)"></script>
   <script src="@Url.Content("~/js/mdriven.blazor.js?v=" + @ViewBag.Version)"></script>
-  
+
 
   @ViewOverrideLogic.Get_EXT_AppWideRazorIncludes()
   @ViewOverrideLogic.Get_EXT_ComponentsRazorScripts()
@@ -99,7 +111,7 @@
 
   <script>
 
-    
+
   </script>
 
 </body>

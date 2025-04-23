@@ -37,6 +37,11 @@ window.setCssVarMDriven = function (varname, varvalue) {
   document.documentElement.style.setProperty(varname, varvalue);
 };
 
+window.getCssVarMDriven = function (varname) {
+  return document.documentElement.style.getPropertyValue(varname);
+};
+
+
 window.getCurrentPositionMDriven = async () => {
   const pos = await new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -73,10 +78,20 @@ window.setOrRemoveClassInElementFromIdMDriven = function (idstr, classname, set)
 };
 
 window.setElementFocusMDriven = function (elementId) {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.focus();
+  if (elementId === "") {
+    let elem = document.activeElement;
+    if (elem != null) {
+      elem.blur(); // Remove focus from the currently active element, to apply edit
+      elem.focus();
+    }
   }
+  else {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.focus();
+    }
+  }
+
 };
 
 /* does not work
@@ -94,7 +109,7 @@ const observer = new MutationObserver(mutations => {
       if (node.nodeType === Node.ELEMENT_NODE) {
         // If node itself is '.col-header-content', check if it's inside 'table.quickgrid'
         if (node.matches('.col-header-content') && node.closest('table.quickgrid')) {
-          insertDraggableButton(node);
+          insertDraggableButton(node.parentElement);
         }
         if (node.matches('.tk-data-table__native')) {
           if (window.TableKeyDownMDriven)
@@ -112,8 +127,39 @@ const observer = new MutationObserver(mutations => {
 
 // Start observing document changes
 observer.observe(document.body, { childList: true, subtree: true });
+document.addEventListener('keydown', function (event) {
+  let theshortcut = '';
+  // Check for 'Ctrl+S' or 'Cmd+S' (Mac)
+  if ((event.ctrlKey || event.metaKey)) {
+    if (event.key === 's') {
+      theshortcut = 'saveShortcut';
+    }
+    else if (event.key === 'e') {
+      theshortcut = 'editShortcut';
+    }
+    else if (event.key === 'Enter') {
+      theshortcut = 'saveAndLockShortcut';
+    }
+    else if (event.key === 'z') {
+      theshortcut = 'undoShortcut';
+    }
+    else if (event.key === 'y') {
+      theshortcut = 'redoShortcut';
+    }
 
+  }
+  else if (event.key === 'Escape') {
+    theshortcut = 'cancelAndLockShortcut';
+  }
 
+  if (theshortcut != '') {
+    event.preventDefault(); // Prevent the browser's default save action
+    if (_dotnethelper) {
+      _dotnethelper.invokeMethodAsync('OnShortcutKey', theshortcut);
+
+    }
+  }
+});
 
 // Inserts a draggable button into the given div
 function insertDraggableButton(div) {
