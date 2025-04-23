@@ -130,10 +130,9 @@
   /*height: 100%;*/
   overflow: auto;
   border-radius: $base-border-radius;
-  border-radius: var(--base-border-radius, #{$base-border-radius});
-  border: 1px solid #dadce0;
+  border-radius: var(--table-border-radius, #{$base-border-radius});
+  border: var(--table-border-width, 1px) solid #dadce0;
   background: var(--table-bg-clr, #fff);
-  
 }
 
 .tk-data-table__native {
