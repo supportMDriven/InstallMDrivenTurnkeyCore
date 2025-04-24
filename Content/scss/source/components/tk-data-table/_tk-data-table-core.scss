@@ -131,7 +131,7 @@
   overflow: auto;
   border-radius: $base-border-radius;
   border-radius: var(--table-border-radius, #{$base-border-radius});
-  border: var(--table-border-width, 1px) solid #dadce0;
+  border: var(--table-border-width, 1px) solid rgb(var(--table-border-clr)); 
   background: var(--table-bg-clr, #fff);
 }
 
