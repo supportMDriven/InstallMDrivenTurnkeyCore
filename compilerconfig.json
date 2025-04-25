@@ -1,13 +1,11 @@
-﻿[
+[
   {
     "outputFile": "Content/core.css",
     "inputFile": "Content/scss/source/tk-core.scss",
     "minify": {
       "enabled": false
     },
-    "options": {
-      "sourceMap": true
-    }
+    "options": { "sourceMap": true }
   },
   {
     "outputFile": "Content/theme-default.css",
@@ -15,12 +13,6 @@
     "minify": {
       "enabled": false
     },
-    "options": {
-      "sourceMap": true
-    }
-  },
-  {
-    "outputFile": "Content/scss/theme-user.css",
-    "inputFile": "Content/scss/theme-user.scss"
+    "options": { "sourceMap": true }
   }
 ]
