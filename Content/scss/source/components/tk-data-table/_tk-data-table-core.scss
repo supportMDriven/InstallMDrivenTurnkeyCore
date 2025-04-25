@@ -131,8 +131,9 @@
   overflow: auto;
   border-radius: $base-border-radius;
   border-radius: var(--table-border-radius, #{$base-border-radius});
-  border: var(--table-border-width, 1px) solid rgb(var(--table-border-clr)); 
-  background: var(--table-bg-clr, #fff);
+  border: var(--table-border-width, 1px) solid;
+  border-color: rgb(var(--table-border-clr));
+  background: rgb(var(--table-bg-clr, #fff));
 }
 
 .tk-data-table__native {
@@ -144,7 +145,7 @@
   white-space: nowrap;
   border: 0;
   border-collapse: separate;
-  background-color: var(--table-bg-clr, #fff);
+  background-color: rgb(var(--table-bg-clr, #fff));
 
   thead {
     display: table-header-group;
