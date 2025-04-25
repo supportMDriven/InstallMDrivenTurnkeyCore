@@ -129,7 +129,7 @@ const observer = new MutationObserver(mutations => {
 observer.observe(document.body, { childList: true, subtree: true });
 document.addEventListener('keydown', function (event) {
   let theshortcut = '';
-  // Check for 'Ctrl+S' or 'Cmd+S' (Mac)
+  // Check for 'Ctrl+S' or 'Cmd+S' (Mac) - we must do this in JS in order to prevent default
   if ((event.ctrlKey || event.metaKey)) {
     if (event.key === 's') {
       theshortcut = 'saveShortcut';
@@ -151,9 +151,22 @@ document.addEventListener('keydown', function (event) {
   else if (event.key === 'Escape') {
     theshortcut = 'cancelAndLockShortcut';
   }
+  else if (event.altKey) {
+    let firstMenuItem = document.querySelector('.tk-toolbar__button:first-child:not([disabled])');
+    if (firstMenuItem === null) {
+      firstMenuItem = document.querySelector('.tk-state-action:first-child:not([disabled])');
+    }
+    if (firstMenuItem === null || firstMenuItem == document.activeElement /*alt on toolbar should give menubar*/) {
+      firstMenuItem = document.querySelector('.navbar__link:first-child');
+    }
+    if (firstMenuItem) {
+      firstMenuItem.focus();
+      event.preventDefault();
+    }
+  }
 
   if (theshortcut != '') {
-    event.preventDefault(); // Prevent the browser's default save action
+    event.preventDefault();
     if (_dotnethelper) {
       _dotnethelper.invokeMethodAsync('OnShortcutKey', theshortcut);
 
@@ -230,7 +243,7 @@ function implementDraggingLogic(th, startX) {
           setWidth(loopth, loopth.offsetWidth + 'px');
         else
           setWidth(loopth, 100 * (loopth.offsetWidth / tablewidth) + '%');
-       }
+      }
     }
   });
 
