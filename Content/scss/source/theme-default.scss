@@ -1,8 +1,10 @@
 // Turnkey theme settings file. To apply your change please uncomment and change value below. //
 
+
+
 // Color definitions //
 // Put colours as RGB value e.g. 255,255,255
-$primary-color: 245,156,26;
+$primary-color: 245,156,26; 
 $primary-color-dark: 235,144,10;
 $text-on-primary: 255,255,255;
 
@@ -20,7 +22,7 @@ $text-on-success: 255,255,255;
 
 $color-info: #0b5461;
 
-// Base settings //
+// Base settings // 
 $base-font-size: 16px;
 
 // Navigation bar settings //
@@ -40,6 +42,8 @@ $toolbar-bg-color: 246,247,247;
 // General buttons settings //
 $button-height: 36px;
 $button-default-color: #eaeaea;
+$button-default-text-color: black;
+
 
 // Input element settings //
 $input-height: 36px;
@@ -77,5 +81,6 @@ $data-table-header-height-blazor-smalllscreen:44.3px;
 $data-table-row-height-blazor-smalllscreen:43.8px;
 
 
-@import "tk-core-theme";
+@import "tk-core-theme"; 
+
 

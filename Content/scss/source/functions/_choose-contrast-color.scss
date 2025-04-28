@@ -1,3 +1,4 @@
+@use "sass:math";
 // Calculate the luminance for a color.
 @function luminance($color) {
   $red: nth($linear-channel-values, red($color) + 1);
@@ -12,7 +13,7 @@
   $backLum: luminance($back) + .05;
   $foreLum: luminance($front) + .05;
 
-  @return max($backLum, $foreLum) / min($backLum, $foreLum);
+  @return math.div(math.max($backLum, $foreLum) , math.min($backLum, $foreLum));
 }
 
 // Determine whether to use dark or light text on top of given color.

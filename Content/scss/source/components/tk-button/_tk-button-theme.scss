@@ -14,7 +14,7 @@ a.tk-button__native {
   }
 
   .ripple-container {
-    background-color: rgba(choose-contrast-color(var(--btn-default-clr)), 0.10);
+    background-color: rgba(black, 0.10);
   }
 }
 
@@ -103,11 +103,11 @@ a.tk-button__native.outlined {
   color: $button-default-text-color;
 
   &:hover {
-    background: rgba($button-default-text-color, 0.05);
+    background: rgba(black, 0.05);
   }
 
   .ripple-container {
-    background-color: rgba($button-default-text-color, 0.20);
+    background-color: rgba(black, 0.20);
   }
 }
 

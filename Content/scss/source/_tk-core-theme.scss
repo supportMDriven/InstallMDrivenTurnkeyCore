@@ -8,9 +8,6 @@ html, body {
  font-size: var(--base-font-size, #{$base-font-size}) !important;
 }
 
-// Buttons
-$button-default-text-color: choose-contrast-color(rgb(var(--btn-default-clr)));
-
 @import "generic/tk-layout-theme";
 
 // Imports

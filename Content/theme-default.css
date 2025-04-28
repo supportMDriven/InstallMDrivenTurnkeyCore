@@ -48,7 +48,7 @@
 
 button.tk-button__native,
 a.tk-button__native {
-  background: rgb(var(--btn-default-clr));
+  background: rgb(var(--btn-default-clr,234,234,234));
   color: #000000;
   height: 36px;
 }
