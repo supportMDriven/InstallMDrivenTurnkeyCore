@@ -19,11 +19,11 @@
 // Modifiers
 .tk-input-field--datepicker {
   & .tk-input-field__container {
-    width: unset;
+    //width: unset;  Why datetime picker single out to not be 100%?!
   }
 
   & .tk-input-field__native {
-    width: unset;
+    //width: unset;  Why datetime picker single out to not be 100%?!
   }
 }
 
