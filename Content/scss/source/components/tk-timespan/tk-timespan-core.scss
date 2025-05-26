@@ -31,7 +31,7 @@
     margin-left: 5px;
     display: inline-block;
     font-family: $base-icon-font;
-    font-size: 1rem;
+    font-size: var(--label-font-size, 1rem);
   }
 }
 

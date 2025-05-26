@@ -72,23 +72,25 @@
 // Unset height calculation for data-tables inside the modal windows.
 
 .tk-data-table__label {
-    display: inline-flex;
-    align-items: center;
-    font-family: inherit;
-    font-size: 1.25rem;
-    font-weight: 500;
-    line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: rgb(var(--textfield-label-clr));
 
-    @media only screen and (max-width: 767px) {
-        font-size: 1rem;
-    }
+
+  @media only screen and (max-width: 767px) {
+    font-size: var(--label-font-size, 1rem);
+  }
 }
 
 .tk-data-table__label--with-leading-icon {
   .tk-data-table__label-icon {
     order: 1;
     margin-right: 4px;
-    font-size: 1.25rem;
+    font-size: var(--label-font-size, 1.25rem);
   }
 
   .tk-data-table__label-text {

@@ -19,12 +19,12 @@ footer {
 
 .tk-label {
   font-family: var(--base-font-family, $base-font-family);
-  font-size: $label-font-size;
+  font-size: var(--label-font-size, 1rem);
   font-weight: 500;
   line-height: $label-line-height;
   letter-spacing: 0.025em;
   white-space: normal;
-  color: $label-color;
+  @include color-declaration(color, $label-color, --textfield-label-clr);
   display: inline-flex;
   align-items: center;
 }

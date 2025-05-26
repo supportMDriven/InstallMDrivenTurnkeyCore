@@ -31,7 +31,7 @@
 .tk-select__label {
   padding-left: 0.62rem;
   font-family: var(--base-font-family,'Roboto'), sans-serif;
-  font-size: 1rem;
+  font-size: var(--label-font-size, 1rem);
   font-weight: 500;
   letter-spacing: .009375em;
   white-space: nowrap;

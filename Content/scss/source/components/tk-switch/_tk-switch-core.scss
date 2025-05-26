@@ -14,7 +14,7 @@
 .tk-switch__label {
   margin-left: 10px;
   font-family: var(--base-font-family, $base-font-family);
-  font-size: 1rem;
+  font-size: var(--label-font-size, 1rem);
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
