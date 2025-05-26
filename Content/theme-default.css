@@ -51,7 +51,7 @@ a.tk-button__native {
   background: rgb(#eaeaea);
   background: rgb(var(--btn-default-clr, #eaeaea));
   color: rgb(black);
-  color: rgb(var(--text-on-primary, black));
+  color: rgb(var(--text-on-default-btn, black));
   height: 36px;
 }
 button.tk-button__native:hover, button.tk-button__native:focus,

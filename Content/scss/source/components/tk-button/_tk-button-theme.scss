@@ -5,7 +5,7 @@
 button.tk-button__native,
 a.tk-button__native {
   @include color-declaration(background, $button-default-color, --btn-default-clr);
-  @include color-declaration(color, $button-default-text-color, --text-on-primary);
+  @include color-declaration(color, $button-default-text-color, --text-on-default-btn);
   height: $button-height;
 
   &:hover,
