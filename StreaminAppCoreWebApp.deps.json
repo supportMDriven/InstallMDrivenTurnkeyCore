@@ -74,10 +74,14 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.1.4",
           "NETStandard.Library": "2.0.3",
           "Newtonsoft.Json": "13.0.3",
+          "SkiaSharp": "3.119.0",
+          "SkiaSharp.NativeAssets.Linux": "3.119.0",
           "StreamingAppGenericAPIAndControllers.core": "1.0.0",
           "System.Runtime": "4.3.1",
           "System.Text.Encodings.Web": "8.0.0",
           "TurnkeyInterfaces.core": "1.0.0",
+          "ZXing.Net": "0.16.10",
+          "ZXing.Net.Bindings.SkiaSharp": "0.16.21",
           "Microsoft.AspNetCore.Antiforgery.Reference": "8.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions.Reference": "8.0.0.0",
           "Microsoft.AspNetCore.Authentication.BearerToken": "8.0.0.0",
@@ -2938,6 +2942,18 @@
           "System.Private.Uri": "4.3.0"
         }
       },
+      "SkiaSharp/3.119.0": {
+        "dependencies": {
+          "SkiaSharp.NativeAssets.Win32": "3.119.0",
+          "SkiaSharp.NativeAssets.macOS": "3.119.0"
+        },
+        "compile": {
+          "ref/net8.0/SkiaSharp.dll": {}
+        }
+      },
+      "SkiaSharp.NativeAssets.Linux/3.119.0": {},
+      "SkiaSharp.NativeAssets.macOS/3.119.0": {},
+      "SkiaSharp.NativeAssets.Win32/3.119.0": {},
       "System.Buffers/4.5.1": {},
       "System.ClientModel/1.0.0": {
         "dependencies": {
@@ -3451,9 +3467,18 @@
           "lib/net8.0/System.Windows.Extensions.dll": {}
         }
       },
-      "ZXing.Net/0.16.9": {
+      "ZXing.Net/0.16.10": {
         "compile": {
-          "lib/net7.0/zxing.dll": {}
+          "lib/net8.0/zxing.dll": {}
+        }
+      },
+      "ZXing.Net.Bindings.SkiaSharp/0.16.21": {
+        "dependencies": {
+          "SkiaSharp": "3.119.0",
+          "ZXing.Net": "0.16.10"
+        },
+        "compile": {
+          "lib/net8.0/ZXing.SkiaSharp.dll": {}
         }
       },
       "AppCompleteGeneric.EcoSpace.netstandard/1.0.0": {
@@ -3692,10 +3717,13 @@
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "Microsoft.AspNetCore.SignalR.Client": "8.0.10",
+          "SkiaSharp": "3.119.0",
+          "SkiaSharp.NativeAssets.Linux": "3.119.0",
           "System.Drawing.Common": "8.0.10",
           "System.Runtime": "4.3.1",
           "TurnkeyInterfaces.core": "1.0.0",
-          "ZXing.Net": "0.16.9",
+          "ZXing.Net": "0.16.10",
+          "ZXing.Net.Bindings.SkiaSharp": "0.16.21",
           "log4net": "2.0.17"
         },
         "compile": {
@@ -3754,10 +3782,14 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.1.4",
           "NETStandard.Library": "2.0.3",
           "Newtonsoft.Json": "13.0.3",
+          "SkiaSharp": "3.119.0",
+          "SkiaSharp.NativeAssets.Linux": "3.119.0",
           "StreamingAppGenericAPIAndControllers.core": "1.0.0",
           "System.Runtime": "4.3.1",
           "System.Text.Encodings.Web": "8.0.0",
           "TurnkeyInterfaces.core": "1.0.0",
+          "ZXing.Net": "0.16.10",
+          "ZXing.Net.Bindings.SkiaSharp": "0.16.21",
           "Microsoft.AspNetCore.Antiforgery.Reference": "8.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions.Reference": "8.0.0.0",
           "Microsoft.AspNetCore.Authentication.BearerToken": "8.0.0.0",
@@ -6783,6 +6815,27 @@
           "System.Private.Uri": "4.3.0"
         }
       },
+      "SkiaSharp/3.119.0": {
+        "dependencies": {
+          "SkiaSharp.NativeAssets.Win32": "3.119.0",
+          "SkiaSharp.NativeAssets.macOS": "3.119.0"
+        },
+        "runtime": {
+          "lib/net8.0/SkiaSharp.dll": {
+            "assemblyVersion": "3.119.0.0",
+            "fileVersion": "3.119.0.0"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.Linux/3.119.0": {},
+      "SkiaSharp.NativeAssets.macOS/3.119.0": {},
+      "SkiaSharp.NativeAssets.Win32/3.119.0": {
+        "native": {
+          "runtimes/win-x64/native/libSkiaSharp.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
       "System.Buffers/4.5.1": {},
       "System.ClientModel/1.0.0": {
         "dependencies": {
@@ -7356,11 +7409,23 @@
           }
         }
       },
-      "ZXing.Net/0.16.9": {
+      "ZXing.Net/0.16.10": {
         "runtime": {
-          "lib/net7.0/zxing.dll": {
-            "assemblyVersion": "0.16.9.0",
-            "fileVersion": "0.16.9.0"
+          "lib/net8.0/zxing.dll": {
+            "assemblyVersion": "0.16.10.0",
+            "fileVersion": "0.16.10.0"
+          }
+        }
+      },
+      "ZXing.Net.Bindings.SkiaSharp/0.16.21": {
+        "dependencies": {
+          "SkiaSharp": "3.119.0",
+          "ZXing.Net": "0.16.10"
+        },
+        "runtime": {
+          "lib/net8.0/ZXing.SkiaSharp.dll": {
+            "assemblyVersion": "0.16.21.0",
+            "fileVersion": "0.16.21.0"
           }
         }
       },
@@ -7409,7 +7474,7 @@
         "runtime": {
           "Eco.ModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7423,7 +7488,7 @@
         "runtime": {
           "Eco.Modlr.ExtendedModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7440,7 +7505,7 @@
         "runtime": {
           "Eco.Modlr.ModelEditor.NoUI.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7474,7 +7539,7 @@
         "runtime": {
           "MDriven.ASPNETIdentity.core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7503,7 +7568,7 @@
         "runtime": {
           "MDriven.Handles.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7516,7 +7581,7 @@
         "runtime": {
           "MDriven.Interfaces.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7533,7 +7598,7 @@
         "runtime": {
           "MDriven.LinqExtender.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7554,7 +7619,7 @@
         "runtime": {
           "MDriven.MVC.Core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7570,7 +7635,7 @@
         "runtime": {
           "MDriven.Net.Http.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7582,7 +7647,7 @@
         "runtime": {
           "MDriven.Persistence.NetStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7590,7 +7655,7 @@
         "runtime": {
           "MDriven.SharedInterfaces.WebAssembly.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7603,7 +7668,7 @@
         "runtime": {
           "MDriven.Turnkey.ClientCSharp.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7619,7 +7684,7 @@
         "runtime": {
           "MDrivenTurnkeyBlazorApp.Client.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7634,7 +7699,7 @@
         "runtime": {
           "Modlr.Plugins.core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16722"
+            "fileVersion": "7.2.0.16727"
           }
         }
       },
@@ -7654,10 +7719,13 @@
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "Microsoft.AspNetCore.SignalR.Client": "8.0.10",
+          "SkiaSharp": "3.119.0",
+          "SkiaSharp.NativeAssets.Linux": "3.119.0",
           "System.Drawing.Common": "8.0.10",
           "System.Runtime": "4.3.1",
           "TurnkeyInterfaces.core": "1.0.0",
-          "ZXing.Net": "0.16.9",
+          "ZXing.Net": "0.16.10",
+          "ZXing.Net.Bindings.SkiaSharp": "0.16.21",
           "log4net": "2.0.17"
         },
         "runtime": {
@@ -8840,6 +8908,34 @@
       "path": "runtime.win.system.runtime.extensions/4.3.0",
       "hashPath": "runtime.win.system.runtime.extensions.4.3.0.nupkg.sha512"
     },
+    "SkiaSharp/3.119.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-gR9yVoOta2Mc1Rxt15LD65AckfHMfwjIs/3kkD59C9bT2nYYISsE6uz3t4aMPNHA6CgsIL0Ssn+jE5OVilZ1yw==",
+      "path": "skiasharp/3.119.0",
+      "hashPath": "skiasharp.3.119.0.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.Linux/3.119.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oBvfueHtYGTmVHkVebZ6lMYN5nCXR/eN5e7a9VGHca1Z0bt8G5QGLtsjPA+hJ30ZK2wq3i02Zoej2aZDIpvcHA==",
+      "path": "skiasharp.nativeassets.linux/3.119.0",
+      "hashPath": "skiasharp.nativeassets.linux.3.119.0.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.macOS/3.119.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YE1vNn0Nyw2PWtv7hw1PYkKJO0itFiQp9vSqGppZUKzQJqwp28a2jgdCMPfYtOiR8KCnDgZqQoynqJRRaE2ZVg==",
+      "path": "skiasharp.nativeassets.macos/3.119.0",
+      "hashPath": "skiasharp.nativeassets.macos.3.119.0.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.Win32/3.119.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IwC9yx36lOdXVT2DjgmWHl1qkVspfj8ctd4+li8CNnvqdfaTolXCOh6TLznURcPAvzatx9K/tLOB7zT6T8EA9w==",
+      "path": "skiasharp.nativeassets.win32/3.119.0",
+      "hashPath": "skiasharp.nativeassets.win32.3.119.0.nupkg.sha512"
+    },
     "System.Buffers/4.5.1": {
       "type": "package",
       "serviceable": true,
@@ -9337,12 +9433,19 @@
       "path": "system.windows.extensions/8.0.0",
       "hashPath": "system.windows.extensions.8.0.0.nupkg.sha512"
     },
-    "ZXing.Net/0.16.9": {
+    "ZXing.Net/0.16.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-7WaVMHklpT3Ye2ragqRIwlFRsb6kOk63BOGADV0fan3ulVfGLUYkDi5yNUsZS/7FVNkWbtHAlDLmu4WnHGfqvQ==",
-      "path": "zxing.net/0.16.9",
-      "hashPath": "zxing.net.0.16.9.nupkg.sha512"
+      "sha512": "sha512-9avtcn21T7Ndcl8PQ1LHR7/wEoCruX1QKKHvO6zBPTsDW9IdvR5vKOmd618AY+DtDWZz8NaFDTkpbZdgaF4l4w==",
+      "path": "zxing.net/0.16.10",
+      "hashPath": "zxing.net.0.16.10.nupkg.sha512"
+    },
+    "ZXing.Net.Bindings.SkiaSharp/0.16.21": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OoBAiIzfRnTrkkiM4dcORtereuKE8TzcdzVf8Xvh8ZO71aYyuDebR+fjveFY/KfAKS2rU8hFff+UclegThwb+w==",
+      "path": "zxing.net.bindings.skiasharp/0.16.21",
+      "hashPath": "zxing.net.bindings.skiasharp.0.16.21.nupkg.sha512"
     },
     "AppCompleteGeneric.EcoSpace.netstandard/1.0.0": {
       "type": "project",
