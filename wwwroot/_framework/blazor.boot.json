@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "MDrivenTurnkeyBlazorApp.Client",
   "resources": {
-    "hash": "sha256-AhrX5R+UMeTfNFXi9czm6ez99t+sv5+1nlrKkCAw2PA=",
+    "hash": "sha256-hu/3JQgqgVZLpJe2VKZttMdJ0Omu4vWr57X890RDdTY=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-ftpNqtARtVNE8ku5eB/jXoklb41UQ+EutUHfwmbNTBY="
     },
@@ -18,14 +18,14 @@
     },
     "coreAssembly": {},
     "assembly": {
-      "MDriven.Components.WebAssembly.wasm": "sha256-D0A6ddSvnUYxsQWs5WlOi2QtCx9jB3iTgC1uziu2kUY=",
-      "MDriven.SharedInterfaces.WebAssembly.wasm": "sha256-3gZxBG8cujQ4hu3CU4q0MTYS78Jh8RdCY62wFFLAHBk=",
-      "MDriven.Turnkey.ClientCSharp.wasm": "sha256-IJW/OO4z6xNTa1U2dlPjunWcAJKRTHqx16FIw6WduJA=",
-      "MDrivenTurnkeyBlazorApp.Client.wasm": "sha256-VMy395zDG8Cu4WWckSi+hWnIzLqNxLvGoy83073gzFY=",
+      "MDriven.Components.WebAssembly.wasm": "sha256-1SLQG6INiGz1aB7lvEceET4Io309XLiPbMFuMD0ldrM=",
+      "MDriven.SharedInterfaces.WebAssembly.wasm": "sha256-fiYX6Ra2S+ZajcKzJ4IOdy8Fw5vwtdvS4GlLxd6moXo=",
+      "MDriven.Turnkey.ClientCSharp.wasm": "sha256-6N1v/hdHiPEmFJLa8H3q4ERJgunf1Xvz40VzIsjDcnU=",
+      "MDrivenTurnkeyBlazorApp.Client.wasm": "sha256-rQDKHlJ8jkb6+OYvXUtjsbf3uXPC1GM16NgXv0Lgs0o=",
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-Uoc+1ZeLRHzXAAfQFp8xIDohvcKtNDTDHoUJv7gMzNg=",
       "Microsoft.AspNetCore.Components.QuickGrid.wasm": "sha256-BlZ/pXQ633+pCclhGiGwG06z4ik1bXTeSGURrK0cd/s=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-1KwSWlcA7fQg8yRWPdDwx7+CPrnQZj+u2BXPrpslfGo=",
-      "Microsoft.AspNetCore.Components.Web.wasm": "sha256-MKOHD5ZF0r1PLRv2osElai7pifdT/0jiTbQ1/yyU1g0=",
+      "Microsoft.AspNetCore.Components.Web.wasm": "sha256-mTxiZYmRyXrxG06Kkd0kwx/zD8TCOa5aQ0Q7/pQ1qFg=",
       "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-nnJ+120f52mauqvOT3BIY1vyPTv5TBEFnyFn/WWWZpw=",
       "Microsoft.AspNetCore.Connections.Abstractions.wasm": "sha256-9eDNOj+FOQXIXdkhB3VTOIu8GjyN8mURLr+XmCVRMPw=",
       "Microsoft.AspNetCore.Http.Connections.Client.wasm": "sha256-dg1oZa5GbOKAcCSDQzb3GPY/eIAzsXCgeYa8fAO8IMg=",
