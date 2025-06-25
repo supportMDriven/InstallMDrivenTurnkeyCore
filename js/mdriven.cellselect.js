@@ -32,6 +32,7 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
       if (thecurrentrow.rowIndex == -1) {
         //something fishy
       }
+      MarkFirstVisibleCell(thecurrentrow); // added to allow current row marker to show even when first cell is hidden in angular
 
 
       if (event.shiftKey) {
@@ -432,6 +433,20 @@ function GetCellsFromList(listtoiterate, minRow, maxRow, minCol, maxCol) {
 
 let _theLastKnownCellSelectTableMDriven = null;
 
+function MarkFirstVisibleCell(thecurrentrow) {
+  let firstVisible = Array.from(thecurrentrow.children).find(
+    (el) => el.getAttribute("aria-hidden") !== "true"
+  );
+  if (!firstVisible)
+    firstVisible = thecurrentrow.children.length > 0 ? thecurrentrow.children[0] : null;
+  if (firstVisible) {
+    Array.from(thecurrentrow.children).forEach(cell =>
+      cell.classList.remove("firstvisiblecolumn")
+    );
+    firstVisible.classList.add("firstvisiblecolumn");
+  }
+
+}
 function UpdateCellSelects(thetable, isBlazor) {
 
   if (_theLastKnownCellSelectTableMDriven && _theLastKnownCellSelectTableMDriven != thetable) {
