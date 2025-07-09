@@ -6,7 +6,7 @@
 @inject SignInManager<SysUserAdaptor> SignInManager
 @inject UserManager<SysUserAdaptor> UserManager
 
-@if (SignInManager.IsSignedIn(User))
+@if (!string.IsNullOrEmpty(ViewBag.UserPresentation))
 {
     @* This is shown if we're logged IN *@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "right" }))
