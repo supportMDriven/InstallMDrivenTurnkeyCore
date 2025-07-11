@@ -38,7 +38,7 @@ window.setCssVarMDriven = function (varname, varvalue) {
 };
 
 window.getCssVarMDriven = function (varname) {
-  return document.documentElement.style.getPropertyValue(varname);
+  return getComputedStyle(document.documentElement).getPropertyValue(varname);
 };
 
 

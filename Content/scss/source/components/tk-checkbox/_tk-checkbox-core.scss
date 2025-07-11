@@ -124,6 +124,7 @@
   overflow: hidden;
   opacity: 0;
   outline: 0;
+  z-index: 3; // since interactive has z-index of 3 this must have 3 or blazor webassembly stops taking clicks ?!
 }
 
 
