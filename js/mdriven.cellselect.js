@@ -657,3 +657,24 @@ function MDrivenCellSelectClear(element) {
 
 ///////CELL SELECT END
 
+
+//// ClientScriptExecute
+function MDrivenClientScriptExecute(thescriptref) {
+  // Use RegExp to extract function name and parameter
+  const match = thescriptref.match(/^(\w+)\s*\(\s*(\w+)\s*\)$/);
+
+  if (match) {
+    const functionName = match[1];
+    const parameter = match[2];
+
+    console.log("Function name:", functionName);
+    console.log("Parameter:", parameter);
+
+    if (typeof window[functionName] === "function") {
+      console.log('MDrivenClientScriptExecute  ' + functionName);
+      window[functionName](parameter);
+  }
+  else
+      console.log('MDrivenClientScriptExecute  Script not found ' + thescriptref);
+}
+/// ClientScriptExecute end

@@ -1,5 +1,6 @@
 ﻿@using Eco.MVC
 @using System.IO
+@using MDriven.SharedInterfaces.WebAssembly
 @using StreamingAppGenericAPIAndControllers
 @{
   Layout = "";
@@ -90,9 +91,9 @@
 
 
   <div id="bodyWrapper">
-    <component type="typeof(StreaminAppCoreWebApp.Controllers.MDServer)" render-mode="ServerPrerendered" />
+    <component type="typeof(StreaminAppCoreWebApp.Controllers.MDServer)" render-mode="ServerPrerendered" param-SessionId="@Context.Session.Id" param-UserId="@(Context.User.Identity?.Name ?? String.Empty)" />
   </div>
- 
+
 
 
 
@@ -113,3 +114,6 @@
 </body>
 
 </html>
+@{
+  //<component type="typeof(StreaminAppCoreWebApp.Controllers.Test)" render-mode="ServerPrerendered" />
+}
