@@ -673,8 +673,9 @@ function MDrivenClientScriptExecute(thescriptref) {
     if (typeof window[functionName] === "function") {
       console.log('MDrivenClientScriptExecute  ' + functionName);
       window[functionName](parameter);
-  }
-  else
+    }
+    else
       console.log('MDrivenClientScriptExecute  Script not found ' + thescriptref);
+  }
 }
 /// ClientScriptExecute end
