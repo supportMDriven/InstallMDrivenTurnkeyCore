@@ -8,7 +8,18 @@
 @Html.MVCUITurnkeyViewOverrideCss()
 
 @{
-    ViewBag.Title = Model.ViewModelClass.Name;
+  ViewBag.Title = Model.ViewModelClass.Name;
+
+  var usercult = Eco.Services.EcoServiceHelper.GetEcoService<Eco.Services.IMDrivenUITranslation>(Model.Sp).UserCultureIfSet;
+  if (!string.IsNullOrEmpty(usercult))
+  {
+    var culture = new System.Globalization.CultureInfo(usercult);
+    if (culture != null)
+    {
+      System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+      System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+    }
+  }
 }
 
 @using (Html.BeginForm("Submit", Html.GetControllerName(), FormMethod.Post))
