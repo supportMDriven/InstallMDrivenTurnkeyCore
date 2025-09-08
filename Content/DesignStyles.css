@@ -72,6 +72,11 @@
   filter: brightness(.8);
 }
 
+.rebelInvisible {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .tk-placingcontainer {
   border: 2px solid;
   padding: 4px;
