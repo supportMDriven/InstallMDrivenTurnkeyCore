@@ -39,7 +39,7 @@
 
 // Styles for the current row.
 
-
+tr:has(.tk-quickgrid-cell .current),
 .tk-data-table__row.vmCurrentRow {
   box-shadow: inset 0px 0px 0px 1px unquote('rgb(#{$primary-color})');
   box-shadow: inset 0px 0px 0px 1px unquote('rgb(var(--primary-color, #{$primary-color}))');
