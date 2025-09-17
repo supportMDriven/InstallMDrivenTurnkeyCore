@@ -447,6 +447,36 @@ function MarkFirstVisibleCell(thecurrentrow) {
   }
 
 }
+
+function CheckSelectSums(thetable,countOFNumbers, sumOFNumbers) {
+  const target = thetable.parentElement.parentElement.querySelector('.CellSelectInfo');
+  if (target) {
+    if (countOFNumbers > 1 && sumOFNumbers>0) {
+      target.style.display = 'block';
+      target.innerText = "sum: " + sumOFNumbers.toFixed(2) + " avg:" + (sumOFNumbers / countOFNumbers).toFixed(2) + " count:" + countOFNumbers.toFixed(0); 
+    }
+    else {
+      target.style.display = 'none';
+    }
+
+  }
+}
+
+function GetNumberFromElement(element) {
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_ELEMENT, null, false);
+
+  while (walker.nextNode()) {
+    const el = walker.currentNode;
+    const attr = el.getAttribute('numericvalue');
+    if (attr !== null) {
+      // Parse using invariant culture: dot as decimal separator
+      const parsed = parseFloat(attr);
+      return isNaN(parsed) ? null : parsed;
+    }
+  }
+
+  return null; // Not found
+}
 function UpdateCellSelects(thetable, isBlazor) {
 
   if (_theLastKnownCellSelectTableMDriven && _theLastKnownCellSelectTableMDriven != thetable) {
@@ -459,8 +489,12 @@ function UpdateCellSelects(thetable, isBlazor) {
     if (thetable._lastLast == null)
       thetable._lastLast = thetable._lastAnchor;
 
-    const effectedelements = [];
-    const effectedelementsborder = [];
+    //const effectedelements = [];
+    const effectedelements = new Set();
+    //const effectedelementsborder = [];
+    const effectedelementsborder = new Set();
+    let sumOFNumbers = 0.0;
+    let countOFNumbers = 0;
 
 
 
@@ -477,8 +511,8 @@ function UpdateCellSelects(thetable, isBlazor) {
         }
         else {
         }
-        effectedelements.push(elementtostyle);
-        effectedelementsborder.push(cellelem);
+        effectedelements.add(elementtostyle);
+        effectedelementsborder.add(cellelem);
         elementtostyle._cellselectstate = 'off';
         elementtostyle._debug = '{' + cell.col + ';' + cell.row + '} ';
         cellelem._cellselectstate = 'off';
@@ -502,8 +536,8 @@ function UpdateCellSelects(thetable, isBlazor) {
         else {
         }
 
-        effectedelements.push(elementtostyle);
-        effectedelementsborder.push(cellelem);
+        effectedelements.add(elementtostyle);
+        effectedelementsborder.add(cellelem);
         elementtostyle._cellselectstate = 'on'
         elementtostyle._debug = '{' + cell.col + ';' + cell.row + '} ';
         cellelem._cellselectstate = 'on'
@@ -519,6 +553,13 @@ function UpdateCellSelects(thetable, isBlazor) {
     let countadded = '';
     effectedelements.forEach(elemToStyle => {
       if (elemToStyle._cellselectstate == "on") {
+
+        if (isBlazor && elemToStyle.classList.contains("numeric")) {
+          countOFNumbers++;
+          sumOFNumbers += GetNumberFromElement(elemToStyle);
+        }
+
+
         elemToStyle.classList.add('cellselect');
         countadded += elemToStyle._debug;
       }
@@ -529,7 +570,7 @@ function UpdateCellSelects(thetable, isBlazor) {
     });
 
     effectedelementsborder.forEach(elemToStyle => {
-      if (elemToStyle._cellselectstate == "on") {
+      if (elemToStyle._cellselectstate == "on") {        
         if (elemToStyle._btop)
           elemToStyle.classList.add('cellselect_top');
         else
@@ -559,7 +600,7 @@ function UpdateCellSelects(thetable, isBlazor) {
 
 
 
-
+    CheckSelectSums(thetable,countOFNumbers, sumOFNumbers);
     thetable._lastAnchor = thetable._cellAnchor;
     thetable._lastLast = thetable._cellLast;
 
