@@ -102,7 +102,7 @@
               <img src="~/SiteAssets/logo.svg" width="auto" height="40" alt="@ViewBag.ApplicationName" />
             </a>
           }
-          @if ((bool)ViewBag.ApplicationNameAsMenu)
+          @if (ViewBag.ApplicationNameAsMenu is bool && (bool)ViewBag.ApplicationNameAsMenu)
           {
             @Html.ActionLink((string)(string)(ViewBag.ApplicationName != null ? ViewBag.ApplicationName : "InvestigateEmpty"), "Index", TurnkeyController.ControllerName, new { area = "" }, new { @class = "navbar__brand" })
           }
