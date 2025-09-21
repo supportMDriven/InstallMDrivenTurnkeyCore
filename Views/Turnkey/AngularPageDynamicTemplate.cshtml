@@ -193,7 +193,7 @@
 
 
 
-@if (ViewBag.ShowDebugInfo)
+@if (ViewBag.ShowDebugInfo!=null && ViewBag.ShowDebugInfo)
 {
   <tk-debug-info trigger-visibility="controller.toggleDebugMenu()" visible="controller.isDebugMenuOpen"></tk-debug-info>
 }

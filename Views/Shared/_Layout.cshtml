@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 @* This is the layout page defined in _ViewStart.cshtml *@
 @* It's rendered because the "actual page" was requested. This layout page will include this orginally requested page using @RenderBody() *@
-<html @Html.Raw((ViewBag.IsUserControl is bool && ViewBag.IsUserControl)?"uc='true'":"") turnkeyview="@ViewBag.turnkeyView">
+<html @Html.Raw((ViewBag.IsUserControl!=null && ViewBag.IsUserControl)?"uc='true'":"") turnkeyview="@ViewBag.turnkeyView">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, viewport-fit=cover">
@@ -102,7 +102,7 @@
               <img src="~/SiteAssets/logo.svg" width="auto" height="40" alt="@ViewBag.ApplicationName" />
             </a>
           }
-          @if (ViewBag.ApplicationNameAsMenu is bool && (bool)ViewBag.ApplicationNameAsMenu)
+          @if (ViewBag.ApplicationNameAsMenu!=null && (bool)ViewBag.ApplicationNameAsMenu)
           {
             @Html.ActionLink((string)(string)(ViewBag.ApplicationName != null ? ViewBag.ApplicationName : "InvestigateEmpty"), "Index", TurnkeyController.ControllerName, new { area = "" }, new { @class = "navbar__brand" })
           }
