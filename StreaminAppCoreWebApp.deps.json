@@ -2811,11 +2811,6 @@
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
-      "Microsoft.Win32.SystemEvents/8.0.0": {
-        "compile": {
-          "lib/net8.0/Microsoft.Win32.SystemEvents.dll": {}
-        }
-      },
       "NETStandard.Library/2.0.3": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "7.0.4"
@@ -3051,14 +3046,6 @@
           "Microsoft.NETCore.Targets": "1.1.3",
           "System.Runtime": "4.3.1",
           "runtime.any.System.Diagnostics.Tools": "4.3.0"
-        }
-      },
-      "System.Drawing.Common/8.0.10": {
-        "dependencies": {
-          "Microsoft.Win32.SystemEvents": "8.0.0"
-        },
-        "compile": {
-          "lib/net8.0/System.Drawing.Common.dll": {}
         }
       },
       "System.Globalization/4.3.0": {
@@ -3443,7 +3430,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
           "MDriven.Net.Http.netStandard": "1.0.0",
-          "MDriven.Persistence.NetStandard": "1.0.0",
+          "MDriven.Persistence.netStandard": "1.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3"
         },
         "compile": {
@@ -3611,13 +3598,13 @@
           "MDriven.Net.Http.netStandard.dll": {}
         }
       },
-      "MDriven.Persistence.NetStandard/1.0.0": {
+      "MDriven.Persistence.netStandard/1.0.0": {
         "dependencies": {
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "compile": {
-          "MDriven.Persistence.NetStandard.dll": {}
+          "MDriven.Persistence.netStandard.dll": {}
         }
       },
       "MDriven.SharedInterfaces.WebAssembly/1.0.0": {
@@ -3679,7 +3666,6 @@
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
           "SkiaSharp": "3.119.0",
           "SkiaSharp.NativeAssets.Linux": "3.119.0",
-          "System.Drawing.Common": "8.0.10",
           "System.Runtime": "4.3.1",
           "TurnkeyInterfaces.core": "1.0.0",
           "ZXing.Net": "0.16.10",
@@ -6692,14 +6678,6 @@
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
-      "Microsoft.Win32.SystemEvents/8.0.0": {
-        "runtime": {
-          "runtimes/win/lib/net8.0/Microsoft.Win32.SystemEvents.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.23.53103"
-          }
-        }
-      },
       "NETStandard.Library/2.0.3": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "7.0.4"
@@ -6974,17 +6952,6 @@
           "Microsoft.NETCore.Targets": "1.1.3",
           "System.Runtime": "4.3.1",
           "runtime.any.System.Diagnostics.Tools": "4.3.0"
-        }
-      },
-      "System.Drawing.Common/8.0.10": {
-        "dependencies": {
-          "Microsoft.Win32.SystemEvents": "8.0.0"
-        },
-        "runtime": {
-          "lib/net8.0/System.Drawing.Common.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1024.46803"
-          }
         }
       },
       "System.Globalization/4.3.0": {
@@ -7407,7 +7374,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
           "MDriven.Net.Http.netStandard": "1.0.0",
-          "MDriven.Persistence.NetStandard": "1.0.0",
+          "MDriven.Persistence.netStandard": "1.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3"
         },
         "runtime": {
@@ -7445,7 +7412,7 @@
         "runtime": {
           "Eco.ModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7459,7 +7426,7 @@
         "runtime": {
           "Eco.Modlr.ExtendedModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7477,7 +7444,7 @@
         "runtime": {
           "Eco.Modlr.ModelEditor.NoUI.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7512,7 +7479,7 @@
         "runtime": {
           "MDriven.ASPNETIdentity.core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7541,7 +7508,7 @@
         "runtime": {
           "MDriven.Handles.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7554,7 +7521,7 @@
         "runtime": {
           "MDriven.Interfaces.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7571,7 +7538,7 @@
         "runtime": {
           "MDriven.LinqExtender.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7593,7 +7560,7 @@
         "runtime": {
           "MDriven.MVC.Core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7610,19 +7577,19 @@
         "runtime": {
           "MDriven.Net.Http.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
-      "MDriven.Persistence.NetStandard/1.0.0": {
+      "MDriven.Persistence.netStandard/1.0.0": {
         "dependencies": {
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "runtime": {
-          "MDriven.Persistence.NetStandard.dll": {
+          "MDriven.Persistence.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7630,7 +7597,7 @@
         "runtime": {
           "MDriven.SharedInterfaces.WebAssembly.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7643,7 +7610,7 @@
         "runtime": {
           "MDriven.Turnkey.ClientCSharp.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7659,7 +7626,7 @@
         "runtime": {
           "MDrivenTurnkeyBlazorApp.Client.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7674,7 +7641,7 @@
         "runtime": {
           "Modlr.Plugins.core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16923"
+            "fileVersion": "7.2.0.16924"
           }
         }
       },
@@ -7697,7 +7664,6 @@
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
           "SkiaSharp": "3.119.0",
           "SkiaSharp.NativeAssets.Linux": "3.119.0",
-          "System.Drawing.Common": "8.0.10",
           "System.Runtime": "4.3.1",
           "TurnkeyInterfaces.core": "1.0.0",
           "ZXing.Net": "0.16.10",
@@ -8716,13 +8682,6 @@
       "path": "microsoft.win32.registry/4.5.0",
       "hashPath": "microsoft.win32.registry.4.5.0.nupkg.sha512"
     },
-    "Microsoft.Win32.SystemEvents/8.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-9opKRyOKMCi2xJ7Bj7kxtZ1r9vbzosMvRrdEhVhDz8j8MoBGgB+WmC94yH839NPH+BclAjtQ/pyagvi/8gDLkw==",
-      "path": "microsoft.win32.systemevents/8.0.0",
-      "hashPath": "microsoft.win32.systemevents.8.0.0.nupkg.sha512"
-    },
     "NETStandard.Library/2.0.3": {
       "type": "package",
       "serviceable": true,
@@ -9023,13 +8982,6 @@
       "sha512": "sha512-UUvkJfSYJMM6x527dJg2VyWPSRqIVB0Z7dbjHst1zmwTXz5CcXSYJFWRpuigfbO1Lf7yfZiIaEUesfnl/g5EyA==",
       "path": "system.diagnostics.tools/4.3.0",
       "hashPath": "system.diagnostics.tools.4.3.0.nupkg.sha512"
-    },
-    "System.Drawing.Common/8.0.10": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-MdajRp3P+FOlThgY6FBjAqnmLiVl5t2yWEC/2AsDMqx1zYbJG3G5TnscFBQ4obqcaGqvN5UnhQHSFaJFG2HftQ==",
-      "path": "system.drawing.common/8.0.10",
-      "hashPath": "system.drawing.common.8.0.10.nupkg.sha512"
     },
     "System.Globalization/4.3.0": {
       "type": "package",
@@ -9481,7 +9433,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.Persistence.NetStandard/1.0.0": {
+    "MDriven.Persistence.netStandard/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
