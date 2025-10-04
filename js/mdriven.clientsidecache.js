@@ -1,7 +1,7 @@
 ﻿export function CacheThis(name, id) {
 
 
-  const viewModel = document.getElementById("globalContentWrapper");
+  const viewModel = document.getElementById("contentWrapper");
   if (!viewModel) return;
 
   let mutationTimeout;
@@ -41,7 +41,7 @@
 
 function captureAndSend(name, id, viewModel) {
   //debugger;
-  const htmlContent = viewModel.innerHTML;
+  const htmlContent = viewModel.innerHTML.replace('<!--!-->',''); // blazor comment can mix things up and block cached from rendering
 
   const formData = new FormData();
 
@@ -58,7 +58,7 @@ function captureAndSend(name, id, viewModel) {
       console.error("Failed to cache page content");
     }
     else {
-      console.error("CACHETHIS recongnised and data sent");
+      console.info("CACHETHIS recongnised and data sent");
 
     }
   }).catch(err => {
