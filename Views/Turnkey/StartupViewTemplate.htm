@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href='###BASEURL###' />
+  <title>Loading, please wait...</title>
+
+  <script>
+    // Function to check if the server is ready
+    function checkServerStatus() {
+      //debugger;
+      fetch('app/AppReady')
+        .then(response => {
+          if (response.status === 200) {
+            // Server is ready, redirect where we wanted, either in angular or other complete url                    
+            let hash = window.location.hash;
+            //debugger;
+            if (hash != "")
+              window.location.href = 'app' + hash;
+            else
+              window.location.href = window.location.href = '###GOALURL###';
+          } else {
+            // Server is not ready, retry after 1 seconds
+            setTimeout(checkServerStatus, 1000);
+          }
+        })
+        .catch(error => {
+          // Server is not ready, retry after 1 seconds, server will hold 10 sec at most, but answer directly when done
+          setTimeout(checkServerStatus, 1000);
+        });
+    }
+
+    // Start checking server status
+    checkServerStatus();
+  </script>
+
+</head>
+<body>
+  <style>
+    body {
+      height: 100%;
+      font-family: "Roboto", sans-serif, Arial, Helvetica, sans-serif;
+      height: 100vh;
+    }
+
+    .startup {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%
+    }
+
+    .startup__text {
+      margin-top: 30px;
+      font-family: "Roboto", sans-serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: 0.0085em
+    }
+
+    .startup__copyright {
+      position: fixed;
+      bottom: 1%;
+      left: 1%;
+      display: none;
+      align-items: center;
+      font-family: "Roboto", sans-serif;
+      font-weight: 400
+    }
+
+    .startup__copyright {
+      display: inline-flex
+    }
+
+      .startup__copyright picture {
+        margin-left: 10px
+      }
+
+    .tk-loader svg path {
+      fill: #f59c1a
+    }
+  </style>
+  <main class="startup">
+    <div class="tk-loader tk-loader--app">
+      <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           width="90px" height="90px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+      <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+      <animateTransform attributeType="xml"
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 25 25"
+                        to="360 25 25"
+                        dur="1s"
+                        repeatCount="indefinite" />
+        </path>
+      </svg>
+    </div>
+
+    <p class="startup__text">Loading, please wait...</p>
+
+    <footer class="startup__copyright">
+      <p>Powered by <a href="https://www.mdriven.net">MDriven Turnkey</a></p>
+      <picture>
+        <source srcset="/Content/icons/mdriven@2x.png 2x">
+        <img src="/Content/icons/mdriven.png" width="35" height="35" alt="MDriven Turnkey">
+      </picture>
+    </footer>
+  </main>
+</body>
+</html>

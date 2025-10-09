@@ -1,0 +1,16 @@
+.validation__item {
+  &.danger {
+    @include color-declaration(background-color, $danger-color, --danger-color);
+    @include color-declaration(color, $text-on-danger, --text-on-danger);
+  }
+
+  &.warning {
+    @include color-declaration(background-color, $warning-color, --warning-color);
+    @include color-declaration(color, $text-on-warning, --text-on-warning);
+  }
+
+  &.info {
+    background-color: $color-info;
+    color: #fff;
+  }
+}

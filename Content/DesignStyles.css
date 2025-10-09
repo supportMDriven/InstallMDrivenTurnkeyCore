@@ -1,0 +1,172 @@
+﻿.rebelComponent {
+  width: 16px;
+  height: 16px;
+  background: orange;
+  position: absolute;
+  display: block;
+  border-radius: 8px;
+  z-index: 110;
+}
+
+  .rebelComponent:hover {
+    filter: brightness(.8);
+  }
+
+.dropdot:hover {
+  filter: brightness(.8);
+}
+
+
+.FlexboxRendering > .tk-placingcontainer > .rebelPlacingContainer {
+  background: #fd7f6f;
+}
+
+.FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .rebelPlacingContainer {
+  background: #7eb0d5;
+}
+
+.FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .rebelPlacingContainer {
+  background: #b2e061;
+}
+
+.FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .rebelPlacingContainer {
+  background: #bd7ebe;
+}
+
+.FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .rebelPlacingContainer {
+  background: #ffb55a;
+}
+
+.tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .rebelPlacingContainer {
+  background: #ffee65;
+}
+
+.tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .rebelPlacingContainer {
+  background: #beb9db;
+}
+
+.tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .rebelPlacingContainer {
+  z-index: 107;
+  background: #fdcce5;
+}
+
+.tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .rebelPlacingContainer {
+  background: #8bd3c7;
+}
+
+.rebelPlacingContainer {
+  position: absolute;
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-bottom-right-radius: 12px;
+  top: 0px;
+  left: 0px;
+}
+
+  .rebelPlacingContainer:hover {
+    filter: brightness(.8);
+  }
+
+.drophilite {
+  filter: brightness(.8);
+}
+
+.rebelInvisible {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tk-placingcontainer {
+  border: 2px solid;
+  padding: 4px;
+}
+/*better to have more padding to enable click on covered parent*/
+.FlexboxRendering > .tk-placingcontainer {
+  border-color: #fd7f6f;
+}
+
+  .FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer {
+    border-color: #7eb0d5;
+  }
+
+    .FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer {
+      border-color: #b2e061;
+    }
+
+      .FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer {
+        border-color: #bd7ebe;
+      }
+
+        .FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer {
+          border-color: #ffb55a;
+        }
+
+          .FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer {
+            border-color: #ffee65;
+          }
+
+            .FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer {
+              border-color: #beb9db;
+            }
+
+              .FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer {
+                border-color: #fdcce5;
+              }
+
+                .FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer {
+                  border-color: #8bd3c7;
+                }
+
+.tk-placingcontainer {
+  border-color: lightgray;
+}
+
+
+.dropdot {
+  width: 16px;
+  height: 16px;
+  background: lightgray;
+  display: none;
+  border-radius: 8px;
+  z-index: 100;
+}
+
+.displaygrid {
+  display: grid;
+}
+
+/*To make dots scroll along*/
+
+#viewmodelSection {
+  position: relative;
+}
+
+.selectanimationdot {
+  width: 50px;
+  height: 50px;
+  background-color: yellow;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: shrink 1s forwards;
+  z-index:1000;
+}
+
+@keyframes shrink {
+  from {
+    width: 50px;
+    height: 50px;
+    opacity: 1;
+  }
+
+  to {
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+  }
+}
+
+/*Deep hierarchy, and listview rows*/

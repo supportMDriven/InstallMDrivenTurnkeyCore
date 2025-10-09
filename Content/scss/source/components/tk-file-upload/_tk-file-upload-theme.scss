@@ -1,0 +1,19 @@
+.tk-file-upload__interactive {
+  color: $button-default-text-color;
+  @include color-declaration(background, $button-default-color, --btn-default-clr);
+  height: $button-height;
+
+  &.uploaded {
+    @include color-declaration(background, $success-color, --success-color);
+    @include color-declaration(color, $text-on-success, --text-on-success);
+  }
+}
+
+.tk-file-upload__progress {
+  @include color-declaration(background-color, $primary-color, --primary-color);
+}
+
+
+.tk-file-upload__validation-state {
+  @include color-declaration(color, $danger-color, --danger-color);
+}

@@ -1,0 +1,200 @@
+﻿@using Eco.MVC
+@using StreamingAppGenericAPIAndControllers
+
+@model AngularModel
+
+@Html.AngularUITurnkeyViewOverrideCss()
+
+@* This page is returned when called by Angular requesting a page. This content is inserted in AngularApp.cshtml at the ng-view class *@
+@* In JavaScript, the MDrivenAngularApp routeprovider, intercepts "intra-angular" clicks and requests and inserts the resulting HTML into the DOM *@
+
+@* NOTE!! this page is rendered by calls from Angular client code, using the server API, NOT when rendering AngularApp.cshtml *@
+
+<!--Body content   --> 
+<!-- The main page is divided in two columns --!>
+<!--   Left contains the action menu --!>
+<!--   Right contains top buttons and the generated MDriven ViewModel -->
+
+<div id="contentWrapper" class="@Model.ViewName" ng-class="controller.isSidebarVisible ? 'actions-visible' : ''">
+
+  <!--The left - action menu -->
+  <!-- Div above makes it impossible for negative MarginLeft to move main content off screen -->
+
+  @if (Model.AngularJSComponentRendering)
+  {
+    <tk-sidebar state-actions="ViewData.StateActions()"
+                ng-class="controller.isSidebarVisible ? 'onscreen' : 'offscreen'"
+                ng-if="ViewData.ActionsExist"
+                actions-group="ViewData.ActionGroups()">
+    </tk-sidebar>
+  }
+  else
+  {
+    <aside id="sidebar" ng-if="ViewData.ActionsExist && controller.isSidebarVisible" ng-class="controller.isSidebarVisible ? 'onscreen' : 'offscreen'" class="tk-sidebar">
+      <div class="tk-sidebar__header">
+        <button class="tk-sidebar__close ripple-effect" type="button" ng-click="controller.toggleSidebar()">
+          <i class="mi">close</i>
+        </button>
+      </div>
+      <div class="tk-sidebar__content">
+        <!-- State actions -->
+        <div class="tk-sidebar__state-actions" ng-if="ViewData.GetUsesTheToolbar()==false">
+          <button type="button"
+                  class="tk-state-action ripple-effect"
+                  ng-class="oneaction.Class"
+                  ng-repeat="oneaction in ViewData.StateActions()"
+                  ng-click="oneaction.Execute($event); controller.hideSidebar"
+                  ng-disabled="!oneaction.Enable">
+            {{oneaction.Presentation}}
+          </button>
+        </div>
+
+        <div class="tk-sidebar__list">
+          <!-- Action group with actions -->
+          <button type="button" ng-repeat-start="actionGroup in ViewData.ActionGroups() | orderBy: 'ActionGroupSortKey'" ng-if="!(actionGroup.ActionGroupPresentation==='') && actionGroup.NotEmpty()"
+                  class="tk-sidebar__group-header"
+                  data-toggle="collapse" data-target="#GroupHeader{{$parent.$id}}"
+                  title="{{actionGroup.ActionGroupPresentation}}">
+            <span class="tk-sidebar__group-name">{{actionGroup.ActionGroupPresentation}}</span>
+            <span class="mi">arrow_drop_down</span>
+          </button>
+          <div id="GroupHeader{{$id}}" uib-collapse in class="tk-sidebar__group">
+            <button type="button" ng-repeat-start="submenugroup in actionGroup.SubMenuGroups | orderBy: 'SubMenuGroupSortKey'" ng-if="!(submenugroup.SubMenuGroupName==='') && submenugroup.ActionList.NotEmpty()"
+                    class="tk-sidebar__subgroup-header"
+                    data-toggle="collapse" data-target="#SubMenuGroup{{$parent.$id}}">
+              <span>{{submenugroup.SubMenuGroupName}}</span>
+              <span class="mi">arrow_drop_down</span>
+            </button>
+            <div id="SubMenuGroup{{$id}}" uib-collapse in class="tk-sidebar__subgroup">
+              <button type="button"
+                      class="tk-sidebar__item ripple-effect"
+                      ng-repeat="oneaction in submenugroup.ActionList.Actions | orderBy: 'ActionSortKey'"
+                      ng-class="oneaction.ActionDisableAndDesignedClass();"
+                      ng-click="oneaction.Execute($event); controller.hideSidebar"
+                      ng-disabled="!oneaction.Enable"
+                      title="{{oneaction.Presentation}}">
+                <md-tooltip ng-if="oneaction.HintWhenEnabled" md-direction="right">{{oneaction.HintWhenEnabled}}</md-tooltip>
+                {{oneaction.Presentation}}
+              </button>
+            </div>
+            <div ng-repeat-end></div>
+          </div>
+          <div ng-repeat-end></div>
+        </div>
+      </div>
+
+      <tk-validation-card 
+        id="validationMessageWrapper" 
+        class="validation-card"
+        ng-show="controller.errorCount > 0" 
+        error-count="controller.errorCount"
+        sidebar-visible="controller.isSidebarVisible"
+        on-click="controller.showConstraints($event)"
+        context="controller.validationCardCssClass">
+      </tk-validation-card>
+    </aside>
+  }
+
+  <tk-validation-card 
+    class="validation-card floated"
+    ng-show="controller.errorCount > 0 && !controller.isSidebarVisible"
+    error-count="controller.errorCount"
+    sidebar-visible="controller.isSidebarVisible"
+    on-click="controller.showConstraints($event)"
+    context="controller.validationCardCssClass">
+  </tk-validation-card>
+
+  <div id="viewmodelWrapper">
+
+    <!--Toolbar-->
+
+        <div id="contentToolbar" ng-if="ViewData.GetUsesTheToolbar()==true">
+       <div class="toolbar__container">
+        <ul class="toolbar__list" >
+          <!-- Action group with actions -->
+          <li class="toolbar__item"  ng-repeat="submenugroup in ViewData.ActionSubMenuGroupsToolbar() | orderBy: 'SubMenuGroupSortKey'" ng-if="(submenugroup.SubMenuGroupName!='') && submenugroup.ActionList.NotEmpty()">
+            <a href="#" data-toggle="dropdown"  class="toolbar__link ripple-effect" aria-expanded="false" >
+              <span class="tk-sidebar__group-name">{{submenugroup.SubMenuGroupName}}</span>
+              <span class="mi">arrow_drop_down</span>
+            </a>
+            <ul class="dropdown__menu toolbar">
+              <li class="dropdown__item" ng-repeat="oneaction in submenugroup.ActionList.Actions | orderBy: 'ActionSortKey'">
+                <button type="button" class="toolbar-drop__button ripple-effect" ng-class="oneaction.ActionDisableAndDesignedClass();" ng-click="oneaction.Execute($event);" ng-disabled="!oneaction.Enable" title="{{oneaction.Presentation}}">
+                  <md-tooltip ng-if="oneaction.HintWhenEnabled" md-direction="right">{{oneaction.HintWhenEnabled}}</md-tooltip>
+                  {{oneaction.Presentation}}
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li class="toolbar__item" ng-repeat="oneaction in ViewData.ActionListTopLevelToolbar() | orderBy: 'ActionSortKey'">
+            <button type="button" class="tk-toolbar__button ripple-effect" ng-class="oneaction.ActionDisableAndDesignedClass();" ng-click="oneaction.Execute($event);" ng-disabled="!oneaction.Enable" title="{{oneaction.Presentation}}">
+              <md-tooltip ng-if="oneaction.HintWhenEnabled" md-direction="right">{{oneaction.HintWhenEnabled}}</md-tooltip>
+              {{oneaction.Presentation}}
+            </button>
+          </li>
+        </ul>
+
+        <ul class="vmactions__list">
+            <li class="vmactions__item" ng-repeat="oneaction in ViewData.StateActions()">
+            <button type="button" 
+                    class="tk-state-action ripple-effect"
+                    ng-class="oneaction.Class"                  
+                    ng-click="oneaction.Execute($event); controller.hideSidebar"
+                    ng-disabled="!oneaction.Enable">
+              {{oneaction.Presentation}}
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!--The right -  -->
+    <!-- Here is the ViewModel Angular body inserted -->
+    @Html.AngularUITurnkeyViewOverride() @* Here the generated Angular html is inserted OR the overridden page from the folder EXT_OverridePages *@
+    <!-- End of inserted ViewModel Angular body -->
+  </div>
+
+  <div class="tk-snackbar tk-snackbar--centered" ng-class="ViewClient.Loading() && !controller.modalIsOpen ? 'tk-snackbar--open' : ''">
+    <div class="tk-snackbar__surface">
+      <div class="tk-snackbar__label">
+        Loading ...
+      </div>
+      <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           width="25px" height="25px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+      <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+      <animateTransform attributeType="xml"
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 25 25"
+                        to="360 25 25"
+                        dur="0.8s"
+                        repeatCount="indefinite" />
+          </path>
+        </svg>
+    </div>
+  </div>
+</div>
+
+<!-- Hovering buttons -->
+<div class="actions__wrapper" role="group" ng-show="!controller.isSidebarVisible && !currentIsPopUp" ng-if="ViewData.GetUsesTheToolbar()==false">
+  <!-- This is Cancel-button (filter to only Cancel here) -->
+  <div class="actions__item" ng-repeat="oneaction in ViewData.StateActions() | filter:{ActionName:'Cancel'}">
+    <button class="tk-button__native danger ripple-effect" ng-class="oneaction.Class" ng-click="oneaction.Execute($event);" ng-show="oneaction.Enable">
+      {{oneaction.Presentation}}
+    </button>
+  </div>
+  <!-- This is Save-button (filter to only Save here) -->
+  <div class="actions__item" ng-repeat="oneaction in ViewData.StateActions() | filter:{ActionName:'Save'}">
+    <button class="tk-button__native warning ripple-effect"  ng-class="oneaction.Class" ng-click="oneaction.Execute($event);" ng-show="oneaction.Enable">
+      {{oneaction.Presentation}}
+    </button>
+  </div>
+</div>
+
+
+
+@if (ViewBag.ShowDebugInfo!=null && ViewBag.ShowDebugInfo)
+{
+  <tk-debug-info trigger-visibility="controller.toggleDebugMenu()" visible="controller.isDebugMenuOpen"></tk-debug-info>
+}
+@Html.AngularUITurnkeyViewOverrideScript()

@@ -1,0 +1,295 @@
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+
+button.tk-button__native,
+a.tk-button__native {
+  @include color-declaration(background, $button-default-color, --btn-default-clr);
+  @include color-declaration(color, $button-default-text-color, --text-on-default-btn);
+  height: $button-height;
+
+  &:hover,
+  &:focus {
+    @include color-declaration(background, $button-default-color, --btn-default-clr);
+  }
+
+  .ripple-container {
+    background-color: rgba(black, 0.10);
+  }
+}
+
+// Apply primary color for the default buttons
+
+button.tk-button__native.primary,
+a.tk-button__native.primary  {
+  @include color-declaration(background, $primary-color, --primary-color);
+  @include color-declaration(color, $text-on-primary, --text-on-primary);
+
+  &:hover,
+  &:focus {
+    @include color-declaration(background, $primary-color-dark, --primary-color-dark);
+  }
+
+  .ripple-container {
+    @include color-declaration(background, $text-on-primary, --text-on-primary, true, 0.30);
+  }
+}
+
+// Contextual theming for the default buttons
+
+button.tk-button__native.danger,
+a.tk-button__native.danger {
+  @include color-declaration(background, $danger-color, --danger-color);
+  @include color-declaration(color, $text-on-danger, --text-on-danger);
+
+  &:hover,
+  &:focus {
+    @include color-declaration(background, $danger-color-dark, --danger-color-dark);
+  }
+
+  .ripple-container {
+    @include color-declaration(background-color, $text-on-danger, --text-on-danger, true, 0.30);
+  }
+}
+
+button.tk-button__native.warning,
+a.tk-button__native.warning {
+  @include color-declaration(background, $warning-color, --warning-color);
+  @include color-declaration(color, $text-on-warning, --text-on-warning);
+
+  &:hover,
+  &:focus {
+    @include color-declaration(background, $warning-color-dark, --warning-color-dark);
+  }
+
+  .ripple-container {
+    @include color-declaration(background-color, $text-on-warning, --text-on-warning, true, 0.30);
+  }
+}
+
+button.tk-button__native.success,
+a.tk-button__native.success  {
+  @include color-declaration(background, $success-color, --success-color);
+  @include color-declaration(color, $text-on-success, --text-on-success);
+
+  &:hover,
+  &:focus {
+    @include color-declaration(background, $success-color-dark, --success-color-dark);
+  }
+  .ripple-container {
+    @include color-declaration(background-color, $text-on-success, --text-on-success, true, 0.30);
+  }
+}
+
+button.tk-button__native.info,
+a.tk-button__native.info  {
+  background: $color-info;
+  color: choose-contrast-color($color-info);
+
+  &:hover,
+  &:focus {
+    background: $color-info-dark;
+  }
+
+  .ripple-container {
+    background-color: rgba(choose-contrast-color($color-info), 0.30);
+  }
+}
+
+// Contextual theming for the outlined buttons
+button.tk-button__native.outlined,
+a.tk-button__native.outlined {
+  border-color: $button-default-text-color;
+  color: $button-default-text-color;
+
+  &:hover {
+    background: rgba(black, 0.05);
+  }
+
+  .ripple-container {
+    background-color: rgba(black, 0.20);
+  }
+}
+
+button.tk-button__native.outlined.danger,
+a.tk-button__native.outlined.danger  {
+  @include color-declaration(border-color, $danger-color, --danger-color);
+  @include color-declaration(color, $danger-color, --danger-color);
+
+  &:hover,
+  &:focus {
+    @include color-declaration(background, $danger-color, --danger-color, true, 0.05);
+  }
+
+  .ripple-container {
+    @include color-declaration(background-color, $danger-color, --danger-color, true, 0.20);
+  }
+}
+
+button.tk-button__native.outlined.warning,
+a.tk-button__native.outlined.warning  {
+  @include color-declaration(border-color, $warning-color, --warning-color);
+  @include color-declaration(color, $warning-color, --warning-color);
+
+  &:hover,
+  &:focus {
+    @include color-declaration(background, $warning-color, --warning-color, true, 0.05);
+  }
+
+  .ripple-container {
+    @include color-declaration(background, $warning-color, --warning-color, true, 0.20);
+  }
+}
+
+button.tk-button__native.outlined.success,
+a.tk-button__native.outlined.success  {
+  @include color-declaration(border-color, $success-color, --success-color);
+  @include color-declaration(color, $success-color, --success-color);
+
+  &:hover,
+  &:focus {
+    @include color-declaration(background, $success-color, --success-color, true, 0.05);
+  }
+
+  .ripple-container {
+    @include color-declaration(background, $success-color, --success-color, true, 0.20);
+  }
+}
+
+button.tk-button__native.outlined.info,
+a.tk-button__native.outlined.info  {
+  border-color: $color-info;
+  color: $color-info;
+
+  &:hover,
+  &:focus {
+    background: rgba($color-info, 0.05);
+  }
+
+  .ripple-container {
+    background-color: rgba($color-info, 0.20);
+  }
+}
+
+button.tk-button__native.outlined.primary,
+a.tk-button__native.outlined.primary  {
+  @include color-declaration(border-color, $primary-color, --primary-color);
+  @include color-declaration(color, $primary-color, --primary-color);
+
+  &:hover,
+  &:focus {
+    @include color-declaration(background, $primary-color, --primary-color, true, 0.05);
+  }
+
+  .ripple-container {
+    @include color-declaration(background, $primary-color, --primary-color, true, 0.20);
+  }
+}
+
+// Contextual theming for the flat buttons
+
+button.tk-button__native.flat,
+a.tk-button__native.flat {
+  color: $button-default-text-color;
+
+  &:hover {
+    background: rgba($button-default-text-color, 0.04);
+  }
+
+  &:focus:not(:active) {
+    background: rgba($button-default-text-color, 0.05);
+  }
+
+  & .ripple-container {
+    background-color: rgba($button-default-text-color, 0.055);
+  }
+}
+
+button.tk-button__native.flat.danger,
+a.tk-button__native.flat.danger {
+  @include color-declaration(color, $danger-color, --danger-color);
+
+  &:hover {
+    @include color-declaration(background, $danger-color, --danger-color, true, 0.04);
+  }
+
+  &:focus:not(:active) {
+    @include color-declaration(background, $danger-color, --danger-color, true, 0.05);
+  }
+
+  & .ripple-container {
+    @include color-declaration(background-color, $danger-color, --danger-color, true, 0.055);
+  }
+}
+
+button.tk-button__native.flat.warning,
+a.tk-button__native.flat.warning {
+  @include color-declaration(color, $warning-color, --warning-color);
+
+  &:hover {
+    @include color-declaration(background, $warning-color, --warning-color, true, 0.04);
+  }
+
+  &:focus:not(:active) {
+    @include color-declaration(background, $warning-color, --warning-color, true, 0.05);
+  }
+
+  & .ripple-container {
+    @include color-declaration(background-color, $warning-color, --warning-color, true, 0.055);
+  }
+}
+
+button.tk-button__native.flat.success,
+a.tk-button__native.flat.success {
+  @include color-declaration(color, $success-color, --success-color);
+
+  &:hover {
+    @include color-declaration(background, $success-color, --success-color, true, 0.04);
+  }
+
+  &:focus:not(:active) {
+    @include color-declaration(background, $success-color, --success-color, true, 0.05);
+  }
+
+  & .ripple-container {
+    @include color-declaration(background-color, $success-color, --success-color, true, 0.055);
+  }
+}
+
+button.tk-button__native.flat.info,
+a.tk-button__native.flat.info {
+  color: $color-info;
+
+  &:hover {
+    background: rgba($color-info, 0.04);
+  }
+
+  &:focus:not(:active) {
+    background: rgba($color-info, 0.05);
+  }
+
+  & .ripple-container {
+    background-color: rgba($color-info, 0.055);
+  }
+}
+
+button.tk-button__native.flat.primary,
+a.tk-button__native.flat.primary {
+  @include color-declaration(color, $primary-color, --primary-color);
+
+  &:hover {
+    @include color-declaration(background, $primary-color, --primary-color, true, 0.04);
+  }
+
+  &:focus:not(:active) {
+    @include color-declaration(background, $primary-color, --primary-color, true, 0.05);
+  }
+
+  & .ripple-container {
+    @include color-declaration(background-color, $primary-color, --primary-color, true, 0.055);
+  }
+}
+
+
+
+

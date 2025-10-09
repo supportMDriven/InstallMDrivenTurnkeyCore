@@ -1,0 +1,38 @@
+@* This html is injected into the top menu at the right hand side *@
+@using Microsoft.AspNetCore.Identity
+@using  MDriven.ASPNETIdentity
+@using MDriven.ASPNETIdentity.core
+
+@inject SignInManager<SysUserAdaptor> SignInManager
+@inject UserManager<SysUserAdaptor> UserManager
+
+@if (!string.IsNullOrEmpty(ViewBag.UserPresentation))
+{
+    @* This is shown if we're logged IN *@
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "right" }))
+    {
+        @Html.AntiForgeryToken()
+        <ul class="navbar__list right">
+            <li class="navbar__item"><a class="navbar__link ripple-effect" href="@Url.Action("Manage", "Account", new { area = "" })"><span class="mi">account_circle</span><span>@ViewBag.UserPresentation</span></a></li>
+            <li class="navbar__item"><a class="navbar__link ripple-effect navbar__link--colored" href="javascript:document.getElementById('logoutForm').submit()"><span class="mi">exit_to_app</span><span> Log out</span></a></li>
+        </ul>
+    }
+}
+else
+{
+  @* This is shown if we're logged OUT *@
+  <ul class="navbar__list right">
+    @if ((ViewBag.HidePasswordLogin is bool) && ViewBag.HidePasswordLogin && !ViewBag.HideExternalLogin)
+    {
+        @await Html.PartialAsync("_ExternalLoginsListPartial", new ExternalLoginListViewModel { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+    }
+    else
+    {
+      if ((ViewBag.HideRegistration is bool) && !ViewBag.HideRegistration)
+      {
+        <li class="navbar__item"><a class="navbar__link ripple-effect" id="registerLink" href="@Url.Action("Register", "Account", new { area = "", ReturnUrl = ViewBag.ReturnUrl})"><span class="mi">account_circle</span><span> Register</span></a></li>
+      }
+      <li class="navbar__item"><a class="navbar__link ripple-effect navbar__link--colored" id="loginLink" href="@Url.Action("Login", "Account", new { area = "" ,ReturnUrl = ViewBag.ReturnUrl})"><span class="mi">login</span><span> Log in</span></a></li>
+    }
+  </ul>
+}

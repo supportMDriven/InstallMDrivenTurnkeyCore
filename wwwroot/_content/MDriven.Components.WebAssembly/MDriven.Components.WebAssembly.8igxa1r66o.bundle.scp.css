@@ -1,0 +1,395 @@
+/* _content/MDriven.Components.WebAssembly/AlertDialog.razor.rz.scp.css */
+
+
+
+#contentWrapper[b-hsxyrhk673] {
+  height: auto;
+}
+#viewmodelWrapper[b-hsxyrhk673] {
+  height: auto;
+}
+
+
+.md-scroll-mask[b-hsxyrhk673] {
+  background-color: rgba(0, 0, 0, 0.2)
+}
+/* _content/MDriven.Components.WebAssembly/MDCompDataGrid.razor.rz.scp.css */
+
+.tk-data-table__header-cell[b-cjn554j5ck] {
+  width: 100%;
+  overflow: hidden;
+  /*margin-right: -2px; causes hor scroll*/
+  display: flex;
+  align-items: center;
+  background: transparent;
+}
+
+[b-cjn554j5ck] .multiselectcol {
+  width: 40px;
+}
+
+/* struggeling with combo in table*/
+[b-cjn554j5ck] table  .tk-select__dropdown-icon {
+  top: 5px;
+}
+[b-cjn554j5ck] table .tk-select__native {
+ padding:4px;
+}
+
+.CellSelectInfo[b-cjn554j5ck] {
+  font-size:10px;
+  font-weight:800;
+  background:lightyellow;
+}
+
+
+
+[b-cjn554j5ck] .tk-data-table__content--advanced .tk-data-table__header-cell {
+  border-right: 0px solid;
+}
+
+[b-cjn554j5ck] .col-header-content {
+  justify-items: stretch;
+  height: var(--data-table-header-height,56px); /* must set size so that resize button now what 100% is*/
+  background: transparent;
+}
+
+[b-cjn554j5ck] .quickgrid {
+  max-width: unset; /* fattar inte varför vi har max-width satt till 0*/
+  position: absolute; /* tk-data-table__native  */
+  width: 99.9%; /* do not understand but 100 gives hor scroll on outer div when only 1 column*/
+  overflow: auto;
+  border-radius: 4px;
+  border-radius: var(--base-border-radius, 4px);
+}
+
+  /*the grid flickerd alot*/ 
+[b-cjn554j5ck] .quickgrid.loading {
+  transition: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+[b-cjn554j5ck] .quickgrid[theme=default] > tbody > tr > td {
+  padding: unset;
+}
+  [b-cjn554j5ck] .quickgrid[theme=default] > tbody > tr > td {
+    padding-bottom: 0px;
+    padding-top: 0px;
+    vertical-align: bottom;
+  }
+
+  [b-cjn554j5ck] .quickgrid[theme=default] .col-title {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+
+
+/*Header row */
+
+[b-cjn554j5ck] tr:has(th) {
+  height: var(--data-table-header-height,56px);
+  vertical-align: inherit;
+}
+
+
+
+
+/*Header row background*/
+[b-cjn554j5ck] thead tr:has(.tk-quickgrid-cell) {
+  top: 0;
+  position: sticky;
+  z-index: 20;
+ /* border-bottom: 1px solid rgba(0, 0, 0, 0.12);*/
+}
+
+
+[b-cjn554j5ck] .isgridrowdiv {
+  --col-gap: 0rem;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.018em;
+  text-align: left;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  border-collapse: collapse;
+  border-spacing: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+[b-cjn554j5ck] .tk-static-text__native {
+  font-size: unset;
+  white-space: unset;
+  display: inline-block;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+[b-cjn554j5ck] .quickgrid[theme=default] {
+  --col-gap: 0.0rem;
+}
+
+/*Header column cell*/
+[b-cjn554j5ck] thead tr th {
+  color: rgba(var(--data-table-header-text-color, 0, 0, 0), 0.9);
+  background-color: rgb(var(--data-table-header-bg-color, 255, 255, 255));
+  /*outline: 1px solid #dadce0;*/
+  /*box-shadow: 0 1px 0 0 rgba(218, 220, 224, 0.7);*/
+  /*padding: 0 8px;*/
+  border-right: 1px solid rgba(218, 220, 224, 0.7);
+  border-bottom: 1px solid rgb(var(--primary-color, 245, 156, 26));
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  letter-spacing: 0.0071428571em;
+  text-align: left;
+  vertical-align: middle;
+  letter-spacing: 0.0071428571em;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  overflow:hidden;
+}
+
+
+/*content row background*/
+[b-cjn554j5ck] tr:has(.tk-quickgrid-cell) {
+  height: var(--quickgrid-row-height,28px); /* must set height to avoid flicker*/
+}
+
+/*current row, thin line around current row */
+[b-cjn554j5ck] tr:has(.tk-quickgrid-cell .current) {
+  box-shadow: inset 0px 0px 0px 1px rgb(var(--primary-color, 245, 156, 26));
+}
+
+[b-cjn554j5ck] tr:has(.tk-quickgrid-cell .selected) {
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+}
+
+[b-cjn554j5ck] .tk-quickgrid-cell:has(.cellselect) {
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+  user-select: none;
+}
+
+/* Inputs should not have border unless current row*/
+[b-cjn554j5ck] tr:hover .tk-quickgrid-cell .tk-input-field__native:not([disabled]),
+[b-cjn554j5ck] tr:hover .tk-quickgrid-cell .tk-select__native:not([disabled]),
+[b-cjn554j5ck] .tk-quickgrid-cell .current .tk-input-field__native:not([disabled]),
+[b-cjn554j5ck] .tk-quickgrid-cell .current .tk-select__native:not([disabled]) {
+  border-color: #D0D5DD;
+}
+
+[b-cjn554j5ck] .tk-quickgrid-cell .tk-input-field__native,
+[b-cjn554j5ck] .tk-quickgrid-cell .tk-select__native {
+  border-color: transparent;
+  background: transparent;
+  background: white;
+}
+
+[b-cjn554j5ck] .tk-quickgrid-cell .current  .tk-select__dropdown-icon {
+  display:block;
+}
+[b-cjn554j5ck] .tk-quickgrid-cell .tk-select__dropdown-icon {
+  display: none;
+}
+
+[b-cjn554j5ck] .tk-quickgrid-cell img {
+  max-height: 30px;
+}
+/* cell */
+[b-cjn554j5ck] tbody tr .tk-quickgrid-cell {
+  text-overflow: ellipsis;
+  /*box-shadow: 1px 0 0 0 rgba(218, 220, 224, 0.7), 0 1px 0 0 rgba(218, 220, 224, 0.7);*/
+  box-shadow: 1px 0 0 0 rgba(218, 220, 224, 0.7), 0 1px 0 0 rgba(218, 220, 224, 0.7);
+  /*outline: 1px solid #dadce0;*/
+  /*Below is from .tk-data-table__cell
+  padding: 0 16px;
+  position: relative;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.018em;
+  text-align: left;
+  vertical-align: middle;*/
+}
+
+/* The extra div that comes from MDCompHolder , it must be made to fill table cell*/
+  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div:has(.tk-component) {
+    pointer-events: all;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    height: var(--data-table-row-height, 56px); /*must have height in div to get correct centering*/
+  }
+
+  /*aco*/
+  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell .tk-component {
+    padding: 2px; 
+  }
+  /*aco*/
+  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell .tk-select .tk-input-field__container {
+      height: 22px;    
+      justify-content: center;
+    }
+
+
+
+
+
+[b-cjn554j5ck] tr {
+  position: relative; /* this is so the "the marker to the left of the current row" can use absolute*/
+}
+
+/* the marker to the left of the current row */
+  [b-cjn554j5ck] tr:has(.tk-quickgrid-cell .current) > td:first-child::before {
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    width: 5px;
+    content: '';
+    display: inline-block;
+    position: absolute;
+    background-color: rgb(var(--primary-color, 245, 156, 26));
+  }
+
+
+
+
+
+[b-cjn554j5ck] .numeric .col-title-text {
+  text-align: right;
+}
+
+[b-cjn554j5ck] .isgridrowdiv {
+  position: relative;
+}
+/*
+::deep .gridrowcontentbutton {
+  display: none;
+  position: absolute;
+  top: 7.5%;
+  height: 85%;
+  Right: 0px;
+  width: 25px;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  box-shadow: inset 0px 0px 0px 1px rgb(var(--primary-color, 218, 220, 224, 0.7));
+  content: '';
+  background-color: rgb(var(--base-bg-color,255,255,255));
+}
+
+::deep .isgridrowdiv:hover .gridrowcontentbutton {
+  display: inline-block;
+}*/
+
+[b-cjn554j5ck] .gridrowcontentbutton {
+  position: absolute;
+}
+
+[b-cjn554j5ck] .isgridrowdiv:hover .gridrowcontentbutton {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+[b-cjn554j5ck] .vmRenderedByAction 
+{
+  display: inline-block;
+  border-bottom: 1px dashed #212121;
+  cursor: pointer;
+}
+
+[b-cjn554j5ck] a {
+  text-decoration: none;
+}
+
+/*Resizer*/
+[b-cjn554j5ck] table.quickgrid .column-resizer {
+  cursor: ew-resize;
+  /**/
+  --resizer-width: 4px;
+  position: absolute;
+  right: 0;
+  width: var(--resizer-width);
+  display: flex;
+  cursor: col-resize;
+  transition: all 100ms ease-out;
+  opacity: 0;
+  box-sizing: border-box;
+  top: 0px;
+  height: calc((var(--data-table-header-height,56px) )*0.98);
+}
+  
+[b-cjn554j5ck] table.quickgrid .column-resizer:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+  }
+
+@media only screen and (max-width: 768px) {
+  .isgridrowdiv[b-cjn554j5ck] {
+    padding: 0 10px;
+    font-size: 0.75rem;
+  }
+
+  [b-cjn554j5ck] tr:has(th) {
+    height: calc((var(--data-table-header-height,56px) )*0.80);
+    vertical-align: inherit;
+  }
+
+  [b-cjn554j5ck] table.quickgrid .column-resizer::before {
+    height: calc((var(--data-table-header-height,56px) )*0.80);
+  }
+
+  [b-cjn554j5ck] table.quickgrid .column-resizer {
+    height: calc((var(--data-table-header-height,56px) )*0.80);
+  }
+
+  [b-cjn554j5ck] .col-header-content {
+    height: calc((var(--data-table-header-height,56px) )*0.80);/* must set size so that resize button now what 100% is*/
+  }
+
+  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div:has(.tk-component) {
+    height: calc((var(--data-table-header-height,56px) )*0.80); /*must have height in div to get correct centering*/
+  }
+
+
+
+  [b-cjn554j5ck] tbody tr .tk-quickgrid-cell > div:has(.tk-component) {
+    height: calc((var(--data-table-row-height,56px) )*0.80); /*must have height in div to get correct centering*/
+  }
+
+  [b-cjn554j5ck] table td {
+    user-select: none; /* Prevents text selection, when having cell select we dont want the normal select to be drawn and confuse */
+  }
+
+
+
+}
+
+
+/* _content/MDriven.Components.WebAssembly/ViewModelContextMenu.razor.rz.scp.css */
+/* _content/MDriven.Components.WebAssembly/ViewModelModalAndPopup.razor.rz.scp.css */
+
+
+
+#contentWrapper[b-dqvgpg68n6] {
+  height: auto;
+}
+#viewmodelWrapper[b-dqvgpg68n6] {
+  height: auto;
+}
+
+
+.md-scroll-mask[b-dqvgpg68n6] {
+  background-color: rgba(0, 0, 0, 0.2)
+}
+/* _content/MDriven.Components.WebAssembly/ViewModelToolbar.razor.rz.scp.css */
