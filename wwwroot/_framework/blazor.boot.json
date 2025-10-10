@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "MDrivenTurnkeyBlazorApp.Client",
   "resources": {
-    "hash": "sha256-UDn7t3UoX9aUQVgmtbeJEv3ueZggCrr3WaevZW2HDZA=",
+    "hash": "sha256-kBtozGISNSA1Rgv6Q1tl9fJg7/po0opn0ibVwtVcTYU=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-ftpNqtARtVNE8ku5eB/jXoklb41UQ+EutUHfwmbNTBY="
     },
@@ -18,10 +18,10 @@
     },
     "coreAssembly": {},
     "assembly": {
-      "MDriven.Components.WebAssembly.wasm": "sha256-SofEgBvwjaEQT7rNF9MIzpz+iP/QXqSfLDKNq1pf4ZQ=",
-      "MDriven.SharedInterfaces.WebAssembly.wasm": "sha256-i4f0PmLGP08eUJvm18c0x4PnjfJbEjwcGLa6jXEXweE=",
-      "MDriven.Turnkey.ClientCSharp.wasm": "sha256-CKFotPfksPr0VqqqZ7rhbKt68e6faZcUe9Yd8Hfu4L4=",
-      "MDrivenTurnkeyBlazorApp.Client.wasm": "sha256-A6Mkv5ZOfAf87BQHZgIKEe6EnBuvwgnsjwCgu3r9c9o=",
+      "MDriven.Components.WebAssembly.wasm": "sha256-4xH4vpbkqQuTcyI5fAR0J3U1KhBQbO+hjrScdXXZXiQ=",
+      "MDriven.SharedInterfaces.WebAssembly.wasm": "sha256-FQI5u0MwnYNbQsLRNIqj9PQnmnrpJujXY+2gE8DrN9U=",
+      "MDriven.Turnkey.ClientCSharp.wasm": "sha256-GkGnL2EhfManDpvBnwg1L89p3ADGIv7jX/dVSIigLhs=",
+      "MDrivenTurnkeyBlazorApp.Client.wasm": "sha256-yC0lwUpI3dQ/kLXHAIK9sx9jozlJsUuHdCEOTCyEo4E=",
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-xD8DoL5MhymyBkVCNyuthv5Azs2J8E6DYR0ChPDAhAU=",
       "Microsoft.AspNetCore.Components.QuickGrid.wasm": "sha256-3kaPbT7GcKbfbMD85mzpTNim3wKhJkJd2YXm/C6jiK8=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-PK6fZ25ZYDjIlY+R30i705yipgWRdmrvdvla9SOPQf4=",
@@ -70,7 +70,7 @@
       "System.Net.WebSockets.Client.wasm": "sha256-12ufULjIHM8k6cq60bqLDBRKeKidTI+nNJCz1Zhzpz8=",
       "System.Net.WebSockets.wasm": "sha256-iYQHdSPR91561yJSwFRnEIMPayuqgCE7J4kIJnuhcaA=",
       "System.ObjectModel.wasm": "sha256-MyD0WLuSNgUxQd18CGWDJuJlzzDpvX27CxyhPA8K4ss=",
-      "System.Private.CoreLib.wasm": "sha256-iMYjlFtdnI4r6dCor1e4uwaSQ7EP9R9p/VtRulHQykk=",
+      "System.Private.CoreLib.wasm": "sha256-oZwEF3AiUZgj9O/TIMFgicuZH3ET25wfHVCCw12Nwjw=",
       "System.Private.Uri.wasm": "sha256-SVDt04d7hi1p9CXvjfxsczbsLw3vULlqw+77xcwPA40=",
       "System.Private.Xml.Linq.wasm": "sha256-4EmWIn7gQHBphJ2+h2zWWBTNnxaLmagYz4NH7p5l/PA=",
       "System.Private.Xml.wasm": "sha256-IpgxD7FofTJ7zi8Md9+iKVw0erVk80GvJmObtsD9RCE=",
