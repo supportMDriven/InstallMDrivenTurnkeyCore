@@ -1,0 +1,119 @@
+﻿@using Eco.MVC
+@using System.IO
+@using StreamingAppGenericAPIAndControllers
+@{
+  Layout = "";
+}
+<!DOCTYPE html>
+<html lang=" en">
+<head>
+  <meta charset=" utf-8" />
+  <meta name=" viewport" content=" width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  @if (File.Exists(MapPathService.MapPath("~/Views/EXT_OverridePages/__ExtraMetaTags.cshtml")))
+  {
+    @await Html.PartialAsync("~/Views/EXT_OverridePages/__ExtraMetaTags.cshtml")
+  }
+  <base href='~/' />
+  <title>@ViewBag.ApplicationName</title>
+
+  @if (File.Exists(MapPathService.MapPath("~/favicon.ico")))
+  {
+    <link rel="shortcut icon" href="~/favicon.ico" />
+  }
+  @if (File.Exists(MapPathService.MapPath("~/Content/core.css"))) // this is the override css for the site produced by transpiling ~/Content/scss/app.scss
+  {
+    <link href="@Url.Content("~/Content/core.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  }
+  @if (File.Exists(MapPathService.MapPath("~/Content/scss/theme-user.css")))// this is the default css for the site that is checked in
+  {
+    <link href="@Url.Content("~/Content/scss/theme-user.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  }
+  else if (File.Exists(MapPathService.MapPath("~/Content/theme-user.css")))
+  {
+    <link href="@Url.Content("~/Content/theme-user.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  }
+  else if (File.Exists(MapPathService.MapPath("~/Content/theme-default.css")))
+  {
+    <link href="@Url.Content("~/Content/theme-default.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  }
+
+  @if (File.Exists(MapPathService.MapPath("~/Views/Shared/_Manifest.cshtml")))
+  {
+    @await Html.PartialAsync("_Manifest")
+    ;
+  }
+  <link href="@Url.Content("~/Content/angular.app.bundle.css")" rel="stylesheet" type="text/css" />
+
+  @if (File.Exists(MapPathService.MapPath("~/Content/tkusercss.css")))
+  {
+    <link href="@Url.Content("~/Content/tkusercss.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  }
+  @ViewOverrideLogic.Get_EXT_ComponentsRazorCSS()
+
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="~/StreaminAppCoreWebApp.styles.css" rel="stylesheet">
+
+</head>
+<body>
+  <style>
+    #blazor-error-ui {
+      background: lightyellow;
+      bottom: 0;
+      box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+      display: none;
+      left: 0;
+      padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+
+      #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+      }
+
+    .loading-bar {
+      width: var(--blazor-load-percentage);
+      height: 5px;
+      background-color: blue;
+      transition: width 0.1s ease-in-out;
+    }
+  </style>
+
+
+  <div id="bodyWrapper">
+    <div style="width:400px;">
+      <div>Loading...</div>
+      <div class="loading-bar"></div>
+    </div>
+  </div>
+  <div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+  </div>
+  <script src="~/_framework/blazor.webassembly.js" autostart=" true"></script>
+  <script src="@Url.Content("~/js/mdriven.cellselect.js?v=" + @ViewBag.Version)"></script>
+  <script src="@Url.Content("~/js/mdriven.blazor.js?v=" + @ViewBag.Version)"></script>
+
+
+  @ViewOverrideLogic.Get_EXT_AppWideRazorIncludes()
+  @ViewOverrideLogic.Get_EXT_ComponentsRazorScripts()
+
+
+  <script>
+
+
+  </script>
+
+</body>
+
+</html>

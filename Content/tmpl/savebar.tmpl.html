@@ -1,0 +1,18 @@
+﻿<div class="n-tk-savebar__wrapper">
+  <span class="n-tk-savebar__message">
+      You have unsaved changes
+  </span>
+  <div class="n-tk-savebar__actions">
+    <button type="button" 
+            ng-repeat="action in $ctrl.actions | orderBy: '-'" 
+            ng-click="action.Execute($event)" 
+            ng-class="{'primary': action.Presentation === 'Save', 'text': action.Presentation !== 'Save' }"
+            ng-disabled="!action.Enable"
+            size="small"
+            class="{{action.Presentation.toLowerCase()}}"
+            tk-button
+            >
+        {{action.Presentation}}
+    </button>
+  </div>
+</div>

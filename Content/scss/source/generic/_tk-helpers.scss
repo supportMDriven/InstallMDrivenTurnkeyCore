@@ -1,0 +1,170 @@
+/// <reference path="../variables.scss" />
+/// <reference path="../mixins.scss" />
+
+.tk-pull-right {
+  margin-left: auto;
+}
+
+.pull-left {
+  margin-right: auto;
+}
+
+.collapse {
+  display: none;
+}
+
+.collapse.in {
+  display: block;
+}
+
+.collapsing {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  -webkit-transition-property: height, visibility;
+  -o-transition-property: height, visibility;
+  transition-property: height, visibility;
+  -webkit-transition-duration: 0.35s;
+  -o-transition-duration: 0.35s;
+  transition-duration: 0.35s;
+  -webkit-transition-timing-function: ease;
+  -o-transition-timing-function: ease;
+  transition-timing-function: ease; }
+
+.pull-right {
+  margin-left: auto !important;
+}
+
+#bodyWrapper.sb-hidden #LeftMenuButton,
+#bodyWrapper.sb-hidden #sidebar {
+  display: none !important;
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hidden {
+  display: none !important;
+}
+
+//.md-panel-is-showing .md-panel {
+//  opacity: 1;
+//}
+
+.tk-context-menu {
+  padding: 8px 0;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0,0,0, 0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12);
+}
+
+.tk-context-menu__content {
+ display: flex;
+ flex-direction: column;
+}
+
+.tk-context-menu__button {
+  /*margin-top: 4px;*/
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 14px;
+  padding-right: 14px;
+  text-align: left;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  /*color: rgb(32,33,36);*/
+  color: #000;
+  background: #fff;
+  white-space: nowrap;
+  transistion: background 100ms linear;
+
+  &:hover:not([disabled]) {
+    background: #eee;
+  }
+
+  &[disabled] {
+    color: #dbdbdb;
+  }
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+}
+
+.tk-context-menu__button .ripple-container {
+  background-color: rgba(0,0,0,0.15);
+}
+
+.tk-context-menu__group:not(:empty) {
+  margin-top: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 12px;
+  padding-right: 24px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 12px;
+  font-weight: 400;
+  color: #3d3d3d;
+  letter-spacing: 0.025em;
+}
+
+$primary-color: 244, 156, 27;
+
+md-dialog md-dialog-actions .md-button.md-confirm-button {
+  @include color-declaration(color, $primary-color, --primary-color);
+}
+
+md-dialog md-dialog-actions .md-button.md-focused {
+  @include color-declaration(background, $primary-color, --primary-color, true, 0.1);
+}
+
+.fade {
+  transition: 0.5s linear all;
+}
+
+.fade.ng-enter-stagger,
+.fade.ng-leave-stagger {
+  transiton-delay: 0.1s;
+  transition-duration: 0s;
+}
+
+.fade.ng-enter {
+  opacity: 0;
+}
+
+.fade.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
+.fade.ng-leave {
+  opacity: 1;
+}
+
+.fade.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+/* TURN OFF ARROWS IN NUMERICAL EDIT*/
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

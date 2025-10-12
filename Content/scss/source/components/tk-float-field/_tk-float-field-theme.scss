@@ -1,0 +1,28 @@
+.tk-float-field__native {
+    height: $input-height;
+
+    &:focus {
+        box-shadow: 0 0 0 2px unquote('rgba(#{$primary-color}, 0.6)');
+        box-shadow: 0 0 0 2px unquote('rgba(var(--primary-color, #{$primary-color}), 0.6)');
+    }
+}
+
+.tk-float-field.has-error {
+    .tk-float-field__label {
+        color: unquote('rgb(#{$danger-color})');
+    }
+
+    .tk-float-field__native {
+        box-shadow: 0 0 0 2px unquote('rgb(#{$danger-color})');
+        box-shadow: 0 0 0 2px unquote('rgb(var(--dander-color, #{$danger-color}))');
+
+        &:hover, &:active, &:focus {
+            box-shadow: 0 0 0 2px unquote('rgb(#{$danger-color})');
+            box-shadow: 0 0 0 2px unquote('rgb(var(--dander-color, #{$danger-color}))');
+        }
+    }
+}
+
+.tk-float-field__validation-state {
+    @include color-declaration(color, $danger-color, --danger-color);
+}

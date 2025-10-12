@@ -1,0 +1,81 @@
+﻿@using Eco.ViewModel.Runtime
+@using Eco.MVC
+@using StreamingAppGenericAPIAndControllers
+@using System.Globalization
+@model VMClass
+@* IMPORTANT! If you change Using statements, also update the dynamic partial generator code *@
+
+@Html.MVCUITurnkeyViewOverrideCss()
+
+@{
+  ViewBag.Title = Model.ViewModelClass.Name;
+
+  var usercult = Eco.Services.EcoServiceHelper.GetEcoService<Eco.Services.IMDrivenUITranslation>(Model.Sp).UserCultureIfSet;
+  if (!string.IsNullOrEmpty(usercult))
+  {
+    var culture = new System.Globalization.CultureInfo(usercult);
+    if (culture != null)
+    {
+      System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+      System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+    }
+  }
+}
+
+@using (Html.BeginForm("Submit", Html.GetControllerName(), FormMethod.Post))
+{
+    <fieldset>
+        <div id="contentWrapper" class="@Model.ViewModelClass.Name mvc-rendered">
+          <aside id="sidebar" class="tk-sidebar @Html.MVCUISidebarVisible()">
+            <div class="tk-sidebar__header">
+              <button class="tk-sidebar__close ripple-effect" id="closeSidebar" type="button">
+                <i class="mi">close</i>
+              </button>
+            </div>
+            @Html.DisplayLeftSection()
+          </aside>
+            @* NOTE!! The partial view is NOT strongly typed (with VMClass) as this view is  *@
+            @* This is because we want short and nice property access to modelled attributes *@
+
+            <!-- Start of inserted MVC ViewModel body -->
+            <div id="viewmodelWrapper">
+                @if (Html.MVCUITurnkeyViewOverride() != null)
+                {
+                    @Html.MVCUITurnkeyViewOverride();
+                }
+                else if (Html.MVCUITurnkeyViewOverrideWithRender() != null)
+                {
+                    @Html.Partial(Html.MVCUITurnkeyViewOverrideWithRender());
+                }
+                else
+                {
+                    @Html.Partial(Html.RazorPartialFile());
+                }
+                <!-- End of inserted MVC ViewModel body -->
+            </div>
+            <!--<div id="MVCloadingAnimation" style="display:none">
+                <div class="spinner__element"></div>
+            </div> -->
+        </div>
+        <div id="validationMessageWrapper">
+            <div class="validationMessage">
+                @Html.ValidationSummary(true)
+            </div>
+        </div>
+        <div class="form-group" style="display:none">
+            @* These need to be within the form tag *@
+            @* When form is posted, the VMClassBinder recreates the viewmodel with data from the form, starting with the viewmodels name and root id below *@
+            @Html.Hidden(VMClass.ThisAsExternalId_nameOf) <!-- This creates a hidden form attribute with the root objects external ID -->
+            @Html.Hidden(VMClassBinder.ViewModelNameFormAttribute, Model.ViewModelClass.ViewModel.RootViewModelClass.Name)
+        </div>
+    </fieldset>
+}
+<footer>
+    <p>Powered By <a href="https://www.mdriven.net/">MDriven Turnkey </a>&copy; @DateTime.Now.Year, version @ViewBag.Version</p>
+</footer>
+
+@Html.MVCUITurnkeyViewOverrideScript()
+<script src="@Url.Content("~/client-app-bundles/mvc.bundle.js?v="+@ViewBag.Version)"></script>
+
+
+

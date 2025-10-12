@@ -1,0 +1,390 @@
+/// <reference path="../_color-definitions.scss" />
+/// <reference path="../_variables.scss" />
+/// <reference path="../_mixins.scss" />
+
+.manage {
+  padding-bottom: 60px;
+  width: 100%;
+  height: 100vh;
+  background-color: #fff;
+  font-family: var(--base-font-family, $base-font-family);
+  overflow-y: auto;
+}
+
+
+.manage__header {
+  position: relative;
+  height: 90px;
+  background-color: #f0f0f0;
+
+  @media only screen and (min-width: 768px) {
+    height: 120px;
+  }
+}
+
+.manage__wrapper {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  width: auto;
+  height: 100%;
+
+  @media only screen and (min-width: 768px) {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+
+  @media only screen and (min-width: 992px) {
+    max-width: 900px;
+    width: 95%;
+  }
+}
+
+.account {
+  padding: 1.5em 2em;
+  position: absolute;
+  left: 15px;
+  bottom: -35px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background-color: #ffffff;
+  font-size: 12px;
+  border-radius: 40px;
+
+  @media only screen and (min-width: 768px) {
+    font-size: 16px;
+    left: 0;
+    bottom: -43px;
+  }
+}
+
+.account__info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.account__helper {
+  font-size: 12px;
+  font-weight: 400;
+  color: #bbbbbb;
+
+  @media only screen and (min-width: 768px) {
+    font-size: 16px;
+  }
+}
+
+.account__username {
+  margin-top: 3px;
+  font-size: 16px;
+  font-weight: 700;
+  //color: $primary-color;
+
+  @media only screen and (min-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+
+.manage__content {
+  padding-top: 40px;
+
+  @media only screen and (min-width: 768px) {
+    padding-top: 100px;
+  }
+}
+
+.account-linked__list {
+  padding: 20px 10px;
+  width: auto;
+
+  @media only screen and (min-width: 768px) {
+    padding: 25px 0;
+    max-width: 360px;
+  }
+}
+
+.manage__text-header {
+  padding: 0 10px;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  color: #626262;
+  vertical-align: middle;
+
+  @media only screen and (min-width: 768px) {
+    font-size: 18px;
+  }
+}
+
+.manage__text-header .mi {
+  margin-right: 10px;
+  font-size: 24px;
+}
+
+.account-linked__item {
+  padding: 15px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  background-color: #fff;
+  border: 1px solid #DEDDDD;
+  border-radius: 40px;
+
+  & + .account-linked__item {
+    margin-top: 25px;
+  }
+}
+
+.account-linked__logo {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center;
+}
+
+.account-linked__item--facebook .account-linked__logo {
+  background-image: url('../../icons/external-login-f_fill.png');
+
+  @include retina() {
+    background-image: url('../../icons/external-login-f_fill@2x.png');
+  }
+}
+
+.account-linked__item--google .account-linked__logo {
+  background-image: url('../../icons/external-login-g.png');
+
+  @include retina() {
+    background-image: url('../../icons/external-login-g@2x.png');
+  }
+}
+
+.account-linked__item--microsoft .account-linked__logo {
+  background-image: url('../../icons/external-login-m.png');
+
+  @include retina() {
+    background-image: url('../../icons/external-login-m@2x.png');
+  }
+}
+
+.account-linked__item--openidconnect .account-linked__logo {
+  background-image: url('../../icons/external-login-oid.png');
+
+  @include retina() {
+    background-image: url('../../icons/external-login-oid@2x.png');
+  }
+}
+
+.account-linked__item span {
+  margin: 0 20px;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+  color: #a5a5a5;
+}
+
+.account-linked__remove {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #bc0100;
+  background-color: #f7e6e5;
+  border-radius: 50%;
+}
+
+.account__pswd {
+  width: auto;
+
+  @media only screen and (min-width: 768px) {
+    max-width: 320px;
+    width: 100%;
+  }
+}
+
+.account__pswd .auth-form__item--row {
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.account-add {
+  padding: 15px 10px;
+  position: relative;
+  width: auto;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    width: 80%;
+    height: 1px;
+    background-color: #D2D2D2;
+  }
+
+  @media only screen and (min-width: 768px) {
+    padding: 0;
+    max-width: 320px;
+    width: 100%;
+  }
+}
+
+.account-add .auth-social__info {
+  padding: 20px 10px;
+  text-align: center;
+}
+
+.account-add__list {
+  padding: 10px 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+
+  @media only screen and (min-width: 768px) {
+    padding: 20px 0;
+  }
+}
+
+.account-add__item {
+  margin-top: 15px;
+  padding: 15px 20px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #DEDDDD;
+  border-radius: 40px;
+}
+
+.account-add__logo {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center;
+}
+
+.account-add__item--facebook .account-add__logo {
+  background-image: url('../../icons/external-login-f_fill.png');
+
+  @include retina() {
+    background-image: url('../../icons/external-login-f_fill@2x.png');
+  }
+}
+
+.account-add__item--google .account-add__logo {
+  background-image: url('.././icons/external-login-g.png');
+
+  @include retina() {
+    background-image: url('../../icons/external-login-g@2x.png');
+  }
+}
+
+.account-add__item--microsoft .account-add__logo {
+  background-image: url('../../icons/external-login-m.png');
+
+  @include retina() {
+    background-image: url('../../icons/external-login-m@2x.png');
+  }
+}
+
+.account-add__item--openidconnect .account-add__logo {
+  background-image: url('../../icons/external-login-oid.png');
+
+  @include retina() {
+    background-image: url('../../icons/external-login-oid@2x.png');
+  }
+}
+
+.account-add__btn {
+  margin-left: 20px;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  background-color: #eaf0e4;
+  color: #417505;
+  border-radius: 50%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.account__alert {
+  position: relative;
+  margin: 10px 0;
+  padding: 10px 10px 10px 30px;
+  display: block;
+  color: #852d12;
+  background-color: #ffddd3;
+
+  &::before {
+    content: '\f028';
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-family: $base-icon-font;
+    font-size: 16px;
+  }
+
+  @media only screen and (min-width: 768px) {
+  }
+}

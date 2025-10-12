@@ -1,0 +1,1113 @@
+﻿html, body {
+  font-size: 16px !important;
+  font-size: var(--base-font-size, 16px) !important;
+}
+
+#bodyWrapper {
+  -ms-grid-rows: 50px auto;
+  grid-template-rows: 50px auto;
+  grid-template-rows: var(--navbar-height, 50px) auto;
+}
+
+#contentWrapper {
+  height: calc(100vh - 50px);
+  height: calc(100vh - var(--navbar-height, 50px));
+}
+
+@media only screen and (max-width: 767px) {
+  #contentWrapper.actions-visible #viewmodelSection {
+    height: calc(100vh - 50px);
+    height: calc(100vh - var(--navbar-height, 50px));
+  }
+}
+
+#sidebar {
+  height: calc(100vh - 50px);
+  height: calc(100vh - var(--navbar-height, 50px));
+}
+@media only screen and (max-width: 767px) {
+  #sidebar {
+    height: 100vh;
+  }
+}
+
+#contentWrapper.mvc-rendered #viewmodelWrapper {
+  height: calc(100vh - 50px);
+  height: calc(100vh - var(--navbar-height, 50px));
+}
+
+#viewmodelWrapper {
+  height: calc(100vh - 50px);
+  height: calc(100vh - var(--navbar-height, 50px));
+}
+
+.tk-spinner__element {
+  border-top-color: rgb(245, 156, 26);
+  border-top-color: rgb(var(--primary-color, 245, 156, 26));
+}
+
+button.tk-button__native,
+a.tk-button__native {
+  background: rgb(#eaeaea);
+  background: rgb(var(--btn-default-clr, #eaeaea));
+  color: rgb(black);
+  color: rgb(var(--text-on-default-btn, black));
+  height: 36px;
+}
+button.tk-button__native:hover, button.tk-button__native:focus,
+a.tk-button__native:hover,
+a.tk-button__native:focus {
+  background: rgb(#eaeaea);
+  background: rgb(var(--btn-default-clr, #eaeaea));
+}
+button.tk-button__native .ripple-container,
+a.tk-button__native .ripple-container {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+button.tk-button__native.primary,
+a.tk-button__native.primary {
+  background: rgb(245, 156, 26);
+  background: rgb(var(--primary-color, 245, 156, 26));
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-primary, 255, 255, 255));
+}
+button.tk-button__native.primary:hover, button.tk-button__native.primary:focus,
+a.tk-button__native.primary:hover,
+a.tk-button__native.primary:focus {
+  background: rgb(235, 144, 10);
+  background: rgb(var(--primary-color-dark, 235, 144, 10));
+}
+button.tk-button__native.primary .ripple-container,
+a.tk-button__native.primary .ripple-container {
+  background: rgba(255, 255, 255, 0.3);
+  background: rgba(var(--text-on-primary, 255, 255, 255), 0.3);
+}
+
+button.tk-button__native.danger,
+a.tk-button__native.danger {
+  background: rgb(211, 46, 46);
+  background: rgb(var(--danger-color, 211, 46, 46));
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-danger, 255, 255, 255));
+}
+button.tk-button__native.danger:hover, button.tk-button__native.danger:focus,
+a.tk-button__native.danger:hover,
+a.tk-button__native.danger:focus {
+  background: rgb(191, 40, 40);
+  background: rgb(var(--danger-color-dark, 191, 40, 40));
+}
+button.tk-button__native.danger .ripple-container,
+a.tk-button__native.danger .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--text-on-danger, 255, 255, 255), 0.3);
+}
+
+button.tk-button__native.warning,
+a.tk-button__native.warning {
+  background: rgb(240, 173, 78);
+  background: rgb(var(--warning-color, 240, 173, 78));
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-warning, 255, 255, 255));
+}
+button.tk-button__native.warning:hover, button.tk-button__native.warning:focus,
+a.tk-button__native.warning:hover,
+a.tk-button__native.warning:focus {
+  background: rgb(238, 162, 54);
+  background: rgb(var(--warning-color-dark, 238, 162, 54));
+}
+button.tk-button__native.warning .ripple-container,
+a.tk-button__native.warning .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--text-on-warning, 255, 255, 255), 0.3);
+}
+
+button.tk-button__native.success,
+a.tk-button__native.success {
+  background: rgb(93, 184, 91);
+  background: rgb(var(--success-color, 93, 184, 91));
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-success, 255, 255, 255));
+}
+button.tk-button__native.success:hover, button.tk-button__native.success:focus,
+a.tk-button__native.success:hover,
+a.tk-button__native.success:focus {
+  background: rgb(78, 174, 75);
+  background: rgb(var(--success-color-dark, 78, 174, 75));
+}
+button.tk-button__native.success .ripple-container,
+a.tk-button__native.success .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--text-on-success, 255, 255, 255), 0.3);
+}
+
+button.tk-button__native.info,
+a.tk-button__native.info {
+  background: #0b5461;
+  color: #ffffff;
+}
+button.tk-button__native.info:hover, button.tk-button__native.info:focus,
+a.tk-button__native.info:hover,
+a.tk-button__native.info:focus {
+  background: rgb(8.4027777778, 64.1666666667, 74.0972222222);
+}
+button.tk-button__native.info .ripple-container,
+a.tk-button__native.info .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+button.tk-button__native.outlined,
+a.tk-button__native.outlined {
+  border-color: black;
+  color: black;
+}
+button.tk-button__native.outlined:hover,
+a.tk-button__native.outlined:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+button.tk-button__native.outlined .ripple-container,
+a.tk-button__native.outlined .ripple-container {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+button.tk-button__native.outlined.danger,
+a.tk-button__native.outlined.danger {
+  border-color: rgb(211, 46, 46);
+  border-color: rgb(var(--danger-color, 211, 46, 46));
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+button.tk-button__native.outlined.danger:hover, button.tk-button__native.outlined.danger:focus,
+a.tk-button__native.outlined.danger:hover,
+a.tk-button__native.outlined.danger:focus {
+  background: rgba(211, 46, 46, 0.05);
+  background: rgba(var(--danger-color, 211, 46, 46), 0.05);
+}
+button.tk-button__native.outlined.danger .ripple-container,
+a.tk-button__native.outlined.danger .ripple-container {
+  background-color: rgba(211, 46, 46, 0.2);
+  background-color: rgba(var(--danger-color, 211, 46, 46), 0.2);
+}
+
+button.tk-button__native.outlined.warning,
+a.tk-button__native.outlined.warning {
+  border-color: rgb(240, 173, 78);
+  border-color: rgb(var(--warning-color, 240, 173, 78));
+  color: rgb(240, 173, 78);
+  color: rgb(var(--warning-color, 240, 173, 78));
+}
+button.tk-button__native.outlined.warning:hover, button.tk-button__native.outlined.warning:focus,
+a.tk-button__native.outlined.warning:hover,
+a.tk-button__native.outlined.warning:focus {
+  background: rgba(240, 173, 78, 0.05);
+  background: rgba(var(--warning-color, 240, 173, 78), 0.05);
+}
+button.tk-button__native.outlined.warning .ripple-container,
+a.tk-button__native.outlined.warning .ripple-container {
+  background: rgba(240, 173, 78, 0.2);
+  background: rgba(var(--warning-color, 240, 173, 78), 0.2);
+}
+
+button.tk-button__native.outlined.success,
+a.tk-button__native.outlined.success {
+  border-color: rgb(93, 184, 91);
+  border-color: rgb(var(--success-color, 93, 184, 91));
+  color: rgb(93, 184, 91);
+  color: rgb(var(--success-color, 93, 184, 91));
+}
+button.tk-button__native.outlined.success:hover, button.tk-button__native.outlined.success:focus,
+a.tk-button__native.outlined.success:hover,
+a.tk-button__native.outlined.success:focus {
+  background: rgba(93, 184, 91, 0.05);
+  background: rgba(var(--success-color, 93, 184, 91), 0.05);
+}
+button.tk-button__native.outlined.success .ripple-container,
+a.tk-button__native.outlined.success .ripple-container {
+  background: rgba(93, 184, 91, 0.2);
+  background: rgba(var(--success-color, 93, 184, 91), 0.2);
+}
+
+button.tk-button__native.outlined.info,
+a.tk-button__native.outlined.info {
+  border-color: #0b5461;
+  color: #0b5461;
+}
+button.tk-button__native.outlined.info:hover, button.tk-button__native.outlined.info:focus,
+a.tk-button__native.outlined.info:hover,
+a.tk-button__native.outlined.info:focus {
+  background: rgba(11, 84, 97, 0.05);
+}
+button.tk-button__native.outlined.info .ripple-container,
+a.tk-button__native.outlined.info .ripple-container {
+  background-color: rgba(11, 84, 97, 0.2);
+}
+
+button.tk-button__native.outlined.primary,
+a.tk-button__native.outlined.primary {
+  border-color: rgb(245, 156, 26);
+  border-color: rgb(var(--primary-color, 245, 156, 26));
+  color: rgb(245, 156, 26);
+  color: rgb(var(--primary-color, 245, 156, 26));
+}
+button.tk-button__native.outlined.primary:hover, button.tk-button__native.outlined.primary:focus,
+a.tk-button__native.outlined.primary:hover,
+a.tk-button__native.outlined.primary:focus {
+  background: rgba(245, 156, 26, 0.05);
+  background: rgba(var(--primary-color, 245, 156, 26), 0.05);
+}
+button.tk-button__native.outlined.primary .ripple-container,
+a.tk-button__native.outlined.primary .ripple-container {
+  background: rgba(245, 156, 26, 0.2);
+  background: rgba(var(--primary-color, 245, 156, 26), 0.2);
+}
+
+button.tk-button__native.flat,
+a.tk-button__native.flat {
+  color: black;
+}
+button.tk-button__native.flat:hover,
+a.tk-button__native.flat:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+button.tk-button__native.flat:focus:not(:active),
+a.tk-button__native.flat:focus:not(:active) {
+  background: rgba(0, 0, 0, 0.05);
+}
+button.tk-button__native.flat .ripple-container,
+a.tk-button__native.flat .ripple-container {
+  background-color: rgba(0, 0, 0, 0.055);
+}
+
+button.tk-button__native.flat.danger,
+a.tk-button__native.flat.danger {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+button.tk-button__native.flat.danger:hover,
+a.tk-button__native.flat.danger:hover {
+  background: rgba(211, 46, 46, 0.04);
+  background: rgba(var(--danger-color, 211, 46, 46), 0.04);
+}
+button.tk-button__native.flat.danger:focus:not(:active),
+a.tk-button__native.flat.danger:focus:not(:active) {
+  background: rgba(211, 46, 46, 0.05);
+  background: rgba(var(--danger-color, 211, 46, 46), 0.05);
+}
+button.tk-button__native.flat.danger .ripple-container,
+a.tk-button__native.flat.danger .ripple-container {
+  background-color: rgba(211, 46, 46, 0.055);
+  background-color: rgba(var(--danger-color, 211, 46, 46), 0.055);
+}
+
+button.tk-button__native.flat.warning,
+a.tk-button__native.flat.warning {
+  color: rgb(240, 173, 78);
+  color: rgb(var(--warning-color, 240, 173, 78));
+}
+button.tk-button__native.flat.warning:hover,
+a.tk-button__native.flat.warning:hover {
+  background: rgba(240, 173, 78, 0.04);
+  background: rgba(var(--warning-color, 240, 173, 78), 0.04);
+}
+button.tk-button__native.flat.warning:focus:not(:active),
+a.tk-button__native.flat.warning:focus:not(:active) {
+  background: rgba(240, 173, 78, 0.05);
+  background: rgba(var(--warning-color, 240, 173, 78), 0.05);
+}
+button.tk-button__native.flat.warning .ripple-container,
+a.tk-button__native.flat.warning .ripple-container {
+  background-color: rgba(240, 173, 78, 0.055);
+  background-color: rgba(var(--warning-color, 240, 173, 78), 0.055);
+}
+
+button.tk-button__native.flat.success,
+a.tk-button__native.flat.success {
+  color: rgb(93, 184, 91);
+  color: rgb(var(--success-color, 93, 184, 91));
+}
+button.tk-button__native.flat.success:hover,
+a.tk-button__native.flat.success:hover {
+  background: rgba(93, 184, 91, 0.04);
+  background: rgba(var(--success-color, 93, 184, 91), 0.04);
+}
+button.tk-button__native.flat.success:focus:not(:active),
+a.tk-button__native.flat.success:focus:not(:active) {
+  background: rgba(93, 184, 91, 0.05);
+  background: rgba(var(--success-color, 93, 184, 91), 0.05);
+}
+button.tk-button__native.flat.success .ripple-container,
+a.tk-button__native.flat.success .ripple-container {
+  background-color: rgba(93, 184, 91, 0.055);
+  background-color: rgba(var(--success-color, 93, 184, 91), 0.055);
+}
+
+button.tk-button__native.flat.info,
+a.tk-button__native.flat.info {
+  color: #0b5461;
+}
+button.tk-button__native.flat.info:hover,
+a.tk-button__native.flat.info:hover {
+  background: rgba(11, 84, 97, 0.04);
+}
+button.tk-button__native.flat.info:focus:not(:active),
+a.tk-button__native.flat.info:focus:not(:active) {
+  background: rgba(11, 84, 97, 0.05);
+}
+button.tk-button__native.flat.info .ripple-container,
+a.tk-button__native.flat.info .ripple-container {
+  background-color: rgba(11, 84, 97, 0.055);
+}
+
+button.tk-button__native.flat.primary,
+a.tk-button__native.flat.primary {
+  color: rgb(245, 156, 26);
+  color: rgb(var(--primary-color, 245, 156, 26));
+}
+button.tk-button__native.flat.primary:hover,
+a.tk-button__native.flat.primary:hover {
+  background: rgba(245, 156, 26, 0.04);
+  background: rgba(var(--primary-color, 245, 156, 26), 0.04);
+}
+button.tk-button__native.flat.primary:focus:not(:active),
+a.tk-button__native.flat.primary:focus:not(:active) {
+  background: rgba(245, 156, 26, 0.05);
+  background: rgba(var(--primary-color, 245, 156, 26), 0.05);
+}
+button.tk-button__native.flat.primary .ripple-container,
+a.tk-button__native.flat.primary .ripple-container {
+  background-color: rgba(245, 156, 26, 0.055);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.055);
+}
+
+.tk-checkbox__native:checked ~ .tk-checkbox__interactive,
+.tk-checkbox__native:indeterminate ~ .tk-checkbox__interactive {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+  border-color: rgb(245, 156, 26);
+  border-color: rgb(var(--primary-color, 245, 156, 26));
+}
+.tk-checkbox__native:checked ~ .tk-checkbox__interactive::before,
+.tk-checkbox__native:indeterminate ~ .tk-checkbox__interactive::before {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
+
+.tk-checkbox__mixedmark {
+  border-color: #fff;
+}
+
+.tk-checkbox__content .ripple-container {
+  background-color: rgba(245, 156, 26, 0.3);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.3);
+}
+
+.tk-checkbox.has-error .tk-checkbox__label {
+  color: rgb(211, 46, 46);
+}
+
+.tk-checkbox__validation-state {
+  color: rgb(211, 46, 46);
+}
+
+.tk-switch__interactive::before, .tk-switch__interactive::after {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
+
+.tk-switch__native:checked ~ .tk-switch__content .tk-switch__track {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+  border-color: rgb(245, 156, 26);
+  border-color: rgb(var(--primary-color, 245, 156, 26));
+}
+.tk-switch__native:checked ~ .tk-switch__content .tk-switch__interactive span {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+  border-color: rgb(245, 156, 26);
+  border-color: rgb(var(--primary-color, 245, 156, 26));
+}
+
+.tk-switch__validation-state {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.navbar {
+  min-height: 50px;
+  min-height: var(--navbar-height, 50px);
+  background-color: rgb(33, 33, 33);
+  background-color: rgb(var(--navbar-bg-color, 33, 33, 33));
+}
+
+.navbar__toggle:hover, .navbar__toggle:focus:not(:active) {
+  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1);
+}
+.navbar__toggle .ripple-container {
+  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.25);
+}
+
+.navbar__toggle {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--navbar-link-color, 255, 255, 255));
+}
+
+.navbar__toggle .icon-bar {
+  background-color: rgb(255, 255, 255);
+  background-color: rgb(var(--navbar-link-color, 255, 255, 255));
+}
+
+.navbar__toggle--sidebar .icon-bar {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
+
+.navbar__brand {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--navbar-brand-color, 255, 255, 255));
+}
+
+.navbar__link {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--navbar-link-color, 255, 255, 255));
+}
+.navbar__link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1);
+}
+.navbar__link:focus:not(:active) {
+  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1);
+}
+.navbar__link:active {
+  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.25);
+}
+.navbar__link .mi {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--navbar-link-color, 255, 255, 255));
+}
+
+.navbar__link--colored {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-primary, 255, 255, 255));
+}
+.navbar__link--colored:hover, .navbar__link--colored:focus:not(:active) {
+  background-color: rgb(235, 144, 10);
+  background-color: rgb(var(--primary-color-dark, 235, 144, 10));
+}
+.navbar__link--colored .mi {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-primary, 255, 255, 255));
+}
+@media only screen and (max-width: 768px) {
+  .navbar__link--colored {
+    background: none;
+    color: rgb(255, 255, 255);
+    color: rgb(var(--navbar-link-color, 255, 255, 255));
+  }
+  .navbar__link--colored:hover, .navbar__link--colored:focus:not(:active) {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .navbar__link--colored .mi {
+    color: rgb(255, 255, 255);
+    color: rgb(var(--navbar-link-color, 255, 255, 255));
+  }
+}
+
+#sidebar {
+  background-color: rgb(255, 255, 255);
+  background-color: rgb(var(--sidebar-bg-color, 255, 255, 255));
+}
+
+.tk-sidebar__group-header,
+.tk-sidebar__subgroup-header {
+  color: rgb(33, 33, 33);
+  color: rgb(var(--sidebar-item-text-color, 33, 33, 33));
+}
+
+.tk-sidebar__item {
+  height: 40px;
+  height: var(--sidebar-item-height, 40px);
+  color: rgb(33, 33, 33);
+  color: rgb(var(--sidebar-item-text-color, 33, 33, 33));
+  background: transparent;
+}
+.tk-sidebar__item:hover, .tk-sidebar__item:focus {
+  color: rgb(245, 156, 26);
+  color: rgb(var(--primary-color, 245, 156, 26));
+  background-color: rgba(245, 156, 26, 0.2);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.2);
+}
+.tk-sidebar__item .ripple-container {
+  background-color: rgba(245, 156, 26, 0.2);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.2);
+}
+
+.tk-state-action.save-action:not(:disabled) {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--save-action-text-color, 255, 255, 255));
+  background-color: rgb(240, 173, 78);
+  background-color: rgb(var(--save-action-bg-color, 240, 173, 78));
+}
+.tk-state-action.save-action:not(:disabled):hover, .tk-state-action.save-action:not(:disabled):focus, .tk-state-action.save-action:not(:disabled):active {
+  background-color: rgb(235, 148, 24);
+  background-color: rgb(var(--save-action-bg-color-dark, 235, 148, 24));
+}
+.tk-state-action.save-action:not(:disabled) .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--save-action-text-color, 255, 255, 255), 0.3);
+}
+
+.tk-state-action.update-action:not(:disabled) {
+  color: rgb(#f0ad4e);
+  color: rgb(var(--save-action-text-color, #f0ad4e));
+  background-color: rgb(#f0ad4e);
+  background-color: rgb(var(--save-action-bg-color, #f0ad4e));
+}
+.tk-state-action.update-action:not(:disabled):hover, .tk-state-action.update-action:not(:disabled):focus, .tk-state-action.update-action:not(:disabled):active {
+  background-color: rgb(rgb(238.0078125, 162.109375, 54.4921875));
+  background-color: rgb(var(--save-action-bg-color-dark, rgb(238.0078125, 162.109375, 54.4921875)));
+}
+.tk-state-action.update-action:not(:disabled) .ripple-container {
+  background-color: rgba(#f0ad4e, 0.3);
+  background-color: rgba(var(--save-action-text-color, #f0ad4e), 0.3);
+}
+
+.tk-state-action.cancel-action:not(:disabled) {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--cancel-action-text-color, 255, 255, 255));
+  background-color: rgb(211, 46, 46);
+  background-color: rgb(var(--cancel-action-bg-color, 211, 46, 46));
+}
+.tk-state-action.cancel-action:not(:disabled):hover, .tk-state-action.cancel-action:not(:disabled):focus, .tk-state-action.cancel-action:not(:disabled):active {
+  background-color: rgb(180, 38, 38);
+  background-color: rgb(var(--cancel-action-bg-color-dark, 180, 38, 38));
+}
+.tk-state-action.cancel-action:not(:disabled) .ripple-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--cancel-action-text-color, 255, 255, 255), 0.3);
+}
+
+.tk-state-action.undo-action:not(:disabled) {
+  color: rgb(0, 0, 0);
+  color: rgb(var(--undo-action-text-color, 0, 0, 0));
+  background-color: rgb(255, 255, 255);
+  background-color: rgb(var(--undo-action-bg-color, 255, 255, 255));
+}
+.tk-state-action.undo-action:not(:disabled):hover, .tk-state-action.undo-action:not(:disabled):focus, .tk-state-action.undo-action:not(:disabled):active {
+  background-color: rgb(242, 242, 242);
+  background-color: rgb(var(--undo-action-bg-color-dark, 242, 242, 242));
+}
+.tk-state-action.undo-action:not(:disabled) .ripple-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(var(--undo-action-text-color, 0, 0, 0), 0.3);
+}
+
+.tk-state-action.redo-action:not(:disabled) {
+  color: rgb(0, 0, 0);
+  color: rgb(var(--redo-action-text-color, 0, 0, 0));
+  background-color: rgb(255, 255, 255);
+  background-color: rgb(var(--redo-action-bg-color, 255, 255, 255));
+}
+.tk-state-action.redo-action:not(:disabled):hover, .tk-state-action.redo-action:not(:disabled):focus, .tk-state-action.redo-action:not(:disabled):active {
+  background-color: rgb(242, 242, 242);
+  background-color: rgb(var(--redo-action-bg-color-dark, 242, 242, 242));
+}
+.tk-state-action.redo-action:not(:disabled) .ripple-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(var(--redo-action-text-color, 0, 0, 0), 0.3);
+}
+
+.dropdown__menu {
+  background-color: rgb(33, 33, 33);
+  background-color: rgb(var(--navbar-bg-color, 33, 33, 33));
+}
+@media only screen and (min-width: 768px) {
+  .dropdown__menu {
+    background-color: #fff;
+  }
+}
+
+.dropdown__link {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--navbar-link-color, 255, 255, 255));
+}
+.dropdown__link .ripple-container {
+  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--navbar-link-color, 255, 255, 255), 0.1);
+}
+@media only screen and (min-width: 768px) {
+  .dropdown__link {
+    color: #000;
+  }
+  .dropdown__link:hover, .dropdown__link:focus {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  .dropdown__link:active {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+}
+
+.tk-text-field__native {
+  height: 36px;
+}
+.tk-text-field__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
+
+.tk-text-field.has-error .tk-text-field__label {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-text-field.has-error .tk-text-field__native {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-text-field.has-error .tk-text-field__native:hover, .tk-text-field.has-error .tk-text-field__native:active, .tk-text-field.has-error .tk-text-field__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-text-field__validation-state {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-number-field__native {
+  height: 36px;
+}
+.tk-number-field__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
+
+.tk-number-field.has-error .tk-number-field__label {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-number-field.has-error .tk-number-field__native {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-number-field.has-error .tk-number-field__native:hover, .tk-number-field.has-error .tk-number-field__native:active, .tk-number-field.has-error .tk-number-field__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-number-field__validation-state {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-float-field__native {
+  height: 36px;
+}
+.tk-float-field__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
+
+.tk-float-field.has-error .tk-float-field__label {
+  color: rgb(211, 46, 46);
+}
+.tk-float-field.has-error .tk-float-field__native {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
+.tk-float-field.has-error .tk-float-field__native:hover, .tk-float-field.has-error .tk-float-field__native:active, .tk-float-field.has-error .tk-float-field__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
+
+.tk-float-field__validation-state {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-textarea__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
+
+.tk-textarea.has-error .tk-textarea__label {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-textarea.has-error .tk-textarea__native {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-textarea.has-error .tk-textarea__native:hover, .tk-textarea.has-error .tk-textarea__native:active, .tk-textarea.has-error .tk-textarea__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-textarea__validation-state {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-static-text__label.danger {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-static-text__label.warning {
+  color: rgb(240, 173, 78);
+  color: rgb(var(--warning-color, 240, 173, 78));
+}
+.tk-static-text__label.success {
+  color: rgb(93, 184, 91);
+  color: rgb(var(--success-color, 93, 184, 91));
+}
+
+.tk-static-text__native.danger {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-static-text__native.warning {
+  color: rgb(240, 173, 78);
+  color: rgb(var(--warning-color, 240, 173, 78));
+}
+.tk-static-text__native.success {
+  color: rgb(93, 184, 91);
+  color: rgb(var(--success-color, 93, 184, 91));
+}
+
+.tk-modal__actions .tk-button__native.outlined.success:hover {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-success, 255, 255, 255));
+  background-color: rgb(93, 184, 91);
+  background-color: rgb(var(--success-color, 93, 184, 91));
+}
+
+.tk-modal__actions .tk-button__native.outlined.danger:hover {
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-danger, 255, 255, 255));
+  background-color: rgb(211, 46, 46);
+  background-color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-select__native:not(:disabled):focus {
+  /*  border-color: unquote('rgba(var(--primary-color, 245, 156, 26), 0.87)');*/
+  border-color: rgb(var(--primary-color, 245,156,26));
+}
+
+.tk-select.has-error .tk-select__label {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-select.has-error .tk-select__native {
+  border-color: 0 0 0 1px rgb(211, 46, 46);
+}
+
+.tk-select__validation-state {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-file-upload__interactive {
+  color: black;
+  background: rgb(#eaeaea);
+  background: rgb(var(--btn-default-clr, #eaeaea));
+  height: 36px;
+}
+.tk-file-upload__interactive.uploaded {
+  background: rgb(93, 184, 91);
+  background: rgb(var(--success-color, 93, 184, 91));
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-success, 255, 255, 255));
+}
+
+.tk-file-upload__progress {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
+
+.tk-file-upload__validation-state {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+a.tk-link__native:not(.tk-button__native).primary {
+  color: rgb(235, 144, 10);
+  color: rgb(var(--primary-color-dark, 235, 144, 10));
+}
+a.tk-link__native:not(.tk-button__native).primary:hover, a.tk-link__native:not(.tk-button__native).primary:focus {
+  background-color: rgba(245, 156, 26, 0.15);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.15);
+}
+a.tk-link__native:not(.tk-button__native).primary .ripple-container {
+  background-color: rgba(245, 156, 26, 0.3);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.3);
+}
+a.tk-link__native:not(.tk-button__native).warning {
+  padding: 0 20px 0 8px;
+  color: rgb(238, 162, 54);
+  color: rgb(var(--warning-color-dark, 238, 162, 54));
+}
+a.tk-link__native:not(.tk-button__native).warning:hover, a.tk-link__native:not(.tk-button__native).warning:focus {
+  background-color: rgba(240, 173, 78, 0.15);
+  background-color: rgba(var(--warning-color, 240, 173, 78), 0.15);
+}
+a.tk-link__native:not(.tk-button__native).warning .ripple-container {
+  background-color: rgba(240, 173, 78, 0.3);
+  background-color: rgba(var(--warning-color, 240, 173, 78), 0.3);
+}
+a.tk-link__native:not(.tk-button__native).danger {
+  padding: 0 20px 0 8px;
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+a.tk-link__native:not(.tk-button__native).danger:hover, a.tk-link__native:not(.tk-button__native).danger:focus {
+  background-color: rgba(211, 46, 46, 0.15);
+  background-color: rgba(var(--danger-color, 211, 46, 46), 0.15);
+}
+a.tk-link__native:not(.tk-button__native).danger .ripple-container {
+  background-color: rgba(211, 46, 46, 0.3);
+  background-color: rgba(var(--danger-color, 211, 46, 46), 0.3);
+}
+
+.tk-image-upload__progress {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
+
+.tk-image-upload__validation-state {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-datepicker__native {
+  height: 36px;
+}
+.tk-datepicker__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
+
+.tk-datepicker.has-error .tk-datepicker__label {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-datepicker.has-error .tk-datepicker__native {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
+.tk-datepicker.has-error .tk-datepicker__native:hover, .tk-datepicker.has-error .tk-datepicker__native:active, .tk-datepicker.has-error .tk-datepicker__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
+
+.tk-datepicker__validation-state {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-timespan__native {
+  height: 36px;
+}
+.tk-timespan__native:focus {
+  box-shadow: 0 0 0 2px rgba(245, 156, 26, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color, 245, 156, 26), 0.6);
+}
+
+.tk-timespan.has-error .tk-timespan__label {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+.tk-timespan.has-error .tk-timespan__native {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
+.tk-timespan.has-error .tk-timespan__native:hover, .tk-timespan.has-error .tk-timespan__native:active, .tk-timespan.has-error .tk-timespan__native:focus {
+  box-shadow: 0 0 0 2px rgb(211, 46, 46);
+  box-shadow: 0 0 0 2px rgb(var(--dander-color, 211, 46, 46));
+}
+
+.tk-timespan__validation-state {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.tk-data-table__content {
+  border-color: rgb(var(--table-border-clr));
+}
+
+.tk-data-table__header-cell {
+  color: rgba(0, 0, 0, 0.9);
+  color: rgba(var(--data-table-header-text-color, 0, 0, 0), 0.9);
+  background-color: rgb(255, 255, 255);
+  background-color: rgb(var(--data-table-header-bg-color, 255, 255, 255));
+}
+
+.tk-data-table__header-row {
+  height: 56px;
+  height: var(--data-table-header-height, 56px);
+}
+@media only screen and (max-width: 767px) {
+  .tk-data-table__header-row {
+    height: calc(56px * 0.8);
+    height: calc(var(--data-table-header-height, 56px) * 0.8);
+  }
+}
+
+.tk-data-table__row {
+  height: 56px;
+  height: var(--data-table-row-height, 56px);
+}
+@media only screen and (max-width: 767px) {
+  .tk-data-table__row {
+    height: calc(56px * 0.8);
+    height: calc(var(--data-table-row-height, 56px) * 0.8);
+  }
+}
+
+.tk-data-table__seekmore {
+  height: 56px;
+  height: var(--data-table-row-height, 56px);
+}
+
+.tk-button__seekmore {
+  font-size: 1rem;
+}
+
+tr:has(.tk-quickgrid-cell .current),
+.tk-data-table__row.vmCurrentRow {
+  box-shadow: inset 0px 0px 0px 1px rgb(245, 156, 26);
+  box-shadow: inset 0px 0px 0px 1px rgb(var(--primary-color, 245, 156, 26));
+  /*
+    this is the CurrentLine indicator, changed this from first-child to firstvisiblecolumn to handle dynamic visible columns hiding first col in angularjs  */
+}
+tr:has(.tk-quickgrid-cell .current) td.firstvisiblecolumn::before,
+.tk-data-table__row.vmCurrentRow td.firstvisiblecolumn::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
+
+.tk-data-table__content tbody {
+  /*@include color-declaration(background-color, $data-table-body-bg-color, --data-table-body-bg-color);*/
+  color: rgb(0, 0, 0);
+  color: rgb(var(--data-table-body-text-color, 0, 0, 0));
+}
+
+.tk-data-table__native.striped .tk-data-table__row:nth-of-type(odd).vmSelectedRow {
+  background-color: rgba(245, 156, 26, 0.1);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+}
+
+.tk-data-table__row.vmSelectedRow {
+  background-color: rgba(245, 156, 26, 0.1);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+}
+.tk-data-table__row.vmSelectedRow:hover, .tk-data-table__row.vmSelectedRow:focus {
+  background-color: rgba(245, 156, 26, 0.2);
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.2);
+}
+
+.tk-data-table__cell.cellselect {
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+  user-select: none;
+  outline: none;
+  animation: none !important;
+  transition: none !important;
+}
+
+.cellselect_top {
+  border-top: 2px solid gray;
+}
+
+.cellselect_left {
+  border-left: 2px solid gray;
+}
+
+.cellselect_right {
+  border-right: 2px solid gray !important;
+}
+
+.cellselect_bottom {
+  border-bottom: 2px solid gray;
+}
+
+.tk-data-table__highlite {
+  background-image: linear-gradient(to top, #E6E9F0 0%, #EEF1F5 100%);
+}
+
+.validation__item.danger {
+  background-color: rgb(211, 46, 46);
+  background-color: rgb(var(--danger-color, 211, 46, 46));
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-danger, 255, 255, 255));
+}
+.validation__item.warning {
+  background-color: rgb(240, 173, 78);
+  background-color: rgb(var(--warning-color, 240, 173, 78));
+  color: rgb(255, 255, 255);
+  color: rgb(var(--text-on-warning, 255, 255, 255));
+}
+.validation__item.info {
+  background-color: #0b5461;
+  color: #fff;
+}
+
+.tk-progress-bar__indeterminate::before {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
+.tk-progress-bar__indeterminate::after {
+  background-color: rgb(245, 156, 26);
+  background-color: rgb(var(--primary-color, 245, 156, 26));
+}
+
+.tk-auth-form__input:not(.input-validation-error):focus {
+  box-shadow: 0 0 2px 0.15em rgba(245, 156, 26, 0.5);
+  box-shadow: 0 0 2px 0.15em rgba(var(--primary-color, 245, 156, 26), 0.5);
+}
+
+@media only screen and (min-width: 768px) {
+  .tk-auth__info {
+    background-color: rgb(245, 156, 26);
+    background-color: rgb(var(--primary-color, 245, 156, 26));
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .tk-auth__link {
+    color: rgb(255, 255, 255);
+    color: rgb(var(--text-on-primary, 255, 255, 255));
+    background: rgb(235, 144, 10);
+    background: rgb(var(--primary-color-dark, 235, 144, 10));
+  }
+  .tk-auth__link .ripple-container {
+    background-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(var(--text-on-primary, 255, 255, 255), 0.25);
+  }
+}
+
+.tk-auth__validation-summary {
+  background-color: rgba(211, 46, 46, 0.15);
+  background-color: rgba(var(--danger-color, 211, 46, 46), 0.15);
+}
+
+.validation-summary-errors {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+.field-validation-error {
+  color: rgb(211, 46, 46);
+  color: rgb(var(--danger-color, 211, 46, 46));
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/_tk-core-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/generic/_tk-layout-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-spinner/_tk-spinner-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/_mixins.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-button/_tk-button-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/theme-default.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/_color-definitions.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-checkbox/_tk-checkbox-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-switch/_tk-switch-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-navbar/_tk-navbar-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-sidebar/_tk-sidebar-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-actions/_tk-actions-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-dropdown/_tk-dropdown-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-text-field/_tk-text-field-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-number-field/_tk-number-field-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-float-field/_tk-float-field-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-textarea/_tk-textarea-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-static-text/_tk-static-text-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-modals/_tk-modal-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-select/_tk-select-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-file-upload/_tk-file-upload-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-link/_tk-link-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-image-upload/_tk-image-upload-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-datepicker/_tk-datepicker-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-timespan/tk-timespan-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-data-table/_tk-data-table-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-validation/_tk-validation-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/components/tk-progress-bar/_tk-progress-bar-theme.scss%22,%22file:///C:/CapableObjectsWush/source/StreamingAppCore/StreaminAppCoreWebApp/Content/scss/source/static/_tk-static-theme.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%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%22%7D */
