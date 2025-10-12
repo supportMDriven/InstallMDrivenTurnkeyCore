@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <arg>iis=https://HSLSmartGoals-dev.azurewebsites.net</arg>
+  <!-- This file must be part of the project, the Deployer will update it and dotnet cli will publish it to the site-->
+  <arg>iis="your site url"</arg>
 </root>

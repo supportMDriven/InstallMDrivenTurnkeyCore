@@ -340,7 +340,6 @@
           "System.Text.Encoding.Reference": "8.0.0.0",
           "System.Text.Encoding.Extensions.Reference": "8.0.0.0",
           "System.Text.Encodings.Web.Reference": "8.0.0.0",
-          "System.Text.Json.Reference": "8.0.0.0",
           "System.Text.RegularExpressions": "8.0.0.0",
           "System.Threading.Channels.Reference": "8.0.0.0",
           "System.Threading.Reference": "8.0.0.0",
@@ -1659,11 +1658,6 @@
           "System.Text.Encodings.Web.dll": {}
         }
       },
-      "System.Text.Json.Reference/8.0.0.0": {
-        "compile": {
-          "System.Text.Json.dll": {}
-        }
-      },
       "System.Text.RegularExpressions/8.0.0.0": {
         "compile": {
           "System.Text.RegularExpressions.dll": {}
@@ -1806,37 +1800,32 @@
       },
       "Azure.AI.OpenAI/1.0.0-beta.17": {
         "dependencies": {
-          "Azure.Core": "1.39.0",
-          "System.ClientModel": "1.0.0",
-          "System.Text.Json": "8.0.5"
+          "Azure.Core": "1.47.2",
+          "System.ClientModel": "1.6.0",
+          "System.Text.Json": "8.0.6"
         },
         "compile": {
           "lib/netstandard2.0/Azure.AI.OpenAI.dll": {}
         }
       },
-      "Azure.Core/1.39.0": {
+      "Azure.Core/1.47.2": {
         "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "1.1.1",
-          "System.ClientModel": "1.0.0",
-          "System.Diagnostics.DiagnosticSource": "8.0.1",
-          "System.Memory.Data": "1.0.2",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Text.Encodings.Web": "8.0.0",
-          "System.Text.Json": "8.0.5",
-          "System.Threading.Tasks.Extensions": "4.6.0"
+          "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
+          "System.ClientModel": "1.6.0",
+          "System.Memory.Data": "8.0.1"
         },
         "compile": {
-          "lib/net6.0/Azure.Core.dll": {}
+          "lib/net8.0/Azure.Core.dll": {}
         }
       },
       "Azure.Identity/1.11.4": {
         "dependencies": {
-          "Azure.Core": "1.39.0",
+          "Azure.Core": "1.47.2",
           "Microsoft.Identity.Client": "4.61.3",
           "Microsoft.Identity.Client.Extensions.Msal": "4.61.3",
-          "System.Memory": "4.5.5",
+          "System.Memory": "4.6.3",
           "System.Security.Cryptography.ProtectedData": "8.0.0",
-          "System.Text.Json": "8.0.5",
+          "System.Text.Json": "8.0.6",
           "System.Threading.Tasks.Extensions": "4.6.0"
         },
         "compile": {
@@ -2103,7 +2092,7 @@
           "Microsoft.AspNetCore.Http.Abstractions": "2.3.0",
           "Microsoft.Extensions.FileProviders.Abstractions": "8.0.0",
           "Microsoft.Net.Http.Headers": "2.3.0",
-          "System.Buffers": "4.6.0"
+          "System.Buffers": "4.6.1"
         }
       },
       "Microsoft.AspNetCore.Http.Features/2.3.0": {
@@ -2378,9 +2367,9 @@
           "System.Text.Encodings.Web": "8.0.0"
         }
       },
-      "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
+      "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
         "compile": {
-          "ref/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {}
+          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {}
         }
       },
       "Microsoft.CodeAnalysis.Analyzers/2.9.4": {},
@@ -2388,9 +2377,9 @@
         "dependencies": {
           "Microsoft.CodeAnalysis.Analyzers": "2.9.4",
           "System.Collections.Immutable": "1.5.0",
-          "System.Memory": "4.5.5",
+          "System.Memory": "4.6.3",
           "System.Reflection.Metadata": "5.0.0",
-          "System.Runtime.CompilerServices.Unsafe": "4.5.2",
+          "System.Runtime.CompilerServices.Unsafe": "6.1.2",
           "System.Text.Encoding.CodePages": "8.0.0",
           "System.Threading.Tasks.Extensions": "4.6.0"
         },
@@ -2512,7 +2501,7 @@
       "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2": {},
       "Microsoft.Extensions.DependencyModel/3.1.6": {
         "dependencies": {
-          "System.Text.Json": "8.0.5"
+          "System.Text.Json": "8.0.6"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Extensions.DependencyModel.dll": {}
@@ -2720,7 +2709,7 @@
       "Microsoft.Net.Http.Headers/2.3.0": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "8.0.0",
-          "System.Buffers": "4.6.0"
+          "System.Buffers": "4.6.1"
         }
       },
       "Microsoft.NETCore.Platforms/7.0.4": {},
@@ -2874,7 +2863,7 @@
       "runtime.win.System.Diagnostics.Debug/4.3.0": {},
       "runtime.win.System.IO.FileSystem/4.3.0": {
         "dependencies": {
-          "System.Buffers": "4.6.0",
+          "System.Buffers": "4.6.1",
           "System.Collections": "4.3.0",
           "System.Diagnostics.Debug": "4.3.0",
           "System.IO": "4.3.0",
@@ -2908,14 +2897,14 @@
       "SkiaSharp.NativeAssets.Linux/3.119.0": {},
       "SkiaSharp.NativeAssets.macOS/3.119.0": {},
       "SkiaSharp.NativeAssets.Win32/3.119.0": {},
-      "System.Buffers/4.6.0": {},
-      "System.ClientModel/1.0.0": {
+      "System.Buffers/4.6.1": {},
+      "System.ClientModel/1.6.0": {
         "dependencies": {
-          "System.Memory.Data": "1.0.2",
-          "System.Text.Json": "8.0.5"
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
+          "System.Memory.Data": "8.0.1"
         },
         "compile": {
-          "lib/net6.0/System.ClientModel.dll": {}
+          "lib/net8.0/System.ClientModel.dll": {}
         }
       },
       "System.Collections/4.3.0": {
@@ -3078,7 +3067,7 @@
       "System.IO.Compression/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "7.0.4",
-          "System.Buffers": "4.6.0",
+          "System.Buffers": "4.6.1",
           "System.Collections": "4.3.0",
           "System.Diagnostics.Debug": "4.3.0",
           "System.IO": "4.3.0",
@@ -3096,7 +3085,7 @@
       },
       "System.IO.Compression.ZipFile/4.3.0": {
         "dependencies": {
-          "System.Buffers": "4.6.0",
+          "System.Buffers": "4.6.1",
           "System.IO": "4.3.0",
           "System.IO.Compression": "4.3.0",
           "System.IO.FileSystem": "4.3.0",
@@ -3156,14 +3145,10 @@
           "System.Threading": "4.3.0"
         }
       },
-      "System.Memory/4.5.5": {},
-      "System.Memory.Data/1.0.2": {
-        "dependencies": {
-          "System.Text.Encodings.Web": "8.0.0",
-          "System.Text.Json": "8.0.5"
-        },
+      "System.Memory/4.6.3": {},
+      "System.Memory.Data/8.0.1": {
         "compile": {
-          "lib/netstandard2.0/System.Memory.Data.dll": {}
+          "lib/net8.0/System.Memory.Data.dll": {}
         }
       },
       "System.Numerics.Vectors/4.5.0": {},
@@ -3276,7 +3261,7 @@
           "System.Configuration.ConfigurationManager": "8.0.0"
         }
       },
-      "System.Runtime.CompilerServices.Unsafe/4.5.2": {},
+      "System.Runtime.CompilerServices.Unsafe/6.1.2": {},
       "System.Runtime.Extensions/4.3.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "7.0.4",
@@ -3377,7 +3362,11 @@
         }
       },
       "System.Text.Encodings.Web/8.0.0": {},
-      "System.Text.Json/8.0.5": {},
+      "System.Text.Json/8.0.6": {
+        "compile": {
+          "lib/net8.0/System.Text.Json.dll": {}
+        }
+      },
       "System.Threading/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.1",
@@ -3430,7 +3419,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
           "MDriven.Net.Http.netStandard": "1.0.0",
-          "MDriven.Persistence.netStandard": "1.0.0",
+          "MDriven.Persistence.NetStandard": "1.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3"
         },
         "compile": {
@@ -3454,9 +3443,11 @@
       },
       "Eco.ModelLayer.netstandard/1.0.0": {
         "dependencies": {
+          "Azure.Core": "1.47.2",
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
+          "System.ClientModel": "1.6.0",
           "System.Resources.Extensions": "5.0.0"
         },
         "compile": {
@@ -3465,10 +3456,12 @@
       },
       "Eco.Modlr.ExtendedModelLayer.netstandard/1.0.0": {
         "dependencies": {
+          "Azure.Core": "1.47.2",
           "Eco.ModelLayer.netstandard": "1.0.0",
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0",
-          "MDriven.LinqExtender.netStandard": "1.0.0"
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "System.ClientModel": "1.6.0"
         },
         "compile": {
           "Eco.Modlr.ExtendedModelLayer.netstandard.dll": {}
@@ -3523,7 +3516,8 @@
           "MDriven.SharedInterfaces.WebAssembly": "1.0.0",
           "Microsoft.AspNetCore.Components": "8.0.20",
           "Microsoft.AspNetCore.Components.QuickGrid": "8.0.20",
-          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.20"
+          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.20",
+          "System.Diagnostics.DiagnosticSource": "8.0.1"
         },
         "compile": {
           "MDriven.Components.WebAssembly.dll": {}
@@ -3532,7 +3526,8 @@
       "MDriven.Handles.netStandard/1.0.0": {
         "dependencies": {
           "MDriven.Interfaces.netStandard": "1.0.0",
-          "System.Buffers": "4.6.0",
+          "System.Buffers": "4.6.1",
+          "System.Runtime.CompilerServices.Unsafe": "6.1.2",
           "System.Runtime.Serialization.Formatters": "4.3.0",
           "System.Security.Permissions": "8.0.0",
           "System.Text.Encoding.CodePages": "8.0.0"
@@ -3544,8 +3539,8 @@
       "MDriven.Interfaces.netStandard/1.0.0": {
         "dependencies": {
           "Microsoft.IO.RecyclableMemoryStream": "2.3.2",
-          "System.Memory": "4.5.5",
-          "System.Text.Json": "8.0.5"
+          "System.Memory": "4.6.3",
+          "System.Text.Json": "8.0.6"
         },
         "compile": {
           "MDriven.Interfaces.netStandard.dll": {}
@@ -3558,6 +3553,7 @@
           "MDriven.SharedInterfaces.WebAssembly": "1.0.0",
           "Microsoft.Data.SqlClient": "5.2.2",
           "Newtonsoft.Json": "13.0.3",
+          "System.ClientModel": "1.6.0",
           "System.IO.Compression": "4.3.0",
           "System.IO.Compression.ZipFile": "4.3.0"
         },
@@ -3598,13 +3594,13 @@
           "MDriven.Net.Http.netStandard.dll": {}
         }
       },
-      "MDriven.Persistence.netStandard/1.0.0": {
+      "MDriven.Persistence.NetStandard/1.0.0": {
         "dependencies": {
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "compile": {
-          "MDriven.Persistence.netStandard.dll": {}
+          "MDriven.Persistence.NetStandard.dll": {}
         }
       },
       "MDriven.SharedInterfaces.WebAssembly/1.0.0": {
@@ -3994,7 +3990,6 @@
           "System.Text.Encoding.Reference": "8.0.0.0",
           "System.Text.Encoding.Extensions.Reference": "8.0.0.0",
           "System.Text.Encodings.Web.Reference": "8.0.0.0",
-          "System.Text.Json.Reference": "8.0.0.0",
           "System.Text.RegularExpressions": "8.0.0.0",
           "System.Threading.Channels.Reference": "8.0.0.0",
           "System.Threading.Reference": "8.0.0.0",
@@ -4577,10 +4572,6 @@
             "fileVersion": "8.0.1525.16413"
           },
           "System.Text.Encodings.Web.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1525.16413"
-          },
-          "System.Text.Json.dll": {
             "assemblyVersion": "8.0.0.0",
             "fileVersion": "8.0.1525.16413"
           },
@@ -5261,9 +5252,9 @@
       },
       "Azure.AI.OpenAI/1.0.0-beta.17": {
         "dependencies": {
-          "Azure.Core": "1.39.0",
-          "System.ClientModel": "1.0.0",
-          "System.Text.Json": "8.0.5"
+          "Azure.Core": "1.47.2",
+          "System.ClientModel": "1.6.0",
+          "System.Text.Json": "8.0.6"
         },
         "runtime": {
           "lib/netstandard2.0/Azure.AI.OpenAI.dll": {
@@ -5272,32 +5263,27 @@
           }
         }
       },
-      "Azure.Core/1.39.0": {
+      "Azure.Core/1.47.2": {
         "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "1.1.1",
-          "System.ClientModel": "1.0.0",
-          "System.Diagnostics.DiagnosticSource": "8.0.1",
-          "System.Memory.Data": "1.0.2",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Text.Encodings.Web": "8.0.0",
-          "System.Text.Json": "8.0.5",
-          "System.Threading.Tasks.Extensions": "4.6.0"
+          "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
+          "System.ClientModel": "1.6.0",
+          "System.Memory.Data": "8.0.1"
         },
         "runtime": {
-          "lib/net6.0/Azure.Core.dll": {
-            "assemblyVersion": "1.39.0.0",
-            "fileVersion": "1.3900.24.21804"
+          "lib/net8.0/Azure.Core.dll": {
+            "assemblyVersion": "1.47.2.0",
+            "fileVersion": "1.4700.225.41203"
           }
         }
       },
       "Azure.Identity/1.11.4": {
         "dependencies": {
-          "Azure.Core": "1.39.0",
+          "Azure.Core": "1.47.2",
           "Microsoft.Identity.Client": "4.61.3",
           "Microsoft.Identity.Client.Extensions.Msal": "4.61.3",
-          "System.Memory": "4.5.5",
+          "System.Memory": "4.6.3",
           "System.Security.Cryptography.ProtectedData": "8.0.0",
-          "System.Text.Json": "8.0.5",
+          "System.Text.Json": "8.0.6",
           "System.Threading.Tasks.Extensions": "4.6.0"
         },
         "runtime": {
@@ -5624,7 +5610,7 @@
           "Microsoft.AspNetCore.Http.Abstractions": "2.3.0",
           "Microsoft.Extensions.FileProviders.Abstractions": "8.0.0",
           "Microsoft.Net.Http.Headers": "2.3.0",
-          "System.Buffers": "4.6.0"
+          "System.Buffers": "4.6.1"
         }
       },
       "Microsoft.AspNetCore.Http.Features/2.3.0": {
@@ -5941,11 +5927,11 @@
           "System.Text.Encodings.Web": "8.0.0"
         }
       },
-      "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
+      "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
         "runtime": {
           "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "4.700.20.21406"
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
           }
         }
       },
@@ -5954,9 +5940,9 @@
         "dependencies": {
           "Microsoft.CodeAnalysis.Analyzers": "2.9.4",
           "System.Collections.Immutable": "1.5.0",
-          "System.Memory": "4.5.5",
+          "System.Memory": "4.6.3",
           "System.Reflection.Metadata": "5.0.0",
-          "System.Runtime.CompilerServices.Unsafe": "4.5.2",
+          "System.Runtime.CompilerServices.Unsafe": "6.1.2",
           "System.Text.Encoding.CodePages": "8.0.0",
           "System.Threading.Tasks.Extensions": "4.6.0"
         },
@@ -6301,7 +6287,7 @@
       "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2": {},
       "Microsoft.Extensions.DependencyModel/3.1.6": {
         "dependencies": {
-          "System.Text.Json": "8.0.5"
+          "System.Text.Json": "8.0.6"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Extensions.DependencyModel.dll": {
@@ -6560,7 +6546,7 @@
       "Microsoft.Net.Http.Headers/2.3.0": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "8.0.0",
-          "System.Buffers": "4.6.0"
+          "System.Buffers": "4.6.1"
         }
       },
       "Microsoft.NETCore.Platforms/7.0.4": {},
@@ -6750,7 +6736,7 @@
       "runtime.win.System.Diagnostics.Debug/4.3.0": {},
       "runtime.win.System.IO.FileSystem/4.3.0": {
         "dependencies": {
-          "System.Buffers": "4.6.0",
+          "System.Buffers": "4.6.1",
           "System.Collections": "4.3.0",
           "System.Diagnostics.Debug": "4.3.0",
           "System.IO": "4.3.0",
@@ -6793,16 +6779,16 @@
           }
         }
       },
-      "System.Buffers/4.6.0": {},
-      "System.ClientModel/1.0.0": {
+      "System.Buffers/4.6.1": {},
+      "System.ClientModel/1.6.0": {
         "dependencies": {
-          "System.Memory.Data": "1.0.2",
-          "System.Text.Json": "8.0.5"
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
+          "System.Memory.Data": "8.0.1"
         },
         "runtime": {
-          "lib/net6.0/System.ClientModel.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.24.5302"
+          "lib/net8.0/System.ClientModel.dll": {
+            "assemblyVersion": "1.6.0.0",
+            "fileVersion": "1.600.25.41108"
           }
         }
       },
@@ -6987,7 +6973,7 @@
       "System.IO.Compression/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "7.0.4",
-          "System.Buffers": "4.6.0",
+          "System.Buffers": "4.6.1",
           "System.Collections": "4.3.0",
           "System.Diagnostics.Debug": "4.3.0",
           "System.IO": "4.3.0",
@@ -7005,7 +6991,7 @@
       },
       "System.IO.Compression.ZipFile/4.3.0": {
         "dependencies": {
-          "System.Buffers": "4.6.0",
+          "System.Buffers": "4.6.1",
           "System.IO": "4.3.0",
           "System.IO.Compression": "4.3.0",
           "System.IO.FileSystem": "4.3.0",
@@ -7065,16 +7051,12 @@
           "System.Threading": "4.3.0"
         }
       },
-      "System.Memory/4.5.5": {},
-      "System.Memory.Data/1.0.2": {
-        "dependencies": {
-          "System.Text.Encodings.Web": "8.0.0",
-          "System.Text.Json": "8.0.5"
-        },
+      "System.Memory/4.6.3": {},
+      "System.Memory.Data/8.0.1": {
         "runtime": {
-          "lib/netstandard2.0/System.Memory.Data.dll": {
-            "assemblyVersion": "1.0.2.0",
-            "fileVersion": "1.0.221.20802"
+          "lib/net8.0/System.Memory.Data.dll": {
+            "assemblyVersion": "8.0.0.1",
+            "fileVersion": "8.0.1024.46610"
           }
         }
       },
@@ -7203,7 +7185,7 @@
           }
         }
       },
-      "System.Runtime.CompilerServices.Unsafe/4.5.2": {},
+      "System.Runtime.CompilerServices.Unsafe/6.1.2": {},
       "System.Runtime.Extensions/4.3.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "7.0.4",
@@ -7312,7 +7294,14 @@
         }
       },
       "System.Text.Encodings.Web/8.0.0": {},
-      "System.Text.Json/8.0.5": {},
+      "System.Text.Json/8.0.6": {
+        "runtime": {
+          "lib/net8.0/System.Text.Json.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.1825.31117"
+          }
+        }
+      },
       "System.Threading/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.1",
@@ -7374,7 +7363,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
           "MDriven.Net.Http.netStandard": "1.0.0",
-          "MDriven.Persistence.netStandard": "1.0.0",
+          "MDriven.Persistence.NetStandard": "1.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3"
         },
         "runtime": {
@@ -7404,29 +7393,33 @@
       },
       "Eco.ModelLayer.netstandard/1.0.0": {
         "dependencies": {
+          "Azure.Core": "1.47.2",
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
+          "System.ClientModel": "1.6.0",
           "System.Resources.Extensions": "5.0.0"
         },
         "runtime": {
           "Eco.ModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
       "Eco.Modlr.ExtendedModelLayer.netstandard/1.0.0": {
         "dependencies": {
+          "Azure.Core": "1.47.2",
           "Eco.ModelLayer.netstandard": "1.0.0",
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0",
-          "MDriven.LinqExtender.netStandard": "1.0.0"
+          "MDriven.LinqExtender.netStandard": "1.0.0",
+          "System.ClientModel": "1.6.0"
         },
         "runtime": {
           "Eco.Modlr.ExtendedModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7444,7 +7437,7 @@
         "runtime": {
           "Eco.Modlr.ModelEditor.NoUI.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7479,7 +7472,7 @@
         "runtime": {
           "MDriven.ASPNETIdentity.core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7488,7 +7481,8 @@
           "MDriven.SharedInterfaces.WebAssembly": "1.0.0",
           "Microsoft.AspNetCore.Components": "8.0.20",
           "Microsoft.AspNetCore.Components.QuickGrid": "8.0.20",
-          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.20"
+          "Microsoft.AspNetCore.Components.WebAssembly": "8.0.20",
+          "System.Diagnostics.DiagnosticSource": "8.0.1"
         },
         "runtime": {
           "MDriven.Components.WebAssembly.dll": {
@@ -7500,7 +7494,8 @@
       "MDriven.Handles.netStandard/1.0.0": {
         "dependencies": {
           "MDriven.Interfaces.netStandard": "1.0.0",
-          "System.Buffers": "4.6.0",
+          "System.Buffers": "4.6.1",
+          "System.Runtime.CompilerServices.Unsafe": "6.1.2",
           "System.Runtime.Serialization.Formatters": "4.3.0",
           "System.Security.Permissions": "8.0.0",
           "System.Text.Encoding.CodePages": "8.0.0"
@@ -7508,20 +7503,20 @@
         "runtime": {
           "MDriven.Handles.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
       "MDriven.Interfaces.netStandard/1.0.0": {
         "dependencies": {
           "Microsoft.IO.RecyclableMemoryStream": "2.3.2",
-          "System.Memory": "4.5.5",
-          "System.Text.Json": "8.0.5"
+          "System.Memory": "4.6.3",
+          "System.Text.Json": "8.0.6"
         },
         "runtime": {
           "MDriven.Interfaces.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7532,13 +7527,14 @@
           "MDriven.SharedInterfaces.WebAssembly": "1.0.0",
           "Microsoft.Data.SqlClient": "5.2.2",
           "Newtonsoft.Json": "13.0.3",
+          "System.ClientModel": "1.6.0",
           "System.IO.Compression": "4.3.0",
           "System.IO.Compression.ZipFile": "4.3.0"
         },
         "runtime": {
           "MDriven.LinqExtender.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7560,7 +7556,7 @@
         "runtime": {
           "MDriven.MVC.Core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7577,19 +7573,19 @@
         "runtime": {
           "MDriven.Net.Http.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
-      "MDriven.Persistence.netStandard/1.0.0": {
+      "MDriven.Persistence.NetStandard/1.0.0": {
         "dependencies": {
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "runtime": {
-          "MDriven.Persistence.netStandard.dll": {
+          "MDriven.Persistence.NetStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7597,7 +7593,7 @@
         "runtime": {
           "MDriven.SharedInterfaces.WebAssembly.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7610,7 +7606,7 @@
         "runtime": {
           "MDriven.Turnkey.ClientCSharp.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7626,7 +7622,7 @@
         "runtime": {
           "MDrivenTurnkeyBlazorApp.Client.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7641,7 +7637,7 @@
         "runtime": {
           "Modlr.Plugins.core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.16944"
+            "fileVersion": "7.2.0.16947"
           }
         }
       },
@@ -7716,12 +7712,12 @@
       "path": "azure.ai.openai/1.0.0-beta.17",
       "hashPath": "azure.ai.openai.1.0.0-beta.17.nupkg.sha512"
     },
-    "Azure.Core/1.39.0": {
+    "Azure.Core/1.47.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-9vaV4ZICtVQp+2wjOKrIAjEjMzBkUohaBbKGqqcTW993MRfHA0N4L1BszQjWynS7lRvlYQLxaFK4wh9ewNm4HQ==",
-      "path": "azure.core/1.39.0",
-      "hashPath": "azure.core.1.39.0.nupkg.sha512"
+      "sha512": "sha512-tx92zweTYaNGQzw5eZMAP3AledOIOH2nBF6+1ep27/nY7Tp6T5s+jqJSrl2CebZVsqUx12Eo3c7uZtaTIrD4Xg==",
+      "path": "azure.core/1.47.2",
+      "hashPath": "azure.core.1.47.2.nupkg.sha512"
     },
     "Azure.Identity/1.11.4": {
       "type": "package",
@@ -8220,12 +8216,12 @@
       "path": "microsoft.aspnetcore.webutilities/2.3.0",
       "hashPath": "microsoft.aspnetcore.webutilities.2.3.0.nupkg.sha512"
     },
-    "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
+    "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-yuvf07qFWFqtK3P/MRkEKLhn5r2UbSpVueRziSqj0yJQIKFwG1pq9mOayK3zE5qZCTs0CbrwL9M6R8VwqyGy2w==",
-      "path": "microsoft.bcl.asyncinterfaces/1.1.1",
-      "hashPath": "microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512"
+      "sha512": "sha512-3WA9q9yVqJp222P3x1wYIGDAkpjAku0TMUaaQV22g6L67AI0LdOIrVS7Ht2vJfLHGSPVuqN94vIr15qn+HEkHw==",
+      "path": "microsoft.bcl.asyncinterfaces/8.0.0",
+      "hashPath": "microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512"
     },
     "Microsoft.CodeAnalysis.Analyzers/2.9.4": {
       "type": "package",
@@ -8871,19 +8867,19 @@
       "path": "skiasharp.nativeassets.win32/3.119.0",
       "hashPath": "skiasharp.nativeassets.win32.3.119.0.nupkg.sha512"
     },
-    "System.Buffers/4.6.0": {
+    "System.Buffers/4.6.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-lN6tZi7Q46zFzAbRYXTIvfXcyvQQgxnY7Xm6C6xQ9784dEL1amjM6S6Iw4ZpsvesAKnRVsM4scrDQaDqSClkjA==",
-      "path": "system.buffers/4.6.0",
-      "hashPath": "system.buffers.4.6.0.nupkg.sha512"
+      "sha512": "sha512-N8GXpmiLMtljq7gwvyS+1QvKT/W2J8sNAvx+HVg4NGmsG/H+2k/y9QI23auLJRterrzCiDH+IWAw4V/GPwsMlw==",
+      "path": "system.buffers/4.6.1",
+      "hashPath": "system.buffers.4.6.1.nupkg.sha512"
     },
-    "System.ClientModel/1.0.0": {
+    "System.ClientModel/1.6.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-I3CVkvxeqFYjIVEP59DnjbeoGNfo/+SZrCLpRz2v/g0gpCHaEMPtWSY0s9k/7jR1rAsLNg2z2u1JRB76tPjnIw==",
-      "path": "system.clientmodel/1.0.0",
-      "hashPath": "system.clientmodel.1.0.0.nupkg.sha512"
+      "sha512": "sha512-cG2Nvpipe/d2Zkll9lknO/A6slINLYR36I49Uysd76NnGf7DKWnLNBLcaqSBxxfUXwk6fw1ncQ8n4RIjG88bMg==",
+      "path": "system.clientmodel/1.6.0",
+      "hashPath": "system.clientmodel.1.6.0.nupkg.sha512"
     },
     "System.Collections/4.3.0": {
       "type": "package",
@@ -9053,19 +9049,19 @@
       "path": "system.linq.expressions/4.3.0",
       "hashPath": "system.linq.expressions.4.3.0.nupkg.sha512"
     },
-    "System.Memory/4.5.5": {
+    "System.Memory/4.6.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw==",
-      "path": "system.memory/4.5.5",
-      "hashPath": "system.memory.4.5.5.nupkg.sha512"
+      "sha512": "sha512-qdcDOgnFZY40+Q9876JUHnlHu7bosOHX8XISRoH94fwk6hgaeQGSgfZd8srWRZNt5bV9ZW2TljcegDNxsf+96A==",
+      "path": "system.memory/4.6.3",
+      "hashPath": "system.memory.4.6.3.nupkg.sha512"
     },
-    "System.Memory.Data/1.0.2": {
+    "System.Memory.Data/8.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-JGkzeqgBsiZwKJZ1IxPNsDFZDhUvuEdX8L8BDC8N3KOj+6zMcNU28CNN59TpZE/VJYy9cP+5M+sbxtWJx3/xtw==",
-      "path": "system.memory.data/1.0.2",
-      "hashPath": "system.memory.data.1.0.2.nupkg.sha512"
+      "sha512": "sha512-BVYuec3jV23EMRDeR7Dr1/qhx7369dZzJ9IWy2xylvb4YfXsrUxspWc4UWYid/tj4zZK58uGZqn2WQiaDMhmAg==",
+      "path": "system.memory.data/8.0.1",
+      "hashPath": "system.memory.data.8.0.1.nupkg.sha512"
     },
     "System.Numerics.Vectors/4.5.0": {
       "type": "package",
@@ -9186,12 +9182,12 @@
       "path": "system.runtime.caching/8.0.0",
       "hashPath": "system.runtime.caching.8.0.0.nupkg.sha512"
     },
-    "System.Runtime.CompilerServices.Unsafe/4.5.2": {
+    "System.Runtime.CompilerServices.Unsafe/6.1.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-wprSFgext8cwqymChhrBLu62LMg/1u92bU+VOwyfBimSPVFXtsNqEWC92Pf9ofzJFlk4IHmJA75EDJn1b2goAQ==",
-      "path": "system.runtime.compilerservices.unsafe/4.5.2",
-      "hashPath": "system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512"
+      "sha512": "sha512-2hBr6zdbIBTDE3EhK7NSVNdX58uTK6iHW/P/Axmm9sl1xoGSLqDvMtpecn226TNwHByFokYwJmt/aQQNlO5CRw==",
+      "path": "system.runtime.compilerservices.unsafe/6.1.2",
+      "hashPath": "system.runtime.compilerservices.unsafe.6.1.2.nupkg.sha512"
     },
     "System.Runtime.Extensions/4.3.1": {
       "type": "package",
@@ -9305,12 +9301,12 @@
       "path": "system.text.encodings.web/8.0.0",
       "hashPath": "system.text.encodings.web.8.0.0.nupkg.sha512"
     },
-    "System.Text.Json/8.0.5": {
+    "System.Text.Json/8.0.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-0f1B50Ss7rqxXiaBJyzUu9bWFOO2/zSlifZ/UNMdiIpDYe4cY4LQQicP4nirK1OS31I43rn062UIJ1Q9bpmHpg==",
-      "path": "system.text.json/8.0.5",
-      "hashPath": "system.text.json.8.0.5.nupkg.sha512"
+      "sha512": "sha512-BvSpVBsVN9b+Y+wONbvJOHd1HjXQf33+XiC28ZMOwRsYb42mz3Q8YHnpTSwpwJLqYCMqM+0UUVC3V+pi25XfkQ==",
+      "path": "system.text.json/8.0.6",
+      "hashPath": "system.text.json.8.0.6.nupkg.sha512"
     },
     "System.Threading/4.3.0": {
       "type": "package",
@@ -9433,7 +9429,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.Persistence.netStandard/1.0.0": {
+    "MDriven.Persistence.NetStandard/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -10749,11 +10745,6 @@
       "sha512": ""
     },
     "System.Text.Encodings.Web.Reference/8.0.0.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "System.Text.Json.Reference/8.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
