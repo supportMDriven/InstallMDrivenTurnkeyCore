@@ -202,7 +202,7 @@
 .order-enabled:not(.numeric) {
 
   span::after {
-    content: '\f1e0';
+    content: ' ';
     margin-left: 5px;
     display: inline-block;
     font-family: $base-icon-font;
@@ -225,7 +225,7 @@
 .order-enabled.numeric {
 
   span::before {
-    content: '\f1e0';
+    content: ' ';
     margin-right: 5px;
     display: inline-block;
     font-family: $base-icon-font;
@@ -254,13 +254,13 @@
 }
 
 .order-enabled.ascending span::after{
-    content: '\f1e0';
+    content: ' ';
     opacity: 1;
     transform:translateY(0);
 }
 
 .order-enabled.descending span::after{
-    content: '\f1e3';
+    content: ' ';
     opacity:1;
     transform: translateY(0);
 }

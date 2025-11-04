@@ -135,12 +135,6 @@ window.TableKeyDownMDriven = function (thetable, angularscope) {
           if (event.ctrlKey) {
             if (thecurrentcell.tagName == 'DIV' || thecurrentcell.tagName == 'TD') {
               SelectAllMDriven(thetable, angularscope);
-              // also select all via cellselect to make it work even if mdriven is not multiselect in this case
-              if (thetable.rows.length > 1) {
-                thetable._cellAnchor = thetable.rows[1].cells[0]; // avoid header
-                thetable._cellLast = thetable.rows[thetable.rows.length - 1].cells[colCountTakenfromheadertoavoidextracells - 1];;
-                UpdateCellSelects(thetable, isBlazor);
-              }
 
 
               event.preventDefault();
@@ -261,8 +255,17 @@ function SelectAllMDriven(thetable, angularscope) {
     });
   }
   else {
-    angularscope.$parent.selectAllRows(angularscope.$parent.root.VMClassId.VMClassName, angularscope.vcolName);
+    angularscope.$parent.selectAllRows(angularscope.vclassName, angularscope.vcolName);
   }
+
+  // also select all via cellselect to make it work even if mdriven is not multiselect in this case
+  if (thetable.rows.length > 1) {
+    thetable._cellAnchor = thetable.rows[1].cells[0]; // avoid header
+    let colCountTakenfromheadertoavoidextracells = thetable.querySelector('thead').rows[0].cells.length;
+    thetable._cellLast = thetable.rows[thetable.rows.length - 1].cells[colCountTakenfromheadertoavoidextracells - 1];;
+    UpdateCellSelects(thetable, !angularscope);
+  }
+
 }
 
 

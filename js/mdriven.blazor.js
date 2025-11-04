@@ -158,6 +158,18 @@ document.addEventListener('keydown', function (event) {
     else if (event.key === 'y') {
       theshortcut = 'redoShortcut';
     }
+    else if (event.key === 'a') {
+      const active = document.activeElement;
+      const isInput = active && (
+        active.tagName === 'INPUT' ||
+        active.tagName === 'TEXTAREA');
+      if (!isInput) {
+        theshortcut = 'selectallfirsttable';
+        var firsttable = document.querySelector('.tk-data-table__native');
+        if (firsttable)
+          SelectAllMDriven(firsttable, null);
+      }
+    }
 
   }
   else if (event.key === 'Escape') {
