@@ -489,7 +489,7 @@
 
   .tk-data-table__cell {
     border-right: 1px solid rgba(218,220,224, 0.7);
-    overflow-x: hidden;
+    /*overflow-x: hidden;  makes combo tooltip clipped*/
     text-overflow: ellipsis;
     border-collapse: collapse;
     border-spacing: 0;
