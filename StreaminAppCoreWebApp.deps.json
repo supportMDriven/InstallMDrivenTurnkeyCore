@@ -3600,7 +3600,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "compile": {
-          "MDriven.Persistence.netStandard.dll": {}
+          "MDriven.Persistence.NetStandard.dll": {}
         }
       },
       "MDriven.SharedInterfaces.WebAssembly/1.0.0": {
@@ -7403,7 +7403,7 @@
         "runtime": {
           "Eco.ModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7419,7 +7419,7 @@
         "runtime": {
           "Eco.Modlr.ExtendedModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7437,7 +7437,7 @@
         "runtime": {
           "Eco.Modlr.ModelEditor.NoUI.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7472,7 +7472,7 @@
         "runtime": {
           "MDriven.ASPNETIdentity.core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7503,7 +7503,7 @@
         "runtime": {
           "MDriven.Handles.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7516,7 +7516,7 @@
         "runtime": {
           "MDriven.Interfaces.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7534,7 +7534,7 @@
         "runtime": {
           "MDriven.LinqExtender.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7556,7 +7556,7 @@
         "runtime": {
           "MDriven.MVC.Core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7573,7 +7573,7 @@
         "runtime": {
           "MDriven.Net.Http.netStandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7583,8 +7583,9 @@
           "MDriven.Interfaces.netStandard": "1.0.0"
         },
         "runtime": {
-          "MDriven.Persistence.netStandard.dll": {
-            "fileVersion": "0.0.0.0"
+          "MDriven.Persistence.NetStandard.dll": {
+            "assemblyVersion": "7.2.0.0",
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7592,7 +7593,7 @@
         "runtime": {
           "MDriven.SharedInterfaces.WebAssembly.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7605,7 +7606,7 @@
         "runtime": {
           "MDriven.Turnkey.ClientCSharp.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7621,7 +7622,7 @@
         "runtime": {
           "MDrivenTurnkeyBlazorApp.Client.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
@@ -7636,7 +7637,7 @@
         "runtime": {
           "Modlr.Plugins.core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17055"
+            "fileVersion": "7.2.0.17057"
           }
         }
       },
