@@ -202,7 +202,7 @@
 .order-enabled:not(.numeric) {
 
   span::after {
-    content: ' ';
+    content: '\f1e0';
     margin-left: 5px;
     display: inline-block;
     font-family: $base-icon-font;
@@ -225,7 +225,7 @@
 .order-enabled.numeric {
 
   span::before {
-    content: ' ';
+    content: '\f1e0';
     margin-right: 5px;
     display: inline-block;
     font-family: $base-icon-font;
@@ -253,16 +253,16 @@
   }
 }
 
-.order-enabled.ascending span::after{
-    content: ' ';
-    opacity: 1;
-    transform:translateY(0);
+.order-enabled.ascending span::after {
+  content: '\f1e0';
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.order-enabled.descending span::after{
-    content: ' ';
-    opacity:1;
-    transform: translateY(0);
+.order-enabled.descending span::after {
+  content: '\f1e3';
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .tk-data-table__content.multiselect .tk-data-table__row.vmCurrentRow {
@@ -489,7 +489,7 @@
 
   .tk-data-table__cell {
     border-right: 1px solid rgba(218,220,224, 0.7);
-    /*overflow-x: hidden;  makes combo tooltip clipped*/
+    /*overflow-x: hidden;  makes combo tooltip clipped*/ 
     text-overflow: ellipsis;
     border-collapse: collapse;
     border-spacing: 0;
