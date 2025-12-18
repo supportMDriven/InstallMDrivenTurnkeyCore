@@ -8,6 +8,8 @@ html, body {
   font-size: var(--base-font-size, #{$base-font-size}) !important;
 
   @include color-declaration(background, $base-bg-color, --base-bg-color);
+  @include color-declaration(color, $base-fg-color, --base-fg-color);
+  
   -webkit-overflow-scrolling: touch;
 }
 
