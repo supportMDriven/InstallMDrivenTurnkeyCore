@@ -1,0 +1,162 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-switch {
+  @include component-spacing(true);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.tk-switch__label {
+  margin-left: 10px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: var(--label-font-size, 1rem);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tk-switch__native {
+  margin: 0;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: auto;
+
+  clip: rect(0,0,0,0);
+
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.tk-switch__inner {
+  margin-top: 12px;
+  display: inline-flex;
+  position: relative;
+  outline: 0;
+  user-select: none;
+  cursor: pointer;
+}
+
+.tk-switch__content {
+  cursor: pointer;
+}
+
+.tk-switch__track {
+  width: 32px;
+  height: 14px;
+  border: 1px solid;
+  border-radius: 7px;
+  opacity: 0.38;
+  transition: opacity 90ms cubic-bezier(.4,0,.2,1),
+  background-color 90ms cubic-bezier(.4,0,.2,1),
+  border-color 90ms cubic-bezier(.4,0,.2,1);
+  box-sizing: border-box;
+}
+
+.tk-switch__interactive {
+  position: absolute;
+  top: -17px;
+  left: -18px;
+  right: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+
+  transform: translateX(0);
+
+  transition: transform 90ms cubic-bezier(.4,0,.2,1),
+  background-color 90ms cubic-bezier(.4,0,.2,1),
+  border-color 90ms cubic-bezier(.4,0,.2,1);
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: opacity 15ms linear,background-color 15ms linear;
+  }
+
+  &:hover::before {
+    opacity: 0.04;
+  }
+
+  &:focus::before {
+    opacity: 0.12;
+  }
+}
+
+.tk-switch__interactive span {
+  width: 20px;
+  height: 20px;
+  border: 10px solid;
+  border-radius: 50%;
+
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),
+  0 2px 2px 0 rgba(0,0,0,.14),
+  0 1px 5px 0 rgba(0,0,0,.12);
+
+  box-sizing: border-box;
+}
+
+.tk-switch__native:not(:checked) ~ .tk-switch__content {
+  & .tk-switch__track {
+    background: #000;
+    border-color: #000;
+  }
+
+  & .tk-switch__interactive {
+    &::before,
+    &::after {
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 100%;
+      background-color: #9e9e9e;
+    }
+
+    &:hover::before {
+      opacity: 0.08;
+    }
+  }
+
+  & .tk-switch__interactive span {
+    background-color: #fff;
+    border-color: #fff;
+  }
+
+}
+
+.tk-switch__native:checked ~ .tk-switch__content .tk-switch__interactive {
+  transform: translateX(20px);
+}
+
+.tk-switch__native:disabled ~ .tk-switch__content{
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.tk-switch__native:focus:not(:active) ~ .tk-switch__content .tk-switch__interactive::before {
+  opacity: 0.12;
+}
+
+.tk-switch__validation-state {
+  margin-top: 5px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.75rem;
+}

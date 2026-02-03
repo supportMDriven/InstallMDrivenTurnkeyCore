@@ -1,0 +1,162 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-file-upload {
+  padding-top: 1.5625rem;
+  padding-right: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  padding-left: 0.3125rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.tk-file-upload--in-grid {
+  padding-top: unset;
+}
+
+  .tk-file-upload__inner {
+  }
+
+  .tk-file-upload.has-error {
+  }
+
+
+  .tk-file-upload__native {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    border: 0;
+    margin: -1px;
+    padding: 0;
+    clip: rect(0 0 0 0);
+  }
+
+.tk-file-upload__interactive {
+  padding: 0 8px;
+  position: relative;
+  display: inline-flex;
+  flex-grow: 0;
+  min-width: $button-min-width;
+  height: $button-height;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 2.3rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  vertical-align: middle;
+  text-decoration: none;
+  text-transform: uppercase;
+  outline: none;
+  border: none;
+  border-radius: $base-border-radius;
+  border-radius: var(--base-border-radius, #{$base-border-radius});
+  transition: background 0.2s $animation-curve-default, color 0.2s $animation-curve-default, -webkit-box-shadow 0.2s $animation-curve-fast-out-linear-in;
+  transition: box-shadow 0.2s $animation-curve-fast-out-linear-in, background 0.2s $animation-curve-default, color 0.2s $animation-curve-default, -webkit-box-shadow 0.2s $animation-curve-fast-out-linear-in;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-appearance: none;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  cursor: pointer;
+  z-index: 1;
+  @include elevation-2dp();
+
+  &:hover {
+    // background: #dddddd;
+    @include elevation-4dp();
+  }
+  //&:active {
+  //  // background: #d8d8d8;
+  //  @include elevation-8dp();
+  //}
+
+  &:disabled,
+  &[disabled] {
+    background: #d1d1d1;
+    color: #9b9b9b;
+    cursor: not-allowed;
+    @include elevation-0dp();
+  }
+
+  .ripple-container {
+    background-color: rgba( 0, 0, 0, 0.10);
+  }
+
+  @media only screen and (min-width: 768px) {
+    font-size: 1rem;
+    /*max-width: 300px;*/
+  }
+
+  &::after {
+    content: '\e2c3';
+    margin-left: 5px;
+    font-family: $base-icon-font;
+    font-size: 1.2rem;
+  }
+
+  &.uploaded {
+    .tk-file-upload__progress {
+      opacity: 0;
+    }
+
+    &::after {
+      content: '\e86c';
+    }
+  }
+}
+
+  .tk-file-upload__name {
+    margin-top: 5px;
+    display: block;
+    align-content: center;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: #000;
+    text-overflow: ellipsis;
+  }
+
+  .tk-file-upload__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    border-radius: $base-border-radius;
+    border-radius: var(--base-border-radius, #{$base-border-radius});
+    opacity: 0.2;
+    transition: opacity 200ms linear;
+  }
+
+  .tk-file-upload__native:disabled ~ .tk-file-upload__interactive {
+    background: #cccccc;
+    opacity: 0.38;
+    box-shadow: none;
+    cursor: not-allowed;
+
+    &:hover {
+      box-shadow: none;
+    }
+
+    & .ripple-container {
+      display: none;
+    }
+  }
+
+  .tk-file-upload__native:focus:not(:active) ~ .tk-file-upload__interactive {
+    @include elevation-8dp();
+  }
+
+.tk-file-upload__validation-state {
+  margin-top: 5px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.75rem;
+}
+

@@ -1,0 +1,81 @@
+﻿/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-file-download {
+  @include component-spacing(true);
+}
+
+.tk-file-download__content {
+  padding-left: 12px;
+  padding-right: 16px;
+
+  position: relative;
+
+  height: 36px;
+  border-radius: 4px;
+  /*background-color: rgba(33,33,33, 0.1);*/
+  /*box-shadow: inset 0 0 0 1px rgba(100,121,143,0.302);*/
+
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  
+  transition: background-color $anim-duration-dialog-fadein $easing-standard;
+
+  &::before {
+    content: '\e2c0';
+    margin-right: 8px;
+
+    position: relative;
+
+    display: block;
+
+    font-family: $base-icon-font;
+    font-size: $base-icon-font-size;
+
+    font-size: 18px;
+
+    color: #000;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(33,33,33, 0.1);
+  }
+
+
+  &[readonly] {
+    background-color: rgba(33,33,33, 0.05);
+    box-shadow: none;
+    cursor: default;
+    pointer-events: none;
+
+    &::before {
+      opacity: 0.5;
+    }
+
+    .tk-file-download__native {
+      opacity: 0.5;
+    }
+  }
+
+
+  .ripple-container {
+    background-color: rgba(0,0,0, 0.15);
+  }
+}
+
+.tk-file-download__native {
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  color: #1d1d1d;
+  width: 100%;
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

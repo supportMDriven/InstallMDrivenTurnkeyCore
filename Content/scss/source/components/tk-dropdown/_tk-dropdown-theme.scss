@@ -1,0 +1,30 @@
+.dropdown__menu {
+  @include color-declaration(background-color, $navbar-bg-color, --navbar-bg-color);
+
+  @media only screen and (min-width: 768px) {
+    background-color: #fff;
+  }
+}
+
+
+.dropdown__link {
+  @include color-declaration(color, $navbar-link-color, --navbar-link-color);
+
+  & .ripple-container {
+    @include color-declaration(background-color, $navbar-link-color, --navbar-link-color, true, 0.1);
+  }
+
+  @media only screen and (min-width: 768px) {
+    color: #000;
+
+    &:hover,
+    &:focus {
+      background-color: rgba(0,0,0, 0.05);
+    }
+
+    &:active {
+      background-color: rgba(0,0,0, 0.08);
+    }
+  }
+}
+

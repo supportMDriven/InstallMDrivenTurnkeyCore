@@ -1,0 +1,34 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.tk-list .tk-button__native {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-content: flex-start;
+}
+
+.close {
+  font-size: 1.5rem;
+}
+
+.vmSideMenuHeader {
+  /*padding: 5px 0;*/
+  padding: 5px 16px;
+  border-bottom: 1px solid rgba($color-info, 0.2);
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $color-info;
+}

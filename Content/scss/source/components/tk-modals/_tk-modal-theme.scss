@@ -1,0 +1,13 @@
+.tk-modal__actions .tk-button__native.outlined.success {
+  &:hover {
+    @include color-declaration(color, $text-on-success, --text-on-success);
+    @include color-declaration(background-color, $success-color, --success-color);
+  }
+}
+
+.tk-modal__actions .tk-button__native.outlined.danger {
+  &:hover {
+    @include color-declaration(color, $text-on-danger, --text-on-danger);
+    @include color-declaration(background-color, $danger-color, --danger-color);
+  }
+}

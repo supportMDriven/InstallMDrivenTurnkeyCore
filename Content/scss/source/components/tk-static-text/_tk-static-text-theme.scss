@@ -1,0 +1,30 @@
+.tk-static-text__label {
+
+  &.danger {
+    @include color-declaration(color, $danger-color, --danger-color);
+  }
+
+  &.warning {
+    @include color-declaration(color, $warning-color, --warning-color);
+  }
+
+  &.success {
+    @include color-declaration(color, $success-color, --success-color);
+  }
+
+}
+
+.tk-static-text__native {
+
+  &.danger {
+    @include color-declaration(color, $danger-color, --danger-color);
+  }
+
+  &.warning {
+    @include color-declaration(color, $warning-color, --warning-color);
+  }
+
+  &.success {
+    @include color-declaration(color, $success-color, --success-color);
+  }
+}

@@ -1,0 +1,9 @@
+<label ng-if="$ctrl.label" for="{{$ctrl.id}}" class="n-tk-image-upload__label">{{$ctrl.label}}</label>
+<div class="n-tk-image-upload__wrapper">
+  <input type="file" id="{{$ctrl.id}}" class="n-tk-image-upload__native" />
+  <!-- <img ng-src="{{$ctrl.imageSrc}}" class="n-tk-image-upload__image" onerror="this.src='./Content/icons/fallback-image.svg'" alt="{{$ctrl.label}}"> -->
+  <tk-image image-src="$ctrl.imageSrc"></tk-image>
+  <label for="{{$ctrl.id}}" class="n-tk-image-upload__overlay">
+    <i class="material-icons">cloud_upload</i>
+  </label>
+</div>

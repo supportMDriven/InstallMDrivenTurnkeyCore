@@ -1,0 +1,108 @@
+.tk-data-table__content {
+  border-color: rgb(var(--table-border-clr));
+}
+
+.tk-data-table__header-cell {
+  @include color-declaration(color, $data-table-header-text-color, --data-table-header-text-color, true, 0.9);
+  @include color-declaration(background-color, $data-table-header-bg-color, --data-table-header-bg-color);
+}
+
+.tk-data-table__header-row {
+  height: $data-table-header-height;
+  height: var(--data-table-header-height, #{$data-table-header-height});
+
+
+  @media only screen and (max-width: 767px) {
+    height: calc(#{$data-table-header-height}  *0.8);
+    height: calc(var(--data-table-header-height, #{$data-table-header-height}) * 0.8);
+  }
+}
+
+.tk-data-table__row {
+  height: $data-table-row-height;
+  height: var(--data-table-row-height, #{$data-table-row-height});
+
+  @media only screen and (max-width: 767px) {
+    height: calc(#{$data-table-row-height}  *0.8);
+    height: calc(var(--data-table-row-height, #{$data-table-row-height}) * 0.8);
+  }
+}
+
+.tk-data-table__seekmore {
+    height: $data-table-row-height;
+    height: var(--data-table-row-height, #{$data-table-row-height});
+}
+
+.tk-button__seekmore {
+  font-size: 1rem;
+}
+
+// Styles for the current row.
+
+tr:has(.tk-quickgrid-cell .current),
+.tk-data-table__row.vmCurrentRow {
+  box-shadow: inset 0px 0px 0px 1px unquote('rgb(#{$primary-color})');
+  box-shadow: inset 0px 0px 0px 1px unquote('rgb(var(--primary-color, #{$primary-color}))');
+  /*
+    this is the CurrentLine indicator, changed this from first-child to firstvisiblecolumn to handle dynamic visible columns hiding first col in angularjs  */
+  & td.firstvisiblecolumn::before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+
+    @include color-declaration(background-color, $primary-color, --primary-color);
+  }
+}
+
+.tk-data-table__content tbody {
+  /*@include color-declaration(background-color, $data-table-body-bg-color, --data-table-body-bg-color);*/
+  @include color-declaration(color, $data-table-body-text-color, --data-table-body-text-color);
+}
+
+
+.tk-data-table__native.striped .tk-data-table__row:nth-of-type(odd).vmSelectedRow {
+  @include color-declaration(background-color, $primary-color, --primary-color, true, 0.1);
+}
+// Styles for the selected row
+
+.tk-data-table__row.vmSelectedRow {
+  @include color-declaration(background-color, $primary-color, --primary-color, true, 0.1);
+
+  &:hover,
+  &:focus {
+    @include color-declaration(background-color, $primary-color, --primary-color, true, 0.2);
+  }
+}
+
+.tk-data-table__cell.cellselect {
+  background-color: rgba(var(--primary-color, 245, 156, 26), 0.1);
+  user-select: none;
+  outline: none;
+  animation: none !important;
+  transition: none !important;
+}
+
+.cellselect_top {
+  border-top: 2px solid gray;
+}
+
+.cellselect_left {
+  border-left: 2px solid gray;
+}
+
+.cellselect_right {
+  border-right: 2px solid gray !important;
+}
+
+.cellselect_bottom {
+  border-bottom: 2px solid gray;
+}
+
+
+.tk-data-table__highlite {
+    background-image: linear-gradient(to top, #E6E9F0 0%, #EEF1F5 100%);
+}

@@ -1,0 +1,16 @@
+<aside class="n-tk-sidebar__container">
+  <div class="n-tk-sidebar__state-actions">
+    <tk-button type="button"
+      ng-repeat="action in $ctrl.stateActions"
+      ng-class="action.Class"
+      ng-disabled="!action.Enable"
+      on-click="action.Execute($event)"
+      variant="contained"
+      icon-start="{{action.Icon}}">
+        {{action.Presentation}}
+    </tk-button>
+  </div>
+  <div class="n-tk-sidebar__list">
+    <tk-sidebar-group ng-repeat="actionGroup in $ctrl.actionsGroup | orderBy: 'ActionGroupSortKey'" group="actionGroup" class="n-tk-sidebar-group"></tk-sidebar-group>
+  </div>
+</aside>

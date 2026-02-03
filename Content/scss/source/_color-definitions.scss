@@ -1,0 +1,25 @@
+
+@import "functions";
+
+//Color definitions
+$color-info: #0b5461 !default;
+$color-info-light: lighten($color-info, 5%);
+$color-info-dark: darken($color-info, 5%);
+
+$action-cancel-color: #d32e2e !default;
+$action-cancel-color-dark: darken($action-cancel-color, 5%);
+
+$action-save-color: #f0ad4e !default;
+$action-save-color-dark: darken($action-save-color, 5%);
+
+$action-update-color: #f0ad4e !default;
+$action-update-color-dark: darken($action-update-color, 5%);
+
+$action-redo-color: #ffffff !default;
+$action-redo-color-dark: darken($action-redo-color, 5%);
+$action-undo-color: #ffffff !default;
+$action-undo-color-dark: darken($action-undo-color, 5%);
+
+
+
+

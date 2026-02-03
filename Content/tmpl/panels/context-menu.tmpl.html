@@ -1,0 +1,12 @@
+﻿<div class="tk-context-menu__content">
+  <span ng-repeat-start="subMenuGroup in $ctrl.actionGroup.SubMenuGroups | orderBy: 'SubMenuGroupSortKey'" class="tk-context-menu__group">{{subMenuGroup.SubMenuGroupName}}</span>
+  <button type="button"
+          class="tk-context-menu__button ripple-effect"
+          ng-repeat="action in subMenuGroup.ActionList.Actions | orderBy: 'ActionSortKey'"
+          ng-class="action.ActionDisableAndDesignedClass();"
+          ng-click="$ctrl.execute(action,$event)"
+          ng-disabled="!action.Enable">
+    {{action.Presentation}}
+  </button>
+  <span ng-repeat-end=""></span>
+</div>

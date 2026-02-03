@@ -1,0 +1,78 @@
+﻿@using MDriven.ASPNETIdentity;
+@using Microsoft.AspNetCore.Identity
+@using MDriven.ASPNETIdentity.core
+@model ExternalLoginListViewModel
+@inject SignInManager<SysUserAdaptor> SignInManager
+@inject UserManager<SysUserAdaptor> UserManager
+
+@{
+  ViewBag.tunrkeyView = "manage-page";
+}
+
+<div class="manage">
+  <div class="manage__header">
+    <div class="manage__wrapper">
+      <div class="account">
+        <div class="account__info">
+          <span class="account__helper">Logged in as</span>
+          <span class="account__username">
+            @User.Identity.GetUserName()
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="manage__content">
+    <div class="manage__wrapper">
+      <div class="account-linked">
+        @if (SignInManager.UserManager.FindByIdAsync(ViewBag.User.Id).Result!=null)
+        {
+          <p class="manage__text-header"><i class="mi mi-link"></i>Linked social accounts</p>
+
+          <div class="account-linked__list">
+            @foreach (var account in SignInManager.UserManager.GetLoginsAsync(ViewBag.User).Result)
+            {
+              <div class="account-linked__item account-linked__item--@account.LoginProvider.ToLower()">
+                <div class="account-linked__logo"></div>
+                <span>@account.LoginProvider.ToString() account</span>
+                @if (ViewBag.ShowRemoveButton)
+                {
+                  using (Html.BeginForm("Disassociate", "Account"))
+                  {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("loginProvider", account.LoginProvider,"")
+                    @Html.Hidden("providerKey", account.ProviderKey,"")
+                    <button type="submit" class="account-linked__remove" title="Remove this @account.LoginProvider login from your account">&times;</button>
+                  }
+                }
+                else
+                {
+                  @: &nbsp;
+                }
+              </div>
+            }
+          </div>
+        }
+
+
+
+        <div class="account-add">
+          @await Html.PartialAsync("_ExternalLoginsListManage", new ExternalLoginListViewModel { Action = "LinkLogin", ReturnUrl = "" })
+        </div>
+      </div>
+      @if (ViewBag.HasLocalPassword)
+      {
+        @await Html.PartialAsync("_ChangePasswordPartial")
+      }
+      else
+      {
+        @await Html.PartialAsync("_SetPasswordPartial")
+      }
+    </div>
+  </div>
+
+</div>
+
+
+
+

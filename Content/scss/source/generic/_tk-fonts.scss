@@ -1,0 +1,65 @@
+/* roboto-300 - latin_latin-ext */
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto Light'), local('Roboto-Light'), url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-300.eot?#iefix") format('embedded-opentype'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-300.woff") format('woff'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-300.ttf") format('truetype'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-300.svg#Roboto") format('svg');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-regular.eot?#iefix") format('embedded-opentype'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-regular.woff2") format('woff2'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-regular.woff") format('woff'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-regular.ttf") format('truetype'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-regular.svg#Roboto") format('svg');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Roboto Medium'), local('Roboto-Medium'), url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-500.eot?#iefix") format('embedded-opentype'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-500.woff2") format('woff2'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-500.woff") format('woff'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-500.ttf") format('truetype'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-500.svg#Roboto") format('svg');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Bold'), local('Roboto-Bold'), url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-700.eot?#iefix") format('embedded-opentype'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-700.woff2") format('woff2'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-700.woff") format('woff'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-700.ttf") format('truetype'),
+  url("../../../fonts/Roboto/roboto-v18-latin_latin-ext-700.svg#Roboto") format('svg');
+}
+
+
+@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Material Icons"),
+    local("MaterialIcons-Regular"),
+    url(../../../fonts/material-icons/MaterialIcons-Regular.woff2) format('woff2'),
+    url(../../../fonts/material-icons/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: "Material Icons Outlined";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Material Icons Outlined"),
+    local("MaterialIconsOutlined-Regular"),
+    url(../../../fonts/material-icons/MaterialIconsOutlined-Regular.woff2) format('woff2'),
+    url(../../../fonts/material-icons/MaterialIconsOutlined-Regular.otf) format('opentype');
+}

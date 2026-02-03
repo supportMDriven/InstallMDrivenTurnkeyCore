@@ -1,0 +1,43 @@
+﻿div:has(> div[data-tooltip]):hover {
+  /* Styles for parent div that contains a child div with data-tooltip */
+  z-index: 999999; /* on the wrapper  to lift up the tooltip*/
+}
+
+
+.tip {
+  position: relative;
+  display: inline-block;
+  z-index: 999999; /* on the wrapper */
+}
+
+.tip[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 2.8em; /* place below element */
+  left: 1em;
+  background: black; /* light yellow, like native tooltip */
+  color: white;
+  padding: 2px 6px;
+  border: 1px solid #666;
+  border-radius: 2px;
+  font: 12px sans-serif;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  transition-delay: 0s; /* <-- Add delay here */
+  z-index: 9999;
+}
+
+.tip:hover::after
+{
+  opacity: 1;
+  transition-delay: 1.5s; /* <-- Add delay here */
+}
+
+/* Disabled controls: let wrapper capture hover */
+.tip > :disabled {
+  pointer-events: none;
+}
+
+

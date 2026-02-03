@@ -1,0 +1,36 @@
+/// <reference path="../../_variables.scss" />
+
+// Checked state theming for the checkbox
+.tk-checkbox__native:checked ~ .tk-checkbox__interactive,
+.tk-checkbox__native:indeterminate ~ .tk-checkbox__interactive {
+  @include color-declaration(background-color, $primary-color, --primary-color);
+  @include color-declaration(border-color, $primary-color, --primary-color);
+
+  &::before {
+    @include color-declaration(background-color, $primary-color, --primary-color);
+  }
+}
+
+.tk-checkbox__mixedmark {
+    border-color: #fff;
+}
+
+
+
+// Ripple color for the checkbox
+.tk-checkbox__content .ripple-container {
+  @include color-declaration(background-color, $primary-color, --primary-color, true, 0.30);
+}
+
+.tk-checkbox.has-error {
+
+  .tk-checkbox__label {
+    color: unquote('rgb(#{$danger-color})');
+  }
+}
+
+.tk-checkbox__validation-state {
+  color: unquote('rgb(#{$danger-color})');
+}
+
+

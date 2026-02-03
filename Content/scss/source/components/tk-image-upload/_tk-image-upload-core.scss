@@ -1,0 +1,132 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />.
+
+.tk-image-upload {
+  @include component-spacing();
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.tk-image-upload__native {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+
+  clip: rect(0,0,0,0);
+
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.tk-image-upload__native[readonly="readOnly"] {
+  & ~ .tk-image-upload__interactive {
+    display: none;
+  }
+}
+
+.tk-image-upload__inner {
+  position: relative;
+
+  &:hover,
+  &:focus {
+
+    .tk-image-upload__interactive {
+      background: rgba(0,0,0, 0.4);
+      opacity: 1;
+
+    }
+  }
+}
+
+.vmRenderedByAction .tk-image-upload__native {
+   display: none;
+}
+
+.vmRenderedByAction {
+    .tk-image-upload__native {
+        display: none;
+    }
+
+    .tk-image-upload__interactive {
+
+        &:hover,
+        &:focus {
+            background: none;
+        }
+
+        &:before {
+            display: none;
+        }
+    }
+}
+
+.tk-image-upload__interactive {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  border-radius: 4px;
+  opacity: 0;
+
+  transition: opacity 200ms $easing-standard;
+
+  cursor: pointer;
+
+  &::before {
+    content: '\e2c3';
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    font-family: "Material Icons";
+    font-size: 2.5rem;
+    color: #fff;
+
+    transform: translate(-50%,-50%);
+  }
+}
+
+.tk-image-upload__content {
+  width: 100%;
+  max-width: 200px;
+
+
+  &.large {
+    max-width: 400px;
+  }
+
+  &.extra-large {
+    max-width: 600px;
+  }
+
+  &.full-size {
+    max-width: unset !important;
+  }
+}
+
+.tk-image-upload__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 5px;
+}
+
+
+.tk-image-upload__interactive.uploaded  .tk-image-upload__progress {
+  display: none;
+}
+
+.tk-image-upload__validation-state {
+  margin-top: 5px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.75rem;
+}

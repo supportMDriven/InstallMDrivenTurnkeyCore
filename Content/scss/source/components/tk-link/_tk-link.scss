@@ -1,0 +1,107 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  @include component-spacing();
+}
+
+a.tk-link__native:not(.tk-button__native) {
+  padding: 0 8px;
+  position: relative;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: $button-height;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 1rem;
+  font-weight: 500;
+  color: $color-info;
+  text-align: center;
+  white-space: normal;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  -webkit-transition: background-color 200ms $animation-curve-default;
+  transition: background-color 200ms $animation-curve-default;
+  border-radius: 4px;
+
+  &:hover, &:focus {
+    /*background-color: rgba($color-info-light, 0.15);*/
+    text-decoration: underline;
+  }
+
+  &.warning, &.danger {
+    padding: 0 30px 0 8px;
+
+    &::after {
+      content: '\F026';
+      position: absolute;
+      top: 50%;
+      right: 5px;
+      transform: translateY(-50%);
+      font-family: $base-icon-font;
+      font-size: 1.2rem;
+    }
+  }
+
+  &:disabled,
+  &[disabled] {
+    cursor: not-allowed;
+    pointer-events: none;
+    text-decoration: none;
+  }
+}
+
+.tk-link__native:not(.tk-button__native).vmRenderedByAction  {
+  padding-left: 0;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+ span {
+   font-family: inherit;
+   font-size: inherit;
+   font-weight: inherit;
+
+   color: #212121;
+
+   border-bottom: 1px dashed transparent;
+   transition: all 100ms ease-out;
+   cursor: pointer;
+
+
+   &:hover {
+     border-bottom-color: #212121;
+   }
+ }
+}
+
+.tk-link__native.icon-after {
+
+   .tk-link__text {
+      order: 1;
+   }
+
+   .mi {
+     margin-left: 8px;
+     order: 2;
+   }
+}
+
+.tk-link__native {
+   .tk-link__text {
+      order: 2;
+   }
+
+   .mi {
+     margin-right: 8px;
+     order: 1;
+   }
+}
+

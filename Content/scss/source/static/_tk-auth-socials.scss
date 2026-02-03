@@ -1,0 +1,189 @@
+/// <reference path="../_color-definitions.scss" />
+/// <reference path="../_variables.scss" />
+/// <reference path="../_mixins.scss" />
+.navbar__list .tk-auth__divider {
+  display: none;
+}
+.tk-auth-social {
+  border-radius: 4px;
+
+  @media only screen and (min-width: 768px) {
+    order: 3;
+  }
+}
+
+.tk-auth-social__info {
+  padding: 10px 10px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 12px;
+  font-weight: 300;
+  color: #3d3d3d;
+  background-color: #fff;
+  border-radius: 4px;
+  white-space: normal;
+}
+
+.tk-auth-social__form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.tk-auth-social__item {
+  padding: 5px 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: center;
+  font-family: var(--base-font-family, $base-font-family);
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: center;
+  transition: box-shadow 300ms ease-out;
+  border: none;
+  border-radius: 4px;
+  outline: 0;
+
+  @include elevation-2dp();
+
+  &:hover,
+  &:focus {
+    @include elevation-4dp();
+  }
+
+  &::before {
+    margin-right: 10px;
+    content: '';
+    align-content: flex-start;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  &.facebook {
+    background-color: #3a559f;
+    color: #fff;
+
+    &::before {
+      background-image: url("../../icons/external-login-f.png");
+
+      @include retina() {
+        background-image: url("../../icons/external-login-f@2x.png");
+      }
+    }
+  }
+
+  &.google {
+    background-color: #ffffff;
+
+    &::before {
+      background-image: url("../../icons/external-login-g.png");
+
+      @include retina() {
+        background-image: url("../../icons/external-login-g@2x.png");
+      }
+    }
+  }
+
+  &.microsoft {
+    background-color: #ffffff;
+
+    &::before {
+      background-image: url("../../icons/external-login-m.png");
+
+      @include retina() {
+        background-image: url("../../icons/external-login-m@2x.png");
+      }
+    }
+  }
+
+  &.openidconnect {
+    background-color: #ffffff;
+
+    &::before {
+      background-image: url("../../icons/external-login-oid.png");
+
+      @include retina() {
+        background-image: url("../../icons/external-login-oid@2x.png");
+      }
+    }
+  }
+}
+
+.tk-auth-social .tk-auth-social__form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.tk-auth-social .tk-auth-social__form .tk-auth-social__item {
+  margin: 5px 0;
+  font-size: 16px;
+  height: 45px;
+
+  &::before {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.navbar .tk-auth-social__form {
+  padding: 10px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+
+  @media only screen and (min-width: 768px) {
+    padding: 0 5px;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    width: auto;
+  }
+}
+
+.navbar .tk-auth-social__form .tk-auth-social__item {
+  height: 30px;
+
+  &::before {
+    width: 15px;
+    height: 15px;
+  }
+
+
+  & + .tk-auth-social__item {
+    margin-top: 10px;
+  }
+
+  @media only screen and (min-width: 768px) {
+    & + .tk-auth-social__item {
+      margin-top: 0;
+      margin-left: 10px;
+    }
+  }
+}
+
+.tk-auth-socials p {
+  padding: 10px;
+  color: #000;
+  font-size: 0.9rem;
+
+  @media only screen and (min-width: 768px) {
+    background: #fff;
+    border-radius: 4px;
+  }
+}

@@ -1,0 +1,137 @@
+﻿@using Eco.MVC
+@using TurnkeyWebAppGeneric.Controllers;
+@using StreamingAppGenericAPIAndControllers;
+@using System.IO;
+
+@* The Model of this page depends on the body that requsted it, i.e. it can be both *@
+
+<!DOCTYPE html>
+@* This is the layout page defined in _ViewStart.cshtml *@
+@* It's rendered because the "actual page" was requested. This layout page will include this orginally requested page using @RenderBody() *@
+<html @Html.Raw((ViewBag.IsUserControl!=null && ViewBag.IsUserControl)?"uc='true'":"") turnkeyview="@ViewBag.turnkeyView">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  @if (File.Exists(MapPathService.MapPath("~/Views/EXT_OverridePages/__ExtraMetaTags.cshtml")))
+  {
+    @await Html.PartialAsync("~/Views/EXT_OverridePages/__ExtraMetaTags.cshtml")
+  }
+  <base href='@Url.Content("~/")' />
+  <title>@ViewBag.ApplicationName</title>
+  
+  @if (File.Exists(MapPathService.MapPath("~/favicon.ico"))) 
+  {
+    <link rel="shortcut icon" href="~/favicon.ico" />
+  }
+  @if (File.Exists(MapPathService.MapPath("~/Content/core.css"))) // this is the override css for the site produced by transpiling ~/Content/scss/app.scss
+  {
+    <link href="@Url.Content("~/Content/core.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  }
+  @if (File.Exists(MapPathService.MapPath("~/Content/scss/theme-user.css")))// this is the default css for the site that is checked in
+  {
+    <link href="@Url.Content("~/Content/scss/theme-user.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  }
+  else if (File.Exists(MapPathService.MapPath("~/Content/theme-user.css")))
+  {
+    <link href="@Url.Content("~/Content/theme-user.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  }
+  else if (File.Exists(MapPathService.MapPath("~/Content/theme-default.css")))
+  {
+    <link href="@Url.Content("~/Content/theme-default.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  }
+
+  @if (File.Exists(MapPathService.MapPath("~/Views/Shared/_Manifest.cshtml")))
+  {
+    @await Html.PartialAsync("_Manifest");
+  }
+  <link href="@Url.Content("~/Content/angular.app.bundle.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+
+  @if (File.Exists(MapPathService.MapPath("~/Content/tkusercss.css")))
+  {
+    <link href="@Url.Content("~/Content/tkusercss.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  }
+  @ViewOverrideLogic.Get_EXT_ComponentsCSS()
+
+  @if (File.Exists(MapPathService.MapPath("~/EXT_Scripts/AppWideHeadScript.js")))
+  {
+    <script src="@Url.Content("~/EXT_Scripts/AppWideHeadScript.js?v=" + @ViewBag.Version)"></script>
+  }
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+  
+</head>
+<body>
+  <script src="~/Scripts/jquery-3.1.1.js"></script>
+  <script src="~/Scripts/js-cookie/js.cookie.js"></script>
+  <script src="@Url.Content("~/client-app-bundles/runtime.bundle.js?v=" + @ViewBag.Version)"></script>
+  <script src="@Url.Content("~/client-app-bundles/bootstrap.bundle.js?v=" + @ViewBag.Version)"></script>
+  @*<script src="~/Scripts/bootstrap.js"></script>
+  <script src="~/Scripts/respond.js"></script>*@
+  @*
+    @if (ViewBag.LicenseInfo!="")
+    {
+    <div class="ribbon-wrapper-red"><div class="ribbon-red"><a href="https://portal.mdriven.net/" class="makesureclickable">@ViewBag.LicenseInfo</a></div></div>
+    }
+  *@
+  <div id="bodyWrapper">
+    <!-- The entire browser viewport -->
+    <div id="globalNavWrapper">
+      <!-- global actions (usually on top) -->
+      <nav class="navbar" role="navigation">
+        @* Top row (mostly a menu) *@
+        <div class="navbar__header">
+          @* Left top menu button *@
+          <button type="button" id="LeftMenuButton" class="navbar__toggle navbar__toggle--sidebar ripple-effect">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="sr-only">Toggle sidebar</span>
+          </button>
+          @if (File.Exists(MapPathService.MapPath("~/SiteAssets/logo.png")))
+          {
+            <a href="@Url.Action("Index", TurnkeyController.ControllerName)" class="navbar__logo">
+              <img src="~/SiteAssets/logo.png" width="auto" height="35" alt="@ViewBag.ApplicationName" />
+            </a>
+          }
+          else if (File.Exists(MapPathService.MapPath("~/SiteAssets/logo.svg")))
+          {
+            <a href="@Url.Action("Index", TurnkeyController.ControllerName)" class="navbar__logo">
+              <img src="~/SiteAssets/logo.svg" width="auto" height="40" alt="@ViewBag.ApplicationName" />
+            </a>
+          }
+          @if (ViewBag.ApplicationNameAsMenu!=null && (bool)ViewBag.ApplicationNameAsMenu)
+          {
+            @Html.ActionLink((string)(string)(ViewBag.ApplicationName != null ? ViewBag.ApplicationName : "InvestigateEmpty"), "Index", TurnkeyController.ControllerName, new { area = "" }, new { @class = "navbar__brand" })
+          }
+          @* Right top menu button *@
+          <button type="button" class="navbar__toggle navbar__toggle--default ripple-effect" data-toggle="collapse" data-target=".navbar__wrapper">
+            <span class="mi">more_vert</span>
+          </button>
+        </div>
+        <div class="navbar__wrapper collapse">
+          @Html.RenderMDrivenGlobalNavigatingActions()
+          @await Html.PartialAsync("_LoginPartial") @* Inject login/logout section in the top right *@
+        </div>
+      </nav>
+    </div> @* End of globalNavWrapper *@
+    @* Here the body fragment vill be inserted. MVC page or the single MVC page "AngularApp.cshtml", which is only loaded ONCE for all Angular pages. *@
+    <div id="globalContentWrapper">
+      @RenderBody()
+    </div>
+  </div> @* End of viewportWrapper *@
+  <!-- START OF ALL SCRIPT SECTIONS called "Scripts" defined in the combined page (including the body for example) -->
+  @RenderSection("Scripts", required: false)
+  <!-- END OF ALL SCRIPT SECTIONS called "Scripts"  -->
+  <script src="@Url.Content("~/js/mdriven.cellselect.js?v=" + @ViewBag.Version)"></script>
+  <script src="@Url.Content("~/client-app-bundles/static.bundle.js?v=" + @ViewBag.Version)"></script>
+  <script src="~/Scripts/signalr/signalr.js"></script>
+  @if (System.IO.File.Exists(MapPathService.MapPath("~/EXT_Scripts/AppWideBodyScript.js")))
+  {
+    <script src="@Url.Content("~/EXT_Scripts/AppWideBodyScript.js?v=" + @ViewBag.Version)"></script>
+  }
+
+</body>
+</html>
