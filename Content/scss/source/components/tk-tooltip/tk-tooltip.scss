@@ -7,7 +7,7 @@
 .tip {
   position: relative;
   display: inline-block;
-  z-index: 999999; /* on the wrapper */
+  z-index: 19; /* should be less than 20 to be below Table headers, or it will shine through when scrolling, was 999999 but caused shine through*/
 }
 
 .tip[data-tooltip]::after {
