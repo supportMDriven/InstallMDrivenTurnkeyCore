@@ -5,9 +5,23 @@
 
 @Html.AngularUITurnkeyViewOverrideCss()
 
-<div ng-model-options="{'updateOn': 'default blur click', 'debounce': {'default': 500, 'blur': 0, 'click': 50}}">
-  <!-- Wait 2 seconds before sending changes to server (if not user leaves control) -->
-  <!-- Here is the ViewModel Angular body inserted -->
-  @Html.AngularUITurnkeyViewOverride() @* Here the generated Angular html is inserted OR the overridden page from the folder EXT_OverridePages *@
-  <!-- End of inserted ViewModel Angular body -->
+
+<div class="tk-modal__header">
+  <button type="button" class="tk-button__native flat fab ripple-effect" ng-click="controller.closePopup()">
+    <i class="mi">close</i>
+  </button>
 </div>
+<!--Body content-->
+<div class="tk-modal__content">
+  <div ng-model-options="{'updateOn': 'default blur click', 'debounce': {'default': 500, 'blur': 0, 'click': 50}}">
+    <!-- Wait 2 seconds before sending changes to server (if not user leaves control) -->
+    <!-- Here is the ViewModel Angular body inserted -->
+    @Html.AngularUITurnkeyViewOverride() @* Here the generated Angular html is inserted OR the overridden page from the folder EXT_OverridePages *@
+    <!-- End of inserted ViewModel Angular body -->
+  </div>
+</div>
+
+
+
+
+
