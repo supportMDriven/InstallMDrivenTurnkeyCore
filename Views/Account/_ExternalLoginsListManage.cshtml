@@ -1,0 +1,31 @@
+﻿@using MDriven.ASPNETIdentity
+@using Microsoft.AspNetCore.Identity
+@using MDriven.ASPNETIdentity.core
+@model ExternalLoginListViewModel
+@inject SignInManager<SysUserAdaptor> SignInManager
+
+@{
+  var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+  if (loginProviders.Count() == 0)
+  {
+        <p class="auth-social__info">
+            There are no external authentication services configured. See <a href="https://wiki.mdriven.net/index.php/Turnkey_session_6:_SocialLogin">this article</a>
+            for details on setting up your Turnkey application to support logging in via external services.
+        </p>
+    }
+    else
+    {
+        using (Html.BeginForm(Model.Action, "Account", new { ReturnUrl = Model.ReturnUrl, RememberMe = Model.RememberMe }, FormMethod.Post, true, new { @class = "account-add__list" }))
+        {
+            @Html.AntiForgeryToken()
+            foreach (var p in loginProviders)
+            {
+        <div class="account-add__item account-add__item--@p.DisplayName.ToLower()">
+                    <div class="account-add__logo"></div>
+          <button class="account-add__btn" name="provider" id="@p.DisplayName" value="@p.DisplayName" title="Log in using your @p.DisplayName account.">&plus;</button>
+                </div>
+            }
+        }
+
+    }
+}

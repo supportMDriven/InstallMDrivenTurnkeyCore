@@ -1,0 +1,59 @@
+﻿@using Eco.MVC
+@using System.IO
+@using StreamingAppGenericAPIAndControllers
+@using System.Net.Http
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using WebApplication
+@using MDriven.Components.WebAssembly
+@using StreaminAppCoreWebApp.Controllers
+@{
+  Layout = "";
+}
+<!DOCTYPE html>
+<html lang=" en">
+<head>
+  <meta charset=" utf-8" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <base href='~/' />
+  <title>@ViewBag.ApplicationName</title>
+
+  <link rel="shortcut icon" href="~/favicon.ico" />
+  <link href="@Url.Content("~/Content/core.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  <link href="@Url.Content("~/Content/scss/theme-user.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  <link href="@Url.Content("~/Content/theme-user.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  <link href="@Url.Content("~/Content/theme-default.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  <link href="@Url.Content("~/Content/angular.app.bundle.css")" rel="stylesheet" type="text/css" />
+
+  <link href="@Url.Content("~/Content/tkusercss.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  <link href="@Url.Content("~/Content/DesignStyles.css?v=" + @ViewBag.Version)" rel="stylesheet" type="text/css" />
+  @ViewOverrideLogic.Get_EXT_ComponentsRazorCSS()
+
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="~/StreaminAppCoreWebApp.styles.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+  
+  <component type="typeof(MDDesignComp)" render-mode="ServerPrerendered" param-View="@ViewBag.View" param-VMXML="@ViewBag.VMXML" param-DesignerGuid="@ViewBag.DesignerGuid">
+  </component>
+
+  @ViewOverrideLogic.Get_EXT_AppWideRazorIncludes()
+  @ViewOverrideLogic.Get_EXT_ComponentsRazorScripts()
+  <script src="_framework/blazor.server.js"></script>
+
+
+
+</body>
+
+</html>

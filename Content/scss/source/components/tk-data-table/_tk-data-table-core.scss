@@ -1,0 +1,584 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+
+// @Denis - to make it more consistent I changed .tk-data-table to .tk-data-table__content (inner enclosing div), old .tk-data-table__content -> .tk-data-table__native (actual html table);
+//.vmTableRow {
+//  cursor: pointer;
+//}
+//
+//.vmTableRow[ng-drag=true] {
+//  cursor: move;
+//}
+//
+///* Don't line-break dates */
+//td div[modeltype="DateTime"] {
+//  white-space: nowrap; }
+//
+//.vmTableRow:not(.vmCurrentRow):hover {
+//  background-color: #eee;
+//}
+//
+//.vmRenderedByAction {
+//  cursor: pointer;
+//}
+//
+//.vmPivotCell {
+//  cursor: pointer;
+//}
+//
+//.vmPivotCell:hover {
+//  background-color: #dff0d8 !important;
+//}
+
+.tk-data-table {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-family: var(--base-font-family, $base-font-family);
+  flex-grow: 1;
+  width: 100%;
+  min-height: 90px;
+  height: 100%;
+  overflow: hidden; // its INNER table content that srolls never outer! HK 2024
+
+  &.full-height {
+    height: 100%;
+    //This will not work when we have toolbar height: calc(100vh - (#{$navbar-height} - 30px)); //Set full height + paddings for correct presentation of the data-tables
+    //height: calc(100vh - var(--navbar-height, #{$navbar-height}) - 30px);
+    min-height: unset !important;
+    max-height: unset !important;
+
+    .tk-data-table__content {
+      height: 100%;
+    }
+
+    .tk-data-table__native {
+      height: auto;
+    }
+  }
+
+  @include show-animation();
+}
+
+.tk-data-table.ctGridMidAirY {
+    .tk-data-table__content {
+        height: 100%;
+    }
+}
+
+// Unset height calculation for data-tables inside the modal windows.
+
+.tk-data-table__label {
+  display: inline-flex;
+  align-items: center;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: rgb(var(--textfield-label-clr));
+
+
+  @media only screen and (max-width: 767px) {
+    font-size: var(--label-font-size, 1rem);
+  }
+}
+
+.tk-data-table__label--with-leading-icon {
+  .tk-data-table__label-icon {
+    order: 1;
+    margin-right: 4px;
+    font-size: var(--label-font-size, 1.25rem);
+  }
+
+  .tk-data-table__label-text {
+    order: 2;
+  }
+}
+
+.tk-data-table__label--with-trailing-icon {
+  .tk-data-table__label-icon {
+    order: 2;
+    margin-left: 4px;
+    font-size: 1.25rem;
+  }
+
+  .tk-data-table__label-text {
+    order: 1;
+  }
+}
+
+.tk-data-table__seekmore {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+
+
+.tk-data-table.ctGridYBottom .tk-data-table__content {
+    height: 100%;
+    flex-grow:2;
+}
+
+
+.tk-data-table__content {
+  margin-top: 10px;
+  position: relative;
+  width: 100%;
+  /*height: 100%;*/
+  overflow: auto;
+  border-radius: $base-border-radius;
+  border-radius: var(--table-border-radius, #{$base-border-radius});
+  border: var(--table-border-width, 1px) solid;
+  border-color: rgb(var(--table-border-clr));
+  background: rgb(var(--table-bg-clr, #fff));
+}
+
+.tk-data-table__native {
+  position: relative;
+  display: table;
+  width: 100%;
+  /*height: 100%;*/
+  font-family: var(--base-font-family, $base-font-family);
+  white-space: nowrap;
+  border: 0;
+  border-collapse: separate;
+  background-color: rgb(var(--table-bg-clr, #fff));
+
+  thead {
+    display: table-header-group;
+    vertical-align: middle;
+  }
+}
+
+.tk-data-table__header-row {
+  vertical-align: inherit;
+
+  th {
+    top: 0;
+    position: sticky;
+    /* z-index: 100;  this makes grid headers shine through and show on modal forms, but without it scrolled grids data shine through in header */
+    z-index: 20; /* should be less than 50 to be below scroll mask, and below 80 to be below modal*/
+    border-bottom: 1px solid rgba(0,0,0, 0.12);
+  }
+}
+
+.tk-data-table__header-cell {
+  padding: 0 16px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  letter-spacing: .0071428571em;
+  text-align: left;
+  vertical-align: middle;
+  letter-spacing: .0071428571em;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+
+  &.numeric {
+    text-align: right;
+  }
+
+  &:hover {
+    cursor: default;
+  }
+
+  &--context {
+    padding: 0;
+  }
+
+  @media only screen and (max-width: 767px) {
+    padding: 0 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+}
+.order-enabled:not(.numeric) {
+
+  span::after {
+    content: '\f1e0';
+    margin-left: 5px;
+    display: inline-block;
+    font-family: $base-icon-font;
+    font-size: inherit;
+    vertical-align: bottom;
+    opacity: 0;
+    transition: all 100ms linear;
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    span::after {
+      opacity: 1;
+      animation: 280ms linear infinite alternate arrow_pulse;
+    }
+  }
+}
+
+.order-enabled.numeric {
+
+  span::before {
+    content: '\f1e0';
+    margin-right: 5px;
+    display: inline-block;
+    font-family: $base-icon-font;
+    font-size: inherit;
+    vertical-align: bottom;
+    opacity: 0;
+    transition: all 100ms linear;
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    span::before {
+      opacity: 1;
+      animation: 280ms linear infinite alternate arrow_pulse;
+    }
+  }
+}
+
+@keyframes arrow_pulse {
+  from  {
+    transform: translateY(0);
+  } to {
+    transform: translateY(-3px);
+  }
+}
+
+.order-enabled.ascending span::after {
+  content: '\f1e0';
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.order-enabled.descending span::after {
+  content: '\f1e3';
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tk-data-table__content.multiselect .tk-data-table__row.vmCurrentRow {
+    cursor: pointer;
+}
+
+.tk-data-table__row {
+    position: relative;
+    transition: background-color 200ms linear;
+
+   &:hover,
+    &:focus {
+        background-color: rgba(0,0,0,.04);
+        cursor: pointer;
+    }
+
+    &:focus {
+        outline: 0;
+    }
+    //&.danger {
+    //  background-color: rgba($color-danger-light, 0.4);
+    //
+    //  &:hover {
+    //    background-color: rgba($color-danger-light, 0.6);
+    //  }
+    //}
+    //
+    //&.warning {
+    //  background-color: rgba($color-warning-light, 0.4);
+    //
+    //  &:hover {
+    //    background-color: rgba($color-warning-light, 0.6);
+    //  }
+    //}
+    //
+    //&.success {
+    //  background-color: rgba($color-success-light, 0.4);
+    //
+    //  &:hover {
+    //    background-color: rgba($color-success-light, 0.6);
+    //  }
+    //}
+    @media only screen and (max-width: 767px) {
+        height: 42px;
+    }
+}
+
+.tk-data-table__native.striped .tk-data-table__row:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.05);
+
+    &:hover {
+        background-color: rgba(0,0,0, .1);
+    }
+}
+//.tk-data-table__row.vmCurrentRow {
+//  -webkit-box-shadow: inset 0px 0px 0px 1px $primary-color;
+//  box-shadow: inset 0px 0px 0px 1px $primary-color;
+//
+//  & td:first-child::before {
+//    content: '';
+//
+//    display: inline-block;
+//
+//    position: absolute;
+//    top: 0;
+//    left: 0;
+//
+//    width: 5px;
+//    height: 100%;
+//    background-color: $primary-color;
+//
+//  }
+//}
+.tk-data-table__cell {
+  padding: 0 16px;
+  position: relative;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.875rem; 
+  line-height: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.018em;
+  text-align: left;
+  vertical-align: middle;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+
+  &.numeric {
+    //padding-right: 1.6875rem;
+    text-align: right;
+  }
+
+  @media only screen and (max-width: 768px) {
+    padding: 0 10px;
+    font-size: 0.75rem;
+  }
+}
+
+.tk-data-table__cell {
+    border-bottom-color: rgba(0,0,0,.12);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+.tk-data-table__cell .vmRenderedByAction {
+
+    div {
+        display: inline-block;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        border-bottom: 1px dashed #212121;
+        cursor: pointer;
+    }
+}
+
+.tk-data-table__cell img {
+    max-height: 30px;
+}
+
+.tk-data-table__cell .tk-switch__inner {
+    margin-top: 5px;
+}
+
+.tk-data-table__cell--context {
+  padding: 0;
+  position: sticky;
+  right: 0;
+  z-index: 2;
+}
+.gridrowcontentbutton.show-actions,
+.tk-data-table__cell--context .show-actions {
+  padding-left: 5px;
+  padding-right: 5px;
+  position: absolute;
+  top: 1px;
+  right: 0;
+  height: 97%;
+  display: flex;
+  align-items: center;
+  background-color: rgb(255,255,255);
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0, 0.2%), 0px 1px 1px 0px rgba(0,0,0, 0.14), 0px 1px 3px 0px rgba(0,0,0, 0.12);
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 100ms linear;
+
+  & .mi {
+    font-size: 18px;
+  }
+
+
+  @media only screen and (min-width: 768px) {
+    padding-left: .75rem;
+    padding-right: .5rem;
+
+    & .mi {
+      font-size: 22px;
+    }
+  }
+}
+
+.tk-data-table__row:hover .show-actions,
+.tk-data-table__row:focus .show-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.context-actions md-tooltip {
+  margin-right: 20px;
+}
+
+// Advanced tables
+
+.tk-data-table__content--advanced {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  box-sizing: content-box;
+
+  &.tk-data-table__content--min-height {
+    min-height: var(--advanced-table-min-height, 250px);
+  }
+
+  .tk-data-table__native {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+    /* overflow: hidden; stops sticky header on advanced table */
+    overflow-x: hidden;
+    //box-sizing: content-box;
+  }
+
+  .tk-data-table__header-cell {
+    border-right: 1px solid rgba(218,220,224, 0.7);
+    line-height: unset;
+    //&:last-of-type {
+    //  border-right: 0;
+    //}
+
+    span {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &--multiselect {
+      padding: 0;
+      text-align: center;
+      vertical-align: middle;
+      overflow: hidden;
+      text-overflow: unset;
+    }
+  }
+
+  .tk-data-table__cell {
+    border-right: 1px solid rgba(218,220,224, 0.7);
+    /*overflow-x: hidden;  makes combo tooltip clipped*/ 
+    text-overflow: ellipsis;
+    border-collapse: collapse;
+    border-spacing: 0;
+    //&:last-of-type {
+    //  border-right: 0;
+    //}
+
+    div[modeltype] {
+      display: inline-block;
+      max-width: 100%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
+    }
+
+    &--multiselect {
+      padding: 0;
+      text-align: center;
+      vertical-align: middle;
+      overflow: hidden;
+      text-overflow: unset;
+      //border-right: 0;
+    }
+
+    .tk-checkbox__inner {
+      display: inline-flex;
+    }
+    //&:last-of-type {
+    //  border-right: 0;
+    //}
+  }
+
+  .tk-data-table__cell--context {
+    position: absolute;
+    width: 3.5rem;
+    height: 100%;
+  }
+}
+
+.resizer {
+  --resizer-width: 4px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--resizer-width);
+  display: flex;
+  background: transparent;
+  cursor: col-resize;
+  transition: all 100ms ease-out;
+  opacity: 0;
+  box-sizing: border-box;
+
+  &:hover {
+    background: #dadce0;
+    opacity: 0.8;
+  }
+
+  &.resizing {
+    background: #c5c8ce;
+    cursor: col-resize;
+  }
+  //&::after is removed
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    display: flex;
+    width: 15px;
+    height: 100%;
+    background: transparent;
+    box-sizing: border-box;
+  }
+
+  &::before {
+    right: var(--resizer-width);
+  }
+  /*
+  &::after {
+    left: var(--resizer-width);
+  }*/
+}
+
+
+.CSSGridRendering {
+  .tk-data-table__content--advanced {
+    min-width: unset;
+
+    .tk-data -table__native {
+      max-width: unset;
+    }
+  }
+}

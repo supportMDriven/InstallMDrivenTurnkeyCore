@@ -1,0 +1,232 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+
+// When checkboxes are in placingcontainers we dont want excessive padding on top since we often want to center things in rows
+.tk-placingcontainer .tk-checkbox {
+  padding-top: 5px;
+}
+
+
+.tk-checkbox {
+  @include component-spacing(true);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  opacity: 1;
+  transform: scale(1);
+
+  &.ng-hide {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+.tk-checkbox--in-grid {
+  @include component-spacing(false); // added for blazor where we reuse the checkbox component in grid
+}
+
+.tk-checkbox.static {
+
+  .tk-checkbox__content {
+    cursor: default;
+  }
+
+  .tk-checkbox__content:hover::before {
+    opacity: 0;
+  }
+
+  .tk-checkbox__label {
+    cursor: default;
+  }
+}
+
+.tk-checkbox__label {
+  margin-left: 10px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-weight: 500;
+  font-size: var(--label-font-size, 1rem);
+  color: rgb(var(--textfield-label-clr));
+  white-space: normal;
+  cursor: pointer;
+
+  @media only screen and (max-width: 767px) {
+    line-height: 1.2;
+  }
+}
+
+.tk-checkbox__inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+
+.tk-checkbox__content {
+  padding: 0.688em;
+  display: inline-block;
+  position: relative;
+  //flex: 0 0 18px;
+  flex: 0 0 1.125em;
+  //width: 18px;
+  //height: 18px;
+  width: 1.125em;
+  height: 1.125em;
+  line-height: 0;
+  font-size: var(--base-checkbox-size, 16px);
+  box-sizing: content-box;
+  white-space: nowrap;
+  vertical-align: bottom;
+  cursor: pointer;
+  border-radius: 50%;
+  outline: 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transition: opacity 15ms linear,background-color 15ms linear;
+    cursor: pointer;
+  }
+
+  &:hover,
+  &:focus:not(:active) {
+    &::before {
+      opacity: 0.04;
+      background-color: #000;
+    }
+  }
+
+  &--disabled:hover,
+  &--disabled:focus {
+    &::before {
+      background: transparent;
+    }
+  }
+}
+
+
+.tk-checkbox__native {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  outline: 0;
+  z-index: 3; // since interactive has z-index of 3 this must have 3 or blazor webassembly stops taking clicks ?!
+}
+
+
+.tk-checkbox__interactive {
+  position: absolute;
+  //top: 11px;
+  //left: 11px;
+  top: 0.688em;
+  left: 0.688em;
+  right: auto;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  //width: 18px;
+  //height: 18px;
+  width: 1.125em;
+  height: 1.125em;
+  max-height: 1.125em; // adding for blazor in-grid
+  font-size: inherit;
+  background-color: transparent;
+  border: 2px solid #757575;
+  overflow: hidden;
+  border-radius: 2px;
+  cursor: pointer;
+  z-index: 2;
+  will-change: background-color, border-color;
+  transition: background-color 90ms cubic-bezier(.4,0,.6,1) 0ms, border-color 90ms cubic-bezier(.4,0,.6,1) 0ms;
+  box-sizing: border-box;
+
+  &::before {
+    content: '';
+    position: absolute;
+    //top: -13px;
+    //left: -13px;
+    top: -0.813em;
+    left: -0.813em;
+    //width: 40px;
+    //height: 40px;
+    width: 2.5em;
+    height: 2.5em;
+    opacity: 0;
+    border-radius: 50%;
+    z-index: 1;
+    background-color: transparent;
+    -webkit-transition: background-color 200ms $animation-curve-fast-out-linear-in, opacity 200ms $animation-curve-fast-out-linear-in;
+    transition: background-color 200ms $animation-curve-fast-out-linear-in, opacity 200ms $animation-curve-fast-out-linear-in;
+  }
+}
+
+.tk-checkbox__checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  color: #fff;
+  opacity: 0;
+  transform: rotate(45deg);
+  transition: all 180ms cubic-bezier(.4,0,.6,1) 0ms;
+}
+
+.tk-checkbox__checkmark-path {
+  stroke-width: 3.12px;
+  stroke-dashoffset: 29.7833385;
+  stroke-dasharray: 29.7833385;
+
+  transition: stroke-dashoffset .18s cubic-bezier(.4,0,.6,1) 0ms;
+}
+
+.tk-checkbox__native:indeterminate ~ .tk-checkbox__interactive {
+    & .tk-checkbox__mixedmark {
+        width: 98%;
+        height: 0;
+        border-width: 1px;
+        border-style: solid;
+    }
+}
+
+.tk-checkbox__native:checked ~ .tk-checkbox__interactive {
+  & .tk-checkbox__checkmark {
+    opacity: 1;
+    transform: rotate(0);
+
+    & .tk-checkbox__checkmark-path {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+.tk-checkbox__native:disabled ~ .tk-checkbox__interactive {
+  opacity: 0.38;
+  cursor: default;
+}
+
+.tk-checkbox__native.ng-hide ~ .tk-checkbox__interactive {
+  display: none;
+}
+
+.tk-checkbox__validation-state {
+  margin-top: 5px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.75rem;
+}
+

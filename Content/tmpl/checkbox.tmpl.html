@@ -1,0 +1,18 @@
+<label class="n-tk-checkbox__container">
+  <div class="n-tk-checkbox__surface">
+    <input type="checkbox" id="{{$ctrl.id}}" ng-model="$ctrl.ngModel" ng-readonly="$ctrl.ngReadonly" class="n-tk-checkbox__native" ng-prop-indeterminate="$ctrl.indeterminate"/>
+    <div class="n-tk-checkbox__background">
+      <div class="n-tk-checkbox__mixedmark"></div>
+      <svg class="n-tk-checkbox__checkmark" viewBox="0 0 24 24">
+        <path class="n-tk-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+      </svg>
+    </div>
+    <div class="n-tk-checkbox__ripple-surface"></div>
+  </div>
+  <span ng-if="$ctrl.label" class="n-tk-checkbox__label">{{$ctrl.label}}</span>
+</label>
+<span ng-if="$ctrl.helpertext && !$ctrl.validationError" id="{{$ctrl.id}}.HelperText" class="n-tk-checkbox__helpertext">{{$ctrl.helpertext}}</span>
+<span ng-if="$ctrl.validationError" class="n-tk-checkbox__helpertext" id="{{$ctrl.id}}.ErrorMessage">
+  <tk-icon>error</tk-icon>
+  {{$ctrl.validationMessage}}
+</span>
