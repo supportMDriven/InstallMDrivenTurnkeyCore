@@ -214,86 +214,41 @@ function createDraggableButton() {
 }
 
 // Handles the mousedown event to either remove the width style or implement dragging logic
-function handleMouseDown(div, event) {
+function handleMouseDown(div, e) {
+
   const th = div.closest('th');
-
-  if (event.button === 0) { // LMB
-    implementDraggingLogic(th, event.clientX);
-  }
-  else if (event.button === 1) { // MMB
-    setWidth(th, ''); // Remove width style
-    event.preventDefault(); // Prevent the default scroll event
-  }
-}
-
-// Implements dragging logic for the given table header element
-function implementDraggingLogic(th, startX) {
-
-  if (th.classList.contains('multiselectcol'))
-    return; // skip resize of this
-
-  const startWidth = th.offsetWidth;
-  let isDragging = true;
-
   const table = th.closest('table');
-  const tablediv = th.closest('div');
+  const startX = e.pageX;
+  const startWidth = th.offsetWidth;
 
-  const allThs = Array.from(table.querySelectorAll('th')).filter(th => { return th.offsetParent !== null; }); // only visible
-  let totalOrgWidthExceptMulti = 0;
-  let widthForMultiSelect = 0;
-  let switchToPix = false;
-  let lastth = th;
-  allThs.forEach(loopth => {
-    if (loopth.classList.contains('multiselectcol')) {
-      widthForMultiSelect = loopth.offsetWidth;
-    }
-    else {
-      lastth = loopth;
-      totalOrgWidthExceptMulti += loopth.offsetWidth;
-    }
-
-  });
-  let tablewidth = tablediv.offsetWidth - widthForMultiSelect;
-  if (tablewidth < totalOrgWidthExceptMulti || lastth == th) {  // switch to pixel when resizing last or columns 30 larger than div table is in (due to last resize)
-    switchToPix = true;
-  }
-
-  allThs.forEach(loopth => {
-    if (loopth.classList.contains('multiselectcol')) {
-    }
-    else {
-      if (loopth != th) {
-        if (switchToPix)
-          setWidth(loopth, loopth.offsetWidth + 'px');
-        else
-          setWidth(loopth, 100 * (loopth.offsetWidth / tablewidth) + '%');
-      }
-    }
+  // 1. Change to pixel widths temporarily for smooth dragging
+  const allThs = table.querySelectorAll('th');
+  allThs.forEach(header => {
+    header.style.width = header.offsetWidth + 'px';
   });
 
+  const onMouseMove = (e) => {
+    const newWidth = startWidth + (e.pageX - startX);
+    th.style.width = Math.max(newWidth, 50) + 'px';
+  };
 
-  function onMouseMove(event) {
-    if (!isDragging) return;
-
-    requestAnimationFrame(() => {
-      let diffInColSize = event.clientX - startX;
-      let newwidth = startWidth + diffInColSize;
-      let newPercentage = 100 * newwidth / tablewidth;
-      if (switchToPix)
-        setWidth(th, newwidth + 'px');
-      else
-        setWidth(th, newPercentage + '%');
-    });
-  }
-
-  function onMouseUp() {
-    isDragging = false;
+  const onMouseUp = () => {
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
-  }
+
+    // 2. Convert all widths back to % once released
+    const tableWidth = table.offsetWidth;
+    allThs.forEach(header => {
+      const widthInPercent = (header.offsetWidth / tableWidth) * 100;
+      header.style.width = widthInPercent + '%';
+    });
+  };
 
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
+
+
+  
 }
 
 
