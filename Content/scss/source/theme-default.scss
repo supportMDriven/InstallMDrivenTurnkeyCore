@@ -1,0 +1,86 @@
+// Turnkey theme settings file. To apply your change please uncomment and change value below. //
+
+
+
+// Color definitions //
+// Put colours as RGB value e.g. 255,255,255
+$primary-color: 245,156,26; 
+$primary-color-dark: 235,144,10;
+$text-on-primary: 255,255,255;
+
+$danger-color: 211,46,46;
+$danger-color-dark: 191,40,40;
+$text-on-danger: 255,255,255;
+
+$warning-color: 240,173,78;
+$warning-color-dark: 238,162,54;
+$text-on-warning: 255,255,255;
+
+$success-color: 93,184,91;
+$success-color-dark: 78,174,75;
+$text-on-success: 255,255,255;
+
+$color-info: #0b5461;
+
+// Base settings // 
+$base-font-size: 16px;
+
+// Navigation bar settings //
+$navbar-bg-color: 33,33,33;
+$navbar-link-color: 255,255,255;
+$navbar-brand-color: 255,255,255; // // By default is contrast color (black/white) to navigation background color
+$navbar-height: 50px;
+
+// Sidebar settings //
+$sidebar-item-height: 40px;
+$sidebar-item-text-color: 33,33,33;
+$sidebar-bg-color: 255,255,255;
+
+//Toolbar //
+$toolbar-bg-color: 246,247,247;
+
+// General buttons settings //
+$button-height: 36px;
+$button-default-color: #eaeaea;
+$button-default-text-color: black;
+
+
+// Input element settings //
+$input-height: 36px;
+
+// State actions settings //
+$save-action-bg-color: 240,173,78;
+$save-action-bg-color-dark: 235,148,24;
+$save-action-text-color: 255,255,255;
+
+$cancel-action-bg-color: 211,46,46;
+$cancel-action-bg-color-dark: 180,38,38;
+$cancel-action-text-color: 255,255,255;
+
+$redo-action-bg-color: 255,255,255;
+$redo-action-bg-color-dark: 242,242,242;
+$redo-action-text-color: 0,0,0;
+
+$undo-action-bg-color: 255,255,255;
+$undo-action-bg-color-dark: 242,242,242;
+$undo-action-text-color: 0,0,0;
+
+// Data-tables //
+$data-table-header-bg-color: 255,255,255;
+$data-table-header-text-color: 0,0,0;
+$data-table-header-height: 56px;
+$data-table-body-bg-color: 255,255,255;
+$data-table-row-height: 56px;
+$data-table-body-bg-color: 255,255,255;
+$data-table-body-text-color: 0,0,0;
+
+// Blazor use QuickGrid, the bullshit calc stuff from angular will be too hard 
+$data-table-row-height-blazor:56px;
+$data-table-header-height-blazor:56px;
+$data-table-header-height-blazor-smalllscreen:44.3px;
+$data-table-row-height-blazor-smalllscreen:43.8px;
+
+
+@import "tk-core-theme"; 
+
+

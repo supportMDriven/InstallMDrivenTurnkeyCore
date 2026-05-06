@@ -1,0 +1,131 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+#validationMessageWrapper {
+  /*padding: 5px 0;*/
+  -ms-grid-row: 3;
+  grid-row: 3;
+  //position: fixed;
+  overflow-y: auto;
+  max-height: 150px;
+  transition: all 200ms $animation-curve-default;
+}
+
+.validation {
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: var(--label-font-size, 1rem);
+}
+
+.validation__list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.validation__item:empty {
+  display: none;
+
+  &::before {
+    display: none;
+  }
+}
+
+.validation__item {
+  padding: 10px 10px 10px 30px;
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+
+  position: relative;
+
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: left;
+  word-break: break-word;
+  vertical-align: middle;
+  /*border-radius: 4px;*/
+
+  /*@include elevation-6();*/
+
+  @media (min-width: 768px) {
+    text-align: left;
+    font-size: 12px;
+  }
+
+  &::before {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: inline-block;
+    //transform: translateY(-50%);
+    font-family: $base-icon-font;
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+
+  &.danger {
+
+    //box-shadow: inset 0 0 4px 0 #FBC1BE;
+    &::before {
+      content: '\e000';
+    }
+  }
+
+  &.warning {
+
+    //box-shadow: inset 0 0 4px 0 #F9E7AD;
+    //border: 1px solid #856404;
+    &::before {
+      content: '\e002';
+    }
+  }
+
+  &.info {
+    background-color: $color-info;
+    color: darken($color-info, 50%);
+    //box-shadow: inset 0 0 4px 0 #B1E2EB;
+    &::before {
+      content: '\e88e';
+    }
+  }
+
+  & + .validation__error {
+    margin-top: 5px;
+  }
+}
+
+
+
+.validation__error:empty {
+  display: none;
+
+  &::before {
+    display: none;
+  }
+}
+
+// Show validation messages
+//.sidebar.offscreen #validationMessageWrapper {
+//  padding: 0;
+//  position: fixed;
+//  left: 3%;
+//  bottom: 3%;
+//  display: flex;
+//  width: 90%;
+//  max-height: 150px;
+//  border-radius: $base-border-radius;
+//  border-radius: var(--base-border-radius, #{$base-border-radius});
+//  z-index: 10;
+
+//  @include elevation-2dp();
+
+//  @media only screen and (min-width: 768px) {
+//    width: auto;
+//    max-width: 250px;
+//    max-height: 100px;
+//  }
+//}

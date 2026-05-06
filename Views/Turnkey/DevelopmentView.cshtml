@@ -1,0 +1,38 @@
+﻿@using Eco.MVC
+@using Eco.ViewModel.Runtime
+@using TurnkeyWebAppGeneric.Controllers;
+@using Microsoft.AspNetCore.Html;
+
+@model DevelopmentInfoModel
+@{
+  ViewBag.Title = "Development";
+}
+
+
+
+    <h2>DevelopmentView</h2>
+
+    <form action="~/@TurnkeyController.ControllerName/Development" method="get">
+        <fieldset>
+            ViewModels:@Html.DropDownList("view",
+new SelectList(Model.AvailableViewModels.OrderBy(m=>m),Model.SelectedViewModel),"<Pick ViewModel>", new { onchange = "this.form.submit();" })
+            <h2>Things available in view model @Model.Name</h2>
+            @Html.RenderSelectedViewModelItems(Model.Content)
+
+            <h2>This is how we would do Angular widgets that bind to the properties in @Model.Name</h2>
+            @Html.SuggestedAngularJsUsage(Model)
+            <h2>This is how we would do Angular widgets for actions in @Model.Name</h2>
+            @Html.SuggestedAngularJsUsageAction(Model)
+
+            <h1>MVC</h1>
+            <h2>This is how we suggest you do MVC bindings to the properties in @Model.Name</h2>
+            @Html.SuggestedMVCRazorUsage(Model)
+
+
+            <p><input type="submit" value="Submit" /> </p>
+        </fieldset>
+    </form>
+
+
+
+

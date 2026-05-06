@@ -1,0 +1,272 @@
+/// <reference path="../_color-definitions.scss" />
+/// <reference path="../_variables.scss" />
+/// <reference path="../_mixins.scss" />
+
+.tk-auth {
+  // padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: calc(100vh - #{$navbar-height});
+
+
+  @media only screen and (min-width: 768px) {
+    // padding-top: 100px;
+    height: calc(100vh - #{$navbar-height});
+
+    &::before,
+    &::after {
+      content: '';
+      -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
+      height: 24px;
+
+      @media only screen and (min-width: 768px) {
+        min-height: 34px;
+        padding-top: 0;
+      }
+    }
+  }
+}
+
+.tk-auth__inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 100%;
+  flex: 0 0 100%;
+
+
+  @media only screen and (min-width: 768px) {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    border-radius: 4px;
+    max-width: 800px;
+    /*@include elevation-4dp();*/
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0,0,0,.12);
+  }
+
+  @media only screen and (max-width: 767px) {
+    width: 100%;
+  }
+}
+
+.tk-auth__content {
+  padding: 20px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.tk-auth__header {
+  font-size: 2rem;
+  font-family: var(--base-font-family, $base-font-family);
+  font-weight: 500;
+  color: #838489;
+}
+
+.tk-auth__caption {
+  margin-top: 5px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #838489;
+}
+
+.tk-auth__action {
+  padding: 20px;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+
+  @media only screen and (min-width: 768px) {
+    padding: 30px 40px 30px 40px;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background: #fff;
+    border-top-left-radius: $base-border-radius;
+    border-top-left-radius: var(--base-border-radius, #{$base-border-radius});
+    border-bottom-left-radius: $base-border-radius;
+    border-bottom-left-radius: var(--base-border-radius, #{$base-border-radius});
+    width: 60%;
+  }
+
+  @media only screen and (min-width: 1200px) {
+    min-width: 380px;
+  }
+}
+
+.tk-auth__validation-summary {
+  margin-top: 10px;
+  border-radius: 4px;
+
+  & .validation-summary-errors ul li {
+    padding: 5px 10px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.2;
+    //color: $color-danger-dark;
+
+    &::before {
+      content: '\e000';
+      margin-right: 10px;
+      margin-bottom: 2px;
+      display: inline-block;
+      vertical-align: middle;
+      font-family: $base-icon-font;
+      font-size: 1.2rem;
+      //color: $color-danger-dark;
+    }
+  }
+}
+
+.tk-auth__info {
+  padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+
+  @media only screen and (min-width: 768px) {
+    padding: 30px 40px 30px 40px;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border-top-right-radius: $base-border-radius;
+    border-top-right-radius: var(--base-border-radius, #{$base-border-radius});
+    border-bottom-right-radius: var(--base-border-radius, #{$base-border-radius});
+    width: 40%;
+  }
+
+  &--password-hidden {
+    @media only screen and (min-width: 768px) {
+      min-width: 350px;
+      width: 100%;
+    }
+  }
+}
+
+.tk-auth__advice {
+  margin-top: 20px;
+  text-align: center;
+  -webkit-box-ordinal-group: 4;
+  -ms-flex-order: 3;
+  order: 3;
+
+  & > p {
+    color: #000;
+  }
+
+  @media only screen and (min-width: 768px) {
+    margin: 0;
+    -webkit-box-ordinal-group: 2;
+    -ms-flex-order: 1;
+    order: 1;
+
+    & > p {
+      font-size: 1.1rem;
+      color: #fff;
+    }
+  }
+}
+
+.tk-auth__divider {
+  -webkit-box-ordinal-group: 3;
+  -ms-flex-order: 2;
+  order: 2;
+  display: none;
+
+  &::before,
+  &::after {
+    margin: 0 5px;
+    content: '';
+    width: 100%;
+    height: 1.5px;
+    background-color: rgba(0,0,0, 0.4);
+    border-radius: 100px;
+  }
+
+  @media only screen and (min-width: 768px) {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+
+    &::before,
+    &::after {
+      background-color: rgba(255,255,255, 0.7);
+    }
+  }
+}
+
+.tk-auth__link {
+  margin-top: 15px;
+  position: relative;
+  padding: 0 8px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  min-width: 64px;
+  height: 36px;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  color: $color-info;
+  border-radius: 4px;
+  background: transparent;
+
+  & .ripple-container {
+    background-color: rgba($color-info, 0.25);
+  }
+
+
+  @media only screen and (min-width: 768px) {
+    color: #fff;
+    //background: $primary-color-dark;
+
+    & .ripple-container {
+      background-color: rgba(255,255,255, 0.25);
+    }
+  }
+}

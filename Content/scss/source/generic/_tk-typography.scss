@@ -1,0 +1,46 @@
+/// <reference path="../_color-definitions.scss" />
+/// <reference path="../_variables.scss" />
+/// <reference path="../_mixins.scss" />
+
+html, body {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-touch-callout: none;
+
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.h1,.h2,.h3,.h4,.h5,.h6 {
+  &:not(label) {
+    font-weight: 500;
+    line-height: 1.2;
+  }
+}
+
+.h1:not(label) {
+  font-size: 2.25rem;
+}
+
+.h2:not(label) {
+  font-size: 2rem;
+}
+
+.h3:not(label) {
+  font-size: 1.75rem;
+}
+
+.h4:not(label) {
+  font-size: 1.5rem;
+}
+
+.h5:not(label) {
+  font-size: 1.25rem;
+}
+
+.h6:not(label) {
+  font-size: 1rem;
+}

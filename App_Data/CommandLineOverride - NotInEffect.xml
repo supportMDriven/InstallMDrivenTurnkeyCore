@@ -1,0 +1,6 @@
+<root>
+  <arg>port=5020</arg>  // only when you run locally
+  <arg>nohttps</arg>    // remove to have https
+  <arg>host=localhost</arg>   // only when you run locally
+ <!-- <arg>iis=https://localhost/TKDebug</arg> // probably the only param you send for IIS hosting  -->
+</root>

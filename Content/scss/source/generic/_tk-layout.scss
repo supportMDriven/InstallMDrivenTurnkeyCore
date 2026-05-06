@@ -1,0 +1,242 @@
+/// <reference path="../_color-definitions.scss" />
+/// <reference path="../_variables.scss" />
+/// <reference path="../_mixins.scss" />
+
+
+/// Styles for UserControl 2021 START
+[uc="true"] {
+
+  #globalNavWrapper {
+    display: none;
+  }
+
+  #bodyWrapper {
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+  }
+
+  #globalNavWrapper {
+    display: none;
+  }
+
+  #viewmodelWrapper {
+    height: 100%;
+  }
+
+  #contentWrapper {
+    grid-template-columns: auto 1fr;
+    height: 100%;
+  }
+
+  #viewmodeSection {
+    height: 100%;
+  }
+
+  #sidebar {
+    display: none;
+  }
+
+  .developer-info {
+    display: none;
+  }
+
+  .tk-data-table__cell {
+    padding: 0;
+  }
+
+  .actions__wrapper {
+    display: none;
+  }
+
+  @media only screen and (max-width: 998px) {
+    #contentWrapper.actions-visible #viewmodelSection {
+      height: 100%;
+    }
+  }
+}
+
+/////////// Styles for UserControl 2021 STOP
+
+/**** Layout ****/
+
+/* Level 1 */
+/* Wrap entire screen to prevent scrollbars */
+#bodyWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: var(--navbar-height, #{$navbar-height}) auto;
+}
+
+/* Level 2 */
+/* Add styles to the global navigation here */
+#globalNavWrapper {
+  grid-row: 1;
+}
+
+#globalContentWrapper {
+  grid-row: 2;
+}
+
+#contentWrapper {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: auto 1fr;
+  grid-template-columns: auto 1fr;
+
+  height: calc(100vh - #{$navbar-height});
+  height: calc(100vh - var(--navbar-height, #{$navbar-height}));
+
+  width: 100%;
+
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#contentWrapper.actions-visible #viewmodelSection {
+  @media only screen and (max-width: 767px) {
+    height: calc(100vh - (#{$navbar-height} + 36px));
+    height: calc(100vh - (var(--navbar-height, #{$navbar-height}) + 36px));
+  }
+}
+
+#sidebar {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-row: 1;
+  grid-row: 1;
+  -ms-grid-column: 1;
+  grid-column: 1;
+  -ms-grid-columns: 1fr;
+  grid-template-columns: 1fr;
+  -ms-grid-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  height: calc(100vh - #{$navbar-height});
+  height: calc(100vh - var(--navbar-height, #{$navbar-height}));
+  width: var(--sidebar-width,#{$sidebar-width});
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  /*overflow-y: auto;*/
+  z-index: 2;
+
+
+  &.onscreen {
+    transition: margin-left $anim-duration-sidebar-in $easing-standard;
+  }
+
+  &.offscreen {
+    margin-left: -250px;
+    transition: margin-left $anim-duration-sidebar-out $easing-standard;
+  }
+
+
+  @media only screen and (max-width: 767px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 70;
+    -webkit-box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
+
+    &.offscreen {
+      -webkit-transform: translate3d(-100%, 0, 0);
+      transform: translate3d(-100%, 0, 0);
+      margin: unset;
+      box-shadow: none;
+      transition: transform $anim-duration-sidebar-out $easing-standard;
+    }
+
+    &.onscreen {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      transition: transform $anim-duration-sidebar-in $easing-standard;
+    }
+  }
+}
+
+// Style for viewmodelWrapper when using MVC rendering
+#contentWrapper.mvc-rendered #viewmodelWrapper {
+  -ms-grid-row: 1;
+  grid-row: 1;
+  -ms-grid-column: 2;
+  grid-column: 2;
+
+  display: flex;
+  flex-direction: column;
+
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+
+  height: calc(100vh - #{$navbar-height});
+  height: calc(100vh - var(--navbar-height, #{$navbar-height}));
+  overflow: auto;
+}
+
+#viewmodelWrapper {
+  grid-column: 2;
+  height: calc(100vh - #{$navbar-height});
+  height: calc(100vh - var(--navbar-height, #{$navbar-height}));
+  overflow-y: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+
+#viewmodelSection {
+  padding: 15px;
+
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+
+  -ms-flex-line-pack: start;
+  align-content: start;
+
+  overflow-y: auto;
+
+  box-sizing: border-box;
+  height:100%;  // without this flexboxes interacted with min-height (from rowspan) in some views and did not stretch
+}
+
+// Set height auto for viewmodel, if it's rendred in modal widnow
+
+.modal-content #viewmodelSection {
+  height: auto;
+}
+
+
+// Modal and popup in blazor, remove inner scroll START
+.modal #viewmodelSection {
+  overflow-y: unset;
+}
+
+.modal.tk-modal__content {
+  overflow-y: unset;
+}
+
+.modal #viewmodelWrapper {
+  overflow-y: unset;
+}
+// Modal and popup in blazor, remove inner scroll STOP
+
+
+.vmGridboxAtTop, .vmGridboxAtBottom {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.vmGridboxInbetween {
+  display: block;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 0px;
+  flex: 1 1 0px;
+  overflow: auto;
+}

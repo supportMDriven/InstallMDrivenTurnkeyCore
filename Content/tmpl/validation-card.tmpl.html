@@ -1,0 +1,11 @@
+<button type="button"
+  ng-click="$ctrl.onClick({$event})" class="validation-card__wrapper" ng-class="$ctrl.context">
+    <tk-icon>warning_amber</tk-icon>
+    <div class="validation-card__content">
+      <div class="validation-card__title">
+        {{$ctrl.errorCount}} 
+        <ng-pluralize count="$ctrl.errorCount" when="{'1': 'issue', 'other': 'issues'}"></ng-pluralize>
+      </div>
+      <div class="validation-card__subtitle" ng-if="$ctrl.sidebarVisible">click to see details</div>
+    </div>
+</button>

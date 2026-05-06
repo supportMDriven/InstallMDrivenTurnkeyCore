@@ -1,0 +1,78 @@
+﻿@using MDriven.ASPNETIdentity
+@model LoginViewModel
+
+@if (ViewBag.MicroLayout is bool && ViewBag.MicroLayout)
+{
+  Layout = null; // When MDrivenDesigner show login page
+}
+else
+{
+  ViewBag.Title = "Log in";
+  ViewBag.turnkeyView = "login-page";
+}
+
+<div class="tk-auth">
+
+  <div class="tk-auth__inner">
+
+    @if (!ViewBag.HidePasswordLogin)
+    {
+      <div class="tk-auth__action">
+
+        <p class="tk-auth__header">@ViewBag.Title</p>
+        <p class="tk-auth__caption">Use your social account or e-mail to log in</p>
+
+        <div class="tk-auth__validation-summary">
+          @Html.ValidationSummary()
+        </div>
+
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post,true, new { @class = "tk-auth-form", role = "form" }))
+        {
+          @Html.AntiForgeryToken()
+          <div class="tk-auth-form__group tk-auth-form__group--email">
+            @Html.LabelFor(m => m.Email, new { @class = "tk-auth-form__label" })
+            @Html.TextBoxFor(m => m.Email, new { @class = "tk-auth-form__input", placeholder = "Email adress", inputmode = "email" })
+            @Html.ValidationMessageFor(m => m.Email, "")
+          </div>
+          <div class="tk-auth-form__group tk-auth-form__group--password">
+            @Html.LabelFor(m => m.Email, new { @class = "tk-auth-form__label" })
+            @Html.PasswordFor(m => m.Password, new { @class = "tk-auth-form__input", placeholder = "Password" })
+            @Html.ValidationMessageFor(m => m.Password, "")
+          </div>
+          <div class="tk-auth-form__group tk-auth-form__group--remember inline">
+            <button type="submit" class="tk-button__native narrow primary ripple-effect">Login</button>
+            <div class="tk-auth-form__checkbox">
+              <label class="tk-checkbox__content ripple-effect" for="@Html.NameFor(m => m.RememberMe)">
+                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "tk-checkbox__native" })
+                <span class="tk-checkbox__interactive">
+                  <svg class="tk-checkbox__checkmark" viewBox="0 0 24 24">
+                    <path class="tk-checkbox__checkmark-path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                  </svg>
+                </span>
+              </label>
+              @Html.LabelFor(m => m.RememberMe)
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+
+    @if (!ViewBag.HideRegistration)
+    {
+			<div class="tk-auth__info @(ViewBag.HidePasswordLogin ? "tk-auth__info--password-hidden": "")">
+				<div class="tk-auth__advice @(ViewBag.HidePasswordLogin ? "hidden" : "")">
+					<p>Don't have an account? Please, register!</p>
+					@Html.ActionLink("Register", "Register", new { ReturnUrl = ViewBag.ReturnUrl }, new { @class = "tk-auth__link ripple-effect" })
+				</div>
+				@if (!ViewBag.HideExternalLogin)
+        {
+					@await Html.PartialAsync("_ExternalLoginsListPartial", new ExternalLoginListViewModel { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+        }
+				</div>
+    }
+
+  </div>
+</div>
+
+

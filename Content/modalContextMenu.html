@@ -1,0 +1,33 @@
+﻿<div class="tk-modal__surface">
+
+  <div class="tk-modal__header title">
+    <p class="tk-modal__title">{{ViewData.ActionGroupForVMClassname(menuFor).SubMenuGroups[0].ActionList.Actions[0].PresentationOfTarget}}</p>
+    <button type="button" class="tk-button__native flat fab ripple-effect" ng-click="modalController.Cancel()" aria-hidden="true">
+      <i class="mi">close</i>
+    </button>
+  </div>
+
+  <!--Body content-->
+  <div class="tk-modal__content">
+    <div class="tk-list">
+      <span ng-repeat-start="submenugroup in ViewData.ActionGroupForVMClassname(menuFor).SubMenuGroups | orderBy: 'SubMenuGroupSortKey'" ng-if="!(submenugroup.SubMenuGroupName==='') && submenugroup.ActionList.NotEmpty()"
+              class="vmSideMenuHeader">
+        {{submenugroup.SubMenuGroupName}}
+      </span>
+      <button type="button"
+              class="tk-button__native flat ripple-effect"
+              ng-repeat="oneaction in submenugroup.ActionList.Actions | orderBy: 'ActionSortKey'"
+              ng-class="oneaction.ActionDisableAndDesignedClass();"
+              ng-click="modalController.DoAction(oneaction,$event)"
+              ng-disabled="!oneaction.Enable">
+        {{oneaction.Presentation}}
+      </button>
+      <div ng-repeat-end></div>
+    </div>
+  </div>
+
+  <div class="tk-modal__actions">
+    <button class="tk-button__native flat narrow danger ripple-effect" ng-click="modalController.Cancel()">Cancel</button>
+  </div>
+
+</div>

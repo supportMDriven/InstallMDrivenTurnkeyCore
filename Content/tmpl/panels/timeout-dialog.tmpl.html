@@ -1,0 +1,9 @@
+﻿<md-dialog-content class="md-dialog-content">
+  <div class="md-dialog-content-body">
+    <p>Due to inactivity, your session will be timed out in {{$ctrl.timeLeft}} seconds.</p>
+  </div>
+</md-dialog-content>
+<md-dialog-actions>
+  <md-button type="button" ng-click="$ctrl.cancelDialog()">cancel</md-button>
+  <md-button type="button" ng-click="$ctrl.okDialog()" md-autofocus="true" class="md-confirm-button">ok</md-button>
+</md-dialog-actions>

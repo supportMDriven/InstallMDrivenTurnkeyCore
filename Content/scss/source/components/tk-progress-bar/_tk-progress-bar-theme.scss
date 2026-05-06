@@ -1,0 +1,9 @@
+.tk-progress-bar__indeterminate  {
+  &::before {
+    @include color-declaration(background-color, $primary-color, --primary-color);
+  }
+
+  &::after {
+    @include color-declaration(background-color, $primary-color, --primary-color);
+  }
+}

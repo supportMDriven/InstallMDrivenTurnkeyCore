@@ -1,0 +1,33 @@
+.tk-auth-form__input:not(.input-validation-error):focus {
+  box-shadow: 0 0 2px 0.15em unquote('rgba(#{$primary-color}, 0.5)');
+  box-shadow: 0 0 2px 0.15em unquote('rgba(var(--primary-color, #{$primary-color}), 0.5)');
+}
+
+.tk-auth__info {
+  @media only screen and (min-width: 768px) {
+    @include color-declaration(background-color, $primary-color, --primary-color);
+  }
+}
+
+.tk-auth__link {
+  @media only screen and (min-width: 768px) {
+    @include color-declaration(color, $text-on-primary, --text-on-primary);
+    @include color-declaration(background, $primary-color-dark, --primary-color-dark);
+
+    & .ripple-container {
+      @include color-declaration(background-color, $text-on-primary, --text-on-primary, true, 0.25);
+    }
+  }
+}
+
+.tk-auth__validation-summary {
+  @include color-declaration(background-color, $danger-color, --danger-color, true, 0.15);
+}
+
+.validation-summary-errors {
+   @include color-declaration(color, $danger-color, --danger-color);
+}
+
+.field-validation-error {
+  @include color-declaration(color, $danger-color, --danger-color);
+}

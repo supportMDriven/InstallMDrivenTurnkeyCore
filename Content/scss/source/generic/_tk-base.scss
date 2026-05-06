@@ -1,0 +1,98 @@
+/// <reference path="variables.scss" />
+/// <reference path="mixins.scss" />
+//
+html, body {
+  height: 100%;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: $base-font-size !important;
+  font-size: var(--base-font-size, #{$base-font-size}) !important;
+
+  @include color-declaration(background, $base-bg-color, --base-bg-color);
+  @include color-declaration(color, $base-fg-color, --base-fg-color);
+  
+  -webkit-overflow-scrolling: touch;
+}
+
+footer {
+  position: fixed;
+  bottom: 5px;
+  right: 10px;
+}
+
+.tk-label {
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: var(--label-font-size, 1rem);
+  font-weight: 500;
+  line-height: $label-line-height;
+  letter-spacing: 0.025em;
+  white-space: normal;
+  @include color-declaration(color, $label-color, --textfield-label-clr);
+  display: inline-flex;
+  align-items: center;
+}
+
+.tk-label__text {
+
+}
+
+.tk-label--with-leading-icon {
+  .tk-label__text {
+    order: 2;
+  }
+
+  .tk-label__icon {
+    order: 1;
+    margin-right: 5px;
+  }
+}
+
+.tk-label--with-trailing-icon {
+  .tk-lable__text {
+    order: 1;
+  }
+
+  .tk-label__icon {
+    order: 2;
+    margin-left: 5px;
+  }
+}
+
+
+.loading {
+  padding: 8px 16px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 16px;
+  background-color: rgba(245, 156, 27, 0.1);
+  box-shadow: 0 0 0 1px rgba(245, 156, 27, 0.3);
+  transition: transform 200ms linear;
+  transform: translateX(200px);
+
+  &__text {
+    font-family: var(--base-font-family,'Roboto'), sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #f59c1a;
+  }
+
+  &__progress {
+    margin-left: 10px;
+  }
+
+  .loading__progress path {
+    stroke: #f59c1a;
+  }
+
+  &.visible {
+    transform: translateX(0);
+  }
+}
+
+.svg100percent svg {
+  height: 100%;
+  width: 100%;
+}

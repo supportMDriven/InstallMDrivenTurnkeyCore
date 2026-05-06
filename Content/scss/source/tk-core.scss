@@ -1,0 +1,52 @@
+// Main core styles
+@import "functions";
+@import "variables";
+@import "mixins";
+
+@import "generic/reset";
+@import "generic/tk-fonts";
+@import "generic/tk-base";
+@import "generic/tk-helpers";
+@import "generic/tk-layout";
+@import "generic/md-icons";
+
+@import "static/tk-startup";
+
+@import "components/tk-spinner/tk-spinner";
+@import "components/tk-button/tk-button-core";
+@import "components/tk-checkbox/tk-checkbox-core";
+@import "components/tk-switch/tk-switch-core";
+@import "components/tk-list/tk-list";
+@import "components/tk-navbar/tk-navbar-core";
+@import "components/tk-sidebar/tk-sidebar-core";
+@import "components/tk-actions/tk-action-core";
+@import "components/tk-link/tk-link";
+@import "components/tk-dropdown/tk-dropdown-core";
+@import "components/tk-text-field/tk-text-field-core";
+@import "components/tk-number-field/tk-number-field-core";
+@import "components/tk-float-field/tk-float-field-core";
+@import "components/tk-textarea/tk-textarea-core";
+@import "components/tk-static-text/tk-static-text-core";
+@import "components/tk-modals/tk-modal-core";
+@import "components/tk-select/tk-select-core";
+@import "components/tk-file-upload/tk-file-upload-core";
+@import "components//tk-file-download/_tk-file-download-core";
+@import "components/tk-image-upload/tk-image-upload-core";
+@import "components/tk-datepicker/tk-datepicker-core";
+@import "components/tk-timespan/tk-timespan-core.scss";
+@import "components/tk-data-table/tk-data-table-core";
+@import "components/tk-validation/tk-validation";
+@import "components/tk-developer-info/tk-developer-info";
+@import "components/tk-progress-bar/tk-progress-bar-core";
+@import "components/tk-groupbox/tk-groupbox";
+@import "components/tk-ripple/tk-ripple";
+@import "components/tk-input-field/tk-input-field";
+@import "components/tk-tooltip/tk-tooltip.scss";
+// @import "static/tk-static-theme";
+@import "components/tk-toolbar/tk-toolbar.scss";
+@import "generic/tk-typography";
+
+@import "static/tk-auth-pages";
+@import "static/tk-auth-form";
+@import "static/tk-auth-socials";
+@import "static/tk-manage";

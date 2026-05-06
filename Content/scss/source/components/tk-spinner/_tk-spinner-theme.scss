@@ -1,0 +1,3 @@
+.tk-spinner__element {
+  @include color-declaration(border-top-color, $primary-color, --primary-color);
+}

@@ -1,0 +1,20 @@
+.tk-select__native:not(:disabled):focus {
+  /*  border-color: unquote('rgba(var(--primary-color, #{$primary-color}), 0.87)');*/
+  border-color: unquote('rgb(var(--primary-color, 245,156,26))');
+}
+
+.tk-select.has-error {
+
+  .tk-select__label {
+    @include color-declaration(color, $danger-color, --danger-color);
+  }
+
+  .tk-select__native {
+    border-color: 0 0 0 1px unquote('rgb(#{$danger-color})');
+  }
+}
+
+.tk-select__validation-state {
+  @include color-declaration(color, $danger-color, --danger-color);
+}
+

@@ -1,0 +1,22 @@
+﻿@using Eco.MVC
+@using StreamingAppGenericAPIAndControllers
+
+@model AngularModel
+
+@Html.AngularUITurnkeyViewOverrideCss()
+
+@* This page is returned when called by the Angular JavaScript requesting a page. This content is inserted in AngularApp.cshtml at the ng-view property *@
+@* In JavaScript, the MDrivenAngularApp routeprovider, intercepts "intra-angular" clicks and requests and inserts the resulting HTML into the DOM.*@
+@* NOTE!! this page is rendered by calls to the server API (called by the Angular client code), NOT when rendering AngularApp.cshtml *@
+
+<div id="contentWrapper">
+  <div id="viewmodelWrapper">
+    <div id="viewmodelSection" class="form-horizontal">
+      <!-- Here is the ViewModel Angular body inserted -->
+      @Html.AngularUITurnkeyDebug()
+      <!-- End of inserted ViewModel Angular body -->
+      </div>
+    </div>
+</div>
+@Html.Partial("_DeveloperInfoPartial")
+@Html.AngularUITurnkeyViewOverrideScript()

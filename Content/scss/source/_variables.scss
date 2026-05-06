@@ -1,0 +1,87 @@
+/// <reference path="_color-definitions.scss" />
+/// <reference path="_functions.scss" />
+
+@import "functions";
+@import "mixins";
+@import "color-definitions";
+
+
+$int-vert-padding: 5px !default;
+$int-hor-padding: 5px !default;
+
+
+//Base application settings
+$base-font-size: 16px !default;
+// cannot have it like this 'Roboto', sans-serif   because when the variable expands it break var(-- reference
+$base-font-family: 'Roboto' !default;
+$base-bg-color: #ffffff !default;
+$base-fg-color: #000000 !default;
+$base-border-radius: 4px;
+//$base-progress-bar-color: $primary-color;
+$base-icon-font: 'Material Icons';
+$base-icon-font-size: 18px;
+
+// Top navigation bar settings
+$navbar-height: 50px !default;
+
+// Sidebar settings
+$sidebar-width: 230px;
+$sidebar-item-height: 40px !default;
+$sidebar-item-bg-color: #ffffff !default;
+
+$state-action-height: 40px;
+
+//Toolbar //
+$toolbar-bg-color: 246,247,247;
+$toolbar-item-color: 0, 0, 0;
+
+
+// Label settings
+$label-color: #000000 !default;
+$label-font-size: 1rem !default; // Related to base-font-size
+$label-line-height: 1.5;
+
+//Button settings
+$button-min-width: 32px;
+$button-height: 36px !default;
+
+// Input field settings
+$input-height: 36px !default;
+$input-bg: #ffffff !default;
+// $input-border-color: rgba(0,0,0,0.12) !default; ?
+
+// Data table settings
+$data-table-header-bg-color: #ffffff !default;
+$data-table-header-text-color: #212121 !default;
+$data-table-bg-color: #ffffff !default;
+$data-table-divider-color: rgba(0,0,0, 0.12) !default;
+$data-table-dividers: 1px solid $data-table-divider-color !default;
+$data-table-header-color: rgba(0,0,0, 0.54) !default;
+$data-table-hover-color: #eeeeee !default;
+$data-table-hover-color-dark: #dadada !default;
+$data-table-striped-color: #f8f8f8 !default;
+
+// Animation and transition settings
+$anim-duration-checkbox: 100ms;
+$anim-duration-switch: 100ms;
+$anim-duration-dialog-fadein: 150ms;
+$anim-duration-dialog-fadeout: 75ms;
+$anim-duration-sidebar-in: 250ms;
+$anim-duration-sidebar-out: 200ms;
+
+$easing-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+$easing-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+$easing-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
+
+// Deprecated
+$animation-curve-fast-out-slow-in: cubic-bezier(0.4, 0, 0.2, 1) !default;
+$animation-curve-linear-out-slow-in: cubic-bezier(0, 0, 0.2, 1) !default;
+$animation-curve-fast-out-linear-in: cubic-bezier(0.4, 0, 1, 1) !default;
+$animation-curve-default: $animation-curve-fast-out-slow-in !default;
+
+// Authentification page settings
+$auth-header-text-color: #fff;
+//$auth-header-bg-color: $primary-color;
+$auth-input-height: 44px !default;
+$auth-input-text-color: #838489 !default;
+

@@ -1,0 +1,30 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-textarea {
+  @include component-spacing();
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.tk-textarea__label {
+  margin-bottom: 2px;
+}
+
+.tk-textarea__native {
+  @include create-text-field(true);
+}
+
+.tk-textarea__native.resizable {
+  resize: vertical;
+}
+
+
+.tk-textarea__validation-state {
+  margin-top: 5px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.75rem;
+}

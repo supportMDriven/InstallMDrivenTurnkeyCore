@@ -1,0 +1,41 @@
+a.tk-link__native:not(.tk-button__native) {
+  &.primary {
+    @include color-declaration(color, $primary-color-dark, --primary-color-dark);
+
+    &:hover, &:focus {
+      @include color-declaration(background-color, $primary-color, --primary-color, true, 0.15);
+    }
+
+    & .ripple-container {
+      @include color-declaration(background-color, $primary-color, --primary-color, true, 0.30);
+    }
+  }
+
+  &.warning {
+    padding: 0 20px 0 8px;
+
+    @include color-declaration(color, $warning-color-dark, --warning-color-dark);
+
+    &:hover, &:focus {
+      @include color-declaration(background-color, $warning-color, --warning-color, true, 0.15);
+    }
+
+    & .ripple-container {
+      @include color-declaration(background-color, $warning-color, --warning-color, true, 0.30);
+    }
+  }
+
+  &.danger {
+    padding: 0 20px 0 8px;
+
+    @include color-declaration(color, $danger-color, --danger-color);
+
+    &:hover, &:focus {
+      @include color-declaration(background-color, $danger-color, --danger-color, true, 0.15);
+    }
+
+    & .ripple-container {
+      @include color-declaration(background-color, $danger-color, --danger-color, true, 0.30);
+    }
+  }
+}

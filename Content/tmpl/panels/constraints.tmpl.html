@@ -1,0 +1,52 @@
+<div class="n-tk-constraints" role="dialog" aria-label="Validation errors">
+  <div class="n-tk-constraints__header" ng-if="$ctrl.isMobileDevice">
+    <ng-pluralize count="$ctrl.errorCount" when="{'1': 'Issue', 'other': 'Issues'}"></ng-pluralize>
+    <tk-fab click-handler="$ctrl.close()" size="small" variant="text">
+      <tk-icon>close</tk-icon>
+    </tk-fab>
+  </div>
+  <div class="n-tk-constraints__wrapper">
+    <div class="n-tk-constraints__item error" ng-if="$ctrl.dataErrors.Errors.length > 0" role="">
+      <div class="n-tk-constraints__title">
+        <tk-icon>error</tk-icon>
+        <ng-pluralize count="$ctrl.dataErrors.Errors.length" when="{'1': 'Error', 'other': 'Errors'}"></ng-pluralize>
+      </div>
+      <div class="n-tk-constraints__list">
+        <div class="n-tk-constraints__message"
+          ng-repeat="error in $ctrl.dataErrors.Errors track by $index"
+          >
+            <tk-icon>radio_button_checked</tk-icon>
+            {{error}}
+        </div>
+      </div>
+    </div>
+    <div class="n-tk-constraints__item warning" ng-if="$ctrl.dataErrors.Warnings.length > 0">
+      <div class="n-tk-constraints__title">
+        <tk-icon>warning</tk-icon>
+        <ng-pluralize count="$ctrl.dataErrors.Warnings.length" when="{'1': 'Warning', 'other': 'Warnings'}"></ng-pluralize>
+      </div>
+      <div class="n-tk-constraints__list">
+        <div class="n-tk-constraints__message"
+          ng-repeat="warning in $ctrl.dataErrors.Warnings track by $index"
+          >
+            <tk-icon>radio_button_checked</tk-icon>
+            {{warning}}
+        </div>
+      </div>
+    </div>
+    <div class="n-tk-constraints__item info" ng-if="$ctrl.dataErrors.Infos.length > 0">
+      <div class="n-tk-constraints__title">
+        <tk-icon>info</tk-icon>
+        <ng-pluralize count="$ctrl.dataErrors.Infos.length" when="{'1': 'Info', 'other': 'Infos'}"></ng-pluralize>
+      </div>
+      <div class="n-tk-constraints__list">
+        <div class="n-tk-constraints__message"
+          ng-repeat="info in $ctrl.dataErrors.Infos track by $index"
+          >
+            <tk-icon>radio_button_checked</tk-icon>
+            {{info}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

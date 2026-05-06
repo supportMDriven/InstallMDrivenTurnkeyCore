@@ -1,0 +1,21 @@
+<div class="n-tk-debug-info__container">
+  <tk-fab click-handler="$ctrl.triggerVisibility()" 
+    label="Show debug menu" 
+    size="large"
+    class="n-tk-debug-info__trigger"
+    aria-pressed="$ctrl.visible"
+    aria-expanded="$ctrl.visible"
+    aria-controls="debug-menu-options">
+    <tk-icon>settings</tk-icon>
+  </tk-fab>
+  <div class="n-tk-debug-info__list" ng-class="$ctrl.visible ? 'visible' : ''" id="debug-menu-options" role="menu" aria-visible="{{$ctrl.visible}}">
+    <tk-fab ng-repeat="option in $ctrl.debugOptions" 
+      role="menuitem"
+      click-handler="option.action($event)" 
+      label="{{option.name}}"
+      class="n-tk-debug-info__action">
+      <tk-icon>{{option.icon}}</tk-icon>
+      <md-tooltip md-direction="left">{{option.name}}</md-tooltip>
+    </tk-fab>
+  </div>
+</div>

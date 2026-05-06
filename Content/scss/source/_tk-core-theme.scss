@@ -1,0 +1,38 @@
+@import "color-definitions";
+@import "mixins";
+@import "functions";
+
+// Base
+html, body {
+ font-size: $base-font-size !important;
+ font-size: var(--base-font-size, #{$base-font-size}) !important;
+}
+
+@import "generic/tk-layout-theme";
+
+// Imports
+@import "components/tk-spinner/tk-spinner-theme";
+@import "components/tk-button/tk-button-theme";
+@import "components/tk-checkbox/tk-checkbox-theme";
+@import "components/tk-switch/tk-switch-theme";
+@import "components/tk-navbar/tk-navbar-theme";
+@import "components/tk-sidebar/tk-sidebar-theme";
+@import "components/tk-actions/tk-actions-theme";
+@import "components/tk-dropdown/tk-dropdown-theme";
+@import "components/tk-text-field/tk-text-field-theme";
+@import "components/tk-number-field/tk-number-field-theme";
+@import "components/tk-float-field/tk-float-field-theme";
+@import "components/tk-textarea/tk-textarea-theme";
+@import "components/tk-static-text/tk-static-text-theme";
+@import "components/tk-modals/tk-modal-theme";
+@import "components/tk-select/tk-select-theme";
+@import "components/tk-file-upload/tk-file-upload-theme";
+@import "components/tk-link/tk-link-theme";
+@import "components/tk-image-upload/tk-image-upload-theme";
+@import "components/tk-datepicker/tk-datepicker-theme";
+@import "components/tk-timespan/tk-timespan-theme.scss";
+@import "components/tk-data-table/tk-data-table-theme";
+@import "components/tk-validation/tk-validation-theme";
+//@import "components/tk-developer-info/tk-developer-theme";
+@import "components/tk-progress-bar/tk-progress-bar-theme";
+@import "static/tk-static-theme";

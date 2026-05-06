@@ -1,0 +1,19 @@
+<div class="n-tk-switch__container">
+  <label for="{{$ctrl.id}}" class="n-tk-switch__surface">
+    <input type="checkbox" id="{{$ctrl.id}}" class="n-tk-switch__native" ng-model="$ctrl.ngModel">
+    <div class="n-tk-switch__interactive">
+      <div class="n-tk-switch__thumb">
+        <div class="n-tk-switch__circle"></div>
+        <div class="n-tk-switch__ripple-surface"></div>
+      </div>
+  
+    </div>
+    <div class="n-tk-switch__track"></div>
+  </label>
+  <label for="{{$ctrl.id}}" class="n-tk-switch__label">{{$ctrl.label}}</label>
+</div>
+<span ng-if="$ctrl.helpertext && !$ctrl.validationError" id="{{$ctrl.id}}.HelperText" class="n-tk-switch__helpertext">{{$ctrl.helpertext}}</span>
+<span ng-if="$ctrl.validationError" class="n-tk-switch__helpertext" id="{{$ctrl.id}}.ErrorMessage">
+  <tk-icon>error</tk-icon>
+  {{$ctrl.validationMessage}}
+</span>

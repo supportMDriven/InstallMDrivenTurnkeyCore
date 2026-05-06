@@ -1,0 +1,67 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-datepicker {
+  @include component-spacing();
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  font-family: var(--base-font-family, $base-font-family);
+}
+
+
+.tk-datepicker__label {
+  position: relative;
+  vertical-align: middle;
+  transition: color 200ms linear;
+
+  &::after {
+    content: '\e935';
+    margin-top: 2px;
+    margin-left: 5px;
+    display: inline-block;
+    font-family: $base-icon-font;
+    font-size: var(--label-font-size, 1rem);
+  }
+}
+
+.tk-datepicker__native {
+  padding: 8px;
+  display: block;
+  height: $input-height;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 300;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 0 2px rgba(0,0,0,0.12);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.12);
+  background-color: #ffffff;
+  transition: box-shadow 200ms $animation-curve-fast-out-linear-in, -webkit-box-shadow 200ms $animation-curve-fast-out-linear-in;
+
+  &:hover {
+    -webkit-box-shadow: 0 0 0 2px rgba(0,0,0, 0.6);
+    box-shadow: 0 0 0 2px rgba(0,0,0, 0.6);
+  }
+
+  &.dense {
+    height: 28px;
+    font-size: 0.85rem;
+  }
+}
+
+.tk-datepicker__validation-state {
+  margin-top: 5px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.75rem;
+}

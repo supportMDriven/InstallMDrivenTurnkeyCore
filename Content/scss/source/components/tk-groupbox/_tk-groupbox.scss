@@ -1,0 +1,26 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-groupbox {
+
+}
+
+
+.tk-groupbox.card {
+  background-color: #fff;
+  border: 1px solid #EAEAEA;
+  padding: 16px 24px;
+  width: 100%;
+  border-radius: 4px;
+  position: relative;
+}
+
+.tk-groupbox__header {
+   font-size: 1.1rem;
+   font-weight: 500;
+}
+
+.tk-groupbox__content {
+
+}

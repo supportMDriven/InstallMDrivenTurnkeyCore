@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <notActive>
+    <MDrivenServerOverride MDrivenServerPWD="someOtherpwd">https://SOMETURNOTHERKEYSITE.azurewebsites.net/__MDrivenServer</MDrivenServerOverride>
+  </notActive>
+  <!-- root/MDrivenServerOverride tag will be used by the Turnkey web app to find the MDrivenServer - you can use this file to debug and develop
+  your Turnkey app. This file must be  App_Data/MDrivenServerOverride.xml -->
+  
+
+  <!-- NEW!!! You can also debug a local website directly from a modlr file:   
+      <MDrivenServerOverride PrototypeWithMDrivenDesignerInPath="C:\yourfile.modlr" CopyAssetsTKOnStart="True or False"></MDrivenServerOverride>
+      CopyAssetsTKOnStart==True -> AssetsTK will be copied from next to model file into Turnkey-application
+      CopyAssetsTKOnStart==False -> AssetsTK will NOT be copied - this is a good option if you develop/change components in the Turnkey-application and you do not want them overriden by Assets files
+      ExternalAssetsTK="path" -> AssetsTK taken from other location (only when PrototypeWithMDrivenDesignerInPath in effect)
+      
+  -->
+  
+  
+  <MDrivenServerOverride MDrivenServerPWD="somepwd">https://SOMETURNKEYSITE.azurewebsites.net/__MDrivenServer</MDrivenServerOverride>
+</root>

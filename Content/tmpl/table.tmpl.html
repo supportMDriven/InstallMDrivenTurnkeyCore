@@ -1,0 +1,8 @@
+﻿<div class="n-tk-table__header">
+  <label ng-if="$ctrl.label">{{$ctrl.label}}</label>
+  <button class="n-tk-button n-tk-button--fab text mini" ng-click="$ctrl.showActionsForTable($event)" ng-if="!$ctrl.isMobileDevice" ripple>
+    <span class="sr-only">Table actions</span>
+    <tk-icon icon="more_vert"></tk-icon>
+  </button>
+</div>
+<div class="n-tk-table__container" ng-transclude></div>
