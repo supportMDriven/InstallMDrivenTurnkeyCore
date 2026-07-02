@@ -1,0 +1,86 @@
+.navbar {
+  min-height: $navbar-height;
+  min-height: var(--navbar-height, #{$navbar-height});
+
+  @include color-declaration(background-color, $navbar-bg-color, --navbar-bg-color);
+}
+
+.navbar__toggle {
+  &:hover,
+  &:focus:not(:active){
+    @include color-declaration(background-color, $navbar-link-color, --navbar-link-color, true, 0.1);
+  }
+
+  & .ripple-container {
+    @include color-declaration(background-color, $navbar-link-color, --navbar-link-color, true, 0.25);
+  }
+}
+
+.navbar__toggle {
+  @include color-declaration(color, $navbar-link-color, --navbar-link-color);
+}
+
+
+.navbar__toggle .icon-bar {
+  @include color-declaration(background-color, $navbar-link-color, --navbar-link-color);
+}
+
+.navbar__toggle--sidebar {
+  .icon-bar {
+    @include color-declaration(background-color, $primary-color, --primary-color);
+  }
+}
+
+.navbar__brand {
+  @include color-declaration(color, $navbar-brand-color, --navbar-brand-color);
+}
+
+.navbar__link {
+  @include color-declaration(color, $navbar-link-color, --navbar-link-color);
+
+  &:hover {
+    @include color-declaration(background-color, $navbar-link-color, --navbar-link-color, true, 0.1);
+  }
+
+  &:focus:not(:active) {
+    @include color-declaration(background-color, $navbar-link-color, --navbar-link-color, true, 0.1);
+  }
+
+  &:active {
+    @include color-declaration(background-color, $navbar-link-color, --navbar-link-color, true, 0.25);
+  }
+
+  & .mi {
+    @include color-declaration(color, $navbar-link-color, --navbar-link-color);
+  }
+}
+
+.navbar__link--colored {
+  @include color-declaration(background-color, $primary-color, --primary-color);
+  @include color-declaration(color, $text-on-primary, --text-on-primary);
+
+  &:hover,
+  &:focus:not(:active) {
+    @include color-declaration(background-color, $primary-color-dark, --primary-color-dark);
+  }
+
+  & .mi {
+    @include color-declaration(color, $text-on-primary, --text-on-primary);
+  }
+
+  @media only screen and (max-width: 768px) {
+    background: none;
+
+    @include color-declaration(color, $navbar-link-color, --navbar-link-color);
+
+
+    &:hover,
+    &:focus:not(:active) {
+      background-color: rgba(255,255,255, 0.1);
+    }
+
+    & .mi {
+      @include color-declaration(color, $navbar-link-color, --navbar-link-color);
+    }
+  }
+}

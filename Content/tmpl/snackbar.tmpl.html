@@ -1,0 +1,10 @@
+﻿<div class="n-tk-snackbar__surface">
+  <div class="n-tk-snackbar__label" role="status" aria-live="polite">
+    <tk-icon ng-if="$ctrl.notification.icon">{{$ctrl.notification.icon}}</tk-icon>
+    {{$ctrl.notification.text}}
+  </div>
+  <div class="n-tk-snackbar__actions">
+    <tk-button ng-if="$ctrl.notification.actions" ng-repeat="action in $ctrl.notification.actions" class="n-tk-snackbar__actions" variant="text" on-click="action.fn($event)">{{action.actionName}}</tk-button>
+    <tk-fab on-click="$ctrl.dismiss($event)" ng-show="$ctrl.notification.dismissable" variant="text" label="Dismiss notification"><tk-icon>close</tk-icon></tk-fab>
+  </div>
+</div>

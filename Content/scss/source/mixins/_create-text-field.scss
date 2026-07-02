@@ -1,0 +1,54 @@
+@mixin create-text-field($isTextarea: false) {
+  margin: 0;
+  padding: 6px 8px 7px 8px;
+  display: block;
+  width: 100%;
+  min-width: 64px;
+
+  @if $isTextarea {
+    height: 100%;
+  }
+  @else {
+    height: $input-height;
+  }
+
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.009375em;
+  color: #000;
+  background-color: #fff;
+  border-radius: $base-border-radius;
+  border-radius: var(--base-border-radius, #{$base-border-radius});
+  outline: 0;
+  transition: box-shadow 200ms $animation-curve-fast-out-linear-in;
+  -webkit-box-shadow: 0 0 0 2px rgba(0,0,0,0.12);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.12);
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+
+  @if $isTextarea {
+    border: 0;
+    resize: none;
+  }
+
+  &:hover {
+    -webkit-box-shadow: 0 0 0 2px rgba(0,0,0,0.6);
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.6);
+  }
+
+  &[readonly] {
+    -webkit-box-shadow: 0 0 0 2px rgba(0,0,0,0.57);
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.57);
+    font-weight: 500;
+    background-color: rgba(0,0,0, 0.025);
+  }
+
+  &:disabled {
+    color: rgba(0,0,0,.37);
+    background: #f8f8f8;
+    -webkit-box-shadow: 0 0 0 2px rgba(0,0,0,0.12);
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.12);
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,23 @@
+﻿@using MDriven.ASPNETIdentity
+@using Microsoft.AspNetCore.Identity
+@using MDriven.ASPNETIdentity.core
+@model ExternalLoginListViewModel
+@inject SignInManager<SysUserAdaptor> SignInManager
+
+@{
+    var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+    if (loginProviders.Count() != 0)
+    {
+      <span class="tk-auth__divider @(ViewBag.HidePasswordLogin ? "hidden" : "")">or</span>
+      <div class="tk-auth-social">
+        @using (Html.BeginForm(Model.Action, "Account", new { ReturnUrl = Model.ReturnUrl, RememberMe = Model.RememberMe }, FormMethod.Post,true, new { @class = "tk-auth-social__form" }))
+        {
+            @Html.AntiForgeryToken()
+            foreach (var p in loginProviders)
+            {
+                <button class="tk-auth-social__item @p.Name.ToLower() ripple-effect" id="@p.Name" name="provider" value="@p.Name" title="Log in using your @p.DisplayName account.">Log in</button>
+            }
+        }
+      </div>
+    }
+}

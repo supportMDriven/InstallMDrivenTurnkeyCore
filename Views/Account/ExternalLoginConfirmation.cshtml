@@ -1,0 +1,35 @@
+﻿@model MDriven.ASPNETIdentity.ExternalLoginConfirmationViewModel
+@{
+  ViewBag.Title = "Register";
+}
+
+<div class="tk-auth">
+  <div class="tk-auth__inner">
+    <div class="tk-auth__content">
+      <h1 class="tk-auth__header h1">@ViewBag.Title</h1>
+      <p class="tk-auth__header h4">Associate your <strong>@ViewBag.LoginProvider</strong> account.</p>
+    @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post,true, new { role = "form" }))
+      {
+        @Html.AntiForgeryToken()
+        <p class="tk-auth__caption">
+          You've successfully authenticated with <strong>@ViewBag.LoginProvider</strong>.
+          Please enter a user name for this site below and click the Register button to finish
+          logging in.
+        </p>
+        if (Model.AllowUserToChooseSocialLoginEmail)
+        {
+          @Html.TextBoxFor(m => m.Email, new { @class = "tk-auth-form__input confirmation" })
+          @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        }
+        else
+        {
+          @Html.TextBoxFor(m => m.Email, new { @class = "tk-auth-form__input confirmation", @readonly = "readonly" })
+        }
+        <button type="submit" role="button" class="tk-button__native narrow primary pull-right ripple-effect">
+          <span>Register</span>
+        </button>
+      } 
+    </div>
+  </div>
+</div>
+

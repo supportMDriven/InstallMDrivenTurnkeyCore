@@ -1,0 +1,154 @@
+/// <reference path="../_color-definitions.scss" />
+/// <reference path="../_variables.scss" />
+/// <reference path="../_mixins.scss" />
+
+.tk-auth-form {
+  padding: 10px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  font-family: var(--base-font-family, $base-font-family);
+}
+
+.tk-auth-form__group {
+  margin-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+
+  & + .tk-auth-form__group {
+    margin-top: 20px;
+  }
+
+
+  &.inline {
+    margin-top: 30px;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+
+  & button.tk-button__native {
+    padding: 0 16px;
+    font-size: 1rem;
+    -webkit-box-ordinal-group: 3;
+    -ms-flex-order: 2;
+    order: 2;
+
+    @media only screen and (min-width: 768px) {
+      -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+      order: 1;
+    }
+  }
+}
+
+.tk-auth-form__label {
+  font-size: 0;
+  visibility: hidden;
+}
+
+.tk-auth-form__input {
+  padding: 0 8px;
+  display: block;
+  height: $auth-input-height;
+  font-size: 1rem;
+;
+  color: $auth-input-text-color;
+  border-radius: 4px;
+  background: #ebeaf1;
+  -webkit-box-shadow: 0 0 0 0.15em transparent;
+  box-shadow: 0 0 0 0.15em transparent;
+  -webkit-transition: -webkit-box-shadow 200ms $animation-curve-linear-out-slow-in;
+  transition: -webkit-box-shadow 200ms $animation-curve-linear-out-slow-in;
+  -o-transition: box-shadow 200ms $animation-curve-linear-out-slow-in;
+  transition: box-shadow 200ms $animation-curve-linear-out-slow-in;
+  transition: box-shadow 200ms $animation-curve-linear-out-slow-in, -webkit-box-shadow 200ms $animation-curve-linear-out-slow-in;
+
+  &::-webkit-input-placeholder {
+    font-weight: 500;
+  }
+
+  &:-ms-input-placeholder {
+    font-weight: 500;
+  }
+
+  &::-ms-input-placeholder {
+    font-weight: 500;
+  }
+
+  &::placeholder {
+    font-weight: 500;
+  }
+
+  &:not(.input-validation-error):focus {
+    //-webkit-box-shadow: 0 0 2px 0.15em rgba($primary-color, 0.5);
+    //box-shadow: 0 0 2px 0.15em rgba($primary-color, 0.5);
+  }
+
+  &.confirmation {
+    margin: 10px 0;
+    width: 100%;
+  }
+}
+
+
+// On validation error
+.tk-auth-form__input.input-validation-error {
+  //-webkit-box-shadow: 0 0 0 0.15em $color-danger;
+  //box-shadow: 0 0 0 0.15em $color-danger;
+}
+
+.tk-auth-form__group span {
+  -webkit-transition: opacity 200ms $animation-curve-linear-out-slow-in;
+  -o-transition: opacity 200ms $animation-curve-linear-out-slow-in;
+  transition: opacity 200ms $animation-curve-linear-out-slow-in;
+}
+
+span.field-validation-valid {
+  opacity: 0;
+}
+
+span.field-validation-error {
+  margin-top: 5px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  //color: $color-danger;
+  opacity: 1;
+}
+
+
+.tk-auth-form__checkbox {
+  position: relative;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-ordinal-group: 2;
+  -ms-flex-order: 1;
+  order: 1;
+
+  & label {
+    display: inline-block;
+    vertical-align: middle;
+    color: #838489;
+    font-size: 0.875rem;
+  }
+
+  @media only screen and (min-width: 768px) {
+    -webkit-box-ordinal-group: 3;
+    -ms-flex-order: 2;
+    order: 2;
+  }
+}

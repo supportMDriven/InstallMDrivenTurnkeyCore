@@ -1,0 +1,177 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+/*.tk-progress-bar {
+  position: absolute;
+
+  top: $navbar-height;
+  left: 0;
+
+  width: 100%;
+  height: 5px;
+
+  background: #e6e6e6;
+
+  overflow: hidden;
+  z-index: 90;
+
+  opacity: 1;
+
+  animation: start 1s ease-in;
+  transition: opacity 200ms linear;
+
+  &.ng-hide {
+    opacity: 0;
+  }
+}
+
+.tk-progress-bar__indeterminate {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    animation-name: fill-first;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: $animation-curve-fast-out-slow-in;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    animation-name: fill-second;
+    animation-delay: 1.5s;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+}
+
+@keyframes fill-first{
+  0% {
+    left: -100%;
+    width: 100%;
+  }
+  100% {
+    left: 100%;
+    width: 30%;
+  }
+}
+
+@keyframes fill-second {
+  0% {
+    left: -100%;
+    width: 100%;
+  }
+  100% {
+    left: 100%;
+    width: 30%;
+  }
+}
+*/
+
+.tk-progress-bar {
+  padding: 10px 25px;
+  position: fixed;
+  bottom: 30px;
+  right: 0;
+  transform: translateX(-30px);
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 200px;
+  height: 40px;
+  background: #333;
+  border-radius: 4px;
+  box-shadow: 0 3px 5px -1px rgb(0 0 0 / 20%), 0 6px 10px 0 rgb(0 0 0 / 14%), 0 1px 18px 0 rgb(0 0 0 / 12%);
+  transition: all 200ms linear;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.065rem;
+
+  color: #fff;
+  /* &.in {
+    opacity: 1;
+    right: 30px;
+  }
+
+  &.out {
+    opacity: 0;
+    right: -100%;
+  }*/
+
+  & svg path {
+    fill: #fff;
+  }
+}
+
+.tk-snackbar {
+  margin: 8px;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: none;
+
+  box-sizing: border-box;
+
+  &--open {
+    display: flex;
+  }
+
+  &--centered {
+    justify-content: center;
+  }
+
+  &--trailing {
+    justify-content: flex-end;
+  }
+}
+
+.tk-snackbar__surface {
+  padding-right: 16px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  min-width: 200px;
+
+  transform: scale(0.8);
+  opacity: 0;
+  background: #333;
+  border-radius: 4px;
+
+  & svg path {
+    fill: #fff;
+  }
+}
+
+.tk-snackbar--open .tk-snackbar__surface {
+  transform: scale(1);
+  opacity: 1;
+  transition: opacity .15s cubic-bezier(0,0,.2,1) 0ms,transform .15s cubic-bezier(0,0,.2,1) 0ms,-webkit-transform .15s cubic-bezier(0,0,.2,1) 0ms;
+}
+
+.tk-snackbar__label {
+  margin: 0;
+  padding: 14px 16px;
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--base-font-family);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: .0178571429em;
+  color: #fff;
+}
+
+

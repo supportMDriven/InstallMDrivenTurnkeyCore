@@ -1,0 +1,28 @@
+#sidebar {
+  @include color-declaration(background-color, $sidebar-bg-color, --sidebar-bg-color);
+}
+
+.tk-sidebar__group-header,
+.tk-sidebar__subgroup-header {
+  @include color-declaration(color, $sidebar-item-text-color, --sidebar-item-text-color);
+}
+
+
+.tk-sidebar__item {
+  height: $sidebar-item-height;
+  height: var(--sidebar-item-height, #{$sidebar-item-height});
+
+  @include color-declaration(color, $sidebar-item-text-color, --sidebar-item-text-color);
+
+  background: transparent;
+
+  &:hover,
+  &:focus {
+    @include color-declaration(color, $primary-color, --primary-color);
+    @include color-declaration(background-color, $primary-color, --primary-color, true, 0.2);
+  }
+
+  & .ripple-container {
+    @include color-declaration(background-color, $primary-color, --primary-color, true, 0.20);
+  }
+}

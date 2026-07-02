@@ -1,0 +1,9 @@
+/* 
+    When providing you own styles the tkusercss.css is your starting point
+    Consider to use @import to segment styles
+    @import "assets/css/newstyle.css";
+
+    Video intro: https://wiki.mdriven.net/index.php/MDriven_turnkey_Face_-_theme_-_styles_-_fashion
+
+    Note that styles for EXT_Components will load depending on their own rules - and do not need to be mentioned here
+*/

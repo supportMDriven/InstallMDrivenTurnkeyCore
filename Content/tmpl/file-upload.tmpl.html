@@ -1,0 +1,13 @@
+<label ng-if="$ctrl.label" for="{{$ctrl.id}}" class="n-tk-file-upload__label">{{$ctrl.label}}</label>
+<div class="n-tk-file-upload__container">
+  <input type="file" id="{{$ctrl.id}}" class="n-tk-file-upload__input" ng-disabled="$ctrl.ngReadonly">
+  <tk-button 
+    on-click="$ctrl.triggerUpload()"
+    icon-end="{{$ctrl.icon}}"
+    icon-show-exp="!$ctrl.uploadProgress > 0"
+    variant="contained"
+    ng-disabled="$ctrl.ngReadonly">
+      {{$ctrl.label}}
+      <md-progress-circular ng-show="$ctrl.uploadProgress > 0" value="{{$ctrl.uploadProgress}}" md-mode="determinate" md-diameter="16"></md-progress-circular>
+    </tk-button>
+</div>

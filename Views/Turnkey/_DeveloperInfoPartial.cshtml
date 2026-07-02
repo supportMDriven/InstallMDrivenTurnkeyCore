@@ -1,0 +1,48 @@
+﻿<div class="n-tk-debug-menu closed" ng-class="debugMenuIsOpen ? 'open' : 'closed'">
+  <ul class="n-tk-debug-menu__list">
+    <li class="n-tk-debug-menu__item">
+      <button type="button" class="n-tk-button n-tk-button--fab xs" ng-click="controller.navigateToServerInfo($event)">
+        <md-tooltip md-direction="left">
+          Server information
+        </md-tooltip>
+        <tk-icon icon="dns"></tk-icon>
+      </button>
+    </li>
+    <li class="n-tk-debug-menu__item">
+      <button type="button" class="n-tk-button n-tk-button--fab xs" ng-click="controller.navigateToDevelopment($event);">
+        <md-tooltip md-direction="left">Open Turnkey development page</md-tooltip>
+        <span class="sr-only">Development page</span>
+        <tk-icon icon="developer_mode"></tk-icon>
+      </button>
+    </li>
+    <li class="n-tk-debug-menu__item">
+      <button type="button" class="n-tk-button n-tk-button--fab xs" ng-click="controller.navigateToDebug($event);">
+        <md-tooltip md-direction="left">Open debug page of the current view</md-tooltip>
+        <span class="sr-only">Debug page</span>
+        <tk-icon icon="data_object"></tk-icon>
+      </button>
+    </li>
+    <li class="n-tk-debug-menu__item">
+      <button type="button" class="n-tk-button n-tk-button--fab xs" ng-click="controller.openAppInfo($event);">
+        <md-tooltip md-direction="left">Show detailed application information</md-tooltip>
+        <span class="sr-only">Application info</span>
+        <tk-icon icon="info"></tk-icon>
+      </button>
+    </li>
+    <li class="n-tk-debug-menu__item">
+      <button type="button" class="n-tk-button n-tk-button--fab xs" ng-click="controller.resetServer();">
+        <md-tooltip md-direction="left">Reset server</md-tooltip>
+        <span class="sr-only">Reset server</span>
+        <tk-icon icon="restart_alt"></tk-icon>
+      </button>
+    </li>
+  </ul>
+  <button type="button" 
+          ng-click="debugMenuIsOpen = !debugMenuIsOpen" 
+          class="n-tk-button n-tk-button--fab n-tk-debug-menu__trigger"
+          aria-haspopup="true">
+    <md-tooltip md-direction="left">Click to open debug menu</md-tooltip>
+    <span class="sr-only">{{debugMenuIsOpen ? 'Click to hide debug menu' : 'Click to open debug menu'}}</span>
+    <tk-icon icon="settings"></tk-icon>
+  </button>
+</div>

@@ -1,0 +1,24 @@
+<label ng-show="$ctrl.label" for="{{$ctrl.id}}" class="n-tk-select__label">{{$ctrl.label}}</label>
+<div class="n-tk-select__container">
+  <md-select 
+    ng-model="$ctrl.ngModel"
+    ng-disabled="$ctrl.ngReadonly"
+    ng-class="$ctrl.ngClass"
+    ng-model-options="{updateOn: 'default blur', debounce: {default: 0, blur: 0}}"
+    id="{{$ctrl.id}}"
+    placeholder="{{$ctrl.placeholder}}"
+    class="md-no-underline">
+      <md-option
+        ng-repeat="option in $ctrl.options"
+        ng-value="option.VMClassId.VMObjectId">
+          {{option[$ctrl.labelExp]}}
+      </md-option>
+  </md-select>
+</div>
+<span ng-if="$ctrl.helpertext && !$ctrl.validationError" id="{{$ctrl.id}}.HelperText" class="n-tk-select__helpertext">{{$ctrl.helpertext}}</span>
+<span ng-if="$ctrl.validationError" 
+  class="n-tk-select__helpertext" 
+  id="{{$ctrl.id}}.ErrorMessage">
+  <tk-icon>error</tk-icon>
+  {{$ctrl.validationMessage}}
+</span>

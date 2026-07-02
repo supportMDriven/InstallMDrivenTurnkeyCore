@@ -1,0 +1,39 @@
+
+#bodyWrapper {
+    -ms-grid-rows: $navbar-height auto;
+    grid-template-rows: $navbar-height auto;
+    grid-template-rows: var(--navbar-height, #{$navbar-height}) auto;
+}
+
+#contentWrapper {
+  height: calc(100vh - #{$navbar-height});
+  height: calc(100vh - var(--navbar-height, #{$navbar-height}));
+}
+
+#contentWrapper.actions-visible #viewmodelSection {
+  @media only screen and (max-width: 767px) {
+    height: calc(100vh - #{$navbar-height});
+    height: calc(100vh - var(--navbar-height, #{$navbar-height}));
+  }
+}
+
+#sidebar {
+  height: calc(100vh - #{$navbar-height});
+  height: calc(100vh - var(--navbar-height, #{$navbar-height}));
+
+    @media only screen and (max-width: 767px) {
+      height: 100vh;
+    }
+}
+
+#contentWrapper.mvc-rendered #viewmodelWrapper {
+  height: calc(100vh - #{$navbar-height});
+  height: calc(100vh - var(--navbar-height, #{$navbar-height}));
+}
+
+#viewmodelWrapper {
+  height: calc(100vh - #{$navbar-height});
+  height: calc(100vh - var(--navbar-height, #{$navbar-height}));
+}
+
+

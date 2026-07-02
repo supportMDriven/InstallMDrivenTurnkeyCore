@@ -1,0 +1,21 @@
+<label class="n-tk-datepicker__label" id="{{$ctrl.id}}.Label" ng-if="$ctrl.label">{{$ctrl.label}}</label>
+<div class="n-tk-datepicker__container">
+  <input class="n-tk-datepicker__input" 
+    type="{{$ctrl.type ? $ctrl.type : 'date'}}" 
+    id="${{$ctrl.id}}"
+    aria-labelledby="{{$ctrl.id}}.Label" 
+    ng-model="$ctrl.ngModel" 
+    ng-readonly="$ctrl.ngReadonly"
+    ng-class="$ctrl.ngClass" />
+</div>
+<span ng-if="$ctrl.helpertext && !$ctrl.validationError"
+  class="n-tk-datepicker__helpertext"
+  id="{{$ctrl.id}}.HelperText">
+  {{$ctrl.helpertext}}
+</span>
+<span ng-if="$ctrl.validationError"
+  class="n-tk-datepicker__helpertext"
+  id="{{$ctrl.id}}.ErrorText">
+  <tk-icon>error</tk-icon>
+  {{$ctrl.validationMessage}}
+</span>

@@ -1,0 +1,36 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+// Parent element
+.tk-text-field {
+  @include component-spacing();
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+
+// Element label
+.tk-text-field__label {
+  margin-bottom: 2px;
+}
+
+
+//Element control
+.tk-text-field__native {
+  @include create-text-field;
+}
+
+.tk-text-field__native.dense {
+  height: 28px;
+  font-size: 0.85rem;
+}
+
+.tk-text-field__validation-state {
+  margin-top: 5px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.75rem;
+}
+

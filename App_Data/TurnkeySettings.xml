@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <ApplicationName>Local Core Turnkey</ApplicationName>
+  <MDrivenServerUser>a</MDrivenServerUser><!--this is always "a"-->
+  <MDrivenServerPWD>notneeded</MDrivenServerPWD>
+  <LicenseToken>Local</LicenseToken>
+  <ShowDebugInfo>True</ShowDebugInfo>
+
+  <UseCSSGridByDefault>True</UseCSSGridByDefault>
+  <AdvancedTables>true</AdvancedTables>
+
+  <doc>read info on openid https://wiki.mdriven.net/index.php/OpenID_config</doc>
+
+<!-- Consider putting your own unique setting in the https://wiki.mdriven.net/index.php/TurnkeySettings#TurnkeySettingsExtra.xml to avoid it from being overwritten by a new install -->
+
+ <!-- <OpenID_ClientId>yourid</OpenID_ClientId>
+  <OpenID_Authority>youridpserver</OpenID_Authority>
+  <OpenIDConnectRedirectUrl>https://YourTurnkeyURL/signin-oidc</OpenIDConnectRedirectUrl>
+  <OpenIDConnectResponseType>code id_token</OpenIDConnectResponseType>
+  <OpenIDConnectAppSecret>AppSecret</OpenIDConnectAppSecret>
+  
+  <OpenID_TokenEndPoint>yourserverTokenEndpointUsuallyEndsLikeThis/oauth2/v2.0/token</OpenID_TokenEndPoint>  newly added, needed to get access_token and refresh_token from AzureAD login
+  <OpenIDConnectScope>offline_access openid profile</OpenIDConnectScope>  offline_access must be there for AzureAD to give you the refresh_token 
+  <SharedSecret>Secret</SharedSecret>   this will be used to Encrypt tokens stored in the db (SysToken)
+  -->
+
+
+</root>

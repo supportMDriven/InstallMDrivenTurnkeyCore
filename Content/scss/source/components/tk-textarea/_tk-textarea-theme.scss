@@ -1,0 +1,25 @@
+.tk-textarea__native:focus {
+  box-shadow: 0 0 0 2px unquote('rgba(#{$primary-color}, 0.6)');
+  box-shadow: 0 0 0 2px unquote('rgba(var(--primary-color, #{$primary-color}), 0.6)');
+}
+
+.tk-textarea.has-error {
+
+  .tk-textarea__label {
+    @include color-declaration(color, $danger-color, --danger-color);
+  }
+
+  .tk-textarea__native {
+    box-shadow: 0 0 0 2px unquote('rgb(#{$danger-color})');
+    box-shadow: 0 0 0 2px unquote('rgb(var(--danger-color, #{$danger-color}))');
+
+    &:hover, &:active, &:focus {
+      box-shadow: 0 0 0 2px unquote('rgb(#{$danger-color})');
+      box-shadow: 0 0 0 2px unquote('rgb(var(--danger-color, #{$danger-color}))');
+    }
+  }
+}
+
+.tk-textarea__validation-state {
+  @include color-declaration(color, $danger-color, --danger-color);
+}

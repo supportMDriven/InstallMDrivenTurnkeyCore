@@ -1,0 +1,38 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-float-field {
+  @include component-spacing();
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.tk-float-field__label {
+  margin-bottom: 2px;
+}
+
+.tk-float-field__native {
+  @include create-text-field;
+
+  &.is-focused {
+    text-align: left;
+  }
+
+  &.dense {
+    height: 28px;
+    font-size: 0.85rem;
+  }
+
+  &::placeholder {
+    text-align: left;
+  }
+}
+
+.tk-float-field__validation-state {
+  margin-top: 5px;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.75rem;
+}

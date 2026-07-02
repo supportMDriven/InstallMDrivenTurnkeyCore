@@ -1,0 +1,81 @@
+.tk-state-action.save-action:not(:disabled) {
+  @include color-declaration(color, $save-action-text-color, --save-action-text-color);
+  @include color-declaration(background-color, $save-action-bg-color, --save-action-bg-color);
+
+  &:hover,
+  &:focus,
+  &:active {
+    @include color-declaration(background-color, $save-action-bg-color-dark, --save-action-bg-color-dark);
+  }
+
+  .ripple-container {
+    @include color-declaration(background-color, $save-action-text-color, --save-action-text-color, true, 0.30);
+  }
+}
+
+.tk-state-action.update-action:not(:disabled) {
+  @include color-declaration(color, $action-update-color, --save-action-text-color);
+  @include color-declaration(background-color, $action-update-color, --save-action-bg-color);
+
+  &:hover,
+  &:focus,
+  &:active {
+    @include color-declaration(background-color, $action-update-color-dark, --save-action-bg-color-dark);
+  }
+
+  .ripple-container {
+    @include color-declaration(background-color, $action-update-color, --save-action-text-color, true, 0.30);
+  }
+}
+
+.tk-state-action.cancel-action:not(:disabled) {
+  @include color-declaration(color, $cancel-action-text-color, --cancel-action-text-color);
+  @include color-declaration(background-color, $cancel-action-bg-color, --cancel-action-bg-color);
+
+  &:hover,
+  &:focus,
+  &:active {
+    @include color-declaration(background-color, $cancel-action-bg-color-dark, --cancel-action-bg-color-dark);
+  }
+
+  .ripple-container {
+    @include color-declaration(background-color, $cancel-action-text-color, --cancel-action-text-color, true, 0.30);
+  }
+}
+
+.tk-state-action.undo-action:not(:disabled) {
+  @include color-declaration(color, $undo-action-text-color, --undo-action-text-color);
+  @include color-declaration(background-color, $undo-action-bg-color, --undo-action-bg-color);
+
+  &:hover,
+  &:focus,
+  &:active {
+    @include color-declaration(background-color, $undo-action-bg-color-dark, --undo-action-bg-color-dark);
+  }
+
+  .ripple-container {
+    @include color-declaration(background-color, $undo-action-text-color, --undo-action-text-color, true, 0.30);
+  }
+}
+
+.tk-state-action.redo-action:not(:disabled) {
+  @include color-declaration(color, $redo-action-text-color, --redo-action-text-color);
+  @include color-declaration(background-color, $redo-action-bg-color, --redo-action-bg-color);
+
+  &:hover,
+  &:focus,
+  &:active {
+    @include color-declaration(background-color, $redo-action-bg-color-dark, --redo-action-bg-color-dark);
+  }
+
+  .ripple-container {
+    @include color-declaration(background-color, $redo-action-text-color, --redo-action-text-color, true, 0.30);
+  }
+}
+
+
+
+
+
+
+

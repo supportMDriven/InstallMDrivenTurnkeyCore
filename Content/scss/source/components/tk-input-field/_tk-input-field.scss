@@ -1,0 +1,248 @@
+﻿// New component (replacing tk-text-field, tk-number-field, tk-float-field, tk-datepicker, tk-timespan)
+.tk-input-field {
+  padding-left: 0.3125rem;
+  padding-right: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  &--no-label {
+    padding-top: 1.5rem;
+    padding-left: 0.3125rem;
+    padding-right: 0.3125rem;
+    padding-bottom: 0.3125rem;
+  }
+}
+
+// Modifiers
+.tk-input-field--datepicker {
+  & .tk-input-field__container {
+    //width: unset;  Why datetime picker single out to not be 100%?!
+  }
+
+  & .tk-input-field__native {
+    //width: unset;  Why datetime picker single out to not be 100%?!
+  }
+}
+
+.tk-input-field--timespan {
+  & .tk-input-field__container {
+    width: unset;
+  }
+
+  & .tk-input-field__native {
+    width: unset;
+  }
+}
+
+.tk-input-field--textarea .tk-input-field__container,
+.tk-input-field--textarea .tk-input-field__native {
+  height: 100%;
+}
+
+.tk-input-field__label {
+  padding-left: 0.62rem;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--base-font-family,'Roboto'), sans-serif;
+  font-size: var(--label-font-size, 1rem);
+  font-weight: 500;
+  letter-spacing: .009375em;
+  white-space: nowrap;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+.tk-input-field__label--with-trailing-icon {
+  .tk-lable__text {
+    order: 1;
+  }
+
+  .tk-input-field__icon {
+    margin-left: 4px;
+    order: 2;
+  }
+}
+
+.tk-input-field__label--with-leading-icon {
+  .tk-label__text {
+    order: 2;
+  }
+
+  .tk-input-field__icon {
+    margin-right: 4px;
+    order: 1;
+  }
+}
+
+// Container which holds input with additional elements
+.tk-input-field__container {
+  position: relative;
+  width: 100%;
+  // Set for smooth presentation of validation error
+  &::after {
+    opacity: 0;
+    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+.tk-input-field__native {
+  padding: 0.562rem 0.62rem;
+  display: block;
+  width: 100%;
+  font-family: var(--base-font-family,'Roboto'), sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000;
+  letter-spacing: .009375em;
+  text-align: left;
+  border: 2px solid rgb(224, 224, 224);
+  border-radius: var(--input-border-radius, 4px);
+  outline: 0;
+  transition: border-color 150ms linear;
+  caret-color: var(--primary-color, rgba(0,0,0,.87));
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+
+  &::placeholder {
+    text-align: left;
+  }
+
+  &:hover {
+    border-color: rgba(0,0,0,.87);
+    cursor: pointer;
+  }
+
+  &:not(textarea) {
+    height: 2.5rem;
+  }
+
+  &:focus {
+    cursor: auto;
+    border-color: unquote('rgb(var(--primary-color, 245,156,26))');
+  }
+  // To-do: Add outline for accesability
+  &:focus-visible {
+  }
+
+  &:read-only,
+  &[readonly] {
+    color: rgb(121,121,121);
+    border-color: rgb(224, 224, 224);
+    cursor: auto;
+
+    & ~ .tk-input-field__helper {
+      color: rgb(102, 102, 102);
+    }
+  }
+}
+
+.numeric .tk-input-field__native {
+  text-align: right;
+}
+
+
+
+textarea.tk-input-field__native:read-only {
+  resize: none;
+}
+
+.tk-input-field__helper {
+  padding-left: 0.62rem;
+  padding-right: 0.62rem;
+  display: block;
+  font-family: var(--base-font-family);
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: .0333333333em;
+  color: rgb(121,121,121);
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+.has-error .tk-input-field__native {
+  padding-right: 2.37rem;
+  border-color: rgb(176, 0, 32);
+  caret-color: rgb(176, 0, 32);
+}
+
+.has-error .tk-input-field__container::after {
+  content: '\e000';
+  position: absolute;
+  top: 0.655rem;
+  right: 0.62rem;
+  font-family: "Material Icons";
+  font-size: 1.25rem;
+  color: rgb(176, 0, 32);
+  opacity: 1;
+}
+
+.has-error .tk-input-field__helper {
+  display: none;
+}
+
+.has-error .tk-input-field__container--with-trailing-icon .tk-input-field__icon {
+  display: none;
+}
+
+.tk-input-field__validation-state {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  padding-left: 0.62rem;
+  padding-right: 0.62rem;
+  display: block;
+  font-family: var(--base-font-family);
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: .0333333333em;
+  color: rgb(176, 0, 32);
+}
+
+.tk-input-field__container--with-leading-icon .tk-input-field__native {
+  padding-left: 2.37rem;
+}
+
+.tk-input-field__container--with-leading-icon .tk-input-field__icon {
+  left: 0.62rem;
+}
+
+.tk-input-field__container--with-trailing-icon .tk-input-field__native {
+  padding-right: 2.37rem;
+}
+
+.tk-input-field__container--with-trailing-icon .tk-input-field__icon {
+  right: 0.62rem;
+}
+
+.tk-input-field__icon {
+  position: absolute;
+  top: 0.655rem;
+  font-size: 1.25rem;
+  color: rgb(117, 117, 117);
+}
+
+.tk-input-field__container--in-grid .tk-input-field__native {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+  height: 1.875rem;
+  font-size: 0.875rem;
+  border-width: 1px;
+  box-sizing: border-box;
+}
+
+.tk-input-field__container--in-grid .tk-input-field__icon {
+  top: 0.4375rem;
+  font-size: 1rem;
+}
+
+.tk-input-field__container--in-grid .tk-input-field__native {
+  
+  &:read-only, 
+  &[readonly] {
+    pointer-events: none;
+  }
+}

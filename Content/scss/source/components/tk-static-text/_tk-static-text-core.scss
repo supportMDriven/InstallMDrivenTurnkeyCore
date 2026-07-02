@@ -1,0 +1,103 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-static-text {
+  /*@include component-spacing();*/
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-family: var(--base-font-family, $base-font-family);
+}
+
+.numeric .tk-static-text {
+  text-align: right;
+}
+
+.numeric .tk-static-text__native {
+  text-align: right;
+}
+
+
+.tk-static-text__native {
+  padding: 5px 0;
+  display: inline-flex;
+
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.025em;
+
+  white-space: pre-line;
+}
+
+.tk-static-text.chip {
+  display: block;
+}
+
+
+.tk-static-text.chip .tk-static-text__native {
+  padding: 0 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  white-space: nowrap;
+  background: #dfdfdf;
+  border-radius: 16px;
+  font-family: var(--base-font-family);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: .0178571429em;
+  text-align: center;
+
+  &.danger {
+    background: #f8dfde;
+    color: #d22f2e;
+  }
+
+  &.warning {
+    background: #fdf2e3;
+    color: #efad4e;
+  }
+
+  &.success {
+    background: #e6f5e6;
+    color: #5db85b;
+  }
+
+  &.info {
+    background: #dfecee;
+    color: #0e4e57;
+  }
+}
+
+.tk-static-text.info-box {
+
+
+    .tk-static-text__native {
+      background-color: #eaeaea;
+    }
+  }
+
+  .tk-static-text.info-text {
+
+
+    & .tk-static-text__native {
+      position: relative;
+
+      padding-left: 30px;
+      color: #979797;
+
+      &::before {
+        content: '\e88f';
+        font-family: "Material Icons";
+
+        position: absolute;
+        top: 6px;
+        left: 0;
+
+      }
+    }
+  }

@@ -1,0 +1,124 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+// Mobile actions button (when sidebar is hidden)
+.actions__wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+
+  width: 100%;
+  z-index: 100;
+
+  @media only screen and (min-width: 768px) {
+    display: none;
+  }
+}
+
+.actions__wrapper .actions__item {
+  width: 50%;
+}
+
+.actions__wrapper .actions__item button.tk-button__native {
+  border-radius: 0;
+
+  &::before {
+    font-family: $base-icon-font;
+    margin-right: 5px;
+  }
+}
+
+.sb-hidden .actions__wrapper {
+  display: none;
+}
+
+.tk-state-action {
+  margin: 8px;
+  padding: 0 8px;
+  position: relative;
+  min-height: $state-action-height;
+  height: $state-action-height;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: $base-border-radius;
+  border-radius: var(--base-border-radius, #{$base-border-radius});
+  outline: 0;
+  -webkit-transition: background-color 200ms $animation-curve-fast-out-linear-in color 200ms $animation-curve-fast-out-linear-in;
+  transition: background-color 200ms $animation-curve-fast-out-linear-in color 200ms $animation-curve-fast-out-linear-in;
+  cursor: pointer;
+
+  &:disabled,
+  &[disabled] {
+    color: #9b9b9b;
+    background-color: #d1d1d1;
+  }
+
+  &::before {
+    margin-top: 2px;
+    margin-left: 5px;
+    margin-right: 10px;
+    position: relative;
+    font-family: $base-icon-font;
+    font-size: $base-icon-font-size;
+  }
+
+  & + .tk-state-action {
+    margin-top: 4px;
+  }
+}
+
+.tk-state-action.save-action::before {
+  content: '\e161';
+}
+
+.tk-state-action.update-action::before {
+  content: '\e923';
+}
+
+.tk-state-action.cancel-action::before {
+  content: '\e14b';
+}
+
+.tk-state-action.undo-action::before {
+  content: '\e166';
+}
+
+.tk-state-action.redo-action::before {
+  content: '\e15a';
+}
+
+.tk-state-action.lock-action::before {
+  content: '\e897';
+}
+
+.tk-state-action.unlock-action::before {
+  content: '\e3c9';
+}
+
+.tk-state-action.share-action::before {
+  content: '\e80d';
+}
+

@@ -1,0 +1,185 @@
+/// <reference path="../../_color-definitions.scss" />
+/// <reference path="../../_variables.scss" />
+/// <reference path="../../_mixins.scss" />
+
+.tk-button {
+  padding-top: 1.5625rem;
+  padding-right: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  padding-left: 0.3125rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+// When buttons are in placingcontainers we dont want excessive padding on top since we often want to center things in rows
+.tk-placingcontainer .tk-button {
+  padding-top: 0.3125rem;
+}
+
+button.tk-button__native,
+a.tk-button__native {
+  margin: 0;
+  padding: 0 16px;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  position: relative;
+  width: 100%;
+  min-width: $button-min-width;
+  height: $button-height;
+  font-family: var(--base-font-family, $base-font-family);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 2.25rem;
+  letter-spacing: 0.05em;
+  text-align: center;
+  white-space: normal;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  text-transform: uppercase;
+  outline: none;
+  border: none;
+  border-radius: $base-border-radius;
+  border-radius: var(--btn-border-radius, #{$base-border-radius});
+  overflow: hidden;
+  -webkit-appearance: none;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  cursor: pointer;
+  z-index: 1;
+  @include elevation-2dp();
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+
+  &:hover {
+    @include elevation-4dp();
+    transition: box-shadow $anim-duration-dialog-fadein $easing-standard;
+  }
+
+  &:focus:not(:active) {
+    @include elevation-8dp();
+  }
+
+  &:active {
+    @include elevation-8dp();
+  }
+
+  &:disabled,
+  &[disabled] {
+    background: #cccccc;
+    opacity: 0.38;
+    cursor: not-allowed;
+    @include elevation-0dp();
+  }
+
+  & .mi {
+    margin-left: -6px;
+    margin-right: 8px;
+  }
+
+  @media only screen and (max-width: 767px) {
+    padding: 0 10px;
+    font-size: 0.75rem;
+  }
+
+  &.icon-after {
+
+    .tk-button__text {
+      order: 1;
+    }
+
+    .mi {
+      margin-left: 8px;
+      margin-right: -6px;
+      order: 2;
+    }
+  }
+}
+
+  .tk-button__text {
+    display: block;
+    /*max-width: 98%;*/
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  button.tk-button__native.dense,
+  a.tk-button__native.dense {
+    padding: 0 10px;
+    height: 30px;
+    line-height: 1.9rem;
+  }
+  // OUTLINED BUTTONS //
+  button.tk-button__native.outlined:not(:disabled),
+  a.tk-button__native.outlined:not(:disabled) {
+    background: transparent;
+    box-shadow: none;
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  button.tk-button__native.outlined:disabled,
+  a.tk-button__native.outlined:disabled {
+    border: 1px solid rgba(0,0,0,.37);
+    color: rgba(0,0,0,.37);
+    background: transparent;
+    cursor: not-allowed;
+
+    &:hover,
+    &:active {
+      background: transparent;
+    }
+  }
+  // FLAT BUTTONS //
+  button.tk-button__native.flat:not(:disabled),
+  a.tk-button__native.flat:not(:disabled) {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  button.tk-button__native.flat:disabled,
+  a.tk-button__native.flat:disabled {
+    color: rgba(0,0,0,.37);
+    background: transparent;
+    cursor: not-allowed;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: transparent;
+    }
+  }
+  // SHAPED BUTTON //
+  button.tk-button__native.shaped,
+  a.tk-button__native.shaped {
+    border-radius: 18px;
+  }
+  // FAB BUTTONS //
+  button.tk-button__native.fab,
+  a.tk-button__native.fab {
+    padding: 0;
+    border-radius: 100%;
+    width: 35px;
+    height: 35px;
+
+    &.icon-button .mi {
+      margin: 0;
+    }
+  }
+
+
+  button.tk-button__native.narrow,
+  a.tk-button__native.narrow {
+    width: auto !important;
+  }
+
+  button.tk-button__native.close {
+    text-align: center;
+    font-size: 1.25rem;
+  }

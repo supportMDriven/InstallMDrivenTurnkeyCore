@@ -1,0 +1,7 @@
+﻿<label ng-if="$ctrl.label" class="n-tk-file-download__label">{{$ctrl.label}}</label>
+<div class="n-tk-file-download__content">
+  <a href="{{$ctrl.downloadLink}}" class="n-tk-file-download__native">
+    <tk-icon icon="cloud_download"></tk-icon>
+    <span class="n-tk-file-download__text">{{ $ctrl.name ? $ctrl.name : $ctrl.label }}</span>
+  </a>
+</div>
