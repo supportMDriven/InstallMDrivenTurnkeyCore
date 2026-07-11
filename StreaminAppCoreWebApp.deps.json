@@ -2715,7 +2715,7 @@
           "System.ValueTuple": "4.6.1"
         },
         "compile": {
-          "MDriven.Persistence.NetStandard.dll": {}
+          "MDriven.Persistence.netStandard.dll": {}
         }
       },
       "MDriven.SharedInterfaces.WebAssembly/1.0.0": {
@@ -5593,7 +5593,7 @@
         "runtime": {
           "Eco.ModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17426"
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5609,7 +5609,7 @@
         "runtime": {
           "Eco.Modlr.ExtendedModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17426"
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5626,7 +5626,7 @@
         "runtime": {
           "Eco.Modlr.ModelEditor.NoUI.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17426"
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5655,8 +5655,8 @@
         },
         "runtime": {
           "MDriven.ASPNETIdentity.core.dll": {
-            "assemblyVersion": "7.2.0.17426",
-            "fileVersion": "7.2.0.17426"
+            "assemblyVersion": "7.2.0.17427",
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5682,8 +5682,8 @@
         },
         "runtime": {
           "MDriven.Handles.netStandard.dll": {
-            "assemblyVersion": "7.2.0.17426",
-            "fileVersion": "7.2.0.17426"
+            "assemblyVersion": "7.2.0.17427",
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5695,8 +5695,8 @@
         },
         "runtime": {
           "MDriven.Interfaces.netStandard.dll": {
-            "assemblyVersion": "7.2.0.17426",
-            "fileVersion": "7.2.0.17426"
+            "assemblyVersion": "7.2.0.17427",
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5714,8 +5714,8 @@
         },
         "runtime": {
           "MDriven.LinqExtender.netStandard.dll": {
-            "assemblyVersion": "7.2.0.17426",
-            "fileVersion": "7.2.0.17426"
+            "assemblyVersion": "7.2.0.17427",
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5730,8 +5730,8 @@
         },
         "runtime": {
           "MDriven.MVC.Core.dll": {
-            "assemblyVersion": "7.2.0.17426",
-            "fileVersion": "7.2.0.17426"
+            "assemblyVersion": "7.2.0.17427",
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5746,8 +5746,8 @@
         },
         "runtime": {
           "MDriven.Net.Http.netStandard.dll": {
-            "assemblyVersion": "7.2.0.17426",
-            "fileVersion": "7.2.0.17426"
+            "assemblyVersion": "7.2.0.17427",
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5759,17 +5759,16 @@
           "System.ValueTuple": "4.6.1"
         },
         "runtime": {
-          "MDriven.Persistence.NetStandard.dll": {
-            "assemblyVersion": "7.2.0.17426",
-            "fileVersion": "7.2.0.17426"
+          "MDriven.Persistence.netStandard.dll": {
+            "fileVersion": "0.0.0.0"
           }
         }
       },
       "MDriven.SharedInterfaces.WebAssembly/1.0.0": {
         "runtime": {
           "MDriven.SharedInterfaces.WebAssembly.dll": {
-            "assemblyVersion": "7.2.0.17426",
-            "fileVersion": "7.2.0.17426"
+            "assemblyVersion": "7.2.0.17427",
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5782,7 +5781,7 @@
         "runtime": {
           "MDriven.Turnkey.ClientCSharp.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17426"
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5797,7 +5796,7 @@
         "runtime": {
           "MDrivenTurnkeyBlazorApp.Client.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17426"
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
@@ -5813,7 +5812,7 @@
         "runtime": {
           "Modlr.Plugins.core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17426"
+            "fileVersion": "7.2.0.17427"
           }
         }
       },
