@@ -41,7 +41,7 @@
         "dependencies": {
           "AppCompleteGeneric.EcoSpace.netstandard": "1.0.0",
           "AppCompleteGeneric.Model.netstandard": "1.0.0",
-          "Azure.AI.OpenAI": "2.0.0",
+          "Azure.AI.OpenAI": "2.1.0",
           "Eco.ModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
@@ -1933,10 +1933,10 @@
           "WindowsBase.dll": {}
         }
       },
-      "Azure.AI.OpenAI/2.0.0": {
+      "Azure.AI.OpenAI/2.1.0": {
         "dependencies": {
           "Azure.Core": "1.51.0",
-          "OpenAI": "2.0.0"
+          "OpenAI": "2.1.0"
         },
         "compile": {
           "lib/netstandard2.0/Azure.AI.OpenAI.dll": {}
@@ -2381,7 +2381,7 @@
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
         }
       },
-      "OpenAI/2.0.0": {
+      "OpenAI/2.1.0": {
         "dependencies": {
           "System.ClientModel": "1.14.0"
         },
@@ -2550,7 +2550,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
           "MDriven.Net.Http.netStandard": "1.0.0",
-          "MDriven.Persistence.netStandard": "1.0.0"
+          "MDriven.Persistence.NetStandard": "1.0.0"
         },
         "compile": {
           "AppCompleteGeneric.EcoSpace.netstandard.dll": {}
@@ -2707,7 +2707,7 @@
           "MDriven.Net.Http.netStandard.dll": {}
         }
       },
-      "MDriven.Persistence.netStandard/1.0.0": {
+      "MDriven.Persistence.NetStandard/1.0.0": {
         "dependencies": {
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0",
@@ -2762,7 +2762,7 @@
         "dependencies": {
           "AppCompleteGeneric.EcoSpace.netstandard": "1.0.0",
           "AppCompleteGeneric.Model.netstandard": "1.0.0",
-          "Azure.AI.OpenAI": "2.0.0",
+          "Azure.AI.OpenAI": "2.1.0",
           "Ben.Demystifier": "0.4.1",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
@@ -2794,7 +2794,7 @@
         "dependencies": {
           "AppCompleteGeneric.EcoSpace.netstandard": "1.0.0",
           "AppCompleteGeneric.Model.netstandard": "1.0.0",
-          "Azure.AI.OpenAI": "2.0.0",
+          "Azure.AI.OpenAI": "2.1.0",
           "Eco.ModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
@@ -4469,15 +4469,15 @@
           }
         }
       },
-      "Azure.AI.OpenAI/2.0.0": {
+      "Azure.AI.OpenAI/2.1.0": {
         "dependencies": {
           "Azure.Core": "1.51.0",
-          "OpenAI": "2.0.0"
+          "OpenAI": "2.1.0"
         },
         "runtime": {
           "lib/netstandard2.0/Azure.AI.OpenAI.dll": {
-            "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.0.24.48003"
+            "assemblyVersion": "2.1.0.0",
+            "fileVersion": "2.100.24.60605"
           }
         }
       },
@@ -5276,14 +5276,14 @@
           }
         }
       },
-      "OpenAI/2.0.0": {
+      "OpenAI/2.1.0": {
         "dependencies": {
           "System.ClientModel": "1.14.0"
         },
         "runtime": {
           "lib/net6.0/OpenAI.dll": {
-            "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.0.0.0"
+            "assemblyVersion": "2.1.0.0",
+            "fileVersion": "2.1.0.0"
           }
         }
       },
@@ -5555,7 +5555,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
           "MDriven.Net.Http.netStandard": "1.0.0",
-          "MDriven.Persistence.netStandard": "1.0.0"
+          "MDriven.Persistence.NetStandard": "1.0.0"
         },
         "runtime": {
           "AppCompleteGeneric.EcoSpace.netstandard.dll": {
@@ -5593,7 +5593,7 @@
         "runtime": {
           "Eco.ModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17471"
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5609,7 +5609,7 @@
         "runtime": {
           "Eco.Modlr.ExtendedModelLayer.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17471"
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5626,7 +5626,7 @@
         "runtime": {
           "Eco.Modlr.ModelEditor.NoUI.netstandard.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17471"
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5655,8 +5655,8 @@
         },
         "runtime": {
           "MDriven.ASPNETIdentity.core.dll": {
-            "assemblyVersion": "7.2.0.17471",
-            "fileVersion": "7.2.0.17471"
+            "assemblyVersion": "7.2.0.17473",
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5682,8 +5682,8 @@
         },
         "runtime": {
           "MDriven.Handles.netStandard.dll": {
-            "assemblyVersion": "7.2.0.17471",
-            "fileVersion": "7.2.0.17471"
+            "assemblyVersion": "7.2.0.17473",
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5695,8 +5695,8 @@
         },
         "runtime": {
           "MDriven.Interfaces.netStandard.dll": {
-            "assemblyVersion": "7.2.0.17471",
-            "fileVersion": "7.2.0.17471"
+            "assemblyVersion": "7.2.0.17473",
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5714,8 +5714,8 @@
         },
         "runtime": {
           "MDriven.LinqExtender.netStandard.dll": {
-            "assemblyVersion": "7.2.0.17471",
-            "fileVersion": "7.2.0.17471"
+            "assemblyVersion": "7.2.0.17473",
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5730,8 +5730,8 @@
         },
         "runtime": {
           "MDriven.MVC.Core.dll": {
-            "assemblyVersion": "7.2.0.17471",
-            "fileVersion": "7.2.0.17471"
+            "assemblyVersion": "7.2.0.17473",
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5746,12 +5746,12 @@
         },
         "runtime": {
           "MDriven.Net.Http.netStandard.dll": {
-            "assemblyVersion": "7.2.0.17471",
-            "fileVersion": "7.2.0.17471"
+            "assemblyVersion": "7.2.0.17473",
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
-      "MDriven.Persistence.netStandard/1.0.0": {
+      "MDriven.Persistence.NetStandard/1.0.0": {
         "dependencies": {
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0",
@@ -5760,15 +5760,16 @@
         },
         "runtime": {
           "MDriven.Persistence.NetStandard.dll": {
-            "fileVersion": "0.0.0.0"
+            "assemblyVersion": "7.2.0.17473",
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
       "MDriven.SharedInterfaces.WebAssembly/1.0.0": {
         "runtime": {
           "MDriven.SharedInterfaces.WebAssembly.dll": {
-            "assemblyVersion": "7.2.0.17471",
-            "fileVersion": "7.2.0.17471"
+            "assemblyVersion": "7.2.0.17473",
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5781,7 +5782,7 @@
         "runtime": {
           "MDriven.Turnkey.ClientCSharp.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17471"
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5796,7 +5797,7 @@
         "runtime": {
           "MDrivenTurnkeyBlazorApp.Client.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17471"
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5812,7 +5813,7 @@
         "runtime": {
           "Modlr.Plugins.core.dll": {
             "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.17471"
+            "fileVersion": "7.2.0.17473"
           }
         }
       },
@@ -5820,7 +5821,7 @@
         "dependencies": {
           "AppCompleteGeneric.EcoSpace.netstandard": "1.0.0",
           "AppCompleteGeneric.Model.netstandard": "1.0.0",
-          "Azure.AI.OpenAI": "2.0.0",
+          "Azure.AI.OpenAI": "2.1.0",
           "Ben.Demystifier": "0.4.1",
           "Eco.Modlr.ExtendedModelLayer.netstandard": "1.0.0",
           "Eco.Modlr.ModelEditor.NoUI.netstandard": "1.0.0",
@@ -5870,12 +5871,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Azure.AI.OpenAI/2.0.0": {
+    "Azure.AI.OpenAI/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-U3VuEMqf3WZpGiv/EWNNHui/VWpNWI1FQ0cBUybdLuhrZooy84W4+WD777ZAI9W0tlDqmWysLtLLdzgmpqbNiA==",
-      "path": "azure.ai.openai/2.0.0",
-      "hashPath": "azure.ai.openai.2.0.0.nupkg.sha512"
+      "sha512": "sha512-doixr3tcsIcdzbzF9NxKt+6U0NKj6aPeOCPYONPsWjyf3gxVndVJAdjPcVdqeR/3vcRHXRgGnGlv+iXx5jMA4g==",
+      "path": "azure.ai.openai/2.1.0",
+      "hashPath": "azure.ai.openai.2.1.0.nupkg.sha512"
     },
     "Azure.Core/1.51.0": {
       "type": "package",
@@ -6269,12 +6270,12 @@
       "path": "nuget.frameworks/4.7.0",
       "hashPath": "nuget.frameworks.4.7.0.nupkg.sha512"
     },
-    "OpenAI/2.0.0": {
+    "OpenAI/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-WI9e5tC15ZBt02scCp2gcHrjxQRVX2Ws3eUu/YsICqellH3MwdRggGujSZg69oBJMtk1AYmqb9l08ix0l5AcqQ==",
-      "path": "openai/2.0.0",
-      "hashPath": "openai.2.0.0.nupkg.sha512"
+      "sha512": "sha512-zl72nyP4O94ZyEoCLoE8qoc5vp8kSJmRuqR+UdK+jNIjFJGWJYjsb4rAGpMWWRTbPYuk82E8myMJdVQurMLDnQ==",
+      "path": "openai/2.1.0",
+      "hashPath": "openai.2.1.0.nupkg.sha512"
     },
     "SkiaSharp/3.119.0": {
       "type": "package",
@@ -6488,7 +6489,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.Persistence.netStandard/1.0.0": {
+    "MDriven.Persistence.NetStandard/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
