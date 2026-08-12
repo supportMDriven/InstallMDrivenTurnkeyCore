@@ -2550,7 +2550,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
           "MDriven.Net.Http.netStandard": "1.0.0",
-          "MDriven.Persistence.netStandard": "1.0.0"
+          "MDriven.Persistence.NetStandard": "1.0.0"
         },
         "compile": {
           "AppCompleteGeneric.EcoSpace.netstandard.dll": {}
@@ -2707,7 +2707,7 @@
           "MDriven.Net.Http.netStandard.dll": {}
         }
       },
-      "MDriven.Persistence.netStandard/1.0.0": {
+      "MDriven.Persistence.NetStandard/1.0.0": {
         "dependencies": {
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0",
@@ -5555,7 +5555,7 @@
           "MDriven.Interfaces.netStandard": "1.0.0",
           "MDriven.LinqExtender.netStandard": "1.0.0",
           "MDriven.Net.Http.netStandard": "1.0.0",
-          "MDriven.Persistence.netStandard": "1.0.0"
+          "MDriven.Persistence.NetStandard": "1.0.0"
         },
         "runtime": {
           "AppCompleteGeneric.EcoSpace.netstandard.dll": {
@@ -5751,7 +5751,7 @@
           }
         }
       },
-      "MDriven.Persistence.netStandard/1.0.0": {
+      "MDriven.Persistence.NetStandard/1.0.0": {
         "dependencies": {
           "MDriven.Handles.netStandard": "1.0.0",
           "MDriven.Interfaces.netStandard": "1.0.0",
@@ -5760,7 +5760,8 @@
         },
         "runtime": {
           "MDriven.Persistence.NetStandard.dll": {
-            "fileVersion": "0.0.0.0"
+            "assemblyVersion": "7.2.0.17477",
+            "fileVersion": "7.2.0.17477"
           }
         }
       },
@@ -6488,7 +6489,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "MDriven.Persistence.netStandard/1.0.0": {
+    "MDriven.Persistence.NetStandard/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
