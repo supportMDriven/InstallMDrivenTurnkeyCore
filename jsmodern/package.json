@@ -1,0 +1,15 @@
+{
+  "name": "mdriven-turnkey-lit-client",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@microsoft/signalr": "^8.0.7",
+    "lit": "^3.3.1"
+  }
+}
