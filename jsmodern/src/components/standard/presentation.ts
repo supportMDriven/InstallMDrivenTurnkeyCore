@@ -99,3 +99,13 @@ export function renderTypography(
   }
 }
 
+
+export function errorClass(context: LitComponentContext): string {
+  return context.errors.length > 0 && !context.isGridCell ? "tk-input-field--invalid " : "";
+}
+
+export function renderFieldErrors(context: LitComponentContext): TemplateResult | typeof nothing {
+  return context.errors.length > 0 && !context.isGridCell
+    ? html`<span class="tk-input-field__error" role="alert">${context.errors.join(" ")}</span>`
+    : nothing;
+}

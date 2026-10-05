@@ -47,6 +47,11 @@ export interface ServerActionCommand extends ServerUpdateCommand {
   GroupHeader?: string;
   SubMenuGroup?: string;
   SubMenuGroupSortKey?: string;
+  HintWhenEnabled?: string;
+  Class?: string;
+  AreYouSureQuestion?: string;
+  AreYouSureExecuteVerb?: string;
+  AreYouSureCancelVerb?: string;
 }
 
 export interface ServerActionRemoveCommand extends ServerUpdateCommand {

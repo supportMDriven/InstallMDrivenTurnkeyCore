@@ -15,6 +15,7 @@ export interface LitComponentContext {
   readonly label: string;
   readonly placeholder: string;
   readonly helperText: string;
+  readonly errors: readonly string[];
   readonly style: string;
   readonly visible: boolean;
   readonly enabled: boolean;

@@ -4,11 +4,20 @@ import { DataGridContext, DataGridPaging } from "./context";
 import { ViewMetaControl } from "../../../view-meta";
 import { VmObject } from "../../../../core/view-state";
 import { appendOuterCSSGridClass, getStyleAndThis } from "../presentation";
+import { onCellSelectKeyDown, onCellSelectMouseDown, onCellSelectMouseMove } from "./cell-select";
 
 export type { DataGridContext, DataGridActionGroup } from "./context";
 
 export const dataGridStyles = css`
+  .tk-data-table { transform: none; }
+  .tk-data-table__cell { outline: none; }
+  .tk-data-table__cell.cellselect { background-color: rgba(var(--primary-color, 245, 156, 26), 0.1); user-select: none; }
+  .tk-data-table__cell.cellselect_top { border-top: 2px solid gray; }
+  .tk-data-table__cell.cellselect_left { border-left: 2px solid gray; }
+  .tk-data-table__cell.cellselect_right { border-right: 2px solid gray; }
+  .tk-data-table__cell.cellselect_bottom { border-bottom: 2px solid gray; }
   .tk-data-table__paging .show-actions { margin-right: auto; }
+  .tk-data-table__no-records { left: 50%; pointer-events: none; position: absolute; top: 50%; transform: translate(-50%, -50%); }
   .tk-data-table__paging { align-items: center; display: flex; flex: 0 0 auto; gap: 0.25rem; justify-content: flex-end; padding: 0.35rem 0.25rem 0; }
   .tk-data-table__page-size { align-items: center; display: flex; gap: 0.4rem; margin: 0 0.75rem 0 0; }
   .tk-data-table__page-size select { width: auto; }
@@ -50,7 +59,7 @@ function renderRow(
         )}>
     </td>` : nothing}
     ${columns.map(control => html`
-      <td class="tk-data-table__cell">${context.renderCell(control, row)}</td>
+      <td class="tk-data-table__cell" tabindex="-1">${context.renderCell(control, row)}</td>
     `)}
     <td class="row-menu-cell tk-data-table__cell">
       <button type="button" class="row-menu-trigger" aria-haspopup="menu"
@@ -174,7 +183,8 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
       style=${control.wrapperStyle || nothing}>
       ${context.label ? html`<label class=${getStyleAndThis(context, "tk-data-table__label tk-label")}>${context.label}</label>` : nothing}
       <div class=${getStyleAndThis(context, "tk-data-table__content tk-data-table__content--advanced editable")}>
-        <table class=${getStyleAndThis(context, "tk-data-table__native")}>
+        <table class=${getStyleAndThis(context, "tk-data-table__native")}
+          @mousedown=${onCellSelectMouseDown} @mousemove=${onCellSelectMouseMove} @keydown=${onCellSelectKeyDown}>
           <colgroup>
             ${context.multiSelect ? html`<col style="width:2.5rem">` : nothing}
             ${columns.map((_, index) => {
@@ -224,9 +234,9 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
             ${repeat(context.sortedCollection, row => row.vmClassId, row => renderRow(context, columns, row))}
           </tbody>
         </table>
+        ${context.noResultsBackdrop ? html`<div class="tk-data-table__no-records"><img src="/Content/icons/tkSearchNoRecords.svg" class="tkSearchNoRecords" alt="No results"></div>` : nothing}
       </div>
       ${renderPaging(context)}
-      ${context.collection?.length === 0 && !context.paging ? html`<p>No rows</p>` : nothing}
       ${renderRowMenu(context)}
     </div>
   `;

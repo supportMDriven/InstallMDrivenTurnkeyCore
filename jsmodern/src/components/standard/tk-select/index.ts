@@ -7,11 +7,13 @@ import {
   getStyleAndThisPlusMaybeInGrid,
   getStyleAndThisPlusMaybeNoLabel,
   renderControlLabel
+  ,errorClass,
+  renderFieldErrors
 } from "../presentation";
 
 export function renderSelect(context: LitComponentContext): TemplateResult {
   const presentationColumn = context.metadata.attributes.BindInfoPicklistItemPres ?? "Presentation";
-  return html`<div class="view-control ${appendOuterCSSGridClass(
+  return html`<div class="view-control ${errorClass(context)}${appendOuterCSSGridClass(
     context,
     getStyleAndThisPlusMaybeNoLabel(context, "tk-component tk-select")
   )}"
@@ -34,6 +36,7 @@ export function renderSelect(context: LitComponentContext): TemplateResult {
     </select>
     <i class="tk-select__dropdown-icon" aria-hidden="true"></i>
     </div>
+    ${renderFieldErrors(context)}
     ${context.helperText && !context.isGridCell
       ? html`<span class="tk-input-field__helper">${context.helperText}</span>`
       : ""}

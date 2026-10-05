@@ -5,10 +5,12 @@ import {
   getStyleAndThis,
   getStyleAndThisPlusMaybeInGrid,
   renderControlLabel
+  ,errorClass,
+  renderFieldErrors
 } from "../presentation";
 
 export function renderCheckbox(context: LitComponentContext): TemplateResult {
-  return html`<div class="view-control ${appendOuterCSSGridClass(
+  return html`<div class="view-control ${errorClass(context)}${appendOuterCSSGridClass(
     context,
     `${getStyleAndThisPlusMaybeInGrid(context, "tk-checkbox")} tk-component ctCheckbox${context.label ? "" : " tk-checkbox--no-label"}`
   )}"
@@ -29,6 +31,7 @@ export function renderCheckbox(context: LitComponentContext): TemplateResult {
       </label>
       ${context.isGridCell ? "" : renderControlLabel(context, "tk-checkbox__label tk-label")}
     </div>
+    ${renderFieldErrors(context)}
     ${context.helperText && !context.isGridCell
       ? html`<span class="tk-input-field__helper">${context.helperText}</span>`
       : ""}

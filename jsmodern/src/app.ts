@@ -2,6 +2,7 @@ import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signal
 import { LitElement, css, html, nothing, TemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import {
   ServerUpdateCommand,
   ServerActionCommand,
@@ -39,6 +40,8 @@ import {
   leftSideMenuStyles,
   renderLeftSideMenu as renderStandardLeftSideMenu
 } from "./components/standard/left-side-menu";
+import { ToolbarAction, ToolbarContext, ToolbarEntry } from "./components/standard/toolbar/context";
+import { renderToolbar as renderStandardToolbar, toolbarStyles } from "./components/standard/toolbar";
 import {
   renderRuntimeComponent,
   resolveRuntimeComponent,
@@ -166,6 +169,12 @@ class TurnkeyLitApp extends LitElement {
     header h1 a:hover, header h1 a:focus-visible { text-decoration: underline; }
     nav { align-items: center; background: #fff; border-bottom: 1px solid #dce1e5; display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0.6rem 1rem; }
     header nav { background: transparent; border: 0; flex: 1; min-width: 0; padding: 0; }
+    .login-section { align-items: center; display: flex; margin-left: auto; }
+    .login-section form { margin: 0; }
+    .login-section ul.navbar__list, .login-section ul { align-items: center; display: flex !important; flex-direction: row !important; gap: 0.25rem; list-style: none; margin: 0; padding: 0; width: auto; }
+    .login-section li.navbar__item, .login-section li { display: block; float: none; margin: 0; padding: 0; }
+    .login-section a { align-items: center; border-radius: 0.25rem; color: white; display: inline-flex; gap: 0.3rem; padding: 0.45rem 0.65rem; text-decoration: none; }
+    .login-section a:hover { background: #ffffff22; }
     header nav > button, header nav > details > summary { color: white; }
     header nav > button:hover, header nav > details > summary:hover { background: #ffffff22; }
     nav details { position: relative; }
@@ -178,7 +187,7 @@ class TurnkeyLitApp extends LitElement {
     header nav details div button:hover, header nav details div summary:hover { background: #edf1f4; }
     header .action-toggle { background: transparent; border: 1px solid #ffffff66; border-radius: 0.3rem; color: white; font-size: 1.25rem; line-height: 1; padding: 0.4rem 0.55rem; }
     header .action-toggle:hover, header .action-toggle:focus-visible { background: #ffffff22; }
-    main { box-sizing: border-box; display: flex; flex: 1 1 auto; flex-direction: column; margin: 0 auto; max-width: 72rem; min-height: 0; overflow: hidden; padding: 1rem; width: 100%; }
+    main { box-sizing: border-box; display: flex; flex: 1 1 auto; flex-direction: column; margin: 0; min-height: 0; overflow: hidden; padding: 1rem; width: 100%; }
     .workspace-toolbar { align-items: center; display: flex; margin-bottom: 0.5rem; }
     .workspace-toolbar .action-toggle { background: white; border: 1px solid #c7d0d7; border-radius: 0.3rem; color: #263746; font-size: 1.25rem; line-height: 1; padding: 0.4rem 0.55rem; }
     .workspace-toolbar .action-toggle:hover, .workspace-toolbar .action-toggle:focus-visible { background: #edf1f4; }
@@ -189,6 +198,8 @@ class TurnkeyLitApp extends LitElement {
     .view-dialog .view-workspace { grid-template-columns: minmax(0, 1fr); }
     dialog.view-dialog { border: 0; border-radius: 0.5rem; box-shadow: 0 1rem 3rem #0005; max-height: min(90vh, 60rem); max-width: min(90vw, 75rem); overflow: auto; padding: 1.25rem; width: min(75rem, calc(100vw - 2rem)); }
     dialog.view-dialog::backdrop { background: #15232d33; }
+    dialog.confirm-dialog { border: 0; border-radius: 0.5rem; box-shadow: 0 1rem 3rem #0005; padding: 1.25rem; }
+    dialog.confirm-dialog::backdrop { background: #15232d55; }
     dialog.view-dialog .view-canvas { margin: 0; }
     .popup-backdrop { background: transparent; inset: 0; position: fixed; z-index: 1000; }
     .popup-panel { background: white; border: 1px solid #c7d0d7; border-radius: 0.35rem; box-shadow: 0 0.35rem 1.25rem #0003; box-sizing: border-box; left: var(--popup-x); margin: 0; max-height: min(90vh, 60rem); max-width: min(90vw, 34rem); overflow: auto; padding: 1rem; position: fixed; top: var(--popup-y); width: min(34rem, calc(100vw - 2rem)); }
@@ -201,14 +212,19 @@ class TurnkeyLitApp extends LitElement {
     .modal-actions button:disabled { cursor: default; opacity: 0.55; }
     .status { background: white; border-radius: 0.4rem; margin-bottom: 1rem; padding: 0.8rem 1rem; }
     .status[hidden] { display: none; }
+    .tk-notification { background: #333; border: 0; border-radius: 4px; bottom: 50px; box-sizing: border-box; color: #fff; font-size: 0.875rem; inset: auto auto 50px 50%; line-height: 1.25rem; margin: 0; min-width: 200px; padding: 14px 16px; pointer-events: none; position: fixed; transform: translateX(-50%); }
+    .tk-notification .mi { margin-right: 0.5rem; vertical-align: middle; }
     .error { border-left: 0.25rem solid #b3261e; color: #8c1d18; }
     .notice { color: #52616b; }
     section { background: white; border-radius: 0.4rem; margin: 1rem 0; overflow: hidden; }
     section h2 { background: #edf1f4; font-size: 1rem; margin: 0; padding: 0.8rem 1rem; }
     .view-canvas { gap: 1rem; min-width: 0; }
+    .tk-input-field { padding-top: 0; }
     .view-canvas.CSSGridRendering { gap: 0; }
     .view-canvas.CSSGridRendering > .tk-data-table { contain: inline-size; }
     .view-content > .view-canvas:has(> .tk-data-table) { box-sizing: border-box; height: 100%; margin: 0; }
+    .view-content > .view-canvas.FlexboxRendering { box-sizing: border-box; display: flex; flex-direction: column; min-height: 100%; height: auto; overflow: visible; margin: 0; }
+    .view-canvas.FlexboxRendering > .tk-placingcontainer { flex: 1 1 auto; min-height: 0; }
     .view-canvas > .tk-data-table { display: flex; flex-direction: column; min-height: 0; }
     .view-canvas > .tk-data-table > .tk-data-table__content { flex: 1 1 auto; min-height: 0; overflow: auto; }
     .view-loading { align-content: center; box-sizing: border-box; color: #52616b; min-height: 12rem; padding: 2rem; text-align: center; }
@@ -236,7 +252,21 @@ class TurnkeyLitApp extends LitElement {
     .mi { color: currentColor; direction: ltr; display: inline-block; font-family: "Material Icons"; font-feature-settings: "liga"; font-size: 1.2em; font-style: normal; font-weight: 400; letter-spacing: normal; line-height: 1; text-rendering: optimizeLegibility; text-transform: none; white-space: nowrap; -webkit-font-feature-settings: "liga"; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     .tk-select { position: relative; }
     .tk-select__dropdown-icon { pointer-events: none; }
+    .tk-select__inner { max-width: 35rem; }
+    .tk-select__native { padding-right: 2rem; }
     .tk-input-field__helper { color: #5d6870; font-size: 0.875rem; }
+    .constraints { position: fixed; left: 12px; bottom: 12px; z-index: 40; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .validation-card { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 0; border-radius: 8px; color: #fff; background: #b3261e; cursor: pointer; font: inherit; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
+    .validation-card.warning { background: #b26a00; }
+    .validation-card.info { background: #1f6fb2; }
+    .constraints-panel { max-width: min(420px, 90vw); max-height: 50vh; overflow: auto; background: #fff; color: #222; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,.35); padding: 10px 14px; }
+    .constraints-title { display: flex; align-items: center; gap: 6px; font-weight: 600; margin: 4px 0; }
+    .constraints-group.error .constraints-title { color: #b3261e; }
+    .constraints-group.warning .constraints-title { color: #b26a00; }
+    .constraints-group.info .constraints-title { color: #1f6fb2; }
+    .constraints-message { padding: 2px 0 2px 8px; font-size: 0.9rem; }
+    .tk-input-field__error { color: #b3261e; font-size: 0.875rem; display: block; }
+    .tk-input-field--invalid input, .tk-input-field--invalid textarea, .tk-input-field--invalid select { border-color: #b3261e !important; box-shadow: 0 0 0 1px #b3261e; }
     .tk-input-field__validation-state { color: #a12622; font-size: 0.875rem; }
     .tk-image-upload__interactive.uploading { opacity: 1; }
     .tk-lit-component-loading, .tk-lit-component-missing { border: 1px dashed #9aa7af; border-radius: 0.25rem; padding: 0.75rem; }
@@ -288,10 +318,12 @@ class TurnkeyLitApp extends LitElement {
       .view-workspace > .view-content { width: 100%; }
       .action-panel-backdrop:not([hidden]) { background: #15232d55; border: 0; display: block; inset: 0; padding: 0; position: fixed; z-index: 19; }
     }
-  `, dataGridStyles, leftSideMenuStyles];
+  `, dataGridStyles, leftSideMenuStyles, toolbarStyles];
 
   @state() private route: ViewRoute = parseViewRoute(window.location.hash);
   @state() private viewReady = false;
+  @state() private dataErrors = new Map<string, string[]>();
+  @state() private constraintsOpen = false;
   @state() private viewState?: ViewState;
   @state() private viewDescription?: ViewDescription;
   @state() private appInfo?: AppInfo;
@@ -347,10 +379,16 @@ class TurnkeyLitApp extends LitElement {
   connectedCallback(): void {
     super.connectedCallback();
     window.addEventListener("hashchange", this.handleRouteChange);
+    window.addEventListener("beforeunload", this.handleBeforeUnload);
+    window.addEventListener("keydown", this.handleSeekerEnter);
     this.actionPanelMedia.addEventListener("change", this.handleActionPanelViewportChange);
     this.globalMenuLoad ??= this.loadGlobalMenu();
+    void this.loadLoginSection();
     if (!this.runtimeOverrideRequests.has("LeftSideMenu")) {
       this.runtimeOverrideRequests.set("LeftSideMenu", this.loadRuntimeOverride("LeftSideMenu"));
+    }
+    if (!this.runtimeOverrideRequests.has("Toolbar")) {
+      this.runtimeOverrideRequests.set("Toolbar", this.loadRuntimeOverride("Toolbar"));
     }
     void this.openCurrentRoute();
   }
@@ -358,6 +396,8 @@ class TurnkeyLitApp extends LitElement {
   disconnectedCallback(): void {
     super.disconnectedCallback();
     window.removeEventListener("hashchange", this.handleRouteChange);
+    window.removeEventListener("beforeunload", this.handleBeforeUnload);
+    window.removeEventListener("keydown", this.handleSeekerEnter);
     this.actionPanelMedia.removeEventListener("change", this.handleActionPanelViewportChange);
     this.routeGeneration++;
     this.pollController?.abort();
@@ -368,6 +408,7 @@ class TurnkeyLitApp extends LitElement {
   }
 
   protected updated(): void {
+    this.applyLoginReturnUrl();
     const dialog = this.renderRoot.querySelector<HTMLDialogElement>("dialog.view-dialog");
     if (this.activeModal && dialog && !dialog.open) {
       dialog.showModal();
@@ -382,11 +423,64 @@ class TurnkeyLitApp extends LitElement {
     }
   }
 
+  // Enter anywhere (outside grids, text areas and buttons) triggers the seeker's search action.
+  private readonly handleSeekerEnter = (event: KeyboardEvent): void => {
+    if (event.key !== "Enter" || event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {
+      return;
+    }
+    const origin = event.composedPath()[0];
+    if (origin instanceof HTMLElement
+      && (origin.closest("table, textarea, button, a, select, dialog") || origin.isContentEditable)) {
+      return;
+    }
+    const button = this.renderRoot.querySelector<HTMLButtonElement>(".seekeraction");
+    if (!button || button.disabled || this.activeModal) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    button.focus();
+    button.click();
+  };
+
+  private readonly handleBeforeUnload = (event: BeforeUnloadEvent): void => {
+    if (this.canPromptForUnsavedChanges()) {
+      event.preventDefault();
+      event.returnValue = "";
+    }
+  };
+
   private readonly handleRouteChange = (): void => {
+    if (this.canPromptForUnsavedChanges()) {
+      const newHash = window.location.hash;
+      const oldHash = viewRouteHash(this.route.viewName, this.route.objectId);
+      if (newHash !== oldHash) {
+        void this.guardedRouteChange(newHash, oldHash);
+        return;
+      }
+    }
+    this.applyRouteChange();
+  };
+
+  private async guardedRouteChange(newHash: string, oldHash: string): Promise<void> {
+    let proceed = false;
+    try {
+      proceed = await this.saveBeforeLeaving();
+    } catch (error) {
+      this.showError(error);
+    }
+    if (proceed && window.location.hash === newHash) {
+      this.applyRouteChange();
+    } else if (!proceed) {
+      window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}${oldHash}`);
+    }
+  }
+
+  private applyRouteChange(): void {
     this.cacheActiveViewSession();
     this.route = parseViewRoute(window.location.hash);
     void this.openCurrentRoute();
-  };
+  }
 
   private async openCurrentRoute(): Promise<void> {
     const generation = ++this.routeGeneration;
@@ -611,6 +705,8 @@ class TurnkeyLitApp extends LitElement {
           this.updateGlobalActionStatus(this.appInfo);
         } else if (isServerActionCommand(command)) {
           this.upsertViewAction(command);
+        } else if (command.CType === "ServerUpdateCommand_DataError") {
+          this.applyDataError(state.vmId, command as unknown as { Target: string; Message: string });
         } else if (isServerActionRemoveCommand(command)) {
           this.removeViewAction(command);
         }
@@ -632,8 +728,16 @@ class TurnkeyLitApp extends LitElement {
         return;
       }
       const navigate = commands.find(isNavigateCommand);
-      if (navigate && this.handleServerNavigation(navigate)) {
-        return;
+      if (navigate) {
+        const inApp = navigate.TargetIsInAppAndAngular && !navigate.IsModal && !navigate.IsPopUp && !navigate.NewTab;
+        if (inApp && this.canPromptForUnsavedChanges()) {
+          this.pollTimer = undefined;
+          void this.navigateAfterSavePrompt(navigate, generation);
+          return;
+        }
+        if (this.handleServerNavigation(navigate)) {
+          return;
+        }
       }
       if (this.appInfo?.LostContext) {
         this.cachedViewSessions.delete(this.viewSessionKey(state.root.className, state.root.id));
@@ -645,6 +749,8 @@ class TurnkeyLitApp extends LitElement {
           window.location.reload();
         } else {
           this.statusMessage = "The Turnkey view context has expired. Reload to open a new view.";
+          this.notify(this.statusMessage, "error", 6000);
+          this.notify(this.statusMessage, "error", 6000);
         }
         return;
       }
@@ -658,7 +764,7 @@ class TurnkeyLitApp extends LitElement {
       this.pollTimer = window.setTimeout(() => void this.poll(generation), Math.max(delay, 1000));
     } catch (error) {
       if (generation === this.routeGeneration && !this.isAbortError(error)) {
-        this.errorMessage = error instanceof Error ? error.message : String(error);
+        this.reportError(error instanceof Error ? error.message : String(error));
         this.pollTimer = window.setTimeout(() => void this.poll(generation), 5000);
       }
     }
@@ -700,9 +806,156 @@ class TurnkeyLitApp extends LitElement {
     }
   }
 
+  private confirmAction(action: ServerActionCommand | undefined): Promise<boolean> {
+    const question = action?.AreYouSureQuestion;
+    if (!action || typeof question !== "string" || question.trim() === "") {
+      return Promise.resolve(true);
+    }
+    return this.showConfirmDialog(
+      question,
+      action.AreYouSureExecuteVerb?.trim() || "Ok",
+      action.AreYouSureCancelVerb?.trim() || "Cancel"
+    );
+  }
+
+  private canPromptForUnsavedChanges(): boolean {
+    return this.appInfo?.IsDirty === true && !this.route.userControlParentId;
+  }
+
+  // Asks to save pending changes; resolves true when navigation may continue.
+  private async saveBeforeLeaving(): Promise<boolean> {
+    if (!await this.flushUpdates()) {
+      return false;
+    }
+    if (!this.canPromptForUnsavedChanges()) {
+      return true;
+    }
+    if (!await this.showConfirmDialog("You have unsaved changes.", "Save and continue", "Cancel")) {
+      return false;
+    }
+    await this.executeViewAction("GLOBAL", "Save");
+    for (let attempt = 0; attempt < 25 && this.appInfo?.IsDirty === true; attempt++) {
+      await new Promise(resolve => window.setTimeout(resolve, 200));
+    }
+    return this.appInfo?.IsDirty !== true;
+  }
+
+  private async navigateAfterSavePrompt(command: NavigateCommand, generation: number): Promise<void> {
+    try {
+      if (await this.saveBeforeLeaving()) {
+        this.handleServerNavigation(command);
+        return;
+      }
+    } catch (error) {
+      this.showError(error);
+    }
+    if (generation === this.routeGeneration && this.pollTimer === undefined) {
+      this.pollTimer = window.setTimeout(() => void this.poll(generation), 1000);
+    }
+  }
+
+  private showConfirmDialog(question: string, okText: string, cancelText: string): Promise<boolean> {
+    return new Promise(resolve => {
+      const dialog = document.createElement("dialog");
+      dialog.className = "confirm-dialog";
+      dialog.setAttribute("aria-label", "Confirm");
+      const text = document.createElement("p");
+      text.textContent = question;
+      text.style.margin = "0";
+      const buttons = document.createElement("div");
+      buttons.className = "modal-actions";
+      const cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.textContent = cancelText;
+      const ok = document.createElement("button");
+      ok.type = "submit";
+      ok.textContent = okText;
+      buttons.append(cancel, ok);
+      dialog.append(text, buttons);
+      dialog.style.width = "min(28rem, calc(100vw - 2rem))";
+      let settled = false;
+      const finish = (result: boolean) => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        if (dialog.open) {
+          dialog.close();
+        }
+        dialog.remove();
+        resolve(result);
+      };
+      cancel.addEventListener("click", () => finish(false));
+      ok.addEventListener("click", () => finish(true));
+      dialog.addEventListener("close", () => finish(false));
+      this.renderRoot.append(dialog);
+      dialog.showModal();
+      ok.focus();
+    });
+  }
+
+  // Temporary snackbar like the Angular and Blazor clients; one at a time, autohides after 2 seconds.
+  private notificationElement?: HTMLElement;
+  private notificationTimer?: number;
+
+  private notify(message: string, icon?: string, durationMs = 2000): void {
+    window.clearTimeout(this.notificationTimer);
+    this.notificationElement?.remove();
+    const element = document.createElement("div");
+    element.setAttribute("popover", "manual");
+    element.setAttribute("role", "status");
+    element.setAttribute("aria-live", "polite");
+    element.className = "tk-notification";
+    if (icon) {
+      const glyph = document.createElement("span");
+      glyph.className = "mi";
+      glyph.setAttribute("aria-hidden", "true");
+      glyph.textContent = icon;
+      element.append(glyph);
+    }
+    element.append(document.createTextNode(message));
+    this.renderRoot.append(element);
+    this.notificationElement = element;
+    try {
+      (element as HTMLElement & { showPopover?: () => void }).showPopover?.();
+    } catch {
+      // Popover API unavailable; the fixed positioning still shows the notification.
+    }
+    this.notificationTimer = window.setTimeout(() => {
+      element.remove();
+      if (this.notificationElement === element) {
+        this.notificationElement = undefined;
+      }
+    }, durationMs);
+  }
+
+  private async notifyAfterAction(vmClassName: string, actionName: string): Promise<void> {
+    if (vmClassName !== "GLOBAL" || this.errorMessage) {
+      return;
+    }
+    if (actionName === "Save" || actionName === "**EXTRASAVEANDKEEPOPEN") {
+      for (let attempt = 0; attempt < 25 && this.appInfo?.IsDirty === true; attempt++) {
+        await new Promise(resolve => window.setTimeout(resolve, 200));
+      }
+      if (this.appInfo?.IsDirty !== true && !this.errorMessage) {
+        this.notify("Changes saved", "save");
+      }
+    } else if (actionName === "Undo") {
+      this.notify("Changes undone", "undo");
+    } else if (actionName === "Redo") {
+      this.notify("Changes redone", "redo");
+    }
+  }
+
   private async executeViewAction(vmClassName: string, actionName: string, event?: MouseEvent): Promise<void> {
     const state = this.viewState;
     if (!state || this.executingActions.has(`${vmClassName}:${actionName}`)) {
+      return;
+    }
+    const confirmable = this.viewActions.find(candidate =>
+      candidate.VMClassName === vmClassName && candidate.Action === actionName
+    );
+    if (!await this.confirmAction(confirmable)) {
       return;
     }
     const clickPosition = event && (event.clientX > 0 || event.clientY > 0)
@@ -737,6 +990,7 @@ class TurnkeyLitApp extends LitElement {
         ClientIdForNavigationVerification: this.connection?.connectionId ?? ""
       });
       await this.poll(generation);
+      void this.notifyAfterAction(vmClassName, actionName);
     } catch (error) {
       this.showError(error);
     } finally {
@@ -758,8 +1012,10 @@ class TurnkeyLitApp extends LitElement {
       }
       if (actionId === "export") {
         await this.transport.exportAsTabSeparated(state.vmId);
+        this.notify("Export file ordered", "attach_file");
       } else if (actionId === "import") {
         await this.transport.importFromText(state.vmId, await navigator.clipboard.readText());
+        this.notify("Import in progress", "content_copy");
       }
       await this.poll(generation);
     } catch (error) {
@@ -777,7 +1033,7 @@ class TurnkeyLitApp extends LitElement {
     this.queueUpdate(variables.vmClassId, "vClipbookData", "");
     try {
       await navigator.clipboard.writeText(text);
-      this.statusMessage = "Added to clipboard";
+      this.notify("Added to clipboard", "content_copy");
     } catch (error) {
       this.showError(error);
     }
@@ -791,6 +1047,9 @@ class TurnkeyLitApp extends LitElement {
     const state = this.viewState;
     const row = state?.getObject(rowVMClassId);
     if (!state || !row || !action.Enable) {
+      return;
+    }
+    if (!await this.confirmAction(action)) {
       return;
     }
     const clickPosition = event && (event.clientX > 0 || event.clientY > 0)
@@ -1085,6 +1344,18 @@ class TurnkeyLitApp extends LitElement {
     });
   }
 
+  private applyDataError(vmId: string, command: { Target: string; Message: string }): void {
+    const messages = (command.Message ?? "").split("\n").filter(message => message !== "");
+    const next = new Map(this.dataErrors);
+    const key = `${vmId}:${command.Target}`;
+    if (messages.length > 0) {
+      next.set(key, messages);
+    } else {
+      next.delete(key);
+    }
+    this.dataErrors = next;
+  }
+
   private upsertViewAction(command: ServerActionCommand): void {
     this.viewActions = [
       ...this.viewActions.filter(action => action.VMClassName !== command.VMClassName
@@ -1199,6 +1470,74 @@ class TurnkeyLitApp extends LitElement {
       return this.renderMissingComponent("LeftSideMenu", status.fileUrl, status.error);
     }
     return renderStandardLeftSideMenu(context);
+  }
+
+  private toolbarEntries(position: "ToolBarLeft" | "ToolBarRight"): ToolbarEntry[] {
+    const state = this.viewState;
+    if (!state) {
+      return [];
+    }
+    const subgroups = new Map<string, ToolbarAction[]>();
+    const sortKeys = new Map<string, string>();
+    const actions = this.viewActions
+      .filter(action => action.ActionRenderPosition === position
+        || (position === "ToolBarLeft" && action.ActionRenderPosition === "LeftSide"))
+      .sort((left, right) => left.SortKey.localeCompare(right.SortKey));
+    for (const command of actions) {
+      const target = command.VMClassName === "GLOBAL"
+        ? undefined
+        : command.VMClassName === state.root.className
+          ? state.root
+          : state.getCurrentObject(command.VMClassName);
+      if (command.VMClassName !== "GLOBAL" && !target) {
+        continue;
+      }
+      const name = position === "ToolBarRight" ? "" : command.SubMenuGroup ?? "";
+      const actionKey = target
+        ? `${command.VMClassName}:${command.Action}:${target.vmClassId}`
+        : `${command.VMClassName}:${command.Action}`;
+      const group = subgroups.get(name) ?? [];
+      group.push({
+        command,
+        disabled: !command.Enable || this.executingActions.has(actionKey),
+        targetVMClassId: target?.vmClassId
+      });
+      subgroups.set(name, group);
+      if (!sortKeys.has(name)) {
+        sortKeys.set(name, command.SubMenuGroupSortKey ?? name);
+      }
+    }
+    return [...subgroups]
+      .sort(([left], [right]) => (sortKeys.get(left) ?? left).localeCompare(sortKeys.get(right) ?? right))
+      .map(([name, groupActions]) => ({ name, actions: groupActions }));
+  }
+
+  private renderToolbar(): TemplateResult | typeof nothing {
+    const left = this.toolbarEntries("ToolBarLeft");
+    const right = this.toolbarEntries("ToolBarRight");
+    if (left.length === 0 && right.length === 0) {
+      return nothing;
+    }
+    const context: ToolbarContext = {
+      left,
+      right,
+      onAction: (action, event) => {
+        if (action.targetVMClassId && action.targetVMClassId !== this.viewState?.root.vmClassId) {
+          void this.executeRowAction(action.command, action.targetVMClassId, event);
+        } else {
+          void this.executeViewAction(action.command.VMClassName, action.command.Action, event);
+        }
+      }
+    };
+    const reference = resolveRuntimeOverride("Toolbar", document.baseURI);
+    const status = this.runtimeComponentStatuses.get(this.runtimeStatusKey(reference));
+    if (status?.state === "loaded") {
+      return html`${renderRuntimeComponent(reference, context)}`;
+    }
+    if (status?.state === "failed") {
+      return this.renderMissingComponent("Toolbar", status.fileUrl, status.error);
+    }
+    return renderStandardToolbar(context);
   }
 
   private selectCollectionRow(row: VmObject, ownerId: string, collectionName: string): void {
@@ -1482,8 +1821,22 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private showError(error: unknown): void {
-    this.errorMessage = error instanceof Error ? error.message : String(error);
+    this.reportError(error instanceof Error ? error.message : String(error));
     console.error("Turnkey Lit client error", error);
+  }
+
+  // Errors are shown as notifications; the inline banner is only a fallback while no view is displayed.
+  private reportError(message: string): void {
+    if (message !== this.errorMessage) {
+      this.notify(message, "error", 6000);
+    }
+    this.errorMessage = message;
+  }
+
+  private renderErrorBanner(): TemplateResult | typeof nothing {
+    return this.errorMessage && !this.viewReady
+      ? html`<div class="status error" role="alert">${this.errorMessage}</div>`
+      : nothing;
   }
 
   private renderMetadataStyles(): TemplateResult {
@@ -1602,7 +1955,7 @@ class TurnkeyLitApp extends LitElement {
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      const overrideName = tagName === "LeftSideMenu" ? "left-side-menu" : tagName;
+      const overrideName = tagName === "LeftSideMenu" ? "left-side-menu" : tagName === "Toolbar" ? "toolbar" : tagName;
       const fileUrl = reference?.fileUrl ?? `components/overrides/${overrideName}/index.js`;
       this.setRuntimeComponentStatus(
         reference ? this.runtimeStatusKey(reference) : `override:${tagName}`,
@@ -1629,9 +1982,9 @@ class TurnkeyLitApp extends LitElement {
             || !Array.isArray(manifest.overrides)
             || !manifest.overrides.every(
               (tag): tag is string => typeof tag === "string"
-                && (tag === "LeftSideMenu" || /^tk-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(tag))
+                && (tag === "LeftSideMenu" || tag === "Toolbar" || /^tk-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(tag))
             )) {
-            throw new TypeError("Override manifest must contain an overrides array of valid tk-* control tags or LeftSideMenu.");
+            throw new TypeError("Override manifest must contain an overrides array of valid tk-* control tags, LeftSideMenu or Toolbar.");
           }
           return new Set(manifest.overrides);
         });
@@ -1858,6 +2211,7 @@ class TurnkeyLitApp extends LitElement {
       label,
       placeholder,
       helperText,
+      errors: attributes.id ? this.dataErrors.get(`${this.viewState?.vmId ?? ""}:${attributes.id}`) ?? [] : [],
       style,
       visible,
       enabled: enabled && !readOnly && attributes.disabled !== "true"
@@ -1925,7 +2279,8 @@ class TurnkeyLitApp extends LitElement {
       const seekerPageCount = seekerNumber("vSeekerPageCount");
       const seekerPageSize = seekerNumber("vSeekerPageLength");
       const seekerTotal = seekerNumber("vSeekerResultCount");
-      const paging = control.taggedValues.IsSeekerResultGrid?.toLowerCase() === "true"
+      const isSeekerGrid = control.taggedValues.IsSeekerResultGrid?.toLowerCase() === "true";
+      const paging = isSeekerGrid
         && seekerVariables && seekerPage !== undefined && seekerPageCount !== undefined
         ? {
             page: seekerPage,
@@ -1946,6 +2301,7 @@ class TurnkeyLitApp extends LitElement {
       const gridContext: DataGridContext = {
         ...context,
         paging,
+        noResultsBackdrop: isSeekerGrid && seekerTotal === 0,
         onOpenPagingMenu: event => {
           this.seekerMoreMenu = {
             x: Math.max(4, Math.min(event.clientX, window.innerWidth - 220)),
@@ -2085,6 +2441,7 @@ class TurnkeyLitApp extends LitElement {
         progress: 100,
         uploading: false
       });
+      this.notify(`${file.name} uploaded`, "attach_file");
       if (this.viewState === state && this.routeGeneration === generation) {
         window.clearTimeout(this.pollTimer);
         void this.poll(generation);
@@ -2192,6 +2549,40 @@ class TurnkeyLitApp extends LitElement {
     }
   }
 
+  private constraintMessages(category: "Errors" | "Warnings" | "Infos"): string[] {
+    return this.dataErrors.get(`${this.viewState?.vmId ?? ""}:${category}`) ?? [];
+  }
+
+  private renderConstraints(): TemplateResult | typeof nothing {
+    const groups = [
+      { key: "Errors", css: "error", icon: "error", singular: "Error" },
+      { key: "Warnings", css: "warning", icon: "warning", singular: "Warning" },
+      { key: "Infos", css: "info", icon: "info", singular: "Info" }
+    ] as const;
+    const present = groups.map(group => ({ ...group, messages: this.constraintMessages(group.key) }))
+      .filter(group => group.messages.length > 0);
+    const count = present.reduce((sum, group) => sum + group.messages.length, 0);
+    if (count === 0) {
+      return nothing;
+    }
+    const cardClass = present[0].css;
+    return html`
+      <div class="constraints">
+        ${this.constraintsOpen ? html`<div class="constraints-panel" role="dialog" aria-label="Validation errors">
+          ${present.map(group => html`<div class="constraints-group ${group.css}">
+            <div class="constraints-title"><span class="material-icons" aria-hidden="true">${group.icon}</span>
+              ${group.messages.length} ${group.messages.length === 1 ? group.singular : `${group.singular}s`}</div>
+            ${group.messages.map(message => html`<div class="constraints-message">• ${message}</div>`)}
+          </div>`)}
+        </div>` : nothing}
+        <button type="button" class="validation-card ${cardClass}" aria-expanded=${this.constraintsOpen}
+          @click=${() => { this.constraintsOpen = !this.constraintsOpen; }}>
+          <span class="material-icons" aria-hidden="true">warning_amber</span>
+          <span>${count} ${count === 1 ? "issue" : "issues"}</span>
+        </button>
+      </div>`;
+  }
+
   private renderWorkspace(content: TemplateResult): TemplateResult {
     const hideSidebar = this.viewDescription?.hideSidebar === true;
     const hasActions = this.leftActionGroups().length > 0 && !hideSidebar;
@@ -2202,8 +2593,9 @@ class TurnkeyLitApp extends LitElement {
           @click=${() => { this.actionPanelOpen = false; }}></button>
         <div class="view-workspace ${this.actionPanelOpen && !hideSidebar ? "actions-open" : "actions-closed"}">
           ${this.renderLeftActions()}
-          <div class="view-content">${content}</div>
+          <div class="view-content">${this.renderToolbar()}${content}</div>
         </div>
+        ${this.renderConstraints()}
       </div>
     `;
   }
@@ -2225,9 +2617,10 @@ class TurnkeyLitApp extends LitElement {
         ${this.renderActionToggle()}
         <h1><a href="/L#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a></h1>
         ${this.renderGlobalMenu()}
+        ${this.renderLoginSection()}
       </header>
       <main @keydown=${this.handleActionPanelKeydown}>
-        ${this.errorMessage ? html`<div class="status error" role="alert">${this.errorMessage}</div>` : nothing}
+        ${this.renderErrorBanner()}
         ${this.renderWorkspace(this.renderViewContent())}
         ${this.renderStatusMessage()}
       </main>
@@ -2257,7 +2650,7 @@ class TurnkeyLitApp extends LitElement {
           }}>
           <section class="popup-panel" role="dialog" aria-modal="false"
             aria-label=${this.viewDescription?.name ?? this.route.viewName}>
-            ${this.errorMessage ? html`<div class="status error" role="alert">${this.errorMessage}</div>` : nothing}
+            ${this.renderErrorBanner()}
             <div class="view-workspace">
               <div class="view-content">${this.renderViewContent()}</div>
             </div>
@@ -2276,7 +2669,7 @@ class TurnkeyLitApp extends LitElement {
             event.preventDefault();
             void this.closeModal(false);
           }}>
-          ${this.errorMessage ? html`<div class="status error" role="alert">${this.errorMessage}</div>` : nothing}
+          ${this.renderErrorBanner()}
           <div class="view-workspace">
             <div class="view-content">${this.renderViewContent()}</div>
           </div>
@@ -2296,22 +2689,22 @@ class TurnkeyLitApp extends LitElement {
         ${this.activeModal ? nothing : this.renderActionToggle()}
         <h1><a href="/L#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a></h1>
         ${this.renderGlobalMenu()}
+        ${this.renderLoginSection()}
       </header>
-      <main @keydown=${this.handleActionPanelKeydown} @click=${(event: MouseEvent) => {
+      <main @keydown=${this.handleActionPanelKeydown} @tk-notify=${(event: CustomEvent<{ message: string; icon?: string }>) =>
+        this.notify(event.detail.message, event.detail.icon)} @click=${(event: MouseEvent) => {
         this.lastPopupClickPosition = { x: event.clientX, y: event.clientY };
         this.rowContextMenu = undefined;
         this.seekerMoreMenu = undefined;
       }}>
-        ${this.errorMessage
-          ? html`<div class="status error" role="alert" ?hidden=${this.activeModal !== undefined}>${this.errorMessage}</div>`
-          : nothing}
+        ${this.activeModal ? nothing : this.renderErrorBanner()}
         ${this.activeModal
           ? html`<dialog class="view-dialog" aria-label=${this.viewDescription?.name ?? this.route.viewName}
               @cancel=${(event: Event) => {
                 event.preventDefault();
                 void this.closeModal(false);
               }}>
-              ${this.errorMessage ? html`<div class="status error" role="alert">${this.errorMessage}</div>` : nothing}
+              ${this.renderErrorBanner()}
               <div class="view-workspace">
                 <div class="view-content">${this.renderViewContent()}</div>
               </div>
@@ -2381,6 +2774,53 @@ class TurnkeyLitApp extends LitElement {
       .forEach(menu => { menu.open = false; });
   }
 
+  // Login/register (or user and log out) markup is supplied by the server, as in the Angular and Blazor clients.
+  @state() private loginMarkup = "";
+
+  private async loadLoginSection(): Promise<void> {
+    try {
+      const response = await fetch("/turnkey/LoginSectionPartial", { credentials: "same-origin" });
+      if (response.ok) {
+        this.loginMarkup = (await response.text()).trim();
+      }
+    } catch (error) {
+      console.error("Turnkey login section failed to load", error);
+    }
+  }
+
+  // Send the user back to the current Lit page (including the #/View/Id route) after login or register.
+  private applyLoginReturnUrl(): void {
+    const returnUrl = `${window.location.pathname}${window.location.hash}`;
+    const links = this.renderRoot.querySelectorAll<HTMLAnchorElement>(".login-section a[href]");
+    for (const link of links) {
+      const url = new URL(link.getAttribute("href") ?? "", window.location.origin);
+      if (!/\/account\/(login|register)$/i.test(url.pathname)) {
+        continue;
+      }
+      url.searchParams.set("ReturnUrl", returnUrl);
+      link.setAttribute("href", `${url.pathname}${url.search}`);
+    }
+  }
+
+  private renderLoginSection(): TemplateResult | typeof nothing {
+    if (!this.loginMarkup) {
+      return nothing;
+    }
+    return html`<div class="login-section" @click=${this.handleLoginSectionClick}>${unsafeHTML(this.loginMarkup)}</div>`;
+  }
+
+  // The server markup logs out with javascript:document.getElementById(...), which cannot see into the shadow root.
+  private readonly handleLoginSectionClick = (event: MouseEvent): void => {
+    const link = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[href^='javascript:']");
+    if (!link) {
+      return;
+    }
+    event.preventDefault();
+    if (link.getAttribute("href")?.includes("logoutForm")) {
+      this.renderRoot.querySelector<HTMLFormElement>("#logoutForm")?.submit();
+    }
+  };
+
   private renderGlobalMenu(): TemplateResult | typeof nothing {
     return this.globalMenu && !this.viewDescription?.hideMenubar
       ? html`<nav aria-label="Global menu">
@@ -2395,6 +2835,9 @@ class TurnkeyLitApp extends LitElement {
     }
     this.closeGlobalMenus();
     try {
+      if (!await this.saveBeforeLeaving()) {
+        return;
+      }
       const result = await this.transport.openGlobalAction(item.actionName);
       const separator = result.indexOf("¤");
       const vmClassId = separator < 0 ? "" : result.slice(separator + 1).trim();

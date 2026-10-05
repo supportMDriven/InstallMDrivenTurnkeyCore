@@ -6,10 +6,12 @@ import {
   getStyleAndThisPlusMaybeInGrid,
   getStyleAndThisPlusMaybeNoLabel,
   renderControlLabel
+  ,errorClass,
+  renderFieldErrors
 } from "../presentation";
 
 export function renderTextArea(context: LitComponentContext): TemplateResult {
-  return html`<div class="view-control ${appendOuterCSSGridClass(
+  return html`<div class="view-control ${errorClass(context)}${appendOuterCSSGridClass(
     context,
     getStyleAndThisPlusMaybeNoLabel(context, "tk-component tk-input-field tk-textarea")
   )}"
@@ -29,6 +31,7 @@ export function renderTextArea(context: LitComponentContext): TemplateResult {
           const value = (event.currentTarget as HTMLTextAreaElement).value;
           context.onChange(value === "" ? null : value);
         }}></textarea>
+      ${renderFieldErrors(context)}
       ${context.helperText && !context.isGridCell
         ? html`<span class="tk-input-field__helper">${context.helperText}</span>`
         : ""}

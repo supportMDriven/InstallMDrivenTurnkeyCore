@@ -7,6 +7,8 @@ import {
   getStyleAndThisPlusMaybeInGrid,
   getStyleAndThisPlusMaybeNoLabel,
   renderControlLabel
+  ,errorClass,
+  renderFieldErrors
 } from "../presentation";
 
 export function renderTextField(context: LitComponentContext): TemplateResult {
@@ -37,7 +39,7 @@ export function renderTextField(context: LitComponentContext): TemplateResult {
       }
     }}>`;
 
-  return html`<div class="view-control ${appendOuterCSSGridClass(
+  return html`<div class="view-control ${errorClass(context)}${appendOuterCSSGridClass(
     context,
     getStyleAndThisPlusMaybeNoLabel(context, "tk-component tk-input-field ctInputField tk-input-field--text")
   )}"
@@ -45,6 +47,7 @@ export function renderTextField(context: LitComponentContext): TemplateResult {
     ${context.isGridCell ? "" : renderControlLabel(context)}
     <div class=${getStyleAndThisPlusMaybeInGrid(context, "tk-input-field__container")}>
       ${input}
+      ${renderFieldErrors(context)}
       ${context.helperText && !context.isGridCell
         ? html`<span class="tk-input-field__helper">${context.helperText}</span>`
         : ""}

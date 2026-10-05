@@ -15,7 +15,8 @@ export function renderButton(context: LitComponentContext): TemplateResult {
     getStyleAndThis(context, "tk-component tk-button")
   )}"
     style=${context.metadata.wrapperStyle}>
-    <button type="button" class=${getStyleAndThis(context, "tk-button__native ripple-effect")}
+    <button type="button" class=${getStyleAndThis(context, "tk-button__native ripple-effect")
+      + (context.metadata.attributes.IsSeekerAction?.toLowerCase() === "true" ? " seekeraction" : "")}
       ?disabled=${!context.enabled || context.actionExecuting}
       title=${context.label}
       @click=${(event: MouseEvent) => context.executeAction(actionName, event)}>

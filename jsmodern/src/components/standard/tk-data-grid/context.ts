@@ -21,6 +21,7 @@ export interface DataGridPaging {
 
 export interface DataGridContext extends LitComponentContext {
   readonly paging?: DataGridPaging;
+  readonly noResultsBackdrop?: boolean;
   onPageAction(action: "__SM_FULLBACK" | "__SM_BACK" | "__SM_FORWARD" | "__SM_FULLFORWARD"): void;
   onPageSize(size: number): void;
   onOpenPagingMenu(event: MouseEvent): void;

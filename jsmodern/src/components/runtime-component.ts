@@ -42,11 +42,11 @@ export function resolveRuntimeComponent(name: string, baseUrl: string): RuntimeC
 }
 
 export function resolveRuntimeOverride(tagName: string, baseUrl: string): RuntimeComponentReference {
-  const isLeftSideMenu = tagName === "LeftSideMenu";
+  const isLeftSideMenu = tagName === "LeftSideMenu" || tagName === "Toolbar";
   if (!isLeftSideMenu && !/^tk-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(tagName)) {
     throw new TypeError(`Invalid standard control tag "${tagName}".`);
   }
-  const name = isLeftSideMenu ? "left-side-menu" : tagName;
+  const name = tagName === "LeftSideMenu" ? "left-side-menu" : tagName === "Toolbar" ? "toolbar" : tagName;
   const elementName = isLeftSideMenu ? name : tagName.slice(3);
   return {
     name,

@@ -37,3 +37,9 @@ The left-side action menu can also be replaced at runtime by adding
 open/mobile state, and action callback described by
 `../../src/components/standard/left-side-menu/context.ts`. Without this manifest entry, no menu
 override file is requested.
+
+The view toolbar (shown when a view has `ToolBarLeft`/`ToolBarRight` actions) can
+be replaced the same way: add `"Toolbar"` to the manifest and provide
+`toolbar/index.js` registering `tk-lit-override-toolbar`. It receives the
+`ToolbarContext` from `src/components/standard/toolbar/context.ts` (left and right
+entries, where a named entry is a submenu, plus an action callback).
