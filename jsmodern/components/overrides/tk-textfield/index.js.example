@@ -1,0 +1,30 @@
+class TextFieldOverride extends HTMLElement {
+  set context(value) {
+    this._context = value;
+    this.render();
+  }
+
+  render() {
+    const context = this._context;
+    if (!context) return;
+
+    const field = document.createElement("input");
+    field.type = context.metadata.attributes.type || "text";
+    field.value = context.value == null ? "" : String(context.value);
+    field.placeholder = context.placeholder;
+    field.disabled = !context.enabled;
+    field.readOnly = context.readOnly;
+    field.className = "tk-input-field__native";
+    field.addEventListener("change", () => {
+      context.onChange(field.value === "" ? null : field.value);
+    });
+
+    const label = document.createElement("label");
+    label.className = "tk-input-field__label tk-label";
+    label.textContent = context.label;
+
+    this.replaceChildren(...(context.label ? [label, field] : [field]));
+  }
+}
+
+customElements.define("tk-lit-override-textfield", TextFieldOverride);

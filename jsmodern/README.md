@@ -24,6 +24,89 @@ The application name links back to `/L#/Index`, with the global menu alongside
 it in the top header. Opening one global-menu dropdown closes other open menus
 while leaving its own nested submenu path available.
 
+## Component extension contract
+
+A control can request an application-provided Lit component with the
+`Lit_Ext_Component` tagged value (also accepts the earlier `LitComponent`
+and `Blazor_Ext_Component` spellings). For example:
+
+```xml
+<taggedvalue tag="Lit_Ext_Component" value="MySVGChart" />
+```
+
+This loads `/L/components/custom/my-svg-chart/index.js`; the module must register
+the `tk-lit-custom-my-svg-chart` custom element. PascalCase component names are
+normalized to lowercase kebab-case folders. Add the file under
+`jsmodern/components/custom/my-svg-chart/` and deploy it as a static asset. The
+Lit client does not need rebuilding when an extension file is added or changed.
+
+The custom element receives a `context` property with the control metadata,
+bound object and value (or collection rows), resolved label, placeholder,
+helper text and style, visibility/enabled/read-only state, `isGridCell`, and
+`minSize` in pixels. The minimum width and height use the view's
+`VMColWidth`/`VMColHeight` (or `VMRowHeight`) multiplied by the control's
+`ColSpan`/`RowSpan`; the wrapper enforces these as minimum dimensions without
+forcing a fixed size.
+Use `context.onChange(value)` to request a bound value update and
+`context.executeAction(actionName, event)` to invoke an action; the client
+continues to own all Turnkey communication. Components may be rendered in a
+standalone control or in a grid cell. They should implement a `context` setter
+and update their presentation when it changes.
+
+```js
+class SalesChart extends HTMLElement {
+  set context(value) {
+    this._context = value;
+    this.render();
+  }
+
+  render() {
+    if (!this._context) return;
+    const summary = document.createElement("pre");
+    summary.textContent = JSON.stringify(this._context.value ?? this._context.collection);
+    this.replaceChildren(summary);
+  }
+}
+
+customElements.define("tk-lit-custom-sales-chart", SalesChart);
+```
+
+Component names are restricted to lowercase kebab-case and map only to
+`components/custom/{normalized-name}/index.js` on the same origin. Extensions are trusted
+application code. An invalid name, missing file, failed module, or module that
+does not register its expected custom element displays a visible fallback
+showing the component name, expected file, and load error.
+
+Standard control overrides live separately in `components/overrides/`. For
+example, `components/overrides/tk-textfield/index.js` replaces the default
+`tk-textfield` renderer globally without requiring a metadata tag. Override
+modules register `tk-lit-override-textfield` and receive the same `context`
+contract as custom components. Add active override control tags to
+`components/overrides/manifest.json`; the client loads that manifest once and
+only imports declared overrides, avoiding 404 probes for missing components.
+Undeclared overrides leave the bundled standard renderer active. See the folder READMEs and
+`components/overrides/tk-textfield/index.js.example` for the copy-and-edit workflow.
+
+Bundled standard renderers for buttons, checkboxes, date pickers, selects,
+text areas, text fields, typography, and data grids live in individual
+`src/components/standard/tk-*/` folders. The standard grid renderer owns its
+table UI and interactions; the app shell supplies state and Turnkey callbacks.
+
+Built-in control markup now carries MDriven class hooks, including
+`tk-component`, `tk-input-field__*`, `tk-select__*`, `tk-checkbox__*`,
+`tk-button__*`, `tk-data-table__*`, `tk-label__*`, `tk-input-field__helper`,
+and `tk-select__dropdown-icon`. Dynamic `_Label`, `_Placeholder`,
+`_HelperText`, `_Style`, `_Visible`, `_Enabled`, and `_ReadOnly` companion
+attributes are resolved from the bound object, with the corresponding
+`VM_Status` value as fallback where available. These class names are the
+starting point for aligning the Lit client with the MDriven standard styles.
+Numeric `StringFormat` metadata is applied for display while keeping formatted
+numeric input editable and sending a numeric value back to Turnkey.
+The global client stylesheet loads the Turnkey server's local Material Icons
+font through a path relative to `/L/turnkey-lit.css`, with WOFF2 and TTF
+sources, matching the existing Turnkey font definitions. It renders `Icon`
+tagged values such as `3k_plus` and `10mp`.
+
 ## Current scope
 
 `core/` contains the framework-independent Turnkey HTTP transport, stream
@@ -79,6 +162,20 @@ clicks outside; that close is reported to Turnkey as accepted. The client also
 connects to the Turnkey SignalR hub and sends edited values back through
 `UpdateMany`.
 
-This is the first metadata-driven rendering slice. Complex/custom components,
-validation behavior, uploads, and complete navigation behavior remain
-subsequent migration work.
+This is the first metadata-driven rendering slice. Runtime custom-component
+loading is available for trusted application extensions. Built-in control
+rendering is being separated incrementally; validation behavior, uploads, and
+complete navigation behavior remain subsequent migration work.
+# Shared Turnkey styles
+
+The client loads the shared Turnkey stylesheets from `/Content` and the
+model-specific stylesheet from `/L/Turnkey/StylesInModelCss`. Shared styles are
+also linked into the Lit shadow root so they apply to rendered controls. The
+model stylesheet's `unique` query value follows the SignalR connection ID and
+is refreshed after reconnects.
+
+`LController` replaces `__TURNKEY_APP_VERSION__` in `index.html` with the
+server assembly's informational version (falling back to its assembly version).
+This versions static stylesheet and JavaScript URLs to invalidate caches when
+the deployed build changes. Set the assembly informational version in the
+deployment build if it should match a specific Turnkey release.

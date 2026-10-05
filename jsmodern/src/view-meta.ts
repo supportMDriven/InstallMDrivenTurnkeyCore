@@ -12,7 +12,10 @@ export interface ViewDescription {
   readonly name: string;
   readonly hideSidebar: boolean;
   readonly hideMenubar: boolean;
+  readonly vmColWidth: number;
+  readonly vmColHeight: number;
   readonly rootClassName: string;
+  readonly globalSettings: Readonly<Record<string, string>>;
   readonly styles: string;
   readonly controls: readonly ViewMetaControl[];
 }
@@ -50,11 +53,15 @@ function readControls(parent: Element): ViewMetaControl[] {
         layoutChildren: []
       });
     } else if (element.hasAttribute("IsPlacingContainer") || element.classList.contains("tk-placingcontainer")) {
+      const attributes: Record<string, string> = {};
+      for (const attribute of Array.from(element.attributes)) {
+        attributes[attribute.name] = attribute.value;
+      }
       controls.push({
         tagName: "tk-layout-container",
         wrapperClass: element.getAttribute("class") ?? "",
         wrapperStyle: element.getAttribute("style") ?? "",
-        attributes: {},
+        attributes,
         taggedValues: {},
         columns: [],
         layoutChildren: readControls(element)
@@ -81,11 +88,23 @@ export function parseViewDescription(xmlText: string, expectedViewName: string):
   if (!viewModelSection) {
     throw new TypeError(`View metadata for ${expectedViewName} has no viewmodelSection`);
   }
+  const readPositiveDimension = (primary: string, fallback?: string): number => {
+    const rawValue = viewModelSection.getAttribute(primary)
+      ?? (fallback ? viewModelSection.getAttribute(fallback) : null);
+    const value = rawValue === null ? Number.NaN : Number(rawValue);
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  };
   return {
     name: expectedViewName,
     hideSidebar: root.getAttribute("HideSidebar")?.toLowerCase() === "true",
     hideMenubar: root.getAttribute("HideMenubar")?.toLowerCase() === "true",
+    vmColWidth: readPositiveDimension("VMColWidth"),
+    vmColHeight: readPositiveDimension("VMColHeight", "VMRowHeight"),
     rootClassName: viewModelSection.getAttribute("class") ?? "",
+    globalSettings: Object.fromEntries(
+      Array.from(root.querySelectorAll(":scope > gs"))
+        .map(setting => [setting.getAttribute("name") ?? "", setting.getAttribute("value") ?? ""])
+    ),
     styles: root.querySelector("style")?.textContent ?? "",
     controls: readControls(viewModelSection)
   };

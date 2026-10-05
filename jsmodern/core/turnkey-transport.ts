@@ -120,6 +120,61 @@ export class TurnkeyTransport {
     });
   }
 
+  async exportAsTabSeparated(vmId: string, allOrJustPage = true, signal?: AbortSignal): Promise<void> {
+    await this.request(
+      `ExportTabSep?VMId=${encodeURIComponent(vmId)}&allOrJustPage=${allOrJustPage}`,
+      { signal }
+    );
+  }
+
+  async importFromText(vmId: string, text: string, signal?: AbortSignal): Promise<void> {
+    const form = new FormData();
+    form.append("vmid", vmId);
+    form.append("pastedata", text);
+    await this.request("ExcelPlugin", { method: "POST", body: form, signal });
+  }
+
+  uploadFile(
+    vmId: string,
+    target: string,
+    vmClassId: string,
+    file: File,
+    onProgress: (percent: number) => void
+  ): Promise<void> {
+    const form = new FormData();
+    form.append("file", file, file.name);
+    form.append("vmid", vmId);
+    form.append("target", target);
+    form.append("vmclassid", vmClassId);
+    form.append("filename", file.name);
+
+    return new Promise((resolve, reject) => {
+      const request = new XMLHttpRequest();
+      request.open("POST", `${this.apiBaseUrl}UploadFileMultiPart`);
+      request.upload.addEventListener("progress", event => {
+        onProgress(event.lengthComputable && event.total > 0
+          ? Math.round(event.loaded / event.total * 100)
+          : 0);
+      });
+      request.addEventListener("load", () => {
+        if (request.status >= 200 && request.status < 300) {
+          resolve();
+        } else {
+          reject(new Error(
+            `Turnkey file upload failed (${request.status} ${request.statusText || "Unknown Error"}).`
+          ));
+        }
+      });
+      request.addEventListener("error", () => {
+        reject(new Error("Turnkey file upload failed because of a network error."));
+      });
+      request.addEventListener("abort", () => {
+        reject(new DOMException("Turnkey file upload was aborted.", "AbortError"));
+      });
+      request.send(form);
+    });
+  }
+
   private async request(path: string, init?: RequestInit): Promise<Response> {
     const response = await this.fetcher(this.apiBaseUrl + path, init);
     if (!response.ok) {

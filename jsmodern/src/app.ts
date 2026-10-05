@@ -18,6 +18,39 @@ import {
 import { parseViewRoute, viewRouteHash, ViewRoute } from "./router";
 import { GlobalMenuDescription, GlobalMenuItem, parseGlobalMenu } from "./global-menu";
 import { parseViewDescription, ViewDescription, ViewMetaControl } from "./view-meta";
+import { LitComponentContext } from "./components/control-context";
+import { formatNumber } from "./components/standard/formatting";
+import { renderButton } from "./components/standard/tk-button";
+import { renderCheckbox } from "./components/standard/tk-checkbox";
+import { renderDatePicker } from "./components/standard/tk-datepicker";
+import { renderSelect } from "./components/standard/tk-select";
+import { renderTextArea } from "./components/standard/tk-textarea";
+import { renderTextField } from "./components/standard/tk-textfield";
+import { renderTypographyControl } from "./components/standard/tk-typography";
+import { renderFileUpload } from "./components/standard/tk-file-upload";
+import { renderImageUpload } from "./components/standard/tk-image-upload";
+import { DataGridContext } from "./components/standard/tk-data-grid/context";
+import { dataGridStyles, renderDataGrid } from "./components/standard/tk-data-grid";
+import {
+  LeftSideMenuContext,
+  LeftSideMenuGroup
+} from "./components/standard/left-side-menu/context";
+import {
+  leftSideMenuStyles,
+  renderLeftSideMenu as renderStandardLeftSideMenu
+} from "./components/standard/left-side-menu";
+import {
+  renderRuntimeComponent,
+  resolveRuntimeComponent,
+  resolveRuntimeOverride,
+  runtimeComponentName
+} from "./components/runtime-component";
+
+type RuntimeComponentStatus =
+  | { readonly state: "loading"; readonly fileUrl: string }
+  | { readonly state: "loaded"; readonly fileUrl: string }
+  | { readonly state: "absent"; readonly fileUrl: string }
+  | { readonly state: "failed"; readonly fileUrl: string; readonly error: string };
 
 interface AppInfo {
   InstanceId?: number;
@@ -35,6 +68,7 @@ interface RowContextMenu {
   readonly rowVMClassId: string;
   readonly collectionOwnerId: string;
   readonly collectionName: string;
+  readonly isListView?: boolean;
   readonly x: number;
   readonly y: number;
 }
@@ -42,6 +76,13 @@ interface RowContextMenu {
 interface GridSort {
   readonly column: string;
   readonly direction: "ascending" | "descending";
+}
+
+interface UploadState {
+  readonly fileName: string;
+  readonly progress: number;
+  readonly uploading: boolean;
+  readonly error?: string;
 }
 
 interface LeftActionGroup {
@@ -53,6 +94,7 @@ interface LeftActionGroup {
 
 interface ViewSessionSnapshot {
   readonly route: ViewRoute;
+  readonly viewReady: boolean;
   readonly viewState?: ViewState;
   readonly viewDescription?: ViewDescription;
   readonly appInfo?: AppInfo;
@@ -109,11 +151,15 @@ function isNavigateCommand(command: ServerUpdateCommand): command is NavigateCom
     && typeof command.NewTab === "boolean";
 }
 
+function mergeClassNames(...values: string[]): string {
+  return [...new Set(values.flatMap(value => value.split(/\s+/).filter(Boolean)))].join(" ");
+}
+
 @customElement("turnkey-lit-app")
 class TurnkeyLitApp extends LitElement {
-  static styles = css`
-    :host { display: block; min-height: 100vh; }
-    header { align-items: center; background: #263746; color: white; display: flex; gap: 1rem; padding: 0.8rem 1.25rem; }
+  static styles = [css`
+    :host { box-sizing: border-box; display: flex; flex-direction: column; height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; }
+    header { align-items: center; background: #263746; color: white; display: flex; flex: 0 0 auto; gap: 1rem; padding: 0.8rem 1.25rem; position: relative; z-index: 10; }
     header[hidden] { display: none; }
     header h1 { font-size: 1.1rem; margin: 0; }
     header h1 a { color: inherit; text-decoration: none; }
@@ -132,22 +178,14 @@ class TurnkeyLitApp extends LitElement {
     header nav details div button:hover, header nav details div summary:hover { background: #edf1f4; }
     header .action-toggle { background: transparent; border: 1px solid #ffffff66; border-radius: 0.3rem; color: white; font-size: 1.25rem; line-height: 1; padding: 0.4rem 0.55rem; }
     header .action-toggle:hover, header .action-toggle:focus-visible { background: #ffffff22; }
-    main { margin: 1.5rem auto; max-width: 70rem; padding: 0 1rem; }
+    main { box-sizing: border-box; display: flex; flex: 1 1 auto; flex-direction: column; margin: 0 auto; max-width: 72rem; min-height: 0; overflow: hidden; padding: 1rem; width: 100%; }
     .workspace-toolbar { align-items: center; display: flex; margin-bottom: 0.5rem; }
     .workspace-toolbar .action-toggle { background: white; border: 1px solid #c7d0d7; border-radius: 0.3rem; color: #263746; font-size: 1.25rem; line-height: 1; padding: 0.4rem 0.55rem; }
     .workspace-toolbar .action-toggle:hover, .workspace-toolbar .action-toggle:focus-visible { background: #edf1f4; }
-    .workspace-shell { position: relative; }
-    .view-workspace { align-items: start; display: grid; gap: 1rem; grid-template-columns: minmax(11rem, 14rem) minmax(0, 1fr); }
+    .workspace-shell { flex: 1 1 auto; min-height: 0; position: relative; }
+    .view-workspace { align-items: stretch; display: grid; gap: 1rem; grid-template-columns: minmax(11rem, 14rem) minmax(0, 1fr); height: 100%; min-height: 0; }
     .view-workspace.actions-closed { grid-template-columns: minmax(0, 1fr); }
-    .view-workspace .left-actions[hidden] { display: none; }
-    .left-actions { background: white; border: 1px solid #dce1e5; border-radius: 0.4rem; padding: 0.5rem; }
-    .left-actions h2 { color: #53616b; font-size: 0.85rem; margin: 0.4rem 0.5rem; }
-    .left-action-group + .left-action-group { border-top: 1px solid #e1e5e8; margin-top: 0.4rem; padding-top: 0.35rem; }
-    .left-actions button { background: transparent; border: 0; border-radius: 0.25rem; color: #263746; display: block; padding: 0.45rem 0.55rem; text-align: left; width: 100%; }
-    .left-actions button:hover:not(:disabled), .left-actions button:focus-visible { background: #edf1f4; }
-    .left-actions button:disabled { color: #818a90; cursor: default; }
-    .left-action-subgroup { color: #75818a; font-size: 0.78rem; margin: 0.35rem 0.5rem 0.1rem; }
-    .view-content { min-width: 0; }
+    .view-content { min-height: 0; min-width: 0; overflow: auto; }
     .view-dialog .view-workspace { grid-template-columns: minmax(0, 1fr); }
     dialog.view-dialog { border: 0; border-radius: 0.5rem; box-shadow: 0 1rem 3rem #0005; max-height: min(90vh, 60rem); max-width: min(90vw, 75rem); overflow: auto; padding: 1.25rem; width: min(75rem, calc(100vw - 2rem)); }
     dialog.view-dialog::backdrop { background: #15232d33; }
@@ -157,6 +195,7 @@ class TurnkeyLitApp extends LitElement {
     .popup-panel .view-workspace { grid-template-columns: minmax(0, 1fr); }
     .popup-panel .view-canvas { margin: 0; }
     .modal-actions { background: white; border-top: 1px solid #dce1e5; display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; padding-top: 1rem; }
+    .view-dialog > .modal-actions { position: static; }
     .modal-actions button { border: 1px solid #c7d0d7; border-radius: 0.3rem; padding: 0.45rem 0.85rem; }
     .modal-actions button[type="submit"] { background: #263746; border-color: #263746; color: white; }
     .modal-actions button:disabled { cursor: default; opacity: 0.55; }
@@ -167,22 +206,63 @@ class TurnkeyLitApp extends LitElement {
     section { background: white; border-radius: 0.4rem; margin: 1rem 0; overflow: hidden; }
     section h2 { background: #edf1f4; font-size: 1rem; margin: 0; padding: 0.8rem 1rem; }
     .view-canvas { gap: 1rem; min-width: 0; }
+    .view-canvas.CSSGridRendering { gap: 0; }
+    .view-canvas.CSSGridRendering > .tk-data-table { contain: inline-size; }
+    .view-content > .view-canvas:has(> .tk-data-table) { box-sizing: border-box; height: 100%; margin: 0; }
+    .view-canvas > .tk-data-table { display: flex; flex-direction: column; min-height: 0; }
+    .view-canvas > .tk-data-table > .tk-data-table__content { flex: 1 1 auto; min-height: 0; overflow: auto; }
+    .view-loading { align-content: center; box-sizing: border-box; color: #52616b; min-height: 12rem; padding: 2rem; text-align: center; }
     .view-control { min-width: 0; }
     .view-control h1, .view-control h2, .view-control h3, .view-control p { margin: 0; }
-    .view-control label { display: block; margin-bottom: 0.35rem; }
+    .view-control label, .tk-label { display: block; margin-bottom: 0.35rem; }
     .view-control input, .view-control select { box-sizing: border-box; font: inherit; max-width: 35rem; padding: 0.45rem; width: 100%; }
     .view-control input[type="checkbox"] { width: auto; }
+    .tk-component { min-width: 0; }
+    .tk-input-field__container { display: flex; flex-direction: column; gap: 0.25rem; }
+    .tk-input-field__native, .tk-select__native, .tk-textarea__native { box-sizing: border-box; font: inherit; max-width: 35rem; padding: 0.45rem; width: 100%; }
+    .view-control .tk-checkbox__content { align-items: center; display: inline-flex; gap: 0.5rem; margin: 0; position: relative; }
+    .tk-checkbox__inner { align-items: center; display: flex; gap: 0.5rem; }
+    .view-control .tk-checkbox__label { display: inline-flex; margin: 0; }
+    .tk-label__icon { display: inline-block; margin-inline: 0.25rem; }
+    .tk-button__native { align-items: center; display: inline-flex; font: inherit; gap: 0.35rem; }
+    .tk-button__text { display: inline-block; }
+    .view-control .tk-checkbox__native { height: 1px; margin: 0; max-width: none; opacity: 0; padding: 0; position: absolute; width: 1px; }
+    .tk-checkbox__interactive { align-items: center; background: white; border: 1px solid #687780; border-radius: 0.15rem; box-sizing: border-box; display: inline-flex; flex: 0 0 1rem; height: 1rem; justify-content: center; width: 1rem; }
+    .tk-checkbox__native:checked + .tk-checkbox__interactive { background: #355b72; border-color: #355b72; }
+    .tk-checkbox__native:checked + .tk-checkbox__interactive .tk-checkbox__checkmark { opacity: 1; }
+    .tk-checkbox__native:focus-visible + .tk-checkbox__interactive { outline: 2px solid #355b72; outline-offset: 2px; }
+    .tk-checkbox__native:disabled + .tk-checkbox__interactive { background: #edf1f4; border-color: #aab4ba; }
+    .tk-checkbox__checkmark { height: 0.8rem; opacity: 0; width: 0.8rem; }
+    .mi { color: currentColor; direction: ltr; display: inline-block; font-family: "Material Icons"; font-feature-settings: "liga"; font-size: 1.2em; font-style: normal; font-weight: 400; letter-spacing: normal; line-height: 1; text-rendering: optimizeLegibility; text-transform: none; white-space: nowrap; -webkit-font-feature-settings: "liga"; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    .tk-select { position: relative; }
+    .tk-select__dropdown-icon { pointer-events: none; }
+    .tk-input-field__helper { color: #5d6870; font-size: 0.875rem; }
+    .tk-input-field__validation-state { color: #a12622; font-size: 0.875rem; }
+    .tk-image-upload__interactive.uploading { opacity: 1; }
+    .tk-lit-component-loading, .tk-lit-component-missing { border: 1px dashed #9aa7af; border-radius: 0.25rem; padding: 0.75rem; }
+    .tk-lit-component-missing { background: #fff5f3; color: #7d211d; }
     table { border-collapse: collapse; width: 100%; }
     .view-control table { table-layout: fixed; }
     th, td { border-bottom: 1px solid #e1e5e8; overflow: hidden; padding: 0.5rem; text-align: left; text-overflow: ellipsis; }
-    th { position: relative; }
-    .row-selection-cell { text-align: center; }
+    th { background-clip: padding-box; background-color: white; box-shadow: inset 0 -1px 0 #e1e5e8, inset 0 1px 0 #e1e5e8; position: relative; }
+    thead th { background-color: white; }
+    .row-selection-cell { padding-left: 0.25rem; padding-right: 0.25rem; text-align: center; text-overflow: clip; }
     .row-selection-cell input { cursor: pointer; margin: 0; max-width: none; padding: 0; width: auto; }
     .grid-sort-button { background: transparent; border: 0; color: inherit; font: inherit; font-weight: 600; padding: 0; text-align: left; width: 100%; }
     .grid-sort-button:hover { text-decoration: underline; }
     .grid-resize-handle { bottom: 0; cursor: col-resize; position: absolute; right: 0; top: 0; touch-action: none; width: 0.5rem; z-index: 1; }
+    .tk-data-table__content--advanced .tk-data-table__header-cell .grid-resize-handle {
+      bottom: 0;
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 0.5rem;
+    }
     .grid-resize-handle:hover, .grid-resize-handle:focus-visible { background: #597b91; outline: 0; }
     tbody tr.current-row { background: #e8f1f8; }
+    .tk-list-view__row { min-width: 0; }
+    .tk-list-view__row--current { background: #e8f1f8; }
     .row-menu-cell { padding: 0.2rem; white-space: nowrap; width: 1%; }
     .row-menu-trigger { background: transparent; border: 0; border-radius: 0.25rem; padding: 0.25rem 0.5rem; }
     .row-menu-trigger:hover, .row-menu-trigger:focus-visible { background: #edf1f4; }
@@ -200,20 +280,18 @@ class TurnkeyLitApp extends LitElement {
     .action-panel-backdrop { display: none; }
     @media (max-width: 600px) {
       .view-workspace { grid-template-columns: 1fr; }
-      .left-actions { display: block; }
-      .view-workspace .left-actions[hidden] { display: none; }
       dl { grid-template-columns: 1fr; gap: 0.25rem; }
       dd { margin-bottom: 0.6rem; }
     }
     @media (max-width: 760px) {
-      .view-workspace { display: block; }
+      .view-workspace { display: grid; grid-template-columns: minmax(0, 1fr); }
       .view-workspace > .view-content { width: 100%; }
       .action-panel-backdrop:not([hidden]) { background: #15232d55; border: 0; display: block; inset: 0; padding: 0; position: fixed; z-index: 19; }
-      .view-workspace .left-actions:not([hidden]) { box-shadow: 0 0.75rem 2rem #0003; box-sizing: border-box; left: 0.75rem; max-height: calc(100vh - 1.5rem); overflow: auto; position: fixed; top: 0.75rem; width: min(18rem, calc(100vw - 1.5rem)); z-index: 20; }
     }
-  `;
+  `, dataGridStyles, leftSideMenuStyles];
 
   @state() private route: ViewRoute = parseViewRoute(window.location.hash);
+  @state() private viewReady = false;
   @state() private viewState?: ViewState;
   @state() private viewDescription?: ViewDescription;
   @state() private appInfo?: AppInfo;
@@ -224,10 +302,13 @@ class TurnkeyLitApp extends LitElement {
   @state() private selectedRows = new Map<string, string>();
   @state() private gridSorts = new Map<string, GridSort>();
   @state() private gridColumnWidths = new Map<string, number>();
+  @state() private uploadStates = new Map<string, UploadState>();
   @state() private rowContextMenu?: RowContextMenu;
+  @state() private seekerMoreMenu?: { x: number; y: number };
   @state() private activeModal?: ActiveModal;
   @state() private statusMessage = "Opening view…";
   @state() private errorMessage = "";
+  @state() private runtimeComponentStatuses = new Map<string, RuntimeComponentStatus>();
 
   private readonly transport = new TurnkeyTransport(new URL("../api/", document.baseURI).toString());
   private connection?: HubConnection;
@@ -243,6 +324,9 @@ class TurnkeyLitApp extends LitElement {
   private readonly cachedViewSessions = new Map<string, CachedViewSessionEntry>();
   private readonly viewDescriptions = new Map<string, ViewDescription>();
   private readonly viewDescriptionRequests = new Map<string, Promise<ViewDescription>>();
+  private readonly runtimeComponentRequests = new Map<string, Promise<void>>();
+  private readonly runtimeOverrideRequests = new Map<string, Promise<void>>();
+  private runtimeOverrideManifestRequest?: Promise<ReadonlySet<string>>;
   private closingModal?: ActiveModal;
   private lastPopupClickPosition = { x: 16, y: 16 };
   private columnResize?: {
@@ -265,6 +349,9 @@ class TurnkeyLitApp extends LitElement {
     window.addEventListener("hashchange", this.handleRouteChange);
     this.actionPanelMedia.addEventListener("change", this.handleActionPanelViewportChange);
     this.globalMenuLoad ??= this.loadGlobalMenu();
+    if (!this.runtimeOverrideRequests.has("LeftSideMenu")) {
+      this.runtimeOverrideRequests.set("LeftSideMenu", this.loadRuntimeOverride("LeftSideMenu"));
+    }
     void this.openCurrentRoute();
   }
 
@@ -287,6 +374,12 @@ class TurnkeyLitApp extends LitElement {
     } else if (!this.activeModal && dialog?.open) {
       dialog.close();
     }
+    const descriptions = [this.viewDescription, this.activeModal?.parent.viewDescription];
+    for (const description of descriptions) {
+      if (description) {
+        this.loadRuntimeComponents(description.controls);
+      }
+    }
   }
 
   private readonly handleRouteChange = (): void => {
@@ -303,6 +396,7 @@ class TurnkeyLitApp extends LitElement {
     this.activeModal = undefined;
     this.rowContextMenu = undefined;
     this.errorMessage = "";
+    this.viewReady = false;
 
     const sessionKey = this.viewSessionKey(this.route.viewName, this.route.objectId);
     const cachedEntry = this.cachedViewSessions.get(sessionKey);
@@ -322,6 +416,7 @@ class TurnkeyLitApp extends LitElement {
         await this.poll(generation);
       } catch (error) {
         if (generation === this.routeGeneration && !this.isAbortError(error)) {
+          this.viewReady = true;
           this.showError(error);
         }
       }
@@ -349,6 +444,7 @@ class TurnkeyLitApp extends LitElement {
       }
 
       this.viewDescription = viewDescription;
+      this.actionPanelOpen = !this.mobileViewport;
       this.viewState.vmId = vmId;
       await this.updateComplete;
       this.stateUnsubscribe = this.viewState.subscribe(() => this.requestUpdate());
@@ -392,6 +488,7 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private restoreCachedViewSession(session: CachedViewSession): void {
+    this.viewReady = session.viewReady;
     this.viewState = session.viewState;
     this.viewDescription = session.viewDescription;
     this.appInfo = session.appInfo;
@@ -438,6 +535,7 @@ class TurnkeyLitApp extends LitElement {
         void this.poll(this.routeGeneration);
       });
       this.connection.onreconnected(() => {
+        this.updateModelStylesheet();
         void this.poll(this.routeGeneration);
       });
       this.connection.onclose(error => {
@@ -452,6 +550,9 @@ class TurnkeyLitApp extends LitElement {
 
     try {
       await this.connection.start();
+      if (generation === this.routeGeneration) {
+        this.updateModelStylesheet();
+      }
     } catch (error) {
       console.error("Turnkey SignalR connection failed; polling will continue", error);
       window.setTimeout(() => {
@@ -460,6 +561,33 @@ class TurnkeyLitApp extends LitElement {
         }
       }, 5000);
     }
+  }
+
+  private modelStylesheetUrl(): string {
+    const stylesheetUrl = new URL("StylesInModelCss", document.baseURI);
+    stylesheetUrl.searchParams.set(
+      "unique",
+      this.connection?.connectionId ?? "session"
+    );
+    return stylesheetUrl.toString();
+  }
+
+  private updateModelStylesheet(): void {
+    const href = this.modelStylesheetUrl();
+    let link = document.head.querySelector<HTMLLinkElement>('link[data-lit-model-styles]');
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.dataset.litModelStyles = "";
+      document.head.append(link);
+      link.addEventListener("error", () => {
+        console.error(`Failed to load model stylesheet "${link?.href ?? href}".`);
+      });
+    }
+    if (link.href !== href) {
+      link.href = href;
+    }
+    this.requestUpdate();
   }
 
   private async poll(generation: number): Promise<void> {
@@ -488,6 +616,14 @@ class TurnkeyLitApp extends LitElement {
         }
       }
       state.applyServerCommands(commands);
+      this.viewReady = true;
+      for (const command of commands) {
+        const downloadUrl = (command as { DownloadUrl?: string }).DownloadUrl;
+        if (command.CType === "ServerUpdateCommand_ReportReadyForDownload" && downloadUrl) {
+          window.open(downloadUrl, "_blank");
+        }
+      }
+      void this.copyClipboardVariable();
       const modalClose = commands.find(
         (command): command is ModalCodeCloseCommand => command.CType === "ServerUpdateCommand_ModalCodeClose"
       );
@@ -501,10 +637,19 @@ class TurnkeyLitApp extends LitElement {
       }
       if (this.appInfo?.LostContext) {
         this.cachedViewSessions.delete(this.viewSessionKey(state.root.className, state.root.id));
-        this.statusMessage = "The Turnkey view context has expired. Reload to open a new view.";
+        this.statusMessage = "The Turnkey view context has expired. Reloading…";
+        // Guard against a reload loop if the server keeps reporting a lost context.
+        const last = Number(sessionStorage.getItem("tk-lost-context-reload") ?? 0);
+        if (Date.now() - last > 10000) {
+          sessionStorage.setItem("tk-lost-context-reload", String(Date.now()));
+          window.location.reload();
+        } else {
+          this.statusMessage = "The Turnkey view context has expired. Reload to open a new view.";
+        }
         return;
       }
       this.errorMessage = "";
+      this.viewReady = true;
       this.statusMessage = this.appInfo?.ServerStatus || "Connected to Turnkey";
       this.storeCurrentViewSession();
       const delaySeconds = this.appInfo?.SuggestCallbackInSecs;
@@ -600,6 +745,44 @@ class TurnkeyLitApp extends LitElement {
     }
   }
 
+  private async executeSeekerMoreAction(actionId: string): Promise<void> {
+    const state = this.viewState;
+    if (!state) {
+      return;
+    }
+    const generation = this.routeGeneration;
+    try {
+      window.clearTimeout(this.updateTimer);
+      if (!await this.flushUpdates() || generation !== this.routeGeneration) {
+        return;
+      }
+      if (actionId === "export") {
+        await this.transport.exportAsTabSeparated(state.vmId);
+      } else if (actionId === "import") {
+        await this.transport.importFromText(state.vmId, await navigator.clipboard.readText());
+      }
+      await this.poll(generation);
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+  private async copyClipboardVariable(): Promise<void> {
+    const state = this.viewState;
+    const variables = state && state.getReference(state.root.attributes.VM_Variables);
+    const text = variables?.attributes.vClipbookData;
+    if (!variables || typeof text !== "string" || text === "") {
+      return;
+    }
+    this.queueUpdate(variables.vmClassId, "vClipbookData", "");
+    try {
+      await navigator.clipboard.writeText(text);
+      this.statusMessage = "Added to clipboard";
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
   private async executeRowAction(
     action: ServerActionCommand,
     rowVMClassId: string,
@@ -659,6 +842,7 @@ class TurnkeyLitApp extends LitElement {
   private captureViewSession(): ViewSessionSnapshot {
     return {
       route: this.route,
+      viewReady: this.viewReady,
       viewState: this.viewState,
       viewDescription: this.viewDescription,
       appInfo: this.appInfo,
@@ -676,6 +860,7 @@ class TurnkeyLitApp extends LitElement {
 
   private restoreViewSession(session: ViewSessionSnapshot): void {
     this.route = session.route;
+    this.viewReady = session.viewReady;
     this.viewState = session.viewState;
     this.viewDescription = session.viewDescription;
     this.appInfo = session.appInfo;
@@ -733,6 +918,7 @@ class TurnkeyLitApp extends LitElement {
       }
 
       this.route = modalRoute;
+      this.viewReady = false;
       this.viewState = new ViewState(modalRootVMClassId, modalVMId);
       this.viewDescription = viewDescription;
       this.viewActions = [];
@@ -958,55 +1144,61 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private renderLeftActions(): TemplateResult | typeof nothing {
-    const groups = this.leftActionGroups();
-    if (groups.length === 0) {
+    const actionGroups = this.leftActionGroups();
+    if (actionGroups.length === 0 || this.viewDescription?.hideSidebar === true) {
       return nothing;
     }
 
-    return html`
-      <aside id="view-actions-panel" class="left-actions" aria-label="View actions"
-        ?hidden=${!this.actionPanelOpen}>
-        ${groups.map(group => {
-          const subgroups = new Map<string, ServerActionCommand[]>();
-          for (const action of group.actions) {
-            const name = action.SubMenuGroup ?? "";
-            const subgroup = subgroups.get(name) ?? [];
-            subgroup.push(action);
-            subgroups.set(name, subgroup);
-          }
-          const orderedSubgroups = [...subgroups.entries()];
-          return html`
-            <div class="left-action-group">
-              ${group.className === "GLOBAL" ? nothing : html`<h2>${group.name}</h2>`}
-              ${orderedSubgroups.map(([subgroupName, actions]) => html`
-                ${subgroupName && group.className !== "GLOBAL"
-                  ? html`<div class="left-action-subgroup">${subgroupName}</div>`
-                  : nothing}
-                ${actions.map(action => {
-                  const actionKey = group.target
-                    ? `${action.VMClassName}:${action.Action}:${group.target.vmClassId}`
-                    : `${action.VMClassName}:${action.Action}`;
-                  const disabled = !action.Enable || this.executingActions.has(actionKey);
-                  return html`
-                    <button type="button" ?disabled=${disabled}
-                      @click=${(event: MouseEvent) => {
-                        if (this.mobileViewport) {
-                          this.actionPanelOpen = false;
-                        }
-                        if (group.target && group.target.vmClassId !== this.viewState?.root.vmClassId) {
-                          void this.executeRowAction(action, group.target.vmClassId, event);
-                        } else {
-                          void this.executeViewAction(action.VMClassName, action.Action, event);
-                        }
-                      }}>${action.Presentation || action.Action}</button>
-                  `;
-                })}
-              `)}
-            </div>
-          `;
-        })}
-      </aside>
-    `;
+    const groups: LeftSideMenuGroup[] = actionGroups.map(group => {
+      const subgroups = new Map<string, ServerActionCommand[]>();
+      for (const action of group.actions) {
+        const subgroupName = action.SubMenuGroup ?? "";
+        const subgroup = subgroups.get(subgroupName) ?? [];
+        subgroup.push(action);
+        subgroups.set(subgroupName, subgroup);
+      }
+      return {
+        className: group.className,
+        name: group.name,
+        targetVMClassId: group.target?.vmClassId,
+        subgroups: [...subgroups].map(([name, actions]) => ({
+          name,
+          actions: actions.map(command => {
+            const actionKey = group.target
+              ? `${command.VMClassName}:${command.Action}:${group.target.vmClassId}`
+              : `${command.VMClassName}:${command.Action}`;
+            return {
+              command,
+              disabled: !command.Enable || this.executingActions.has(actionKey)
+            };
+          })
+        }))
+      };
+    });
+    const context: LeftSideMenuContext = {
+      groups,
+      open: this.actionPanelOpen,
+      mobileViewport: this.mobileViewport,
+      onAction: (action, targetVMClassId, event) => {
+        if (this.mobileViewport) {
+          this.actionPanelOpen = false;
+        }
+        if (targetVMClassId && targetVMClassId !== this.viewState?.root.vmClassId) {
+          void this.executeRowAction(action, targetVMClassId, event);
+        } else {
+          void this.executeViewAction(action.VMClassName, action.Action, event);
+        }
+      }
+    };
+    const reference = resolveRuntimeOverride("LeftSideMenu", document.baseURI);
+    const status = this.runtimeComponentStatuses.get(this.runtimeStatusKey(reference));
+    if (status?.state === "loaded") {
+      return html`${renderRuntimeComponent(reference, context)}`;
+    }
+    if (status?.state === "failed") {
+      return this.renderMissingComponent("LeftSideMenu", status.fileUrl, status.error);
+    }
+    return renderStandardLeftSideMenu(context);
   }
 
   private selectCollectionRow(row: VmObject, ownerId: string, collectionName: string): void {
@@ -1020,6 +1212,76 @@ class TurnkeyLitApp extends LitElement {
     selectedRows.set(`${ownerId}:${collectionName}`, row.vmClassId);
     this.selectedRows = selectedRows;
     this.queueUpdate(row.vmClassId, "vCurrent", true);
+  }
+
+  private findListViewBinding(control: ViewMetaControl): {
+    readonly rootClassName: string;
+    readonly collectionName: string;
+  } | undefined {
+    const rootClassName = control.attributes.PlacingContainerListViewRootVMClass;
+    const collectionName = control.attributes.PlacingContainerListViewRootVMColumn;
+    if (rootClassName && collectionName) {
+      return { rootClassName, collectionName };
+    }
+    for (const child of control.layoutChildren) {
+      const binding = this.findListViewBinding(child);
+      if (binding) {
+        return binding;
+      }
+    }
+    return undefined;
+  }
+
+  private renderListView(
+    control: ViewMetaControl,
+    wrapperClass: string,
+    wrapperStyle: string
+  ): TemplateResult {
+    const binding = this.findListViewBinding(control);
+    if (!binding) {
+      return html`<div class="tk-list-view-error" role="alert">
+        List view "${control.wrapperClass}" has no collection binding metadata.
+      </div>`;
+    }
+    const owner = this.viewState?.getCurrentObject(binding.rootClassName);
+    const collection = owner
+      ? this.viewState?.getCollection(owner.vmClassId, binding.collectionName) ?? []
+      : [];
+    const collectionKey = owner ? `${owner.vmClassId}:${binding.collectionName}` : "";
+    const selectedRowId = this.selectedRows.get(collectionKey);
+    return html`<div class="tk-list-view ${wrapperClass}" style=${wrapperStyle || nothing}>
+      ${repeat(collection, item => item.vmClassId, item => html`
+        <div class=${selectedRowId === item.vmClassId || (!selectedRowId && item.attributes.vCurrent === true)
+          ? "tk-list-view__row tk-list-view__row--current"
+          : "tk-list-view__row"}
+          @click=${() => owner && this.selectCollectionRow(item, owner.vmClassId, binding.collectionName)}
+          @contextmenu=${(event: MouseEvent) => owner && this.openRowContextMenu(
+            event,
+            item,
+            owner.vmClassId,
+            binding.collectionName,
+            true
+          )}
+          @dblclick=${(event: MouseEvent) => owner && this.handleRowDoubleClick(
+            event,
+            item,
+            owner.vmClassId,
+            binding.collectionName,
+            true
+          )}>
+          ${control.layoutChildren.map(child => this.renderMetaControl(
+            child,
+            item,
+            false,
+            owner
+              ? () => this.selectCollectionRow(item, owner.vmClassId, binding.collectionName)
+              : undefined
+          ))}
+        </div>
+      `)}
+      ${collection.length === 0 ? html`<p>No rows</p>` : nothing}
+      ${this.renderGenericRowContextMenu()}
+    </div>`;
   }
 
   private toggleGridSort(gridKey: string, column: string): void {
@@ -1137,7 +1399,8 @@ class TurnkeyLitApp extends LitElement {
     event: MouseEvent,
     row: VmObject,
     ownerId: string,
-    collectionName: string
+    collectionName: string,
+    isListView = false
   ): void {
     event.preventDefault();
     event.stopPropagation();
@@ -1146,6 +1409,7 @@ class TurnkeyLitApp extends LitElement {
       rowVMClassId: row.vmClassId,
       collectionOwnerId: ownerId,
       collectionName,
+      isListView,
       x: Math.max(4, Math.min(event.clientX, window.innerWidth - 220)),
       y: Math.max(4, Math.min(event.clientY, window.innerHeight - 100))
     };
@@ -1155,7 +1419,8 @@ class TurnkeyLitApp extends LitElement {
     event: MouseEvent,
     row: VmObject,
     ownerId: string,
-    collectionName: string
+    collectionName: string,
+    isListView = false
   ): void {
     event.preventDefault();
     event.stopPropagation();
@@ -1166,53 +1431,54 @@ class TurnkeyLitApp extends LitElement {
     if (action) {
       void this.executeRowAction(action, row.vmClassId);
     } else {
-      this.openRowContextMenu(event, row, ownerId, collectionName);
+      this.openRowContextMenu(event, row, ownerId, collectionName, isListView);
     }
   }
 
-  private renderRowContextMenu(): TemplateResult {
+  private renderGenericRowContextMenu(): TemplateResult | typeof nothing {
     const menu = this.rowContextMenu;
-    const row = menu ? this.viewState?.getObject(menu.rowVMClassId) : undefined;
-    const actions = row ? this.rowActions(row.className) : [];
+    if (!menu?.isListView) {
+      return nothing;
+    }
+    const row = this.viewState?.getObject(menu.rowVMClassId);
+    if (!row) {
+      return nothing;
+    }
     const groups = new Map<string, ServerActionCommand[]>();
-    for (const action of actions) {
-      const groupName = action.SubMenuGroup ?? "";
-      const group = groups.get(groupName) ?? [];
+    for (const action of this.rowActions(row.className)) {
+      const name = action.SubMenuGroup ?? "";
+      const group = groups.get(name) ?? [];
       group.push(action);
-      groups.set(groupName, group);
+      groups.set(name, group);
     }
     const orderedGroups = [...groups.entries()].sort(([leftName, leftActions], [rightName, rightActions]) => {
       const leftKey = leftActions[0]?.SubMenuGroupSortKey ?? leftName;
       const rightKey = rightActions[0]?.SubMenuGroupSortKey ?? rightName;
       return leftKey.localeCompare(rightKey);
     });
-
-    return html`
-      <div class="row-context-menu" role="menu" aria-label=${`${row?.className ?? "Row"} actions`}
-        style="left: ${menu?.x ?? 4}px; top: ${menu?.y ?? 4}px"
-        @click=${(event: Event) => event.stopPropagation()}
-        @keydown=${(event: KeyboardEvent) => {
-          if (event.key === "Escape") {
-            this.rowContextMenu = undefined;
-          }
-        }}>
-        ${orderedGroups.length > 0
-          ? orderedGroups.map(([groupName, groupActions]) => html`
-              ${groupName ? html`<div class="row-menu-group">${groupName}</div>` : nothing}
-              ${groupActions.map(action => html`
-                <button type="button" role="menuitem" ?disabled=${!action.Enable}
-                  @click=${(event: MouseEvent) => {
-                    event.stopPropagation();
-                    this.rowContextMenu = undefined;
-                    if (menu) {
+    return html`<div class="row-context-menu" role="menu"
+      aria-label=${`${row.className} actions`}
+      style=${`left:${menu.x}px;top:${menu.y}px`}
+      @click=${(event: Event) => event.stopPropagation()}
+      @keydown=${(event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+          this.rowContextMenu = undefined;
+        }
+      }}>
+      ${orderedGroups.length > 0
+        ? orderedGroups.map(([groupName, actions]) => html`
+            ${groupName ? html`<div class="row-menu-group">${groupName}</div>` : nothing}
+            ${actions.map(action => html`
+              <button type="button" role="menuitem" ?disabled=${!action.Enable}
+                @click=${(event: MouseEvent) => {
+                  event.stopPropagation();
+                  this.rowContextMenu = undefined;
                   void this.executeRowAction(action, menu.rowVMClassId, event);
-                    }
-                  }}>${action.Presentation || action.Action}</button>
-              `)}
-            `)
-          : html`<button type="button" role="menuitem" disabled>No actions available</button>`}
-      </div>
-    `;
+                }}>${action.Presentation || action.Action}</button>
+            `)}
+          `)
+        : html`<button type="button" role="menuitem" disabled>No actions available</button>`}
+    </div>`;
   }
 
   private showError(error: unknown): void {
@@ -1223,7 +1489,14 @@ class TurnkeyLitApp extends LitElement {
   private renderMetadataStyles(): TemplateResult {
     const parentStyles = this.activeModal?.parent.viewDescription?.styles ?? "";
     const currentStyles = this.viewDescription?.styles ?? "";
-    return html`<style>${parentStyles}\n${currentStyles}</style>`;
+    const sharedStyles = [...document.head.querySelectorAll<HTMLLinkElement>("link[data-lit-shadow-style]")];
+    return html`
+      ${sharedStyles.map(source => html`<link rel="stylesheet" data-lit-style=${source.href} href=${source.href}
+        @error=${() => console.error(`Failed to load shared stylesheet "${source.href}".`)}>`)}
+      <link rel="stylesheet" data-lit-model-styles href=${this.modelStylesheetUrl()}
+        @error=${() => console.error(`Failed to load model stylesheet "${this.modelStylesheetUrl()}".`)}>
+      <style>${parentStyles}\n${currentStyles}</style>
+    `;
   }
 
   private isAbortError(error: unknown): boolean {
@@ -1267,11 +1540,213 @@ class TurnkeyLitApp extends LitElement {
     return nothing;
   }
 
-  private renderMetaControl(control: ViewMetaControl, row?: VmObject): TemplateResult | typeof nothing {
+  private loadRuntimeComponents(controls: readonly ViewMetaControl[]): void {
+    for (const control of controls) {
+      if (control.tagName.startsWith("tk-") && control.tagName !== "tk-layout-container"
+        && !this.runtimeOverrideRequests.has(control.tagName)) {
+        const request = this.loadRuntimeOverride(control.tagName);
+        this.runtimeOverrideRequests.set(control.tagName, request);
+      }
+      const name = runtimeComponentName(control);
+      if (name && !this.runtimeComponentRequests.has(name)) {
+        const request = this.loadRuntimeComponent(name);
+        this.runtimeComponentRequests.set(name, request);
+      }
+      this.loadRuntimeComponents(control.columns);
+      this.loadRuntimeComponents(control.layoutChildren);
+    }
+  }
+
+  private async loadRuntimeComponent(name: string): Promise<void> {
+    let fileUrl = `components/custom/${name}/index.js`;
+    try {
+      const reference = resolveRuntimeComponent(name, document.baseURI);
+      fileUrl = reference.fileUrl;
+      this.setRuntimeComponentStatus(this.runtimeStatusKey(reference), { state: "loading", fileUrl });
+      await import(/* webpackIgnore: true */ reference.fileUrl);
+      if (!customElements.get(reference.elementName)) {
+        throw new Error(`The module did not register custom element <${reference.elementName}>.`);
+      }
+      this.setRuntimeComponentStatus(this.runtimeStatusKey(reference), { state: "loaded", fileUrl });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      this.setRuntimeComponentStatus(`custom:${name}`, { state: "failed", fileUrl, error: message });
+      console.error(`Failed to load Lit component "${name}" from ${fileUrl}`, error);
+    }
+  }
+
+  private async loadRuntimeOverride(tagName: string): Promise<void> {
+    let reference;
+    try {
+      reference = resolveRuntimeOverride(tagName, document.baseURI);
+      this.setRuntimeComponentStatus(this.runtimeStatusKey(reference), {
+        state: "loading",
+        fileUrl: reference.fileUrl
+      });
+      const overrides = await this.loadRuntimeOverrideManifest();
+      if (!overrides.has(tagName)) {
+        this.setRuntimeComponentStatus(this.runtimeStatusKey(reference), {
+          state: "absent",
+          fileUrl: reference.fileUrl
+        });
+        return;
+      }
+
+      await import(/* webpackIgnore: true */ reference.fileUrl);
+      if (!customElements.get(reference.elementName)) {
+        throw new Error(`The module did not register custom element <${reference.elementName}>.`);
+      }
+      this.setRuntimeComponentStatus(this.runtimeStatusKey(reference), {
+        state: "loaded",
+        fileUrl: reference.fileUrl
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const overrideName = tagName === "LeftSideMenu" ? "left-side-menu" : tagName;
+      const fileUrl = reference?.fileUrl ?? `components/overrides/${overrideName}/index.js`;
+      this.setRuntimeComponentStatus(
+        reference ? this.runtimeStatusKey(reference) : `override:${tagName}`,
+        {
+        state: "failed",
+        fileUrl,
+        error: message
+        }
+      );
+      console.error(`Failed to load Lit override for "${tagName}" from ${fileUrl}`, error);
+    }
+  }
+
+  private loadRuntimeOverrideManifest(): Promise<ReadonlySet<string>> {
+    if (!this.runtimeOverrideManifestRequest) {
+      const manifestUrl = new URL("components/overrides/manifest.json", document.baseURI);
+      this.runtimeOverrideManifestRequest = fetch(manifestUrl, { cache: "no-store" })
+        .then(async response => {
+          if (!response.ok) {
+            throw new Error(`Override manifest request failed (${response.status} ${response.statusText}).`);
+          }
+          const manifest: unknown = await response.json();
+          if (!manifest || typeof manifest !== "object" || !("overrides" in manifest)
+            || !Array.isArray(manifest.overrides)
+            || !manifest.overrides.every(
+              (tag): tag is string => typeof tag === "string"
+                && (tag === "LeftSideMenu" || /^tk-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(tag))
+            )) {
+            throw new TypeError("Override manifest must contain an overrides array of valid tk-* control tags or LeftSideMenu.");
+          }
+          return new Set(manifest.overrides);
+        });
+    }
+    return this.runtimeOverrideManifestRequest;
+  }
+
+  private runtimeStatusKey(reference: { readonly kind: "custom" | "override"; readonly name: string }): string {
+    return `${reference.kind}:${reference.name}`;
+  }
+
+  private setRuntimeComponentStatus(name: string, status: RuntimeComponentStatus): void {
+    const statuses = new Map(this.runtimeComponentStatuses);
+    statuses.set(name, status);
+    this.runtimeComponentStatuses = statuses;
+  }
+
+  private renderRequestedComponent(
+    control: ViewMetaControl,
+    name: string,
+    context: LitComponentContext
+  ): TemplateResult {
+    let reference;
+    try {
+      reference = resolveRuntimeComponent(name, document.baseURI);
+    } catch (error) {
+      return this.renderMissingComponent(name, `components/custom/${name}/index.js`, String(error));
+    }
+
+    const status = this.runtimeComponentStatuses.get(this.runtimeStatusKey(reference));
+    const commonClass = `tk-component tk-lit-component ${control.wrapperClass} ${context.style}`;
+    if (status?.state === "loaded") {
+      return html`<div class=${commonClass} style=${this.componentWrapperStyle(control.wrapperStyle, context.minSize)}>
+        ${renderRuntimeComponent(reference, context)}
+      </div>`;
+    }
+    if (status?.state === "failed") {
+      return this.renderMissingComponent(name, status.fileUrl, status.error, commonClass, control.wrapperStyle);
+    }
+    if (status?.state === "absent") {
+      return this.renderMissingComponent(name, status.fileUrl, "Component file was not found.", commonClass, control.wrapperStyle);
+    }
+    return html`<div class="${commonClass} tk-lit-component-loading" style=${control.wrapperStyle || nothing}
+      role="status">Loading Lit component "${name}"…</div>`;
+  }
+
+  private renderStandardOverride(
+    control: ViewMetaControl,
+    context: LitComponentContext
+  ): TemplateResult | undefined {
+    let reference;
+    try {
+      reference = resolveRuntimeOverride(control.tagName, document.baseURI);
+    } catch {
+      return undefined;
+    }
+    const status = this.runtimeComponentStatuses.get(this.runtimeStatusKey(reference));
+    if (status?.state === "absent") {
+      return undefined;
+    }
+    if (status?.state === "failed") {
+      return this.renderMissingComponent(control.tagName, status.fileUrl, status.error);
+    }
+    if (status?.state !== "loaded") {
+      return undefined;
+    }
+    return html`<div class="tk-component tk-lit-component ${control.wrapperClass} ${context.style}"
+      style=${this.componentWrapperStyle(control.wrapperStyle, context.minSize)}>
+      ${renderRuntimeComponent(reference, context)}
+    </div>`;
+  }
+
+  private renderMissingComponent(
+    name: string,
+    fileUrl: string,
+    error: string,
+    className = "tk-component tk-lit-component tk-lit-component-missing",
+    style?: string
+  ): TemplateResult {
+    return html`<div class="${className} tk-lit-component-missing" style=${style || nothing} role="alert">
+      <strong>Lit component "${name}" is unavailable.</strong>
+      <div>Expected file: <code>${fileUrl}</code></div>
+      <div>${error}</div>
+    </div>`;
+  }
+
+  private renderMetaControl(
+    control: ViewMetaControl,
+    row?: VmObject,
+    isGridCell = false,
+    beforeAction?: () => void
+  ): TemplateResult | typeof nothing {
     if (control.tagName === "tk-layout-container") {
+      const ownerClassName = control.attributes.PlacingContainerOwnerVMClass;
+      const owner = ownerClassName && row?.className === ownerClassName
+        ? row
+        : ownerClassName
+          ? this.viewState?.getCurrentObject(ownerClassName)
+          : row;
+      const visibleColumn = control.attributes.PCVisibleColumn;
+      if (visibleColumn && owner?.attributes[visibleColumn] === false) {
+        return nothing;
+      }
+      const styleColumn = control.attributes.PCStyleColumn;
+      const dynamicStyle = styleColumn ? owner?.attributes[styleColumn] : undefined;
+      const wrapperClass = mergeClassNames(
+        control.wrapperClass,
+        typeof dynamicStyle === "string" ? dynamicStyle : ""
+      );
+      if (control.attributes.IsListView?.toLowerCase() === "true") {
+        return this.renderListView(control, wrapperClass, control.wrapperStyle);
+      }
       return html`
-        <div class=${control.wrapperClass} style=${control.wrapperStyle || nothing}>
-          ${control.layoutChildren.map(child => this.renderMetaControl(child, row))}
+        <div class=${wrapperClass} style=${control.wrapperStyle || nothing}>
+          ${control.layoutChildren.map(child => this.renderMetaControl(child, row, isGridCell, beforeAction))}
         </div>
       `;
     }
@@ -1279,224 +1754,381 @@ class TurnkeyLitApp extends LitElement {
     const attributes = control.attributes;
     const nesting = attributes.BindInfoNesting ?? this.route.viewName;
     const column = attributes.BindInfoColumn;
-    const label = attributes.StaticLabel ?? "";
+    const stringFormat = control.taggedValues.StringFormat ?? "";
+    const staticLabel = attributes.StaticLabel ?? attributes.label ?? "";
     const typeName = (attributes.TypeCSharp ?? "").split(".").pop() ?? "";
     const target = row ?? this.viewState?.getCurrentObject(nesting);
     const value = column ? target?.attributes[column] : undefined;
     const statusObject = this.viewState?.getReference(this.viewState.root.attributes.VM_Status);
     const statusPrefix = attributes.id?.replace(/\./g, "_");
-    const visible = statusPrefix
-      ? statusObject?.attributes[`${statusPrefix}_Visible`] !== false
-      : true;
-    const enabled = statusPrefix
-      ? statusObject?.attributes[`${statusPrefix}_Enabled`] !== false
-      : true;
-    const readOnly = statusPrefix
-      ? statusObject?.attributes[`${statusPrefix}_ReadOnly`] === true
-      : false;
+    const readCompanion = (suffix: string): VmAttributeValue | undefined => {
+      const objectValue = column && target?.attributes[`${column}${suffix}`];
+      if (objectValue !== undefined) {
+        return objectValue;
+      }
+      const prefix = statusPrefix || (target && column ? `${target.className}_${column}` : undefined);
+      return prefix ? statusObject?.attributes[`${prefix}${suffix}`] : undefined;
+    };
+    const visibleValue = readCompanion("_Visible");
+    const enabledValue = readCompanion("_Enabled");
+    const readOnlyValue = readCompanion("_ReadOnly");
+    const visible = visibleValue !== false;
+    const enabled = enabledValue !== false;
+    const readOnly = readOnlyValue === true || !enabled;
+    const dataBoundStyle = readCompanion("_Style");
+    const dataBoundLabel = readCompanion("_Label");
+    const dataBoundPlaceholder = readCompanion("_Placeholder");
+    const helperTextValue = readCompanion("_HelperText");
+    const label = typeof dataBoundLabel === "string" && dataBoundLabel !== ""
+      ? dataBoundLabel
+      : staticLabel;
+    const style = typeof dataBoundStyle === "string" && dataBoundStyle.trim() !== ""
+      ? dataBoundStyle
+      : attributes.StaticStyle ?? "";
+    const placeholder = (typeof dataBoundPlaceholder === "string" && dataBoundPlaceholder !== ""
+      ? dataBoundPlaceholder
+      : undefined)
+      ?? control.taggedValues.Placeholder
+      ?? attributes.placeholder
+      ?? "";
+    const helperText = typeof helperTextValue === "string" ? helperTextValue : "";
     if (!visible) {
       return nothing;
     }
     const writable = target !== undefined && column !== undefined && enabled && !readOnly
       && Object.prototype.hasOwnProperty.call(target.attributes, column)
-      && attributes.StaticStyle?.toLowerCase() !== "readonly";
+      && attributes.StaticStyle?.toLowerCase() !== "readonly"
+      && attributes.readonly === undefined
+      && attributes.disabled !== "true";
     const targetClass = target?.className;
     const targetId = target?.vmClassId;
-    const styleName = attributes.StaticStyle?.toLowerCase();
-    const styleTag = styleName && /^h[1-6]$/.test(styleName) ? styleName : "div";
-    if (control.tagName === "tk-data-grid") {
-      const collection = column && targetId ? this.viewState?.getCollection(targetId, column) ?? [] : [];
-      const collectionKey = targetId && column ? `${targetId}:${column}` : "";
-      const multiSelect = control.taggedValues.MultiSelect?.toLowerCase() === "true";
-      const selectedRowId = this.selectedRows.get(collectionKey);
-      const menuMatchesCollection = this.rowContextMenu?.collectionOwnerId === targetId
-        && this.rowContextMenu?.collectionName === column;
-      const visibleColumns = control.columns.filter(item => item.attributes.NotVisible?.toLowerCase() !== "true");
-      const gridSort = this.gridSorts.get(collectionKey);
-      const displayedCollection = this.sortGridRows(collection, gridSort);
-      return html`
-        <div class="view-control ${control.wrapperClass}" style=${control.wrapperStyle || nothing}>
-          ${label ? html`<label>${label}</label>` : nothing}
-          <table>
-            <colgroup>
-              ${multiSelect ? html`<col style="width: 2.5rem">` : nothing}
-              ${visibleColumns.map((_, index) => {
-                const width = this.gridColumnWidths.get(`${collectionKey}:${index}`);
-                return html`<col data-column-index=${index} style=${width ? `width:${width}px` : nothing}>`;
-              })}
-              <col style="width: 3rem">
-            </colgroup>
-            <thead><tr>
-              ${multiSelect ? html`<th aria-label="Row selection"></th>` : nothing}
-              ${visibleColumns.map((item, index) => {
-              const columnName = item.attributes.BindInfoColumn;
-              const activeSort = gridSort?.column === columnName;
-              return html`<th aria-sort=${activeSort ? gridSort.direction : "none"}>
-                ${columnName
-                  ? html`<button type="button" class="grid-sort-button"
-                      aria-label=${`Sort by ${item.attributes.StaticLabel || columnName}`}
-                      @click=${() => this.toggleGridSort(collectionKey, columnName)}>
-                      ${item.attributes.StaticLabel || columnName}${activeSort ? gridSort.direction === "ascending" ? " ▲" : " ▼" : ""}
-                    </button>`
-                  : item.attributes.StaticLabel}
-                <span class="grid-resize-handle" role="separator" aria-orientation="vertical"
-                  aria-label=${`Resize ${item.attributes.StaticLabel || columnName || "column"} column`}
-                  tabindex="0"
-                  @pointerdown=${(event: PointerEvent) => this.beginGridColumnResize(event, collectionKey, index)}
-                  @pointermove=${(event: PointerEvent) => this.moveGridColumnResize(event)}
-                  @pointerup=${() => this.endGridColumnResize()}
-                  @pointercancel=${() => this.endGridColumnResize()}
-                  @keydown=${(event: KeyboardEvent) => this.resizeGridColumnByKeyboard(event, collectionKey, index)}></span>
-              </th>`;
-            })}</tr></thead>
-            <tbody>
-              ${repeat(displayedCollection, item => item.vmClassId, item => html`<tr
-                class=${(selectedRowId ? selectedRowId === item.vmClassId : item.attributes.vCurrent === true)
-                  ? "current-row"
-                  : nothing}
-                @click=${() => targetId && column && this.selectCollectionRow(item, targetId, column)}
-                @contextmenu=${(event: MouseEvent) => targetId && column
-                  && this.openRowContextMenu(event, item, targetId, column)}
-                @dblclick=${(event: MouseEvent) => targetId && column
-                  && this.handleRowDoubleClick(event, item, targetId, column)}>
-                ${multiSelect ? html`<td class="row-selection-cell">
-                  <input type="checkbox" aria-label=${`Select ${item.className} ${item.id}`}
-                    .checked=${item.attributes.vSelected === true}
-                    @click=${(event: MouseEvent) => event.stopPropagation()}
-                    @change=${(event: Event) => this.queueUpdate(
-                      item.vmClassId,
-                      "vSelected",
-                      (event.currentTarget as HTMLInputElement).checked
-                    )}>
-                </td>` : nothing}
-                ${visibleColumns.map(itemControl => html`<td>${this.renderMetaControl(itemControl, item)}</td>`)}
-                <td class="row-menu-cell">
-                  <button type="button" class="row-menu-trigger" aria-haspopup="menu"
-                    aria-label=${`Actions for ${item.className} ${item.id}`}
-                    aria-expanded=${this.rowContextMenu?.rowVMClassId === item.vmClassId}
-                    @click=${(event: MouseEvent) => targetId && column
-                      && this.openRowContextMenu(event, item, targetId, column)}>⋮</button>
-                </td>
-              </tr>`)}
-            </tbody>
-          </table>
-          ${collection.length === 0 ? html`<p>No rows</p>` : nothing}
-          ${menuMatchesCollection ? this.renderRowContextMenu() : nothing}
-        </div>
-      `;
-    }
-
-    if (control.tagName === "tk-button" && targetClass && column) {
-      const actionName = attributes.AbstractAction || column;
-      const actionKey = `${targetClass}:${actionName}`;
-      return html`
-        <div class="view-control ${control.wrapperClass}" style=${control.wrapperStyle || nothing}>
-          <button type="button" ?disabled=${!enabled || this.executingActions.has(actionKey)}
-            @click=${(event: MouseEvent) => void this.executeViewAction(targetClass, actionName, event)}>
-            ${label || actionName}
-          </button>
-        </div>
-      `;
-    }
-
     const inputType = control.tagName === "tk-datepicker"
       ? "datetime-local"
       : typeName === "Boolean" || typeName === "bool"
         ? "checkbox"
         : attributes.type ?? (typeName.match(/^(Byte|Int16|Int32|Int64|Decimal|Double)$/) ? "number" : "text");
-    if (control.tagName === "tk-select" && targetId && column) {
-      const pickListName = attributes.BindInfoPicklist;
-      const pickListOwner = this.viewState?.getCurrentObject(attributes.BindInfoNesting ?? nesting);
-      const options = pickListName && pickListOwner
-        ? this.viewState?.getCollection(pickListOwner.vmClassId, pickListName) ?? []
-        : [];
-      const selectedId = value && typeof value === "object" && !(value instanceof Date) && "kind" in value
-        ? this.viewState?.getReference(value)?.id ?? ""
-        : typeof value === "string"
-          ? value
-          : "";
-      const externalIdAttribute = `${column}_AsExternalId`;
-      const externalIdValue = target?.attributes[externalIdAttribute];
-      const selectedExternalId = typeof externalIdValue === "string"
-        ? externalIdValue
-        : selectedId || NULL_EXTERNAL_ID;
-      return html`
-        <div class="view-control ${control.wrapperClass}" style=${control.wrapperStyle || nothing}>
-          ${label && !row ? html`<label for=${attributes.id ?? nothing}>${label}</label>` : nothing}
-          <select id=${attributes.id ?? nothing} ?disabled=${!writable}
-            aria-label=${row ? label || nothing : nothing}
-            @change=${(event: Event) => {
-              const selected = (event.currentTarget as HTMLSelectElement).value;
-              if (targetId && writable) {
-                this.queueUpdate(targetId, externalIdAttribute, selected || null);
-              }
-            }}>
-            <option value="" .selected=${selectedExternalId === ""}></option>
-            ${options.map(option => html`<option value=${option.id} .selected=${option.id === selectedExternalId}>
-              ${String(option.attributes[attributes.BindInfoPicklistItemPres ?? "Presentation"] ?? option.id)}
-            </option>`)}
-          </select>
-        </div>
-      `;
-    }
-
-    const currentValue = value === null || value === undefined
+    const requestedComponent = runtimeComponentName(control);
+    const collection = control.tagName === "tk-select"
+      ? (() => {
+          const pickListName = attributes.BindInfoPicklist;
+          const pickListOwner = this.viewState?.getCurrentObject(nesting);
+          return pickListName && pickListOwner
+            ? this.viewState?.getCollection(pickListOwner.vmClassId, pickListName) ?? []
+            : [];
+        })()
+      : control.tagName === "tk-data-grid" && column && targetId
+      ? this.viewState?.getCollection(targetId, column) ?? []
+      : Array.isArray(value)
+      ? value.map(id => this.viewState?.getObject(id)).filter((item): item is VmObject => item !== undefined)
+      : undefined;
+    const actionName = attributes.AbstractAction || column;
+    const stringValue = value === null || value === undefined
       ? ""
       : value instanceof Date
         ? this.dateInputValue(value)
-        : typeof value === "object"
-          ? this.viewState?.getReference(value)?.id ?? ""
-          : String(value);
-    const componentClass = control.wrapperClass.split(/\s+/).filter(name => name && name !== "tk-component").join(" ");
-    const content = value === null || value === undefined ? "" : String(value);
+        : typeof value === "number" && stringFormat
+          ? formatNumber(value, stringFormat)
+          : typeof value === "object"
+            ? this.viewState?.getReference(value)?.id ?? ""
+            : String(value);
+    const externalIdAttribute = column ? `${column}_AsExternalId` : undefined;
+    const externalIdValue = externalIdAttribute ? target?.attributes[externalIdAttribute] : undefined;
+    const selectedId = value && typeof value === "object" && !(value instanceof Date) && "kind" in value
+      ? this.viewState?.getReference(value)?.id ?? ""
+      : typeof value === "string"
+        ? value
+        : "";
+    const selectedExternalId = typeof externalIdValue === "string"
+      ? externalIdValue
+      : selectedId;
+    const actionKey = targetClass && actionName ? `${targetClass}:${actionName}` : "";
+    const minWidth = (this.viewDescription?.vmColWidth ?? 0) * this.spanSize(attributes.ColSpan);
+    const minHeight = (this.viewDescription?.vmColHeight ?? 0) * this.spanSize(attributes.RowSpan);
+    const context: LitComponentContext = {
+      componentName: requestedComponent ?? control.tagName,
+      metadata: control,
+      id: attributes.id,
+      object: target,
+      value,
+      collection,
+      displayValue: stringValue,
+      inputType,
+      selectedExternalId,
+      actionExecuting: actionKey !== "" && this.executingActions.has(actionKey),
+      label,
+      placeholder,
+      helperText,
+      style,
+      visible,
+      enabled: enabled && !readOnly && attributes.disabled !== "true"
+        && attributes.StaticStyle?.toLowerCase() !== "readonly",
+      readOnly: readOnly || !enabled || attributes.readonly !== undefined
+        || attributes.disabled === "true" || attributes.StaticStyle?.toLowerCase() === "readonly",
+      isGridCell,
+      upload: this.uploadStates.get(`${this.viewState?.vmId ?? ""}:${targetId ?? ""}:${attributes.id ?? ""}`),
+      minSize: { width: minWidth, height: minHeight },
+      onChange: newValue => {
+        if (writable && targetId && column) {
+          const attribute = control.tagName === "tk-select" ? `${column}_AsExternalId` : column;
+          this.queueUpdate(targetId, attribute, newValue);
+        }
+      },
+      uploadFile: file => this.uploadBoundFile(file, control, target, column, writable),
+      executeAction: (action = actionName, event) => {
+        if (action && targetClass) {
+          beforeAction?.();
+          void this.executeViewAction(targetClass, action, event);
+        }
+      },
+      onError: error => this.showError(error)
+    };
+    const override = this.renderStandardOverride(control, context);
+    if (override) {
+      return override;
+    }
+    if (requestedComponent) {
+      return this.renderRequestedComponent(control, requestedComponent, context);
+    }
+    if (control.tagName === "tk-data-grid") {
+      const gridCollection = collection ?? [];
+      const collectionKey = targetId && column ? `${targetId}:${column}` : "";
+      const multiSelect = control.taggedValues.MultiSelect?.toLowerCase() === "true";
+      const selectedRowId = this.selectedRows.get(collectionKey);
+      const menuMatchesCollection = this.rowContextMenu?.collectionOwnerId === targetId
+        && this.rowContextMenu?.collectionName === column;
+      const gridSort = this.gridSorts.get(collectionKey);
+      const menu = menuMatchesCollection ? this.rowContextMenu : undefined;
+      const menuRow = menu ? this.viewState?.getObject(menu.rowVMClassId) : undefined;
+      const menuActions = menuRow ? this.rowActions(menuRow.className) : [];
+      const menuGroups = new Map<string, ServerActionCommand[]>();
+      for (const menuAction of menuActions) {
+        const groupName = menuAction.SubMenuGroup ?? "";
+        const group = menuGroups.get(groupName) ?? [];
+        group.push(menuAction);
+        menuGroups.set(groupName, group);
+      }
+      const rowMenuGroups = [...menuGroups.entries()]
+        .sort(([leftName, leftActions], [rightName, rightActions]) => {
+          const leftKey = leftActions[0]?.SubMenuGroupSortKey ?? leftName;
+          const rightKey = rightActions[0]?.SubMenuGroupSortKey ?? rightName;
+          return leftKey.localeCompare(rightKey);
+        })
+        .map(([name, actions]) => ({ name, actions }));
+      const visibleColumns = control.columns.filter(item => item.attributes.NotVisible?.toLowerCase() !== "true");
+      const seekerVariables = this.viewState?.getReference(this.viewState.root.attributes.VM_Variables);
+      const seekerNumber = (name: string): number | undefined => {
+        const raw = seekerVariables?.attributes[name];
+        const parsed = typeof raw === "number" ? raw : typeof raw === "string" && raw.trim() !== "" ? Number(raw) : NaN;
+        return Number.isFinite(parsed) ? parsed : undefined;
+      };
+      const seekerPage = seekerNumber("vSeekerPage");
+      const seekerPageCount = seekerNumber("vSeekerPageCount");
+      const seekerPageSize = seekerNumber("vSeekerPageLength");
+      const seekerTotal = seekerNumber("vSeekerResultCount");
+      const paging = control.taggedValues.IsSeekerResultGrid?.toLowerCase() === "true"
+        && seekerVariables && seekerPage !== undefined && seekerPageCount !== undefined
+        ? {
+            page: seekerPage,
+            pageCount: seekerPageCount,
+            pageSize: seekerPageSize ?? 0,
+            totalCount: seekerTotal ?? 0,
+            pageSizes: [...new Set([50, 100, 200, 500, ...(seekerPageSize && seekerPageSize > 0 ? [seekerPageSize] : [])])]
+              .sort((left, right) => left - right),
+            moreActions: [
+              ...(this.viewDescription?.globalSettings.GlobalSeekerGridShowImport?.toLowerCase() === "true"
+                ? [{ id: "import", label: "Import from clipboard" }]
+                : []),
+              { id: "export", label: "Export to file" }
+            ],
+            moreMenu: this.seekerMoreMenu
+          }
+        : undefined;
+      const gridContext: DataGridContext = {
+        ...context,
+        paging,
+        onOpenPagingMenu: event => {
+          this.seekerMoreMenu = {
+            x: Math.max(4, Math.min(event.clientX, window.innerWidth - 220)),
+            y: Math.max(4, Math.min(event.clientY, window.innerHeight - 100))
+          };
+        },
+        onDismissPagingMenu: () => { this.seekerMoreMenu = undefined; },
+        onPagingMenuAction: actionId => { void this.executeSeekerMoreAction(actionId); },
+        onPageAction: pageAction => { void this.executeViewAction("GLOBAL", pageAction); },
+        onPageSize: size => {
+          if (seekerVariables) {
+            this.queueUpdate(seekerVariables.vmClassId, "vSeekerPageLength", size);
+          }
+        },
+        sortedCollection: this.sortGridRows(gridCollection, gridSort),
+        selectedRowId,
+        multiSelect,
+        sort: gridSort,
+        columnWidths: new Map(visibleColumns.map((_, index) => [
+          index,
+          this.gridColumnWidths.get(`${collectionKey}:${index}`) ?? 0
+        ])),
+        rowMenu: menu && menuRow ? {
+          rowVMClassId: menu.rowVMClassId,
+          label: `${menuRow.className} actions`,
+          x: menu.x,
+          y: menu.y
+        } : undefined,
+        rowMenuGroups,
+        renderCell: (cellControl, item) => this.renderMetaControl(
+          cellControl,
+          item,
+          true,
+          targetId && column
+            ? () => this.selectCollectionRow(item, targetId, column)
+            : undefined
+        ),
+        onSort: sortColumn => this.toggleGridSort(collectionKey, sortColumn),
+        onBeginResize: (event, index) => this.beginGridColumnResize(event, collectionKey, index),
+        onMoveResize: event => this.moveGridColumnResize(event),
+        onEndResize: () => this.endGridColumnResize(),
+        onResizeByKeyboard: (event, index) => this.resizeGridColumnByKeyboard(event, collectionKey, index),
+        onSelectRow: item => {
+          if (targetId && column) {
+            this.selectCollectionRow(item, targetId, column);
+          }
+        },
+        onOpenRowMenu: (event, item) => {
+          if (targetId && column) {
+            this.openRowContextMenu(event, item, targetId, column);
+          }
+        },
+        onDoubleClickRow: (event, item) => {
+          if (targetId && column) {
+            this.handleRowDoubleClick(event, item, targetId, column);
+          }
+        },
+        onToggleSelection: (item, selected) => this.queueUpdate(item.vmClassId, "vSelected", selected),
+        onDismissRowMenu: () => { this.rowContextMenu = undefined; },
+        onExecuteRowAction: (menuAction, rowVMClassId, event) => {
+          void this.executeRowAction(menuAction, rowVMClassId, event);
+        }
+      };
+      return renderDataGrid(gridContext);
+    }
 
-    return html`
-      <div class="view-control ${componentClass}" style=${control.wrapperStyle || nothing}>
-        ${label && !row ? html`<label for=${attributes.id ?? nothing}>${label}</label>` : nothing}
-        ${control.tagName === "tk-typography"
-          ? this.renderTypography(styleTag, attributes.id, content)
-          : html`<input
-              id=${attributes.id ?? nothing}
-              type=${inputType}
-              aria-label=${row ? label || nothing : nothing}
-              .value=${inputType === "checkbox" ? "" : currentValue}
-              .checked=${inputType === "checkbox" && value === true}
-              ?disabled=${!writable}
-              ?readonly=${attributes.readonly !== undefined || attributes.disabled === "true"}
-              maxlength=${attributes.maxlength ?? nothing}
-              step=${inputType === "number" ? "any" : nothing}
-              @change=${(event: Event) => {
-                if (!targetClass || !targetId || !column || !writable) {
-                  return;
-                }
-                const input = event.currentTarget as HTMLInputElement;
-                let newValue: VmValue;
-                if (inputType === "checkbox") {
-                  newValue = input.checked;
-                } else if (control.tagName === "tk-datepicker") {
-                  newValue = input.value ? new Date(input.value) : null;
-                } else if (inputType === "number") {
-                  newValue = input.value === "" ? null : Number(input.value);
-                } else {
-                  newValue = input.value === "" ? null : input.value;
-                }
-                this.queueUpdate(targetId, column, newValue);
-              }}>
-          `}
-      </div>
-    `;
+    switch (control.tagName) {
+      case "tk-button":
+        return renderButton(context);
+      case "tk-checkbox":
+        return renderCheckbox(context);
+      case "tk-datepicker":
+        return renderDatePicker(context);
+      case "tk-file-upload":
+        return renderFileUpload(context);
+      case "tk-image-upload":
+        return renderImageUpload(context);
+      case "tk-select":
+        return renderSelect(context);
+      case "tk-textarea":
+        return renderTextArea(context);
+      case "tk-textfield":
+        return renderTextField(context);
+      case "tk-typography":
+        return renderTypographyControl(context);
+      default:
+        return renderTextField(context);
+    }
+    return nothing;
   }
 
-  private renderTypography(tagName: string, id: string | undefined, content: string): TemplateResult {
-    switch (tagName) {
-      case "h1": return html`<h1 id=${id ?? nothing}>${content}</h1>`;
-      case "h2": return html`<h2 id=${id ?? nothing}>${content}</h2>`;
-      case "h3": return html`<h3 id=${id ?? nothing}>${content}</h3>`;
-      case "h4": return html`<h4 id=${id ?? nothing}>${content}</h4>`;
-      case "h5": return html`<h5 id=${id ?? nothing}>${content}</h5>`;
-      case "h6": return html`<h6 id=${id ?? nothing}>${content}</h6>`;
-      default: return html`<div id=${id ?? nothing}>${content}</div>`;
+  private async uploadBoundFile(
+    file: File,
+    control: ViewMetaControl,
+    target: VmObject | undefined,
+    column: string | undefined,
+    writable: boolean
+  ): Promise<void> {
+    const state = this.viewState;
+    const targetId = control.attributes.id;
+    if (!state || !target || !column || !targetId || !writable) {
+      throw new Error("This upload control is not bound to an editable Turnkey attribute.");
     }
+
+    const maxSize = Number(control.attributes.maxsize);
+    if (Number.isFinite(maxSize) && maxSize > 0 && file.size > maxSize) {
+      const message = `${file.name} is larger than ${maxSize} bytes and cannot be uploaded.`;
+      this.setUploadState(state.vmId, target.vmClassId, targetId, {
+        fileName: file.name,
+        progress: 0,
+        uploading: false,
+        error: message
+      });
+      throw new Error(message);
+    }
+
+    const generation = this.routeGeneration;
+    this.setUploadState(state.vmId, target.vmClassId, targetId, {
+      fileName: file.name,
+      progress: 0,
+      uploading: true
+    });
+    try {
+      await this.transport.uploadFile(
+        state.vmId,
+        targetId,
+        target.vmClassId,
+        file,
+        progress => this.setUploadState(state.vmId, target.vmClassId, targetId, {
+          fileName: file.name,
+          progress,
+          uploading: true
+        })
+      );
+      this.setUploadState(state.vmId, target.vmClassId, targetId, {
+        fileName: file.name,
+        progress: 100,
+        uploading: false
+      });
+      if (this.viewState === state && this.routeGeneration === generation) {
+        window.clearTimeout(this.pollTimer);
+        void this.poll(generation);
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      this.setUploadState(state.vmId, target.vmClassId, targetId, {
+        fileName: file.name,
+        progress: 0,
+        uploading: false,
+        error: message
+      });
+      throw error;
+    }
+  }
+
+  private setUploadState(
+    vmId: string,
+    vmClassId: string,
+    targetId: string,
+    uploadState: UploadState
+  ): void {
+    const uploadStates = new Map(this.uploadStates);
+    uploadStates.set(`${vmId}:${vmClassId}:${targetId}`, uploadState);
+    this.uploadStates = uploadStates;
+  }
+
+  private spanSize(rawValue: string | undefined): number {
+    if (rawValue === undefined || rawValue.trim() === "") {
+      return 1;
+    }
+    const span = Number(rawValue);
+    return Number.isFinite(span) && span > 0 ? span : 1;
+  }
+
+  private componentWrapperStyle(
+    wrapperStyle: string,
+    minSize: LitComponentContext["minSize"]
+  ): string {
+    return [
+      wrapperStyle,
+      minSize.width > 0 ? `min-width:${minSize.width}px` : "",
+      minSize.height > 0 ? `min-height:${minSize.height}px` : ""
+    ].filter(Boolean).join(";");
   }
 
   private dateInputValue(value: Date): string {
@@ -1524,6 +2156,12 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private renderViewContent(): TemplateResult {
+    if (!this.viewReady) {
+      return html`<section class="view-loading" role="status" aria-busy="true">
+        <h2>${this.route.viewName}</h2>
+        <p>Loading view…</p>
+      </section>`;
+    }
     return this.viewDescription
       ? html`<section class="view-canvas ${this.viewDescription.rootClassName}">
           ${this.viewDescription.controls.map(control => this.renderMetaControl(control))}
@@ -1537,7 +2175,7 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private renderActionToggle(): TemplateResult | typeof nothing {
-    if (this.leftActionGroups().length === 0) {
+    if (this.leftActionGroups().length === 0 || this.viewDescription?.hideSidebar) {
       return nothing;
     }
     return html`<button type="button" class="action-toggle"
@@ -1555,13 +2193,14 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private renderWorkspace(content: TemplateResult): TemplateResult {
-    const hasActions = this.leftActionGroups().length > 0;
+    const hideSidebar = this.viewDescription?.hideSidebar === true;
+    const hasActions = this.leftActionGroups().length > 0 && !hideSidebar;
     return html`
       <div class="workspace-shell">
         <button type="button" class="action-panel-backdrop" aria-label="Close view actions"
           tabindex="-1" ?hidden=${!hasActions || !this.mobileViewport || !this.actionPanelOpen}
           @click=${() => { this.actionPanelOpen = false; }}></button>
-        <div class="view-workspace ${this.actionPanelOpen ? "actions-open" : "actions-closed"}">
+        <div class="view-workspace ${this.actionPanelOpen && !hideSidebar ? "actions-open" : "actions-closed"}">
           ${this.renderLeftActions()}
           <div class="view-content">${content}</div>
         </div>
@@ -1582,7 +2221,7 @@ class TurnkeyLitApp extends LitElement {
     const popup = this.captureViewSession();
     this.restoreViewSession(parent);
     const background = html`
-      <header @keydown=${this.handleActionPanelKeydown}>
+      <header @keydown=${this.handleActionPanelKeydown} ?hidden=${this.viewDescription?.hideMenubar === true}>
         ${this.renderActionToggle()}
         <h1><a href="/L#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a></h1>
         ${this.renderGlobalMenu()}
@@ -1653,7 +2292,7 @@ class TurnkeyLitApp extends LitElement {
 
     return html`
       ${this.renderMetadataStyles()}
-      <header ?hidden=${this.activeModal !== undefined}>
+      <header ?hidden=${this.activeModal !== undefined || this.viewDescription?.hideMenubar === true}>
         ${this.activeModal ? nothing : this.renderActionToggle()}
         <h1><a href="/L#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a></h1>
         ${this.renderGlobalMenu()}
@@ -1661,6 +2300,7 @@ class TurnkeyLitApp extends LitElement {
       <main @keydown=${this.handleActionPanelKeydown} @click=${(event: MouseEvent) => {
         this.lastPopupClickPosition = { x: event.clientX, y: event.clientY };
         this.rowContextMenu = undefined;
+        this.seekerMoreMenu = undefined;
       }}>
         ${this.errorMessage
           ? html`<div class="status error" role="alert" ?hidden=${this.activeModal !== undefined}>${this.errorMessage}</div>`
@@ -1742,7 +2382,7 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private renderGlobalMenu(): TemplateResult | typeof nothing {
-    return this.globalMenu
+    return this.globalMenu && !this.viewDescription?.hideMenubar
       ? html`<nav aria-label="Global menu">
           ${this.globalMenu.items.map(item => this.renderGlobalMenuItem(item))}
         </nav>`
