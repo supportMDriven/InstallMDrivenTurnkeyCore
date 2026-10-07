@@ -1513,6 +1513,11 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private renderToolbar(): TemplateResult | typeof nothing {
+    const usesToolbar = this.viewActions.some(action => action.ActionRenderPosition === "ToolBarLeft"
+      || action.ActionRenderPosition === "ToolBarRight");
+    if (!usesToolbar) {
+      return nothing;
+    }
     const left = this.toolbarEntries("ToolBarLeft");
     const right = this.toolbarEntries("ToolBarRight");
     if (left.length === 0 && right.length === 0) {

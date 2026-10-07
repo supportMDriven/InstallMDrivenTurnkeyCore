@@ -1,7 +1,48 @@
-import { html, nothing, TemplateResult } from "lit";
+import { html, noChange, nothing, TemplateResult } from "lit";
+import { Directive, directive, Part, PartInfo } from "lit/directive.js";
 import { ViewMetaControl } from "../../view-meta";
 import { LitComponentContext } from "../control-context";
 
+// How long the user may pause typing before the edit is applied and sent to the server.
+export const LIVE_EDIT_DELAY_MS = 1500;
+
+type EditableField = HTMLInputElement | HTMLTextAreaElement;
+const liveEditTimers = new WeakMap<EditableField, number>();
+const typingFields = new WeakSet<EditableField>();
+
+// Keeps a server echo of an older value from overwriting what the user is still typing.
+class KeepWhileTypingDirective extends Directive {
+  constructor(partInfo: PartInfo) {
+    super(partInfo);
+  }
+
+  render(value: unknown): unknown {
+    return value;
+  }
+
+  update(part: Part, [value]: [unknown]): unknown {
+    const element = (part as { element?: Element }).element;
+    return element && typingFields.has(element as EditableField) ? noChange : value;
+  }
+}
+
+export const keepWhileTyping = directive(KeepWhileTypingDirective);
+
+export function liveEditInput(event: Event, commit: (field: EditableField) => void): void {
+  const field = event.currentTarget as EditableField;
+  typingFields.add(field);
+  window.clearTimeout(liveEditTimers.get(field));
+  liveEditTimers.set(field, window.setTimeout(() => {
+    liveEditTimers.delete(field);
+    commit(field);
+  }, LIVE_EDIT_DELAY_MS));
+}
+
+export function finishEdit(field: EditableField): void {
+  window.clearTimeout(liveEditTimers.get(field));
+  liveEditTimers.delete(field);
+  typingFields.delete(field);
+}
 function mergeClasses(...values: string[]): string {
   return [...new Set(values.flatMap(value => value.split(/\s+/).filter(Boolean)))].join(" ");
 }

@@ -49,6 +49,7 @@ export interface ServerActionCommand extends ServerUpdateCommand {
   SubMenuGroupSortKey?: string;
   HintWhenEnabled?: string;
   Class?: string;
+  Icon?: string;
   AreYouSureQuestion?: string;
   AreYouSureExecuteVerb?: string;
   AreYouSureCancelVerb?: string;

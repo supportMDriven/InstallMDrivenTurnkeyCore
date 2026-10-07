@@ -9,6 +9,12 @@ export const leftSideMenuStyles = css`
   .left-actions button { background: transparent; border: 0; border-radius: 0.25rem; color: #263746; display: block; padding: 0.45rem 0.55rem; text-align: left; width: 100%; }
   .left-actions button:hover:not(:disabled), .left-actions button:focus-visible { background: #edf1f4; }
   .left-actions button:disabled { color: #818a90; cursor: default; }
+  .left-actions button { align-items: center; display: flex; gap: 0.45rem; }
+  .left-actions .left-action-icon { font-size: 1.1rem; }
+  .left-actions button.save-action:not(:disabled), .left-actions button.cancel-action:not(:disabled) { font-weight: 500; }
+  .left-actions button.save-action:not(:disabled), .left-actions button.save-action:hover:not(:disabled) { background: rgb(var(--primary-color, 245, 156, 26)); color: rgb(var(--text-on-primary, 0, 0, 0)); }
+  .left-actions button.cancel-action:not(:disabled), .left-actions button.cancel-action:hover:not(:disabled) { background: rgb(var(--error-clr, 211, 47, 47)); color: rgb(var(--text-on-error, 255, 255, 255)); }
+  .left-actions button.save-action:hover:not(:disabled), .left-actions button.cancel-action:hover:not(:disabled) { filter: brightness(0.92); }
   .left-action-subgroup { color: #75818a; font-size: 0.78rem; margin: 0.35rem 0.5rem 0.1rem; }
   @media (max-width: 600px) {
     .left-actions { display: block; }
@@ -31,8 +37,9 @@ export function renderLeftSideMenu(context: LeftSideMenuContext): TemplateResult
               ? html`<div class="left-action-subgroup">${subgroup.name}</div>`
               : nothing}
             ${subgroup.actions.map(({ command, disabled }) => html`
-              <button type="button" ?disabled=${disabled}
+              <button type="button" class=${command.Class ?? ""} ?disabled=${disabled}
                 @click=${(event: MouseEvent) => context.onAction(command, group.targetVMClassId, event)}>
+                ${command.Icon ? html`<span class="material-icons left-action-icon" aria-hidden="true">${command.Icon}</span>` : nothing}
                 ${command.Presentation || command.Action}
               </button>
             `)}

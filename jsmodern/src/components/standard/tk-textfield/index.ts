@@ -8,6 +8,9 @@ import {
   getStyleAndThisPlusMaybeNoLabel,
   renderControlLabel
   ,errorClass,
+  finishEdit,
+  keepWhileTyping,
+  liveEditInput,
   renderFieldErrors
 } from "../presentation";
 
@@ -19,15 +22,21 @@ export function renderTextField(context: LitComponentContext): TemplateResult {
     inputmode=${numeric ? "decimal" : ""}
     class=${getStyleAndThis(context, "tk-input-field__native")}
     aria-label=${context.isGridCell ? context.label : ""}
-    .value=${context.displayValue}
+    .value=${keepWhileTyping(context.displayValue)}
     ?disabled=${!context.enabled}
     ?readonly=${context.readOnly || context.metadata.attributes.readonly !== undefined
       || context.metadata.attributes.disabled === "true"}
     placeholder=${context.placeholder}
     maxlength=${context.metadata.attributes.maxlength ?? ""}
     step=${effectiveType === "number" ? "any" : ""}
+    @input=${(event: Event) => {
+      if (!numeric) {
+        liveEditInput(event, field => context.onChange(field.value === "" ? null : field.value));
+      }
+    }}
     @change=${(event: Event) => {
       const field = event.currentTarget as HTMLInputElement;
+      finishEdit(field);
       if (numeric && field.value !== "") {
         try {
           context.onChange(parseNumber(field.value));

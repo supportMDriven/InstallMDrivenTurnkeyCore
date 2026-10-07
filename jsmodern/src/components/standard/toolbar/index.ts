@@ -9,6 +9,12 @@ export const toolbarStyles = css`
   .view-toolbar summary::after { content: " \\25BE"; }
   .view-toolbar button:hover:not(:disabled), .view-toolbar summary:hover, .view-toolbar button:focus-visible, .view-toolbar summary:focus-visible { background: #edf1f4; }
   .view-toolbar button:disabled { color: #818a90; cursor: default; }
+  .view-toolbar button { align-items: center; display: inline-flex; gap: 0.35rem; }
+  .view-toolbar .toolbar-icon { font-size: 1.1rem; }
+  .view-toolbar button.save-action:not(:disabled), .view-toolbar button.cancel-action:not(:disabled) { font-weight: 500; }
+  .view-toolbar button.save-action:not(:disabled) { background: rgb(var(--primary-color, 245, 156, 26)); color: rgb(var(--text-on-primary, 0, 0, 0)); }
+  .view-toolbar button.cancel-action:not(:disabled) { background: rgb(var(--error-clr, 211, 47, 47)); color: rgb(var(--text-on-error, 255, 255, 255)); }
+  .view-toolbar button.save-action:hover:not(:disabled), .view-toolbar button.cancel-action:hover:not(:disabled) { filter: brightness(0.92); }
   .view-toolbar details { position: relative; }
   .view-toolbar .toolbar-dropdown { background: white; border: 1px solid #dce1e5; border-radius: 0.3rem; box-shadow: 0 0.4rem 1rem #0003; display: flex; flex-direction: column; gap: 0; left: 0; min-width: 10rem; position: absolute; top: 100%; z-index: 30; }
   .view-toolbar .toolbar-right .toolbar-dropdown { left: auto; right: 0; }
@@ -47,6 +53,7 @@ function renderEntries(context: ToolbarContext, entries: readonly ToolbarEntry[]
       <button type="button" class=${action.command.Class ?? ""} ?disabled=${action.disabled}
         title=${action.command.HintWhenEnabled ?? action.command.Presentation ?? ""}
         @click=${(event: MouseEvent) => context.onAction(action, event)}>
+        ${action.command.Icon ? html`<span class="material-icons toolbar-icon" aria-hidden="true">${action.command.Icon}</span>` : nothing}
         ${action.command.Presentation || action.command.Action}
       </button>
     </li>`)}`;
