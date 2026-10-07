@@ -18,7 +18,7 @@ export function renderDatePicker(context: LitComponentContext): TemplateResult {
     style=${context.metadata.wrapperStyle}>
     ${context.isGridCell ? "" : renderControlLabel(context)}
     <div class=${getStyleAndThisPlusMaybeInGrid(context, "tk-input-field__container")}>
-      <input id=${context.id ?? ""} type="datetime-local"
+      <input id=${context.id ?? ""} type=${context.inputType === "datetime-local" ? "datetime-local" : "date"}
         class=${getStyleAndThis(context, "tk-input-field__native")}
         aria-label=${context.isGridCell ? context.label : ""}
         .value=${context.displayValue}
@@ -27,7 +27,7 @@ export function renderDatePicker(context: LitComponentContext): TemplateResult {
         placeholder=${context.placeholder}
         @change=${(event: Event) => {
           const value = (event.currentTarget as HTMLInputElement).value;
-          context.onChange(value ? new Date(value) : null);
+          context.onChange(value ? new Date(value.length === 10 ? `${value}T00:00` : value) : null);
         }}>
       ${renderFieldErrors(context)}
       ${context.helperText && !context.isGridCell

@@ -12,10 +12,10 @@ export function renderButton(context: LitComponentContext): TemplateResult {
     || "";
   return html`<div class="view-control ${appendOuterCSSGridClass(
     context,
-    getStyleAndThis(context, "tk-component tk-button")
+    getStyleAndThis(context, "tk-component tk-button ctButton NoLabel")
   )}"
     style=${context.metadata.wrapperStyle}>
-    <button type="button" class=${getStyleAndThis(context, "tk-button__native ripple-effect")
+    <button type="button" class=${getStyleAndThis(context, "tk-button__native ripple-effect") + (context.isGridCell ? " dense" : "")
       + (context.metadata.attributes.IsSeekerAction?.toLowerCase() === "true" ? " seekeraction" : "")}
       ?disabled=${!context.enabled || context.actionExecuting}
       title=${context.label}

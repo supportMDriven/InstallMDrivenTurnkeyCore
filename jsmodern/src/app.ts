@@ -162,39 +162,33 @@ function mergeClassNames(...values: string[]): string {
 class TurnkeyLitApp extends LitElement {
   static styles = [css`
     :host { box-sizing: border-box; display: flex; flex-direction: column; height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; }
-    header { align-items: center; background: #263746; color: white; display: flex; flex: 0 0 auto; gap: 1rem; padding: 0.8rem 1.25rem; position: relative; z-index: 10; }
+    header { flex: 0 0 auto; position: relative; z-index: 50; }
     header[hidden] { display: none; }
-    header h1 { font-size: 1.1rem; margin: 0; }
-    header h1 a { color: inherit; text-decoration: none; }
-    header h1 a:hover, header h1 a:focus-visible { text-decoration: underline; }
     nav { align-items: center; background: #fff; border-bottom: 1px solid #dce1e5; display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0.6rem 1rem; }
     header nav { background: transparent; border: 0; flex: 1; min-width: 0; padding: 0; }
+    header nav ul { margin: 0; padding: 0; }
+    header .navbar__item.dropdown { position: relative; }
+    :where(header button.navbar__link, header button.dropdown__link) { background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
+    header .navbar__link { width: auto; }
+    header .dropdown__menu { z-index: 60; }
+    header .navbar__toggle { border: 0; padding: 0; }
+    header .caret { border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid currentColor; display: inline-block; height: 0; vertical-align: middle; width: 0; }
     .login-section { align-items: center; display: flex; margin-left: auto; }
     .login-section form { margin: 0; }
     .login-section ul.navbar__list, .login-section ul { align-items: center; display: flex !important; flex-direction: row !important; gap: 0.25rem; list-style: none; margin: 0; padding: 0; width: auto; }
     .login-section li.navbar__item, .login-section li { display: block; float: none; margin: 0; padding: 0; }
-    .login-section a { align-items: center; border-radius: 0.25rem; color: white; display: inline-flex; gap: 0.3rem; padding: 0.45rem 0.65rem; text-decoration: none; }
+    .login-section a { align-items: center; border-radius: 0.25rem; display: inline-flex; gap: 0.3rem; padding: 0.45rem 0.65rem; text-decoration: none; }
     .login-section a:hover { background: #ffffff22; }
-    header nav > button, header nav > details > summary { color: white; }
-    header nav > button:hover, header nav > details > summary:hover { background: #ffffff22; }
-    nav details { position: relative; }
-    nav summary, nav button { background: transparent; border: 0; border-radius: 0.25rem; color: #263746; cursor: pointer; font: inherit; padding: 0.45rem 0.65rem; }
     nav summary:hover, nav button:hover { background: #edf1f4; }
-    nav details[open] > div { background: white; border: 1px solid #dce1e5; border-radius: 0.3rem; box-shadow: 0 0.25rem 0.75rem #0002; left: 0; min-width: 12rem; padding: 0.25rem; position: absolute; top: 100%; z-index: 2; }
-    nav details div details { margin-left: 0.5rem; }
-    nav details div button { display: block; text-align: left; width: 100%; }
-    header nav details div button, header nav details div summary { color: #263746; }
-    header nav details div button:hover, header nav details div summary:hover { background: #edf1f4; }
-    header .action-toggle { background: transparent; border: 1px solid #ffffff66; border-radius: 0.3rem; color: white; font-size: 1.25rem; line-height: 1; padding: 0.4rem 0.55rem; }
-    header .action-toggle:hover, header .action-toggle:focus-visible { background: #ffffff22; }
-    main { box-sizing: border-box; display: flex; flex: 1 1 auto; flex-direction: column; margin: 0; min-height: 0; overflow: hidden; padding: 1rem; width: 100%; }
+    main { box-sizing: border-box; display: flex; flex: 1 1 auto; flex-direction: column; margin: 0; min-height: 0; overflow: hidden; padding: 0; width: 100%; }
     .workspace-toolbar { align-items: center; display: flex; margin-bottom: 0.5rem; }
     .workspace-toolbar .action-toggle { background: white; border: 1px solid #c7d0d7; border-radius: 0.3rem; color: #263746; font-size: 1.25rem; line-height: 1; padding: 0.4rem 0.55rem; }
     .workspace-toolbar .action-toggle:hover, .workspace-toolbar .action-toggle:focus-visible { background: #edf1f4; }
     .workspace-shell { flex: 1 1 auto; min-height: 0; position: relative; }
-    .view-workspace { align-items: stretch; display: grid; gap: 1rem; grid-template-columns: minmax(11rem, 14rem) minmax(0, 1fr); height: 100%; min-height: 0; }
+    .view-workspace { align-items: stretch; display: grid; gap: 0; grid-template-columns: 230px minmax(0, 1fr); height: 100%; min-height: 0; }
     .view-workspace.actions-closed { grid-template-columns: minmax(0, 1fr); }
-    .view-content { min-height: 0; min-width: 0; overflow: auto; }
+    .view-content { box-sizing: border-box; min-height: 0; min-width: 0; overflow: auto; padding: 15px; }
+    .view-dialog .view-content, .popup-panel .view-content { padding: 0; }
     .view-dialog .view-workspace { grid-template-columns: minmax(0, 1fr); }
     dialog.view-dialog { border: 0; border-radius: 0.5rem; box-shadow: 0 1rem 3rem #0005; max-height: min(90vh, 60rem); max-width: min(90vw, 75rem); overflow: auto; padding: 1.25rem; width: min(75rem, calc(100vw - 2rem)); }
     dialog.view-dialog::backdrop { background: #15232d33; }
@@ -212,30 +206,33 @@ class TurnkeyLitApp extends LitElement {
     .modal-actions button:disabled { cursor: default; opacity: 0.55; }
     .status { background: white; border-radius: 0.4rem; margin-bottom: 1rem; padding: 0.8rem 1rem; }
     .status[hidden] { display: none; }
-    .tk-notification { background: #333; border: 0; border-radius: 4px; bottom: 50px; box-sizing: border-box; color: #fff; font-size: 0.875rem; inset: auto auto 50px 50%; line-height: 1.25rem; margin: 0; min-width: 200px; padding: 14px 16px; pointer-events: none; position: fixed; transform: translateX(-50%); }
-    .tk-notification .mi { margin-right: 0.5rem; vertical-align: middle; }
+    .tk-snackbar[popover] { background: transparent; border: 0; color: inherit; inset: auto 0 0 0; margin: 8px; max-width: none; overflow: visible; padding: 0; pointer-events: none; width: auto; }
+    .tk-snackbar__label .mi { margin-right: 0.5rem; vertical-align: middle; }
     .error { border-left: 0.25rem solid #b3261e; color: #8c1d18; }
     .notice { color: #52616b; }
-    section { background: white; border-radius: 0.4rem; margin: 1rem 0; overflow: hidden; }
+    section.view-canvas { background: transparent; border-radius: 0; margin: 0; overflow: visible; }
     section h2 { background: #edf1f4; font-size: 1rem; margin: 0; padding: 0.8rem 1rem; }
     .view-canvas { gap: 1rem; min-width: 0; }
     .tk-input-field { padding-top: 0; }
     .view-canvas.CSSGridRendering { gap: 0; }
     .view-canvas.CSSGridRendering > .tk-data-table { contain: inline-size; }
     .view-content > .view-canvas:has(> .tk-data-table) { box-sizing: border-box; height: 100%; margin: 0; }
-    .view-content > .view-canvas.FlexboxRendering { box-sizing: border-box; display: flex; flex-direction: column; min-height: 100%; height: auto; overflow: visible; margin: 0; }
+    .view-content:has(> .view-canvas.FlexboxRendering) { display: flex; flex-direction: column; overflow: hidden; }
+    .view-content > .view-canvas.FlexboxRendering { box-sizing: border-box; display: flex; flex: 1 1 0; flex-direction: column; min-height: 0; overflow: auto; margin: 0; }
     .view-canvas.FlexboxRendering > .tk-placingcontainer { flex: 1 1 auto; min-height: 0; }
     .view-canvas > .tk-data-table { display: flex; flex-direction: column; min-height: 0; }
-    .view-canvas > .tk-data-table > .tk-data-table__content { flex: 1 1 auto; min-height: 0; overflow: auto; }
+    .view-canvas .tk-data-table > .tk-data-table__content { flex: 1 1 auto; height: 0; min-height: 0; overflow: auto; }
+    .view-canvas .tk-data-table:has(> .tk-data-table__content--min-height) { min-height: calc(var(--advanced-table-min-height, 250px) + 46px) !important; }
+    .view-canvas .tk-data-table > .tk-data-table__content--min-height { min-height: var(--advanced-table-min-height, 250px); }
     .view-loading { align-content: center; box-sizing: border-box; color: #52616b; min-height: 12rem; padding: 2rem; text-align: center; }
     .view-control { min-width: 0; }
     .view-control h1, .view-control h2, .view-control h3, .view-control p { margin: 0; }
-    .view-control label, .tk-label { display: block; margin-bottom: 0.35rem; }
-    .view-control input, .view-control select { box-sizing: border-box; font: inherit; max-width: 35rem; padding: 0.45rem; width: 100%; }
+    .view-control label, .tk-label { display: block; }
+    .view-control input, .view-control select { box-sizing: border-box; font: inherit; padding: 0.45rem; width: 100%; }
     .view-control input[type="checkbox"] { width: auto; }
     .tk-component { min-width: 0; }
     .tk-input-field__container { display: flex; flex-direction: column; gap: 0.25rem; }
-    .tk-input-field__native, .tk-select__native, .tk-textarea__native { box-sizing: border-box; font: inherit; max-width: 35rem; padding: 0.45rem; width: 100%; }
+    .tk-input-field__native, .tk-select__native, .tk-textarea__native { box-sizing: border-box; font: inherit; padding: 0.45rem; width: 100%; }
     .view-control .tk-checkbox__content { align-items: center; display: inline-flex; gap: 0.5rem; margin: 0; position: relative; }
     .tk-checkbox__inner { align-items: center; display: flex; gap: 0.5rem; }
     .view-control .tk-checkbox__label { display: inline-flex; margin: 0; }
@@ -252,19 +249,38 @@ class TurnkeyLitApp extends LitElement {
     .mi { color: currentColor; direction: ltr; display: inline-block; font-family: "Material Icons"; font-feature-settings: "liga"; font-size: 1.2em; font-style: normal; font-weight: 400; letter-spacing: normal; line-height: 1; text-rendering: optimizeLegibility; text-transform: none; white-space: nowrap; -webkit-font-feature-settings: "liga"; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     .tk-select { position: relative; }
     .tk-select__dropdown-icon { pointer-events: none; }
-    .tk-select__inner { max-width: 35rem; }
     .tk-select__native { padding-right: 2rem; }
     .tk-input-field__helper { color: #5d6870; font-size: 0.875rem; }
-    .constraints { position: fixed; left: 12px; bottom: 12px; z-index: 40; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
-    .validation-card { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 0; border-radius: 8px; color: #fff; background: #b3261e; cursor: pointer; font: inherit; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
-    .validation-card.warning { background: #b26a00; }
-    .validation-card.info { background: #1f6fb2; }
-    .constraints-panel { max-width: min(420px, 90vw); max-height: 50vh; overflow: auto; background: #fff; color: #222; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,.35); padding: 10px 14px; }
-    .constraints-title { display: flex; align-items: center; gap: 6px; font-weight: 600; margin: 4px 0; }
-    .constraints-group.error .constraints-title { color: #b3261e; }
-    .constraints-group.warning .constraints-title { color: #b26a00; }
-    .constraints-group.info .constraints-title { color: #1f6fb2; }
-    .constraints-message { padding: 2px 0 2px 8px; font-size: 0.9rem; }
+    .constraints { position: fixed; left: 8px; bottom: 8px; z-index: 80; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .constraints.docked { left: 0; bottom: 0; width: 230px; }
+    .constraints.docked .constraints-panel { position: absolute; left: 230px; bottom: 0; width: max-content; }
+    .validation-card { display: inline-flex; align-items: center; gap: 8px; padding: 0.5rem 0.8rem; border: 1px solid rgb(224,224,224); border-radius: 4px; color: inherit; background: rgba(var(--error-clr, 179,38,30), .05); cursor: pointer; font-family: inherit; box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12); opacity: .4; transition: opacity .1s linear; text-align: left; }
+    .constraints .validation-card { display: inline-flex; flex-direction: row; }
+    .validation-card:hover { opacity: 1; }
+    .validation-card .material-icons { color: rgb(255,255,255); font-size: 1.25rem; pointer-events: none; }
+    .validation-card.error { background: rgb(var(--error-clr, 179,38,30)); color: rgb(var(--text-on-error, 255,255,255)); }
+    .validation-card.warning { background: rgb(var(--warning-color, 178,106,0)); color: rgb(var(--text-on-warning, 255,255,255)); }
+    .validation-card.info { background: rgb(var(--info-clr, 31,111,178)); color: rgb(var(--text-on-info, 255,255,255)); }
+    .docked .validation-card { margin: 8px; padding: 1rem 0.8rem; opacity: 1; box-shadow: none; color: inherit; }
+    .docked .validation-card .material-icons { font-size: 2.25rem; }
+    .docked .validation-card.error { background: rgba(var(--error-clr, 179,38,30), .05); }
+    .docked .validation-card.warning { background: rgba(var(--warning-color, 178,106,0), .05); }
+    .docked .validation-card.info { background: rgba(var(--info-clr, 31,111,178), .05); }
+    .docked .validation-card.error .material-icons { color: rgb(var(--error-clr, 179,38,30)); }
+    .docked .validation-card.warning .material-icons { color: rgb(var(--warning-color, 178,106,0)); }
+    .docked .validation-card.info .material-icons { color: rgb(var(--info-clr, 31,111,178)); }
+    .validation-card__content { display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+    .validation-card__title { font-size: 1rem; font-weight: 500; }
+    .validation-card__subtitle { font-size: .75rem; font-weight: 400; white-space: nowrap; }
+    .constraints-panel { max-width: 400px; max-height: 350px; overflow-y: auto; background: #fff; color: #222; border-radius: 4px; box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12); }
+    .constraints-group + .constraints-group { margin-top: 5px; }
+    .constraints-title { display: flex; align-items: center; gap: 8px; font-weight: 500; padding: .5rem 1rem; border-radius: 4px 4px 0 0; color: rgb(var(--text-on-custom, 255,255,255)); background: rgb(var(--custom-clr)); }
+    .constraints-title .material-icons { font-size: 1.5rem; }
+    .constraints-group.error { --custom-clr: var(--error-clr, 179,38,30); --text-on-custom: var(--text-on-error, 255,255,255); }
+    .constraints-group.warning { --custom-clr: var(--warning-color, 178,106,0); --text-on-custom: var(--text-on-warning, 255,255,255); }
+    .constraints-group.info { --custom-clr: var(--info-clr, 31,111,178); --text-on-custom: var(--text-on-info, 255,255,255); }
+    .constraints-message { display: flex; align-items: center; gap: 8px; padding: .5rem 1rem; font-size: .875rem; }
+    .constraints-message .material-icons { font-size: .625rem; color: rgb(var(--custom-clr)); }
     .tk-input-field__error { color: #b3261e; font-size: 0.875rem; display: block; }
     .tk-input-field--invalid input, .tk-input-field--invalid textarea, .tk-input-field--invalid select { border-color: #b3261e !important; box-shadow: 0 0 0 1px #b3261e; }
     .tk-input-field__validation-state { color: #a12622; font-size: 0.875rem; }
@@ -304,7 +320,7 @@ class TurnkeyLitApp extends LitElement {
     dl { display: grid; gap: 0.75rem 1rem; grid-template-columns: minmax(9rem, 0.35fr) 1fr; margin: 0; padding: 1rem; }
     dt { color: #53616b; overflow-wrap: anywhere; }
     dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
-    input { box-sizing: border-box; font: inherit; max-width: 35rem; padding: 0.4rem; width: 100%; }
+    input { box-sizing: border-box; font: inherit; padding: 0.4rem; width: 100%; }
     .reference, .collection { color: #52616b; }
     button { cursor: pointer; font: inherit; }
     .action-panel-backdrop { display: none; }
@@ -905,15 +921,21 @@ class TurnkeyLitApp extends LitElement {
     element.setAttribute("popover", "manual");
     element.setAttribute("role", "status");
     element.setAttribute("aria-live", "polite");
-    element.className = "tk-notification";
+    element.className = "tk-snackbar tk-snackbar--centered tk-snackbar--open";
+    const surface = document.createElement("div");
+    surface.className = "tk-snackbar__surface";
+    const label = document.createElement("div");
+    label.className = "tk-snackbar__label";
     if (icon) {
       const glyph = document.createElement("span");
       glyph.className = "mi";
       glyph.setAttribute("aria-hidden", "true");
       glyph.textContent = icon;
-      element.append(glyph);
+      label.append(glyph);
     }
-    element.append(document.createTextNode(message));
+    label.append(document.createTextNode(message));
+    surface.append(label);
+    element.append(surface);
     this.renderRoot.append(element);
     this.notificationElement = element;
     try {
@@ -2076,6 +2098,19 @@ class TurnkeyLitApp extends LitElement {
     </div>`;
   }
 
+  private cellStyleFor(control: ViewMetaControl, row: VmObject): string {
+    if (control.tagName === "tk-layout-container") {
+      return "";
+    }
+    const attributes = control.attributes;
+    const column = attributes.BindInfoColumn;
+    const statusObject = this.viewState?.getReference(this.viewState.root.attributes.VM_Status);
+    const prefix = attributes.id?.replace(/\./g, "_") || (column ? `${row.className}_${column}` : undefined);
+    const dataBound = (column && row.attributes[`${column}_Style`])
+      || (prefix ? statusObject?.attributes[`${prefix}_Style`] : undefined);
+    return typeof dataBound === "string" && dataBound.trim() !== "" ? dataBound : attributes.StaticStyle ?? "";
+  }
+
   private renderMetaControl(
     control: ViewMetaControl,
     row?: VmObject,
@@ -2130,7 +2165,8 @@ class TurnkeyLitApp extends LitElement {
     const visibleValue = readCompanion("_Visible");
     const enabledValue = readCompanion("_Enabled");
     const readOnlyValue = readCompanion("_ReadOnly");
-    const visible = visibleValue !== false;
+    // Angular binds ng-show to the value, so null (not yet evaluated or false) hides the control too.
+    const visible = visibleValue === undefined || Boolean(visibleValue);
     const enabled = enabledValue !== false;
     const readOnly = readOnlyValue === true || !enabled;
     const dataBoundStyle = readCompanion("_Style");
@@ -2161,7 +2197,7 @@ class TurnkeyLitApp extends LitElement {
     const targetClass = target?.className;
     const targetId = target?.vmClassId;
     const inputType = control.tagName === "tk-datepicker"
-      ? "datetime-local"
+      ? (control.taggedValues.ShowTime?.toLowerCase() === "true" ? "datetime-local" : "date")
       : typeName === "Boolean" || typeName === "bool"
         ? "checkbox"
         : attributes.type ?? (typeName.match(/^(Byte|Int16|Int32|Int64|Decimal|Double)$/) ? "number" : "text");
@@ -2183,7 +2219,7 @@ class TurnkeyLitApp extends LitElement {
     const stringValue = value === null || value === undefined
       ? ""
       : value instanceof Date
-        ? this.dateInputValue(value)
+        ? this.dateInputValue(value).slice(0, inputType === "date" ? 10 : undefined)
         : typeof value === "number" && stringFormat
           ? formatNumber(value, stringFormat)
           : typeof value === "object"
@@ -2217,7 +2253,7 @@ class TurnkeyLitApp extends LitElement {
       placeholder,
       helperText,
       errors: attributes.id ? this.dataErrors.get(`${this.viewState?.vmId ?? ""}:${attributes.id}`) ?? [] : [],
-      style,
+      style: isGridCell ? "" : style,
       visible,
       enabled: enabled && !readOnly && attributes.disabled !== "true"
         && attributes.StaticStyle?.toLowerCase() !== "readonly",
@@ -2336,6 +2372,7 @@ class TurnkeyLitApp extends LitElement {
           y: menu.y
         } : undefined,
         rowMenuGroups,
+        cellStyle: (cellControl, item) => this.cellStyleFor(cellControl, item),
         renderCell: (cellControl, item) => this.renderMetaControl(
           cellControl,
           item,
@@ -2540,11 +2577,11 @@ class TurnkeyLitApp extends LitElement {
     if (this.leftActionGroups().length === 0 || this.viewDescription?.hideSidebar) {
       return nothing;
     }
-    return html`<button type="button" class="action-toggle"
+    return html`<button type="button" class="action-toggle navbar__toggle navbar__toggle--sidebar"
       aria-label=${this.actionPanelOpen ? "Hide view actions" : "Show view actions"}
       aria-controls="view-actions-panel" aria-expanded=${this.actionPanelOpen}
       @click=${() => { this.actionPanelOpen = !this.actionPanelOpen; }}>
-      <span aria-hidden="true">☰</span>
+      <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
     </button>`;
   }
 
@@ -2571,19 +2608,20 @@ class TurnkeyLitApp extends LitElement {
       return nothing;
     }
     const cardClass = present[0].css;
+    const docked = this.leftActionGroups().length > 0 && this.viewDescription?.hideSidebar !== true && !this.mobileViewport;
     return html`
-      <div class="constraints">
+      <div class="constraints ${docked ? 'docked' : ''}">
         ${this.constraintsOpen ? html`<div class="constraints-panel" role="dialog" aria-label="Validation errors">
           ${present.map(group => html`<div class="constraints-group ${group.css}">
             <div class="constraints-title"><span class="material-icons" aria-hidden="true">${group.icon}</span>
-              ${group.messages.length} ${group.messages.length === 1 ? group.singular : `${group.singular}s`}</div>
-            ${group.messages.map(message => html`<div class="constraints-message">• ${message}</div>`)}
+              ${group.messages.length === 1 ? group.singular : `${group.singular}s`}</div>
+            ${group.messages.map(message => html`<div class="constraints-message"><span class="material-icons" aria-hidden="true">radio_button_checked</span>${message}</div>`)}
           </div>`)}
         </div>` : nothing}
         <button type="button" class="validation-card ${cardClass}" aria-expanded=${this.constraintsOpen}
           @click=${() => { this.constraintsOpen = !this.constraintsOpen; }}>
           <span class="material-icons" aria-hidden="true">warning_amber</span>
-          <span>${count} ${count === 1 ? "issue" : "issues"}</span>
+          <span class="validation-card__content"><span class="validation-card__title">${count} ${count === 1 ? "issue" : "issues"}</span>${docked ? html`<span class="validation-card__subtitle">click to see details</span>` : nothing}</span>
         </button>
       </div>`;
   }
@@ -2618,11 +2656,15 @@ class TurnkeyLitApp extends LitElement {
     const popup = this.captureViewSession();
     this.restoreViewSession(parent);
     const background = html`
-      <header @keydown=${this.handleActionPanelKeydown} ?hidden=${this.viewDescription?.hideMenubar === true}>
-        ${this.renderActionToggle()}
-        <h1><a href="/L#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a></h1>
-        ${this.renderGlobalMenu()}
-        ${this.renderLoginSection()}
+      <header class="navbar navbar--desktop" @keydown=${this.handleActionPanelKeydown} ?hidden=${this.viewDescription?.hideMenubar === true}>
+        <div class="navbar__header">
+          ${this.renderActionToggle()}
+          <a class="navbar__brand" href="/L#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a>
+        </div>
+        <div class="navbar__wrapper collapse in">
+          ${this.renderGlobalMenu()}
+          ${this.renderLoginSection()}
+        </div>
       </header>
       <main @keydown=${this.handleActionPanelKeydown}>
         ${this.renderErrorBanner()}
@@ -2690,11 +2732,15 @@ class TurnkeyLitApp extends LitElement {
 
     return html`
       ${this.renderMetadataStyles()}
-      <header ?hidden=${this.activeModal !== undefined || this.viewDescription?.hideMenubar === true}>
-        ${this.activeModal ? nothing : this.renderActionToggle()}
-        <h1><a href="/L#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a></h1>
-        ${this.renderGlobalMenu()}
-        ${this.renderLoginSection()}
+      <header class="navbar navbar--desktop" ?hidden=${this.activeModal !== undefined || this.viewDescription?.hideMenubar === true}>
+        <div class="navbar__header">
+          ${this.activeModal ? nothing : this.renderActionToggle()}
+          <a class="navbar__brand" href="/L#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a>
+        </div>
+        <div class="navbar__wrapper collapse in">
+          ${this.renderGlobalMenu()}
+          ${this.renderLoginSection()}
+        </div>
       </header>
       <main @keydown=${this.handleActionPanelKeydown} @tk-notify=${(event: CustomEvent<{ message: string; icon?: string }>) =>
         this.notify(event.detail.message, event.detail.icon)} @click=${(event: MouseEvent) => {
@@ -2738,45 +2784,48 @@ class TurnkeyLitApp extends LitElement {
     }
   }
 
-  private renderGlobalMenuItem(item: GlobalMenuItem): TemplateResult | typeof nothing {
+  private renderGlobalMenuItem(item: GlobalMenuItem, nested = false): TemplateResult | typeof nothing {
     if (item.actionName) {
       const status = this.globalActionStatus.get(item.actionName);
       if (status?.visible === false) {
         return nothing;
       }
-      return html`<button type="button" ?disabled=${status?.enabled === false}
+      const button = html`<button type="button" class=${nested ? "dropdown__link" : "navbar__link"}
+        ?disabled=${status?.enabled === false}
         @click=${() => void this.executeGlobalAction(item)}>${item.presentation}</button>`;
+      return nested ? html`<div class="dropdown__item">${button}</div>` : html`<li class="navbar__item">${button}</li>`;
     }
     if (item.children.length === 0) {
       return nothing;
     }
-    return html`
-      <details @toggle=${this.handleGlobalMenuToggle}>
-        <summary>${item.presentation}</summary>
-        <div>${item.children.map(child => this.renderGlobalMenuItem(child))}</div>
-      </details>
-    `;
+    const menu = html`
+      <button type="button" class=${nested ? "dropdown__link" : "navbar__link"} aria-haspopup="true"
+        @click=${this.handleGlobalMenuToggle}>${item.presentation}${nested ? nothing : html`<span class="caret"></span>`}</button>
+      <div class="dropdown__menu ${nested ? "dropdown--nested" : ""}">${item.children.map(child => this.renderGlobalMenuItem(child, true))}</div>`;
+    return nested ? html`<div class="dropdown__item dropdown">${menu}</div>` : html`<li class="navbar__item dropdown">${menu}</li>`;
   }
 
+  // The Turnkey stylesheets show a drop-down while its container carries the "open" class.
   private handleGlobalMenuToggle(event: Event): void {
-    const openedMenu = event.currentTarget;
-    if (!(openedMenu instanceof HTMLDetailsElement) || !openedMenu.open) {
+    const container = (event.currentTarget as HTMLElement).parentElement;
+    if (!container) {
       return;
     }
-    const nav = openedMenu.closest("nav[aria-label='Global menu']");
-    if (!nav) {
-      return;
-    }
-    for (const menu of nav.querySelectorAll<HTMLDetailsElement>("details[open]")) {
-      if (menu !== openedMenu && !menu.contains(openedMenu)) {
-        menu.open = false;
+    const open = !container.classList.contains("open");
+    const nav = container.closest("nav[aria-label='Global menu']");
+    if (open && nav) {
+      for (const menu of nav.querySelectorAll<HTMLElement>(".dropdown.open")) {
+        if (menu !== container && !menu.contains(container)) {
+          menu.classList.remove("open");
+        }
       }
     }
+    container.classList.toggle("open", open);
   }
 
   private closeGlobalMenus(): void {
-    this.renderRoot.querySelectorAll<HTMLDetailsElement>("nav[aria-label='Global menu'] details[open]")
-      .forEach(menu => { menu.open = false; });
+    this.renderRoot.querySelectorAll<HTMLElement>("nav[aria-label='Global menu'] .dropdown.open")
+      .forEach(menu => menu.classList.remove("open"));
   }
 
   // Login/register (or user and log out) markup is supplied by the server, as in the Angular and Blazor clients.
@@ -2829,7 +2878,7 @@ class TurnkeyLitApp extends LitElement {
   private renderGlobalMenu(): TemplateResult | typeof nothing {
     return this.globalMenu && !this.viewDescription?.hideMenubar
       ? html`<nav aria-label="Global menu">
-          ${this.globalMenu.items.map(item => this.renderGlobalMenuItem(item))}
+          <ul class="navbar__list">${this.globalMenu.items.map(item => this.renderGlobalMenuItem(item))}</ul>
         </nav>`
       : nothing;
   }

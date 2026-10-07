@@ -1,21 +1,12 @@
 import { css, html, nothing, TemplateResult } from "lit";
-import { LeftSideMenuContext } from "./context";
+import { LeftSideMenuAction, LeftSideMenuContext, LeftSideMenuGroup } from "./context";
 
+// Item, group and state-action looks (including the save/cancel/undo/redo colours and icons) come from the
+// shared Turnkey stylesheets (core.css and theme-default.css) through the tk-sidebar__* and tk-state-action classes.
 export const leftSideMenuStyles = css`
   .view-workspace .left-actions[hidden] { display: none; }
-  .left-actions { align-self: start; background: white; border: 1px solid #dce1e5; border-radius: 0.4rem; max-height: 100%; overflow-y: auto; padding: 0.5rem; position: sticky; top: 0; }
-  .left-actions h2 { color: #53616b; font-size: 0.85rem; margin: 0.4rem 0.5rem; }
-  .left-action-group + .left-action-group { border-top: 1px solid #e1e5e8; margin-top: 0.4rem; padding-top: 0.35rem; }
-  .left-actions button { background: transparent; border: 0; border-radius: 0.25rem; color: #263746; display: block; padding: 0.45rem 0.55rem; text-align: left; width: 100%; }
-  .left-actions button:hover:not(:disabled), .left-actions button:focus-visible { background: #edf1f4; }
-  .left-actions button:disabled { color: #818a90; cursor: default; }
-  .left-actions button { align-items: center; display: flex; gap: 0.45rem; }
-  .left-actions .left-action-icon { font-size: 1.1rem; }
-  .left-actions button.save-action:not(:disabled), .left-actions button.cancel-action:not(:disabled) { font-weight: 500; }
-  .left-actions button.save-action:not(:disabled), .left-actions button.save-action:hover:not(:disabled) { background: rgb(var(--primary-color, 245, 156, 26)); color: rgb(var(--text-on-primary, 0, 0, 0)); }
-  .left-actions button.cancel-action:not(:disabled), .left-actions button.cancel-action:hover:not(:disabled) { background: rgb(var(--error-clr, 211, 47, 47)); color: rgb(var(--text-on-error, 255, 255, 255)); }
-  .left-actions button.save-action:hover:not(:disabled), .left-actions button.cancel-action:hover:not(:disabled) { filter: brightness(0.92); }
-  .left-action-subgroup { color: #75818a; font-size: 0.78rem; margin: 0.35rem 0.5rem 0.1rem; }
+  .left-actions { align-self: stretch; background: white; box-shadow: 0 2px 2px rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.12), 0 1px 5px rgba(0,0,0,.2); box-sizing: border-box; display: flex; flex-direction: column; max-height: 100%; overflow: hidden; padding: 0; z-index: 2; }
+  .left-actions .tk-sidebar__list { flex: 1 1 auto; height: auto; min-height: 0; }
   @media (max-width: 600px) {
     .left-actions { display: block; }
     .view-workspace .left-actions[hidden] { display: none; }
@@ -25,27 +16,57 @@ export const leftSideMenuStyles = css`
   }
 `;
 
+function isStateAction(action: LeftSideMenuAction): boolean {
+  return /-action$/.test(action.command.Class ?? "");
+}
+
+function renderItem(context: LeftSideMenuContext, group: LeftSideMenuGroup, action: LeftSideMenuAction, state: boolean): TemplateResult {
+  const { command, disabled } = action;
+  const base = state ? "tk-state-action" : "tk-sidebar__item";
+  return html`<button type="button" class="${base} ${command.Class ?? ""} ${disabled ? "disabled" : ""}"
+    ?disabled=${disabled} title=${command.HintWhenEnabled || command.Presentation || ""}
+    @click=${(event: MouseEvent) => context.onAction(command, group.targetVMClassId, event)}>
+    ${command.Presentation || command.Action}
+  </button>`;
+}
+
 export function renderLeftSideMenu(context: LeftSideMenuContext): TemplateResult {
+  const stateActions = context.groups
+    .filter(group => group.className === "GLOBAL")
+    .flatMap(group => group.subgroups.flatMap(subgroup => subgroup.actions.filter(isStateAction).map(action => ({ group, action }))));
   return html`
     <aside id="view-actions-panel" class="left-actions" aria-label="View actions"
       ?hidden=${!context.open}>
-      ${context.groups.map(group => html`
-        <div class="left-action-group">
-          ${group.className === "GLOBAL" ? nothing : html`<h2>${group.name}</h2>`}
-          ${group.subgroups.map(subgroup => html`
-            ${subgroup.name && group.className !== "GLOBAL"
-              ? html`<div class="left-action-subgroup">${subgroup.name}</div>`
-              : nothing}
-            ${subgroup.actions.map(({ command, disabled }) => html`
-              <button type="button" class=${command.Class ?? ""} ?disabled=${disabled}
-                @click=${(event: MouseEvent) => context.onAction(command, group.targetVMClassId, event)}>
-                ${command.Icon ? html`<span class="material-icons left-action-icon" aria-hidden="true">${command.Icon}</span>` : nothing}
-                ${command.Presentation || command.Action}
-              </button>
-            `)}
-          `)}
-        </div>
-      `)}
+      ${stateActions.length === 0 ? nothing : html`<div class="tk-sidebar__state-actions">
+        ${stateActions.map(({ group, action }) => renderItem(context, group, action, true))}
+      </div>`}
+      <div class="tk-sidebar__list">
+        ${context.groups.map(group => {
+          const subgroups = group.subgroups
+            .map(subgroup => ({
+              ...subgroup,
+              actions: group.className === "GLOBAL" ? subgroup.actions.filter(action => !isStateAction(action)) : subgroup.actions
+            }))
+            .filter(subgroup => subgroup.actions.length > 0);
+          if (subgroups.length === 0) {
+            return nothing;
+          }
+          return html`
+            ${group.className === "GLOBAL" ? nothing : html`<div class="tk-sidebar__group-header" title=${group.name}>
+              <span class="tk-sidebar__group-name">${group.name}</span>
+            </div>`}
+            <div class="tk-sidebar__group collapse in">
+              ${subgroups.map(subgroup => html`
+                ${subgroup.name && group.className !== "GLOBAL"
+                  ? html`<div class="tk-sidebar__subgroup-header"><span>${subgroup.name}</span></div>`
+                  : nothing}
+                <div class="tk-sidebar__subgroup collapse in">
+                  ${subgroup.actions.map(action => renderItem(context, group, action, false))}
+                </div>
+              `)}
+            </div>`;
+        })}
+      </div>
     </aside>
   `;
 }

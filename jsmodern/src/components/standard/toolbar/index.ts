@@ -1,31 +1,35 @@
 import { css, html, nothing, TemplateResult } from "lit";
-import { ToolbarContext, ToolbarEntry } from "./context";
+import { ToolbarAction, ToolbarContext, ToolbarEntry } from "./context";
 
+// Layout, colours, state-action icons and the save/cancel/undo/redo colours come from the shared
+// Turnkey stylesheets (core.css and theme-default.css); only the <details> drop-down wiring lives here.
 export const toolbarStyles = css`
-  .view-toolbar { align-items: center; background: white; border: 1px solid #dce1e5; border-radius: 0.4rem; display: flex; gap: 0.5rem; justify-content: space-between; margin-bottom: 0.5rem; padding: 0.25rem 0.5rem; position: sticky; top: 0; z-index: 25; }
-  .view-toolbar ul { align-items: center; display: flex; flex-wrap: wrap; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
-  .view-toolbar button, .view-toolbar summary { background: transparent; border: 0; border-radius: 0.25rem; color: #263746; cursor: pointer; font: inherit; list-style: none; padding: 0.4rem 0.7rem; white-space: nowrap; }
-  .view-toolbar summary::-webkit-details-marker { display: none; }
-  .view-toolbar summary::after { content: " \\25BE"; }
-  .view-toolbar button:hover:not(:disabled), .view-toolbar summary:hover, .view-toolbar button:focus-visible, .view-toolbar summary:focus-visible { background: #edf1f4; }
-  .view-toolbar button:disabled { color: #818a90; cursor: default; }
-  .view-toolbar button { align-items: center; display: inline-flex; gap: 0.35rem; }
-  .view-toolbar .toolbar-icon { font-size: 1.1rem; }
-  .view-toolbar button.save-action:not(:disabled), .view-toolbar button.cancel-action:not(:disabled) { font-weight: 500; }
-  .view-toolbar button.save-action:not(:disabled) { background: rgb(var(--primary-color, 245, 156, 26)); color: rgb(var(--text-on-primary, 0, 0, 0)); }
-  .view-toolbar button.cancel-action:not(:disabled) { background: rgb(var(--error-clr, 211, 47, 47)); color: rgb(var(--text-on-error, 255, 255, 255)); }
-  .view-toolbar button.save-action:hover:not(:disabled), .view-toolbar button.cancel-action:hover:not(:disabled) { filter: brightness(0.92); }
-  .view-toolbar details { position: relative; }
-  .view-toolbar .toolbar-dropdown { background: white; border: 1px solid #dce1e5; border-radius: 0.3rem; box-shadow: 0 0.4rem 1rem #0003; display: flex; flex-direction: column; gap: 0; left: 0; min-width: 10rem; position: absolute; top: 100%; z-index: 30; }
-  .view-toolbar .toolbar-right .toolbar-dropdown { left: auto; right: 0; }
-  .view-toolbar .toolbar-dropdown button { text-align: left; width: 100%; }
+  #contentToolbar { box-sizing: border-box; padding: 0 0 0.5rem; top: 0; }
+  #contentToolbar ul { margin: 0; padding: 0; }
+  #contentToolbar .toolbar__container { align-items: center; }
+  #contentToolbar .toolbar__item { width: auto; }
+  #contentToolbar details { position: relative; }
+  #contentToolbar summary { cursor: pointer; list-style: none; }
+  #contentToolbar summary::-webkit-details-marker { display: none; }
+  #contentToolbar details[open] > .dropdown__menu { display: flex; }
+  #contentToolbar .dropdown__menu { list-style: none; z-index: 60; }
+  #contentToolbar .dropdown__item { width: 100%; }
+  #contentToolbar .vmactions__item { display: flex; }
 `;
+
+function actionClass(action: ToolbarAction, base: string): string {
+  return [base, action.command.Class ?? "", action.disabled ? "disabled" : ""].filter(Boolean).join(" ");
+}
+
+function title(action: ToolbarAction): string {
+  return action.command.HintWhenEnabled ?? action.command.Presentation ?? "";
+}
 
 function renderEntries(context: ToolbarContext, entries: readonly ToolbarEntry[]): TemplateResult {
   const menus = entries.filter(entry => entry.name !== "");
   const buttons = entries.filter(entry => entry.name === "").flatMap(entry => entry.actions);
   return html`
-    ${menus.map(menu => html`<li>
+    ${menus.map(menu => html`<li class="toolbar__item dropdown">
       <details @focusout=${(event: FocusEvent) => {
         const details = event.currentTarget as HTMLDetailsElement;
         if (!details.contains(event.relatedTarget as Node | null)) {
@@ -36,11 +40,11 @@ function renderEntries(context: ToolbarContext, entries: readonly ToolbarEntry[]
           (event.currentTarget as HTMLDetailsElement).open = false;
         }
       }}>
-        <summary>${menu.name}</summary>
-        <ul class="toolbar-dropdown">
-          ${menu.actions.map(action => html`<li>
-            <button type="button" ?disabled=${action.disabled}
-              title=${action.command.HintWhenEnabled ?? action.command.Presentation ?? ""}
+        <summary class="toolbar__link"><span class="tk-sidebar__group-name">${menu.name}</span><span class="mi">arrow_drop_down</span></summary>
+        <ul class="dropdown__menu toolbar">
+          ${menu.actions.map(action => html`<li class="dropdown__item">
+            <button type="button" class=${actionClass(action, "toolbar-drop__button")} ?disabled=${action.disabled}
+              title=${title(action)}
               @click=${(event: MouseEvent) => {
                 (event.currentTarget as HTMLElement).closest("details")?.removeAttribute("open");
                 context.onAction(action, event);
@@ -49,22 +53,33 @@ function renderEntries(context: ToolbarContext, entries: readonly ToolbarEntry[]
         </ul>
       </details>
     </li>`)}
-    ${buttons.map(action => html`<li>
-      <button type="button" class=${action.command.Class ?? ""} ?disabled=${action.disabled}
-        title=${action.command.HintWhenEnabled ?? action.command.Presentation ?? ""}
+    ${buttons.map(action => html`<li class="toolbar__item">
+      <button type="button" class=${actionClass(action, "tk-toolbar__button")} ?disabled=${action.disabled}
+        title=${title(action)}
         @click=${(event: MouseEvent) => context.onAction(action, event)}>
-        ${action.command.Icon ? html`<span class="material-icons toolbar-icon" aria-hidden="true">${action.command.Icon}</span>` : nothing}
         ${action.command.Presentation || action.command.Action}
       </button>
     </li>`)}`;
+}
+
+function renderStateActions(context: ToolbarContext, entries: readonly ToolbarEntry[]): TemplateResult {
+  return html`${entries.flatMap(entry => entry.actions).map(action => html`<li class="vmactions__item">
+    <button type="button" class=${actionClass(action, "tk-state-action")} ?disabled=${action.disabled}
+      title=${title(action)}
+      @click=${(event: MouseEvent) => context.onAction(action, event)}>
+      ${action.command.Presentation || action.command.Action}
+    </button>
+  </li>`)}`;
 }
 
 export function renderToolbar(context: ToolbarContext): TemplateResult | typeof nothing {
   if (context.left.length === 0 && context.right.length === 0) {
     return nothing;
   }
-  return html`<nav class="view-toolbar" aria-label="View toolbar">
-    <ul class="toolbar-left">${renderEntries(context, context.left)}</ul>
-    <ul class="toolbar-right">${renderEntries(context, context.right)}</ul>
-  </nav>`;
+  return html`<div id="contentToolbar" role="navigation" aria-label="View toolbar">
+    <div class="toolbar__container">
+      <ul class="toolbar__list">${renderEntries(context, context.left)}</ul>
+      <ul class="vmactions__list">${renderStateActions(context, context.right)}</ul>
+    </div>
+  </div>`;
 }

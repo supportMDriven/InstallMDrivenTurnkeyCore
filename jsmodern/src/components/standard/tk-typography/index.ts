@@ -29,7 +29,7 @@ export function renderTypographyControl(context: LitComponentContext): TemplateR
     : content;
   return html`<div class="view-control ${appendOuterCSSGridClass(
     context,
-    getStyleAndThis(context, "tk-component tk-typography")
+    getStyleAndThis(context, "tk-component tk-typography ctStaticText") + (context.isGridCell ? " tk-static-text--in-grid tk-static-text" : "")
   )}"
     style=${context.metadata.wrapperStyle}>
     ${context.isGridCell ? "" : renderControlLabel(context, "tk-typography__label tk-label")}

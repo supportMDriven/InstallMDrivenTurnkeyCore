@@ -1,5 +1,5 @@
 export function formatNumber(value: number, format: string): string {
-  const decimalPattern = format.match(/[.,]([0#]+)/)?.[1];
+  const decimalPattern = format.match(/\.([0#]+)/)?.[1];
   return new Intl.NumberFormat(undefined, {
     useGrouping: format.includes(","),
     minimumFractionDigits: decimalPattern?.replace(/#/g, "").length ?? 0,

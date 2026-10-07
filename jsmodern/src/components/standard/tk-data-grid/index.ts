@@ -44,12 +44,12 @@ function renderRow(
     : row.attributes.vCurrent === true;
   return html`<tr
     class=${isCurrent
-      ? "current-row tk-data-table__row tk-data-table__row--current"
+      ? "current-row vmCurrentRow tk-data-table__row tk-data-table__row--current"
       : "tk-data-table__row"}
     @click=${() => context.onSelectRow(row)}
     @contextmenu=${(event: MouseEvent) => context.onOpenRowMenu(event, row)}
     @dblclick=${(event: MouseEvent) => context.onDoubleClickRow(event, row)}>
-    ${context.multiSelect ? html`<td class="row-selection-cell tk-data-table__cell">
+    ${context.multiSelect ? html`<td class="row-selection-cell tk-data-table__cell tk-data-table__cell--multiselect">
       <input type="checkbox" aria-label=${`Select ${row.className} ${row.id}`}
         .checked=${row.attributes.vSelected === true}
         @click=${(event: MouseEvent) => event.stopPropagation()}
@@ -59,7 +59,7 @@ function renderRow(
         )}>
     </td>` : nothing}
     ${columns.map(control => html`
-      <td class="tk-data-table__cell" tabindex="-1">${context.renderCell(control, row)}</td>
+      <td class="tk-data-table__cell ${context.cellStyle(control, row)}" tabindex="-1">${context.renderCell(control, row)}</td>
     `)}
     <td class="row-menu-cell tk-data-table__cell">
       <button type="button" class="row-menu-trigger" aria-haspopup="menu"
@@ -104,7 +104,7 @@ function renderSelectAll(context: DataGridContext): TemplateResult {
   const rows = context.sortedCollection;
   const selectedCount = rows.filter(row => row.attributes.vSelected === true).length;
   const all = rows.length > 0 && selectedCount === rows.length;
-  return html`<th class="row-selection-cell tk-data-table__header-cell" aria-label="Row selection">
+  return html`<th class="row-selection-cell tk-data-table__header-cell tk-data-table__header-cell--multiselect" aria-label="Row selection">
     <input type="checkbox" aria-label="Select all rows"
       .checked=${all}
       .indeterminate=${selectedCount > 0 && !all}
@@ -182,7 +182,7 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
     )}"
       style=${control.wrapperStyle || nothing}>
       ${context.label ? html`<label class=${getStyleAndThis(context, "tk-data-table__label tk-label")}>${context.label}</label>` : nothing}
-      <div class=${getStyleAndThis(context, "tk-data-table__content tk-data-table__content--advanced editable")}>
+      <div class=${getStyleAndThis(context, "tk-data-table__content tk-data-table__content--min-height tk-data-table__content--advanced editable")}>
         <table class=${getStyleAndThis(context, "tk-data-table__native")}
           @mousedown=${onCellSelectMouseDown} @mousemove=${onCellSelectMouseMove} @keydown=${onCellSelectKeyDown}>
           <colgroup>
