@@ -2659,7 +2659,7 @@ class TurnkeyLitApp extends LitElement {
       <header class="navbar navbar--desktop" @keydown=${this.handleActionPanelKeydown} ?hidden=${this.viewDescription?.hideMenubar === true}>
         <div class="navbar__header">
           ${this.renderActionToggle()}
-          <a class="navbar__brand" href="/L#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a>
+          <a class="navbar__brand" href="${new URL("./", document.baseURI).pathname}#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a>
         </div>
         <div class="navbar__wrapper collapse in">
           ${this.renderGlobalMenu()}
@@ -2735,7 +2735,7 @@ class TurnkeyLitApp extends LitElement {
       <header class="navbar navbar--desktop" ?hidden=${this.activeModal !== undefined || this.viewDescription?.hideMenubar === true}>
         <div class="navbar__header">
           ${this.activeModal ? nothing : this.renderActionToggle()}
-          <a class="navbar__brand" href="/L#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a>
+          <a class="navbar__brand" href="${new URL("./", document.baseURI).pathname}#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a>
         </div>
         <div class="navbar__wrapper collapse in">
           ${this.renderGlobalMenu()}
@@ -2833,7 +2833,7 @@ class TurnkeyLitApp extends LitElement {
 
   private async loadLoginSection(): Promise<void> {
     try {
-      const response = await fetch("/turnkey/LoginSectionPartial", { credentials: "same-origin" });
+      const response = await fetch(new URL("../turnkey/LoginSectionPartial", document.baseURI).toString(), { credentials: "same-origin" });
       if (response.ok) {
         this.loginMarkup = (await response.text()).trim();
       }

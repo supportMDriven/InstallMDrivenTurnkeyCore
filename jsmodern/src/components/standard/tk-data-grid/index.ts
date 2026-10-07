@@ -234,7 +234,7 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
             ${repeat(context.sortedCollection, row => row.vmClassId, row => renderRow(context, columns, row))}
           </tbody>
         </table>
-        ${context.noResultsBackdrop ? html`<div class="tk-data-table__no-records"><img src="/Content/icons/tkSearchNoRecords.svg" class="tkSearchNoRecords" alt="No results"></div>` : nothing}
+        ${context.noResultsBackdrop ? html`<div class="tk-data-table__no-records"><img src=${new URL("../Content/icons/tkSearchNoRecords.svg", document.baseURI).toString()} class="tkSearchNoRecords" alt="No results"></div>` : nothing}
       </div>
       ${renderPaging(context)}
       ${renderRowMenu(context)}
