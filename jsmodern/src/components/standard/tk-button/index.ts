@@ -21,7 +21,7 @@ export function renderButton(context: LitComponentContext): TemplateResult {
       title=${context.label}
       @click=${(event: MouseEvent) => context.executeAction(actionName, event)}>
       ${renderControlIcon(context.metadata, "before")}
-      <span class=${getStyleAndThis(context, "tk-button__text")}>${context.label || actionName}</span>
+      <span class="tk-button__text">${context.label || actionName}</span>
       ${renderControlIcon(context.metadata, "after")}
     </button>
   </div>`;

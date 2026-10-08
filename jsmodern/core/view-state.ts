@@ -63,6 +63,7 @@ export class ViewState {
   }
 
   get allObjects(): readonly VmObject[] {
+    // Only used for debug views; avoid copying when the map is large.
     return [...this.objects.keys()]
       .map(vmClassId => this.getObject(vmClassId))
       .filter((object): object is VmObject => object !== undefined);
@@ -103,10 +104,12 @@ export class ViewState {
 
     const variables = this.getReference(this.root.attributes.VM_Variables);
     const currentId = variables?.attributes[`vCurrent_${className}`];
-    if (typeof currentId !== "string" || currentId === "" || currentId === NULL_EXTERNAL_ID) {
+    if (currentId === undefined) {
       return undefined;
     }
-    return this.getObject(`${currentId};${className}`);
+    const idText = currentId === null || currentId === "" ? NULL_EXTERNAL_ID : String(currentId);
+    // Like Angular, a null current still resolves the $null$ object that the server populates.
+    return this.getObject(`${idText};${className}`);
   }
 
   getCollection(vmClassId: string, attribute: string): readonly VmObject[] {
@@ -126,23 +129,34 @@ export class ViewState {
   }
 
   applyServerCommands(commands: readonly ViewStateServerCommand[]): void {
-    for (const command of commands) {
-      if (typeof command.MNo === "number") {
-        this.serverMessageCursor = command.MNo;
+    // Like Angular, id changes go first so later updates find objects under their new id.
+    const ordered = [
+      ...commands.filter(command => command.CType === "ServerUpdateCommand_IdChange"),
+      ...commands.filter(command => command.CType !== "ServerUpdateCommand_IdChange")
+    ];
+    let maxMNo = this.serverMessageCursor;
+    for (const command of ordered) {
+      if (typeof command.MNo === "number" && command.MNo > maxMNo) {
+        maxMNo = command.MNo;
       }
-
-      switch (command.CType) {
-        case "ServerUpdateCommand_UpdateAttribute":
-          this.applyAttribute(command as UpdateAttributeCommand);
-          break;
-        case "ServerUpdateCommand_UpdateCollection":
-          this.applyCollection(command as UpdateCollectionCommand);
-          break;
-        case "ServerUpdateCommand_IdChange":
-          this.applyIdChange(command as IdChangeCommand);
-          break;
+      try {
+        switch (command.CType) {
+          case "ServerUpdateCommand_UpdateAttribute":
+            this.applyAttribute(command as UpdateAttributeCommand);
+            break;
+          case "ServerUpdateCommand_UpdateCollection":
+            this.applyCollection(command as UpdateCollectionCommand);
+            break;
+          case "ServerUpdateCommand_IdChange":
+            this.applyIdChange(command as IdChangeCommand);
+            break;
+        }
+      } catch (error) {
+        // One bad command must not discard the rest of the batch.
+        console.error("Skipped server command", command, error);
       }
     }
+    this.serverMessageCursor = maxMNo;
 
     if (commands.length > 0) {
       this.publish(commands);
@@ -197,29 +211,41 @@ export class ViewState {
       owner.attributes[command.Attribute] = collection;
     }
 
-    for (const oldId of command.OldValues ?? []) {
-      const index = collection.indexOf(oldId);
-      if (index >= 0) {
-        collection.splice(index, 1);
+    const oldValues = command.OldValues ?? [];
+    if (oldValues.length > 0) {
+      const removed = new Set(oldValues);
+      const kept = collection.filter(id => !removed.has(id));
+      collection.length = 0;
+      for (let i = 0; i < kept.length; i++) {
+        collection.push(kept[i]);
       }
     }
 
     if (command.UpdateType === "Reset") {
-      collection.splice(0);
+      collection.length = 0;
     }
 
-    const requestedIndex = command.NewValuesStartIndex < 0
-      ? collection.length + command.NewValuesStartIndex
-      : command.NewValuesStartIndex;
+    const startIndex = typeof command.NewValuesStartIndex === "number" ? command.NewValuesStartIndex : collection.length;
+    const requestedIndex = startIndex < 0 ? collection.length + startIndex : startIndex;
     const insertAt = Math.max(0, Math.min(requestedIndex, collection.length));
+    const present = new Set<string>(collection);
     const additions: string[] = [];
     for (const id of command.NewValues ?? []) {
       this.ensureObject(id);
-      if (!collection.includes(id) && !additions.includes(id)) {
+      if (!present.has(id)) {
+        present.add(id);
         additions.push(id);
       }
     }
-    collection.splice(insertAt, 0, ...additions);
+    if (additions.length > 0) {
+      const tail = collection.splice(insertAt);
+      for (const id of additions) {
+        collection.push(id);
+      }
+      for (const id of tail) {
+        collection.push(id);
+      }
+    }
   }
 
   private applyIdChange(command: IdChangeCommand): void {
@@ -245,7 +271,10 @@ export class ViewState {
     for (const candidate of this.objects.values()) {
       for (const [name, value] of Object.entries(candidate.attributes)) {
         if (Array.isArray(value)) {
-          candidate.attributes[name] = value.map(id => id === command.OldVMClassId ? command.NewVMClassId : id);
+          const at = value.indexOf(command.OldVMClassId);
+          if (at >= 0) {
+            value[at] = command.NewVMClassId;
+          }
         } else if (value && typeof value === "object" && !(value instanceof Date)
           && value.kind === "reference" && value.id === command.OldVMClassId) {
           candidate.attributes[name] = this.reference(command.NewVMClassId);
@@ -267,8 +296,11 @@ export class ViewState {
 
   private parseVMClassId(value: string): { id: string; className: string } {
     const separator = value.indexOf(";");
-    if (separator < 0 || separator === value.length - 1) {
+    if (typeof value !== "string" || value === "") {
       throw new TypeError(`Invalid VMClassId: ${value}`);
+    }
+    if (separator < 0 || separator === value.length - 1) {
+      return { id: value, className: "" };
     }
     return {
       id: value.slice(0, separator) || NULL_EXTERNAL_ID,

@@ -214,15 +214,19 @@ class TurnkeyLitApp extends LitElement {
     section h2 { background: #edf1f4; font-size: 1rem; margin: 0; padding: 0.8rem 1rem; }
     .view-canvas { gap: 1rem; min-width: 0; }
     .tk-input-field { padding-top: 0; }
-    .view-canvas.CSSGridRendering { gap: 0; }
+    .view-canvas.CSSGridRendering { align-content: start; gap: 0; }
+    .view-content:has(> .view-canvas.CSSGridRendering) { display: flex; flex-direction: column; }
+    .view-content > .view-canvas.CSSGridRendering { box-sizing: border-box; flex: 1 1 0; min-height: 0; }
     .view-canvas.CSSGridRendering > .tk-data-table { contain: inline-size; }
     .view-content > .view-canvas:has(> .tk-data-table) { box-sizing: border-box; height: 100%; margin: 0; }
     .view-content:has(> .view-canvas.FlexboxRendering) { display: flex; flex-direction: column; overflow: hidden; }
     .view-content > .view-canvas.FlexboxRendering { box-sizing: border-box; display: flex; flex: 1 1 0; flex-direction: column; min-height: 0; overflow: auto; margin: 0; }
     .view-canvas.FlexboxRendering > .tk-placingcontainer { flex: 1 1 auto; min-height: 0; }
+    .view-canvas.FlexboxRendering .tk-placingcontainer { min-height: 0; }
     .view-canvas > .tk-data-table { display: flex; flex-direction: column; min-height: 0; }
     .view-canvas .tk-data-table > .tk-data-table__content { flex: 1 1 auto; height: 0; min-height: 0; overflow: auto; }
-    .view-canvas .tk-data-table:has(> .tk-data-table__content--min-height) { min-height: calc(var(--advanced-table-min-height, 250px) + 46px) !important; }
+    .view-canvas .tk-data-table:has(> .tk-data-table__content--min-height):not([style*="flex-grow:0"]) { min-height: calc(var(--advanced-table-min-height, 250px) + 46px) !important; }
+    .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"] { height: 0; }
     .view-canvas .tk-data-table > .tk-data-table__content--min-height { min-height: var(--advanced-table-min-height, 250px); }
     .view-loading { align-content: center; box-sizing: border-box; color: #52616b; min-height: 12rem; padding: 2rem; text-align: center; }
     .view-control { min-width: 0; }
@@ -346,6 +350,13 @@ class TurnkeyLitApp extends LitElement {
   @state() private globalMenu?: GlobalMenuDescription;
   @state() private viewActions: ServerActionCommand[] = [];
   @state() private actionPanelOpen = !window.matchMedia("(max-width: 760px)").matches;
+  private readonly navbarMedia = window.matchMedia("(min-width: 768px)");
+  @state() private navbarDesktop = this.navbarMedia.matches;
+  @state() private navbarMenuOpen = false;
+  private readonly handleNavbarViewportChange = (): void => {
+    this.navbarDesktop = this.navbarMedia.matches;
+    this.navbarMenuOpen = false;
+  };
   @state() private mobileViewport = window.matchMedia("(max-width: 760px)").matches;
   @state() private selectedRows = new Map<string, string>();
   @state() private gridSorts = new Map<string, GridSort>();
@@ -398,6 +409,7 @@ class TurnkeyLitApp extends LitElement {
     window.addEventListener("beforeunload", this.handleBeforeUnload);
     window.addEventListener("keydown", this.handleSeekerEnter);
     this.actionPanelMedia.addEventListener("change", this.handleActionPanelViewportChange);
+    this.navbarMedia.addEventListener("change", this.handleNavbarViewportChange);
     this.globalMenuLoad ??= this.loadGlobalMenu();
     void this.loadLoginSection();
     if (!this.runtimeOverrideRequests.has("LeftSideMenu")) {
@@ -415,6 +427,7 @@ class TurnkeyLitApp extends LitElement {
     window.removeEventListener("beforeunload", this.handleBeforeUnload);
     window.removeEventListener("keydown", this.handleSeekerEnter);
     this.actionPanelMedia.removeEventListener("change", this.handleActionPanelViewportChange);
+    this.navbarMedia.removeEventListener("change", this.handleNavbarViewportChange);
     this.routeGeneration++;
     this.pollController?.abort();
     window.clearTimeout(this.pollTimer);
@@ -700,12 +713,41 @@ class TurnkeyLitApp extends LitElement {
     this.requestUpdate();
   }
 
-  private async poll(generation: number): Promise<void> {
+  private pollRun?: { generation: number; promise: Promise<void> };
+  private pollQueued = false;
+
+  // Overlapping requests are coalesced so a large in-flight response is never aborted by a push or flush.
+  private poll(generation: number): Promise<void> {
+    if (this.pollRun && this.pollRun.generation === generation) {
+      this.pollQueued = true;
+      return this.pollRun.promise;
+    }
+    this.pollController?.abort();
+    this.pollQueued = false;
+    const run = { generation, promise: Promise.resolve() };
+    run.promise = (async () => {
+      try {
+        do {
+          this.pollQueued = false;
+          await this.pollOnce(generation);
+        } while (this.pollQueued && generation === this.routeGeneration);
+      } finally {
+        if (this.pollRun === run) {
+          this.pollRun = undefined;
+        }
+      }
+    })();
+    this.pollRun = run;
+    return run.promise;
+  }
+
+  private async pollOnce(generation: number): Promise<void> {
     const state = this.viewState;
     if (!state || generation !== this.routeGeneration) {
       return;
     }
-    this.pollController?.abort();
+    window.clearTimeout(this.pollTimer);
+    this.pollTimer = undefined;
     const controller = new AbortController();
     this.pollController = controller;
 
@@ -715,19 +757,24 @@ class TurnkeyLitApp extends LitElement {
       if (generation !== this.routeGeneration) {
         return;
       }
+      // Data is applied first and side commands are isolated, so one bad AppInfo/action cannot block the view data.
+      state.applyServerCommands(commands);
       for (const command of commands) {
-        if (command.CType === "ServerUpdateCommand_AppInfo") {
-          this.appInfo = this.readAppInfo(command);
-          this.updateGlobalActionStatus(this.appInfo);
-        } else if (isServerActionCommand(command)) {
-          this.upsertViewAction(command);
-        } else if (command.CType === "ServerUpdateCommand_DataError") {
-          this.applyDataError(state.vmId, command as unknown as { Target: string; Message: string });
-        } else if (isServerActionRemoveCommand(command)) {
-          this.removeViewAction(command);
+        try {
+          if (command.CType === "ServerUpdateCommand_AppInfo") {
+            this.appInfo = this.readAppInfo(command);
+            this.updateGlobalActionStatus(this.appInfo);
+          } else if (isServerActionCommand(command)) {
+            this.upsertViewAction(command);
+          } else if (command.CType === "ServerUpdateCommand_DataError") {
+            this.applyDataError(state.vmId, command as unknown as { Target: string; Message: string });
+          } else if (isServerActionRemoveCommand(command)) {
+            this.removeViewAction(command);
+          }
+        } catch (commandError) {
+          console.error("Skipped server command", command, commandError);
         }
       }
-      state.applyServerCommands(commands);
       this.viewReady = true;
       for (const command of commands) {
         const downloadUrl = (command as { DownloadUrl?: string }).DownloadUrl;
@@ -1861,7 +1908,7 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private renderErrorBanner(): TemplateResult | typeof nothing {
-    return this.errorMessage && !this.viewReady
+    return this.errorMessage
       ? html`<div class="status error" role="alert">${this.errorMessage}</div>`
       : nothing;
   }
@@ -2573,6 +2620,24 @@ class TurnkeyLitApp extends LitElement {
     return html`<div class="status notice" role="status" ?hidden=${hidden}>${this.statusMessage}</div>`;
   }
 
+  private renderNavbarToggle(): TemplateResult {
+    return html`<button type="button" class="navbar__toggle navbar__toggle--default" aria-label="Toggle menu"
+      aria-expanded=${this.navbarMenuOpen} @click=${() => { this.navbarMenuOpen = !this.navbarMenuOpen; }}>
+      <span class="mi">more_vert</span>
+    </button>`;
+  }
+
+  private navbarWrapperClass(): string {
+    return this.navbarDesktop || this.navbarMenuOpen ? "navbar__wrapper collapse in" : "navbar__wrapper collapse";
+  }
+
+  private readonly handleNavbarWrapperClick = (event: MouseEvent): void => {
+    const target = event.target as Element | null;
+    if (!this.navbarDesktop && target?.closest("button.navbar__link:not([aria-haspopup]), button.dropdown__link, a.navbar__link")) {
+      this.navbarMenuOpen = false;
+    }
+  };
+
   private renderActionToggle(): TemplateResult | typeof nothing {
     if (this.leftActionGroups().length === 0 || this.viewDescription?.hideSidebar) {
       return nothing;
@@ -2656,12 +2721,13 @@ class TurnkeyLitApp extends LitElement {
     const popup = this.captureViewSession();
     this.restoreViewSession(parent);
     const background = html`
-      <header class="navbar navbar--desktop" @keydown=${this.handleActionPanelKeydown} ?hidden=${this.viewDescription?.hideMenubar === true}>
+      <header class="navbar ${this.navbarDesktop ? "navbar--desktop" : ""}" @keydown=${this.handleActionPanelKeydown} ?hidden=${this.viewDescription?.hideMenubar === true}>
         <div class="navbar__header">
           ${this.renderActionToggle()}
           <a class="navbar__brand" href="${new URL("./", document.baseURI).pathname}#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a>
+          ${this.renderNavbarToggle()}
         </div>
-        <div class="navbar__wrapper collapse in">
+        <div class=${this.navbarWrapperClass()} @click=${this.handleNavbarWrapperClick}>
           ${this.renderGlobalMenu()}
           ${this.renderLoginSection()}
         </div>
@@ -2732,12 +2798,13 @@ class TurnkeyLitApp extends LitElement {
 
     return html`
       ${this.renderMetadataStyles()}
-      <header class="navbar navbar--desktop" ?hidden=${this.activeModal !== undefined || this.viewDescription?.hideMenubar === true}>
+      <header class="navbar ${this.navbarDesktop ? "navbar--desktop" : ""}" ?hidden=${this.activeModal !== undefined || this.viewDescription?.hideMenubar === true}>
         <div class="navbar__header">
           ${this.activeModal ? nothing : this.renderActionToggle()}
           <a class="navbar__brand" href="${new URL("./", document.baseURI).pathname}#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a>
+          ${this.renderNavbarToggle()}
         </div>
-        <div class="navbar__wrapper collapse in">
+        <div class=${this.navbarWrapperClass()} @click=${this.handleNavbarWrapperClick}>
           ${this.renderGlobalMenu()}
           ${this.renderLoginSection()}
         </div>

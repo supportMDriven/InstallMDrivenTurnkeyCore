@@ -36,6 +36,16 @@ export const dataGridStyles = css`
   }
 `;
 
+function safeRenderCell(context: DataGridContext, control: ViewMetaControl, row: VmObject): unknown {
+  try {
+    return context.renderCell(control, row);
+  } catch (error) {
+    // One failing cell must not blank the whole grid.
+    console.error("Cell render failed", control.attributes.BindInfoColumn, error);
+    return html`<span class="tk-cell-error" title=${String(error)}>!</span>`;
+  }
+}
+
 function renderRow(
   context: DataGridContext,
   columns: readonly ViewMetaControl[],
@@ -61,7 +71,7 @@ function renderRow(
         )}>
     </td>` : nothing}
     ${columns.map((control, columnIndex) => html`
-      <td class="tk-data-table__cell ${columnIndex === 0 ? "firstvisiblecolumn" : ""} ${context.cellStyle(control, row)}" tabindex="-1">${context.renderCell(control, row)}</td>
+      <td class="tk-data-table__cell ${columnIndex === 0 ? "firstvisiblecolumn" : ""} ${context.cellStyle(control, row)}" tabindex="-1">${safeRenderCell(context, control, row)}</td>
     `)}
     <td class="row-menu-cell tk-data-table__cell">
       <button type="button" class="row-menu-trigger" aria-haspopup="menu"

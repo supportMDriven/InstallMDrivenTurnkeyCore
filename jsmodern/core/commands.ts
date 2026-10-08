@@ -187,7 +187,33 @@ export function decodeServerCommands(payload: unknown): ViewStateServerCommand[]
     throw new TypeError("Turnkey server stream response must be an array");
   }
 
-  return payload.map((item: unknown, index: number): ViewStateServerCommand => {
+  const decoded: ViewStateServerCommand[] = [];
+  payload.forEach((item: unknown, index: number) => {
+    try {
+      decoded.push(decodeServerCommand(item, index));
+    } catch (error) {
+      // A single malformed command must not discard the whole batch.
+      console.error("Skipped malformed server command", item, error);
+    }
+  });
+  return decoded;
+}
+
+function lenientString(value: unknown, fallback = "$null$"): string {
+  return value === null || value === undefined ? fallback : String(value);
+}
+
+function lenientNumber(value: unknown): number {
+  const parsed = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function lenientStringArray(value: unknown): string[] | null {
+  return Array.isArray(value) ? value.filter(item => item !== null && item !== undefined).map(String) : null;
+}
+
+function decodeServerCommand(item: unknown, index: number): ViewStateServerCommand {
+  {
     if (!isRecord(item) || typeof item.CType !== "string") {
       throw new TypeError(`Server command at index ${index} has no command type`);
     }
@@ -200,8 +226,8 @@ export function decodeServerCommands(payload: unknown): ViewStateServerCommand[]
           MNo,
           VMClassId: requiredString(item, "VMClassId", index),
           Attribute: requiredString(item, "Attribute", index),
-          Value: requiredString(item, "Value", index),
-          DataType: requiredString(item, "DataType", index)
+          Value: lenientString(item.Value),
+          DataType: lenientString(item.DataType, "String")
         };
       case "ServerUpdateCommand_UpdateCollection":
         return {
@@ -209,11 +235,11 @@ export function decodeServerCommands(payload: unknown): ViewStateServerCommand[]
           MNo,
           VMClassId: requiredString(item, "VMClassId", index),
           Attribute: requiredString(item, "Attribute", index),
-          UpdateType: requiredString(item, "UpdateType", index),
-          NewValues: stringArrayOrNull(item.NewValues, "NewValues", index),
-          OldValues: stringArrayOrNull(item.OldValues, "OldValues", index),
-          NewValuesStartIndex: requiredNumber(item, "NewValuesStartIndex", index),
-          OldValuesStartIndex: requiredNumber(item, "OldValuesStartIndex", index)
+          UpdateType: lenientString(item.UpdateType, "Insert"),
+          NewValues: lenientStringArray(item.NewValues),
+          OldValues: lenientStringArray(item.OldValues),
+          NewValuesStartIndex: lenientNumber(item.NewValuesStartIndex),
+          OldValuesStartIndex: lenientNumber(item.OldValuesStartIndex)
         };
       case "ServerUpdateCommand_IdChange":
         return {
@@ -275,5 +301,5 @@ export function decodeServerCommands(payload: unknown): ViewStateServerCommand[]
       default:
         return { ...item, CType: item.CType, MNo };
     }
-  });
+  }
 }
