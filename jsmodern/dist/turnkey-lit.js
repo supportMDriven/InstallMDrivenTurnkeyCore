@@ -446,7 +446,7 @@
         <button type="button" class="action-panel-backdrop" aria-label="Close view actions"
           tabindex="-1" ?hidden=${!n||!this.mobileViewport||!this.actionPanelOpen}
           @click=${()=>{this.actionPanelOpen=!1}}></button>
-        <div class="view-workspace ${this.actionPanelOpen&&!t?"actions-open":"actions-closed"}">
+        <div class="view-workspace ${this.actionPanelOpen&&n?"actions-open":"actions-closed"}">
           ${this.renderLeftActions()}
           <div class="view-content">${this.renderToolbar()}${e}</div>
         </div>

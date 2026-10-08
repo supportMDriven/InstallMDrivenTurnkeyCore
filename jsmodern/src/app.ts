@@ -2634,7 +2634,7 @@ class TurnkeyLitApp extends LitElement {
         <button type="button" class="action-panel-backdrop" aria-label="Close view actions"
           tabindex="-1" ?hidden=${!hasActions || !this.mobileViewport || !this.actionPanelOpen}
           @click=${() => { this.actionPanelOpen = false; }}></button>
-        <div class="view-workspace ${this.actionPanelOpen && !hideSidebar ? "actions-open" : "actions-closed"}">
+        <div class="view-workspace ${this.actionPanelOpen && hasActions ? "actions-open" : "actions-closed"}">
           ${this.renderLeftActions()}
           <div class="view-content">${this.renderToolbar()}${content}</div>
         </div>
