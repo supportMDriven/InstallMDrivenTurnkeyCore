@@ -116,11 +116,7 @@ export function renderControlLabel(
   if (!context.label) {
     return nothing;
   }
-  return html`<label for=${context.id ?? nothing} class=${mergeClasses(context.style, className)}>
-    ${renderControlIcon(context.metadata, "before")}
-    <span class=${context.style}>${context.label}</span>
-    ${renderControlIcon(context.metadata, "after")}
-  </label>`;
+  return html`<label for=${context.id ?? nothing}   class=${mergeClasses(context.style, className)}>${renderControlIcon(context.metadata, "before")}<span class=${context.style}>${context.label}</span>${renderControlIcon(context.metadata, "after")}</label>`;
 }
 
 export function renderTypography(

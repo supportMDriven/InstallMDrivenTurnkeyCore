@@ -187,8 +187,8 @@ class TurnkeyLitApp extends LitElement {
     .workspace-shell { flex: 1 1 auto; min-height: 0; position: relative; }
     .view-workspace { align-items: stretch; display: grid; gap: 0; grid-template-columns: 230px minmax(0, 1fr); height: 100%; min-height: 0; }
     .view-workspace.actions-closed { grid-template-columns: minmax(0, 1fr); }
-    .view-content { box-sizing: border-box; min-height: 0; min-width: 0; overflow: auto; padding: 15px; }
-    .view-dialog .view-content, .popup-panel .view-content { padding: 0; }
+    .view-content { background: rgb(246, 248, 252); box-sizing: border-box; min-height: 0; min-width: 0; overflow: auto; padding: 0; }
+    .view-dialog .view-content, .popup-panel .view-content { background: transparent; padding: 0; }
     .view-dialog .view-workspace { grid-template-columns: minmax(0, 1fr); }
     dialog.view-dialog { border: 0; border-radius: 0.5rem; box-shadow: 0 1rem 3rem #0005; max-height: min(90vh, 60rem); max-width: min(90vw, 75rem); overflow: auto; padding: 1.25rem; width: min(75rem, calc(100vw - 2rem)); }
     dialog.view-dialog::backdrop { background: #15232d33; }
@@ -210,7 +210,7 @@ class TurnkeyLitApp extends LitElement {
     .tk-snackbar__label .mi { margin-right: 0.5rem; vertical-align: middle; }
     .error { border-left: 0.25rem solid #b3261e; color: #8c1d18; }
     .notice { color: #52616b; }
-    section.view-canvas { background: transparent; border-radius: 0; margin: 0; overflow: visible; }
+    section.view-canvas { background: transparent; border-radius: 0; margin: 0; overflow: visible; padding: 8px; }
     section h2 { background: #edf1f4; font-size: 1rem; margin: 0; padding: 0.8rem 1rem; }
     .view-canvas { gap: 1rem; min-width: 0; }
     .tk-input-field { padding-top: 0; }

@@ -30,6 +30,15 @@ function renderItem(context: LeftSideMenuContext, group: LeftSideMenuGroup, acti
   </button>`;
 }
 
+function toggleGroup(event: Event): void {
+  const header = event.currentTarget as HTMLElement;
+  const group = header.nextElementSibling;
+  if (group) {
+    const expanded = group.classList.toggle("in");
+    header.setAttribute("aria-expanded", String(expanded));
+  }
+}
+
 export function renderLeftSideMenu(context: LeftSideMenuContext): TemplateResult {
   const stateActions = context.groups
     .filter(group => group.className === "GLOBAL")
@@ -52,9 +61,11 @@ export function renderLeftSideMenu(context: LeftSideMenuContext): TemplateResult
             return nothing;
           }
           return html`
-            ${group.className === "GLOBAL" ? nothing : html`<div class="tk-sidebar__group-header" title=${group.name}>
+            ${group.className === "GLOBAL" ? nothing : html`<button type="button" class="tk-sidebar__group-header" title=${group.name}
+              aria-expanded="true" @click=${toggleGroup}>
               <span class="tk-sidebar__group-name">${group.name}</span>
-            </div>`}
+              <span class="mi" aria-hidden="true">arrow_drop_down</span>
+            </button>`}
             <div class="tk-sidebar__group collapse in">
               ${subgroups.map(subgroup => html`
                 ${subgroup.name && group.className !== "GLOBAL"

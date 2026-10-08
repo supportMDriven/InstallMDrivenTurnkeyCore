@@ -1,4 +1,4 @@
-import { html, TemplateResult } from "lit";
+import { html, nothing, TemplateResult } from "lit";
 import { NULL_EXTERNAL_ID } from "../../../../core";
 import { LitComponentContext } from "../../control-context";
 import {
@@ -27,7 +27,9 @@ export function renderSelect(context: LitComponentContext): TemplateResult {
         const selected = (event.currentTarget as HTMLSelectElement).value;
         context.onChange(selected || NULL_EXTERNAL_ID);
       }}>
-      <option value="" ?selected=${!context.selectedExternalId}>${context.placeholder}</option>
+      ${(context.collection ?? []).some(option => String(option.attributes[presentationColumn] ?? option.id).trim() === "")
+        ? nothing
+        : html`<option value="" ?selected=${!context.selectedExternalId}>${context.placeholder}</option>`}
       ${(context.collection ?? []).map(option => html`
         <option value=${option.id} ?selected=${option.id === context.selectedExternalId}>
           ${String(option.attributes[presentationColumn] ?? option.id)}

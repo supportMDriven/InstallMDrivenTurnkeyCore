@@ -20,6 +20,8 @@ export const dataGridStyles = css`
   .tk-data-table__no-records { left: 50%; pointer-events: none; position: absolute; top: 50%; transform: translate(-50%, -50%); }
   .tk-data-table__paging { align-items: center; display: flex; flex: 0 0 auto; gap: 0.25rem; justify-content: flex-end; padding: 0.35rem 0.25rem 0; }
   .tk-data-table__page-size { align-items: center; display: flex; gap: 0.4rem; margin: 0 0.75rem 0 0; }
+  .tk-data-table__cell { vertical-align: middle; }
+  .tk-data-table__cell > .view-control { justify-content: center; padding: 0; }
   .tk-data-table__page-size select { width: auto; }
   .tk-data-table__page-info { min-width: 7rem; text-align: center; white-space: nowrap; }
   .tk-data-table__page-button { align-items: center; background: transparent; border: 0; border-radius: 50%; cursor: pointer; display: inline-flex; height: 2rem; justify-content: center; padding: 0; width: 2rem; }
@@ -58,8 +60,8 @@ function renderRow(
           (event.currentTarget as HTMLInputElement).checked
         )}>
     </td>` : nothing}
-    ${columns.map(control => html`
-      <td class="tk-data-table__cell ${context.cellStyle(control, row)}" tabindex="-1">${context.renderCell(control, row)}</td>
+    ${columns.map((control, columnIndex) => html`
+      <td class="tk-data-table__cell ${columnIndex === 0 ? "firstvisiblecolumn" : ""} ${context.cellStyle(control, row)}" tabindex="-1">${context.renderCell(control, row)}</td>
     `)}
     <td class="row-menu-cell tk-data-table__cell">
       <button type="button" class="row-menu-trigger" aria-haspopup="menu"
