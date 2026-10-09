@@ -176,7 +176,13 @@ export class TurnkeyTransport {
   }
 
   private async request(path: string, init?: RequestInit): Promise<Response> {
-    const response = await this.fetcher(this.apiBaseUrl + path, init);
+    const mergedInit: RequestInit = { ...(init ?? {}) };
+    // Ensure same-origin credentials (cookies) are sent by default so server-side
+    // session/auth works the same way as Angular's $http requests.
+    if (mergedInit.credentials === undefined) {
+      mergedInit.credentials = "same-origin";
+    }
+    const response = await this.fetcher(this.apiBaseUrl + path, mergedInit);
     if (!response.ok) {
       throw new Error(`Turnkey request failed (${response.status} ${response.statusText}): ${path}`);
     }

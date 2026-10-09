@@ -546,7 +546,9 @@ class TurnkeyLitApp extends LitElement {
       return;
     }
 
-    this.viewState = new ViewState(`${this.route.objectId};${this.route.viewName}`);
+    const openVMClassId = `${this.route.objectId};${this.route.viewName}`;
+    const stateObjectId = this.route.objectId.startsWith("$null$") ? "$null$" : this.route.objectId;
+    this.viewState = new ViewState(`${stateObjectId};${this.route.viewName}`);
     this.viewDescription = this.viewDescriptions.get(this.route.viewName);
     this.viewActions = [];
     this.selectedRows = new Map();
@@ -559,7 +561,7 @@ class TurnkeyLitApp extends LitElement {
 
     try {
       const [vmId, viewDescription] = await Promise.all([
-        this.transport.openView(this.viewState.root.vmClassId, false, this.route.userControlParentId),
+        this.transport.openView(openVMClassId, false, this.route.userControlParentId),
         this.getViewDescription(this.route.viewName)
       ]);
       if (generation !== this.routeGeneration) {
@@ -2237,7 +2239,6 @@ class TurnkeyLitApp extends LitElement {
       return nothing;
     }
     const writable = target !== undefined && column !== undefined && enabled && !readOnly
-      && Object.prototype.hasOwnProperty.call(target.attributes, column)
       && attributes.StaticStyle?.toLowerCase() !== "readonly"
       && attributes.readonly === undefined
       && attributes.disabled !== "true";

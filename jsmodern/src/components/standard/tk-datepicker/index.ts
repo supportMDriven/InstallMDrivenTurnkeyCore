@@ -27,7 +27,8 @@ export function renderDatePicker(context: LitComponentContext): TemplateResult {
         placeholder=${context.placeholder}
         @change=${(event: Event) => {
           const value = (event.currentTarget as HTMLInputElement).value;
-          context.onChange(value ? new Date(value.length === 10 ? `${value}T00:00` : value) : null);
+          // Normalize empty-string to null so ViewState.setAttribute serializes correctly
+          context.onChange(value && value.trim() !== "" ? new Date(value.length === 10 ? `${value}T00:00` : value) : null);
         }}>
       ${renderFieldErrors(context)}
       ${context.helperText && !context.isGridCell
