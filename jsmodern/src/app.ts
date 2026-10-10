@@ -187,7 +187,7 @@ class TurnkeyLitApp extends LitElement {
     .workspace-shell { flex: 1 1 auto; min-height: 0; position: relative; }
     .view-workspace { align-items: stretch; display: grid; gap: 0; grid-template-columns: 230px minmax(0, 1fr); height: 100%; min-height: 0; }
     .view-workspace.actions-closed { grid-template-columns: minmax(0, 1fr); }
-    .view-content { background: rgb(246, 248, 252); box-sizing: border-box; min-height: 0; min-width: 0; overflow: auto; padding: 0; }
+    .view-content { background: transparent; box-sizing: border-box; min-height: 0; min-width: 0; overflow: auto; padding: 0; }
     .view-dialog .view-content, .popup-panel .view-content { background: transparent; padding: 0; }
     .view-dialog .view-workspace { grid-template-columns: minmax(0, 1fr); }
     dialog.view-dialog { border: 0; border-radius: 0.5rem; box-shadow: 0 1rem 3rem #0005; max-height: min(90vh, 60rem); max-width: min(90vw, 75rem); overflow: auto; padding: 1.25rem; width: min(75rem, calc(100vw - 2rem)); }
@@ -223,10 +223,16 @@ class TurnkeyLitApp extends LitElement {
     .view-content > .view-canvas.FlexboxRendering { box-sizing: border-box; display: flex; flex: 1 1 0; flex-direction: column; min-height: 0; overflow: auto; margin: 0; }
     .view-canvas.FlexboxRendering > .tk-placingcontainer { flex: 1 1 auto; min-height: 0; }
     .view-canvas.FlexboxRendering .tk-placingcontainer { min-height: 0; }
+    .tk-list-view__row--current:has(> .tk-placingcontainer) { background: transparent; }
+    .view-canvas.FlexboxRendering > .tk-placingcontainer:not(:has(.tk-data-table)) { flex: 0 0 auto; height: auto; max-height: none; }
+    dialog.view-dialog .view-content, .popup-panel .view-content { overflow: visible; }
+    dialog.view-dialog .view-content > .view-canvas.FlexboxRendering, .popup-panel .view-content > .view-canvas.FlexboxRendering { flex: 0 0 auto; overflow: visible; }
     .view-canvas > .tk-data-table { display: flex; flex-direction: column; min-height: 0; }
     .view-canvas .tk-data-table > .tk-data-table__content { flex: 1 1 auto; height: 0; min-height: 0; overflow: auto; }
     .view-canvas .tk-data-table:has(> .tk-data-table__content--min-height):not([style*="flex-grow:0"]) { min-height: calc(var(--advanced-table-min-height, 250px) + 46px) !important; }
     .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"] { height: 0; }
+    .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"]:has(> .tk-data-table__content--min-height) { height: auto; }
+    .view-canvas .tk-data-table[style*="flex-grow:0"] > .tk-data-table__content--min-height { flex: 0 0 auto; height: var(--advanced-table-min-height, 250px); }
     .view-canvas .tk-data-table > .tk-data-table__content--min-height { min-height: var(--advanced-table-min-height, 250px); }
     .view-loading { align-content: center; box-sizing: border-box; color: #52616b; min-height: 12rem; padding: 2rem; text-align: center; }
     .view-control { min-width: 0; }
@@ -2294,6 +2300,9 @@ class TurnkeyLitApp extends LitElement {
       value,
       collection,
       displayValue: stringValue,
+      blobDownloadUrl: column && this.viewState
+        ? new URL(`api/GetVMFile?${new URLSearchParams({ vmid: this.viewState.vmId, vmclassid: this.viewState.root.vmClassId, col: column })}`, document.baseURI).toString()
+        : undefined,
       inputType,
       selectedExternalId,
       actionExecuting: actionKey !== "" && this.executingActions.has(actionKey),
@@ -2456,6 +2465,12 @@ class TurnkeyLitApp extends LitElement {
         }
       };
       return renderDataGrid(gridContext);
+    }
+
+    // Like Blazor, these tagged values turn a field into typography (link, download or image).
+    if (control.tagName !== "tk-button" && control.tagName !== "tk-image-upload" && control.tagName !== "tk-file-upload"
+      && ["DataIsLink", "BlobDownloadLink", "DataIsImageUrl"].some(name => control.taggedValues[name] !== undefined)) {
+      return renderTypographyControl(context);
     }
 
     switch (control.tagName) {

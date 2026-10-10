@@ -32,7 +32,8 @@ export const dataGridStyles = css`
     inset: auto;
     max-width: none;
     position: relative;
-    width: calc(100% - 1px);
+    min-width: calc(100% - 1px);
+    width: auto;
   }
 `;
 

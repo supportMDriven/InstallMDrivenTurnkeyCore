@@ -9,6 +9,7 @@ export interface LitComponentContext {
   readonly value?: VmAttributeValue;
   readonly collection?: readonly VmObject[];
   readonly displayValue: string;
+  readonly blobDownloadUrl?: string;
   readonly inputType: string;
   readonly selectedExternalId?: string;
   readonly actionExecuting: boolean;

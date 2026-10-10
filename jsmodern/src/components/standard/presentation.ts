@@ -116,7 +116,7 @@ export function renderControlLabel(
   if (!context.label) {
     return nothing;
   }
-  return html`<label for=${context.id ?? nothing}   class=${mergeClasses(context.style, className)}>${renderControlIcon(context.metadata, "before")}<span class=${context.style}>${context.label}</span>${renderControlIcon(context.metadata, "after")}</label>`;
+  return html`<label for=${context.id ?? nothing}   class=${mergeClasses(context.style, className)}>${renderControlIcon(context.metadata, "before")}<span class="tk-label__text">${context.label}</span>${renderControlIcon(context.metadata, "after")}</label>`;
 }
 
 export function renderTypography(
@@ -132,6 +132,7 @@ export function renderTypography(
     case "h4": return html`<h4 id=${id ?? nothing} class=${className}>${content}</h4>`;
     case "h5": return html`<h5 id=${id ?? nothing} class=${className}>${content}</h5>`;
     case "h6": return html`<h6 id=${id ?? nothing} class=${className}>${content}</h6>`;
+    case "p": return html`<p id=${id ?? nothing} class=${className}>${content}</p>`;
     default: return html`<div id=${id ?? nothing} class=${className}>${content}</div>`;
   }
 }
