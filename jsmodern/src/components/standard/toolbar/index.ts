@@ -4,7 +4,8 @@ import { ToolbarAction, ToolbarContext, ToolbarEntry } from "./context";
 // Layout, colours, state-action icons and the save/cancel/undo/redo colours come from the shared
 // Turnkey stylesheets (core.css and theme-default.css); only the <details> drop-down wiring lives here.
 export const toolbarStyles = css`
-  #contentToolbar { box-sizing: border-box; padding: 0 0 0.5rem; top: 0; }
+  #contentToolbar, #contentToolbar * { box-sizing: border-box; }
+#contentToolbar { padding: 0 8px; top: -4px; }
   #contentToolbar ul { margin: 0; padding: 0; }
   #contentToolbar .toolbar__container { align-items: center; }
   #contentToolbar .toolbar__item { width: auto; }
@@ -48,7 +49,7 @@ function renderEntries(context: ToolbarContext, entries: readonly ToolbarEntry[]
               @click=${(event: MouseEvent) => {
                 (event.currentTarget as HTMLElement).closest("details")?.removeAttribute("open");
                 context.onAction(action, event);
-              }}>${action.command.Presentation || action.command.Action}</button>
+              }}>${(action.command.Presentation ?? "")}</button>
           </li>`)}
         </ul>
       </details>
@@ -57,7 +58,7 @@ function renderEntries(context: ToolbarContext, entries: readonly ToolbarEntry[]
       <button type="button" class=${actionClass(action, "tk-toolbar__button")} ?disabled=${action.disabled}
         title=${title(action)}
         @click=${(event: MouseEvent) => context.onAction(action, event)}>
-        ${action.command.Presentation || action.command.Action}
+        ${(action.command.Presentation ?? "")}
       </button>
     </li>`)}`;
 }
@@ -67,7 +68,7 @@ function renderStateActions(context: ToolbarContext, entries: readonly ToolbarEn
     <button type="button" class=${actionClass(action, "tk-state-action")} ?disabled=${action.disabled}
       title=${title(action)}
       @click=${(event: MouseEvent) => context.onAction(action, event)}>
-      ${action.command.Presentation || action.command.Action}
+      ${(action.command.Presentation ?? "")}
     </button>
   </li>`)}`;
 }

@@ -22,19 +22,13 @@ export const dataGridStyles = css`
   .tk-data-table__page-size { align-items: center; display: flex; gap: 0.4rem; margin: 0 0.75rem 0 0; }
   .tk-data-table__cell { vertical-align: middle; }
   .tk-data-table__cell > .view-control { justify-content: center; padding: 0; }
+  .tk-data-table__cell .tk-input-field__native { -webkit-text-fill-color: currentColor !important; color: inherit !important; }
   .tk-data-table__page-size select { width: auto; }
   .tk-data-table__page-info { min-width: 7rem; text-align: center; white-space: nowrap; }
   .tk-data-table__page-button { align-items: center; background: transparent; border: 0; border-radius: 50%; cursor: pointer; display: inline-flex; height: 2rem; justify-content: center; padding: 0; width: 2rem; }
   .tk-data-table__page-button:hover:not(:disabled) { background: #edf1f4; }
   .tk-data-table__page-button:disabled { cursor: default; opacity: 0.35; }
   .tk-data-table__content--advanced { min-width: 0; position: relative; }
-  .tk-data-table__content--advanced .tk-data-table__native {
-    inset: auto;
-    max-width: none;
-    position: relative;
-    min-width: calc(100% - 1px);
-    width: auto;
-  }
 `;
 
 function safeRenderCell(context: DataGridContext, control: ViewMetaControl, row: VmObject): unknown {
@@ -62,17 +56,20 @@ function renderRow(
     @click=${() => context.onSelectRow(row)}
     @contextmenu=${(event: MouseEvent) => context.onOpenRowMenu(event, row)}
     @dblclick=${(event: MouseEvent) => context.onDoubleClickRow(event, row)}>
-    ${context.multiSelect ? html`<td class="row-selection-cell tk-data-table__cell tk-data-table__cell--multiselect">
-      <input type="checkbox" aria-label=${`Select ${row.className} ${row.id}`}
-        .checked=${row.attributes.vSelected === true}
-        @click=${(event: MouseEvent) => event.stopPropagation()}
-        @change=${(event: Event) => context.onToggleSelection(
-          row,
-          (event.currentTarget as HTMLInputElement).checked
-        )}>
+    ${context.multiSelect ? html`<td class="row-selection-cell tk-data-table__cell tk-data-table__cell--multiselect multiselectcol firstvisiblecolumn">
+      <label class="tk-checkbox__content ripple-effect">
+        <input type="checkbox" class="tk-checkbox__native" aria-label=${`Select ${row.className} ${row.id}`}
+          .checked=${row.attributes.vSelected === true}
+          @click=${(event: MouseEvent) => event.stopPropagation()}
+          @change=${(event: Event) => context.onToggleSelection(
+            row,
+            (event.currentTarget as HTMLInputElement).checked
+          )}>
+        ${checkboxInteractive()}
+      </label>
     </td>` : nothing}
     ${columns.map((control, columnIndex) => html`
-      <td class="tk-data-table__cell ${columnIndex === 0 ? "firstvisiblecolumn" : ""} ${context.cellStyle(control, row)}" tabindex="-1">${safeRenderCell(context, control, row)}</td>
+      <td class="tk-data-table__cell ${columnIndex === 0 && !context.multiSelect ? "firstvisiblecolumn" : ""} ${context.cellStyle(control, row)}" tabindex="-1">${safeRenderCell(context, control, row)}</td>
     `)}
     <td class="row-menu-cell tk-data-table__cell">
       <button type="button" class="row-menu-trigger" aria-haspopup="menu"
@@ -118,20 +115,32 @@ function renderSelectAll(context: DataGridContext): TemplateResult {
   const selectedCount = rows.filter(row => row.attributes.vSelected === true).length;
   const all = rows.length > 0 && selectedCount === rows.length;
   return html`<th class="row-selection-cell tk-data-table__header-cell tk-data-table__header-cell--multiselect" aria-label="Row selection">
-    <input type="checkbox" aria-label="Select all rows"
-      .checked=${all}
-      .indeterminate=${selectedCount > 0 && !all}
-      ?disabled=${rows.length === 0}
-      @click=${(event: MouseEvent) => event.stopPropagation()}
-      @change=${(event: Event) => {
-        const checked = (event.currentTarget as HTMLInputElement).checked;
-        rows.forEach(row => {
-          if ((row.attributes.vSelected === true) !== checked) {
-            context.onToggleSelection(row, checked);
-          }
-        });
-      }}>
+    <label class="tk-checkbox__content ripple-effect">
+      <input type="checkbox" class="tk-checkbox__native" aria-label="Select all rows"
+        .checked=${all}
+        .indeterminate=${selectedCount > 0 && !all}
+        ?disabled=${rows.length === 0}
+        @click=${(event: MouseEvent) => event.stopPropagation()}
+        @change=${(event: Event) => {
+          const checked = (event.currentTarget as HTMLInputElement).checked;
+          rows.forEach(row => {
+            if ((row.attributes.vSelected === true) !== checked) {
+              context.onToggleSelection(row, checked);
+            }
+          });
+        }}>
+      ${checkboxInteractive(true)}
+    </label>
   </th>`;
+}
+
+function checkboxInteractive(withMixedMark = false): TemplateResult {
+  return html`<div class="tk-checkbox__interactive">
+    ${withMixedMark ? html`<div class="tk-checkbox__mixedmark"></div>` : nothing}
+    <svg viewBox="0 0 24 24" class="tk-checkbox__checkmark">
+      <path fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" class="tk-checkbox__checkmark-path"></path>
+    </svg>
+  </div>`;
 }
 
 function pageInfoText(paging: DataGridPaging): string {
@@ -186,7 +195,7 @@ function renderPaging(context: DataGridContext): TemplateResult | typeof nothing
 
 export function renderDataGrid(context: DataGridContext): TemplateResult {
   const control = context.metadata;
-  const columns = control.columns.filter(item => item.attributes.NotVisible?.toLowerCase() !== "true");
+  const columns = control.columns.filter(item => context.isColumnVisible(item));
   return html`
     <div class="view-control ${appendOuterCSSGridClass(
       context,
@@ -200,9 +209,11 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
           @mousedown=${onCellSelectMouseDown} @mousemove=${onCellSelectMouseMove} @keydown=${onCellSelectKeyDown}>
           <colgroup>
             ${context.multiSelect ? html`<col style="width:2.5rem">` : nothing}
-            ${columns.map((_, index) => {
+            ${columns.map((item, index) => {
               const width = context.columnWidths.get(index);
-              return html`<col data-column-index=${index} style=${width ? `width:${width}px` : nothing}>`;
+              const span = Number(item.attributes.ColSpanWhenInGrid);
+              return html`<col data-column-index=${index} data-span=${Number.isFinite(span) && span > 0 ? span : 1}
+                ?data-resized=${Boolean(width)} style=${width ? `width:${width}px` : nothing}>`;
             })}
             <col style="width:3rem">
           </colgroup>

@@ -16,13 +16,13 @@ import {
 export function renderTextArea(context: LitComponentContext): TemplateResult {
   return html`<div class="view-control ${errorClass(context)}${appendOuterCSSGridClass(
     context,
-    getStyleAndThisPlusMaybeNoLabel(context, "tk-component tk-input-field tk-textarea")
+    getStyleAndThisPlusMaybeNoLabel(context, "tk-component tk-input-field tk-input-field--textarea")
   )}"
     style=${context.metadata.wrapperStyle}>
     ${context.isGridCell ? "" : renderControlLabel(context)}
     <div class=${getStyleAndThisPlusMaybeInGrid(context, "tk-input-field__container")}>
-      <textarea id=${context.id ?? ""}
-        class=${getStyleAndThis(context, "tk-input-field__native tk-textarea__native")}
+      <textarea id=${context.id ?? ""} rows="5"
+        class=${getStyleAndThis(context, "tk-input-field__native")}
         aria-label=${context.isGridCell ? context.label : ""}
         .value=${keepWhileTyping(context.displayValue)}
         ?disabled=${!context.enabled}

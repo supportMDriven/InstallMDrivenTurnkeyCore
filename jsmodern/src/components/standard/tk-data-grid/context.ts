@@ -28,6 +28,7 @@ export interface DataGridContext extends LitComponentContext {
   onDismissPagingMenu(): void;
   onPagingMenuAction(actionId: string): void;
   readonly sortedCollection: readonly VmObject[];
+  isColumnVisible(control: ViewMetaControl): boolean;
   readonly selectedRowId?: string;
   readonly multiSelect: boolean;
   readonly sort?: {

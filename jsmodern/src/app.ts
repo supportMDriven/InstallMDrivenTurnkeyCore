@@ -21,6 +21,7 @@ import { GlobalMenuDescription, GlobalMenuItem, parseGlobalMenu } from "./global
 import { parseViewDescription, ViewDescription, ViewMetaControl } from "./view-meta";
 import { LitComponentContext } from "./components/control-context";
 import { formatNumber } from "./components/standard/formatting";
+import { appendOuterCSSGridClass } from "./components/standard/presentation";
 import { renderButton } from "./components/standard/tk-button";
 import { renderCheckbox } from "./components/standard/tk-checkbox";
 import { renderDatePicker } from "./components/standard/tk-datepicker";
@@ -188,6 +189,7 @@ class TurnkeyLitApp extends LitElement {
     .view-workspace { align-items: stretch; display: grid; gap: 0; grid-template-columns: 230px minmax(0, 1fr); height: 100%; min-height: 0; }
     .view-workspace.actions-closed { grid-template-columns: minmax(0, 1fr); }
     .view-content { background: transparent; box-sizing: border-box; min-height: 0; min-width: 0; overflow: auto; padding: 0; }
+    :host #viewmodelWrapper { grid-column: auto; height: 100%; }
     .view-dialog .view-content, .popup-panel .view-content { background: transparent; padding: 0; }
     .view-dialog .view-workspace { grid-template-columns: minmax(0, 1fr); }
     dialog.view-dialog { border: 0; border-radius: 0.5rem; box-shadow: 0 1rem 3rem #0005; max-height: min(90vh, 60rem); max-width: min(90vw, 75rem); overflow: auto; padding: 1.25rem; width: min(75rem, calc(100vw - 2rem)); }
@@ -210,7 +212,7 @@ class TurnkeyLitApp extends LitElement {
     .tk-snackbar__label .mi { margin-right: 0.5rem; vertical-align: middle; }
     .error { border-left: 0.25rem solid #b3261e; color: #8c1d18; }
     .notice { color: #52616b; }
-    section.view-canvas { background: transparent; border-radius: 0; margin: 0; overflow: visible; padding: 8px; }
+    section.view-canvas { background: transparent; border-radius: 0; overflow: visible; }
     section h2 { background: #edf1f4; font-size: 1rem; margin: 0; padding: 0.8rem 1rem; }
     .view-canvas { gap: 1rem; min-width: 0; }
     .tk-input-field { padding-top: 0; }
@@ -220,20 +222,25 @@ class TurnkeyLitApp extends LitElement {
     .view-canvas.CSSGridRendering > .tk-data-table { contain: inline-size; }
     .view-content > .view-canvas:has(> .tk-data-table) { box-sizing: border-box; height: 100%; margin: 0; }
     .view-content:has(> .view-canvas.FlexboxRendering) { display: flex; flex-direction: column; overflow: hidden; }
-    .view-content > .view-canvas.FlexboxRendering { box-sizing: border-box; display: flex; flex: 1 1 0; flex-direction: column; min-height: 0; overflow: auto; margin: 0; }
-    .view-canvas.FlexboxRendering > .tk-placingcontainer { flex: 1 1 auto; min-height: 0; }
-    .view-canvas.FlexboxRendering .tk-placingcontainer { min-height: 0; }
+    .view-content > .view-canvas.FlexboxRendering { box-sizing: border-box; display: flex; flex: 1 1 0; flex-direction: column; min-height: 0; overflow: auto !important; margin: 0; }
+    .view-canvas.FlexboxRendering > .tk-placingcontainer { flex: 1 1 auto; min-height: 0; min-width: 0; }
+    .view-canvas.FlexboxRendering .tk-placingcontainer { min-height: 0; min-width: 0; }
+    .view-canvas.FlexboxRendering .tk-placingcontainer .tk-placingcontainer:not(.pcframe):not(:has(> .pcframe)) { min-height: min-content; }
+    .view-canvas.FlexboxRendering .tk-placingcontainer.pcframe { overflow-y: auto; }
+    .view-content > .view-canvas { box-sizing: border-box; }
     .tk-list-view__row--current:has(> .tk-placingcontainer) { background: transparent; }
     .view-canvas.FlexboxRendering > .tk-placingcontainer:not(:has(.tk-data-table)) { flex: 0 0 auto; height: auto; max-height: none; }
     dialog.view-dialog .view-content, .popup-panel .view-content { overflow: visible; }
     dialog.view-dialog .view-content > .view-canvas.FlexboxRendering, .popup-panel .view-content > .view-canvas.FlexboxRendering { flex: 0 0 auto; overflow: visible; }
-    .view-canvas > .tk-data-table { display: flex; flex-direction: column; min-height: 0; }
+    .view-canvas > .tk-data-table { display: flex; flex-direction: column; }
+    .view-canvas:not(.CSSGridRendering) > .tk-data-table { min-height: 0; }
     .view-canvas .tk-data-table > .tk-data-table__content { flex: 1 1 auto; height: 0; min-height: 0; overflow: auto; }
-    .view-canvas .tk-data-table:has(> .tk-data-table__content--min-height):not([style*="flex-grow:0"]) { min-height: calc(var(--advanced-table-min-height, 250px) + 46px) !important; }
+    .view-canvas:not(.CSSGridRendering) .tk-data-table:has(> .tk-data-table__content--min-height):not([style*="flex-grow:0"]) { min-height: calc(var(--advanced-table-min-height, 250px) + 46px) !important; }
     .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"] { height: 0; }
     .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"]:has(> .tk-data-table__content--min-height) { height: auto; }
     .view-canvas .tk-data-table[style*="flex-grow:0"] > .tk-data-table__content--min-height { flex: 0 0 auto; height: var(--advanced-table-min-height, 250px); }
-    .view-canvas .tk-data-table > .tk-data-table__content--min-height { min-height: var(--advanced-table-min-height, 250px); }
+    .view-canvas:not(.CSSGridRendering) .tk-data-table > .tk-data-table__content--min-height { min-height: var(--advanced-table-min-height, 250px); }
+    .view-canvas.CSSGridRendering .tk-data-table > .tk-data-table__content--min-height { min-height: 0; }
     .view-loading { align-content: center; box-sizing: border-box; color: #52616b; min-height: 12rem; padding: 2rem; text-align: center; }
     .view-control { min-width: 0; }
     .view-control h1, .view-control h2, .view-control h3, .view-control p { margin: 0; }
@@ -243,20 +250,12 @@ class TurnkeyLitApp extends LitElement {
     .tk-component { min-width: 0; }
     .tk-input-field__container { display: flex; flex-direction: column; gap: 0.25rem; }
     .tk-input-field__native, .tk-select__native, .tk-textarea__native { box-sizing: border-box; font: inherit; padding: 0.45rem; width: 100%; }
-    .view-control .tk-checkbox__content { align-items: center; display: inline-flex; gap: 0.5rem; margin: 0; position: relative; }
     .tk-checkbox__inner { align-items: center; display: flex; gap: 0.5rem; }
     .view-control .tk-checkbox__label { display: inline-flex; margin: 0; }
     .tk-label__icon { display: inline-block; margin-inline: 0.25rem; }
     .tk-button__native { align-items: center; display: inline-flex; font: inherit; gap: 0.35rem; }
     .tk-button__text { display: inline-block; }
-    .view-control .tk-checkbox__native { height: 1px; margin: 0; max-width: none; opacity: 0; padding: 0; position: absolute; width: 1px; }
-    .tk-checkbox__interactive { align-items: center; background: white; border: 1px solid #687780; border-radius: 0.15rem; box-sizing: border-box; display: inline-flex; flex: 0 0 1rem; height: 1rem; justify-content: center; width: 1rem; }
-    .tk-checkbox__native:checked + .tk-checkbox__interactive { background: #355b72; border-color: #355b72; }
-    .tk-checkbox__native:checked + .tk-checkbox__interactive .tk-checkbox__checkmark { opacity: 1; }
-    .tk-checkbox__native:focus-visible + .tk-checkbox__interactive { outline: 2px solid #355b72; outline-offset: 2px; }
-    .tk-checkbox__native:disabled + .tk-checkbox__interactive { background: #edf1f4; border-color: #aab4ba; }
-    .tk-checkbox__checkmark { height: 0.8rem; opacity: 0; width: 0.8rem; }
-    .mi { color: currentColor; direction: ltr; display: inline-block; font-family: "Material Icons"; font-feature-settings: "liga"; font-size: 1.2em; font-style: normal; font-weight: 400; letter-spacing: normal; line-height: 1; text-rendering: optimizeLegibility; text-transform: none; white-space: nowrap; -webkit-font-feature-settings: "liga"; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    .mi, .material-icons { color: currentColor; direction: ltr; display: inline-block; font-family: "Material Icons"; font-feature-settings: "liga"; font-size: 1.2em; font-style: normal; font-weight: 400; letter-spacing: normal; line-height: 1; text-rendering: optimizeLegibility; text-transform: none; white-space: nowrap; -webkit-font-feature-settings: "liga"; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     .tk-select { position: relative; }
     .tk-select__dropdown-icon { pointer-events: none; }
     .tk-select__native { padding-right: 2rem; }
@@ -296,6 +295,7 @@ class TurnkeyLitApp extends LitElement {
     .tk-input-field__validation-state { color: #a12622; font-size: 0.875rem; }
     .tk-image-upload__interactive.uploading { opacity: 1; }
     .tk-lit-component-loading, .tk-lit-component-missing { border: 1px dashed #9aa7af; border-radius: 0.25rem; padding: 0.75rem; }
+    .tk-lit-component-missing { overflow: auto; overflow-wrap: anywhere; }
     .tk-lit-component-missing { background: #fff5f3; color: #7d211d; }
     table { border-collapse: collapse; width: 100%; }
     .view-control table { table-layout: fixed; }
@@ -303,7 +303,6 @@ class TurnkeyLitApp extends LitElement {
     th { background-clip: padding-box; background-color: white; box-shadow: inset 0 -1px 0 #e1e5e8, inset 0 1px 0 #e1e5e8; position: relative; }
     thead th { background-color: white; }
     .row-selection-cell { padding-left: 0.25rem; padding-right: 0.25rem; text-align: center; text-overflow: clip; }
-    .row-selection-cell input { cursor: pointer; margin: 0; max-width: none; padding: 0; width: auto; }
     .grid-sort-button { background: transparent; border: 0; color: inherit; font: inherit; font-weight: 600; padding: 0; text-align: left; width: 100%; }
     .grid-sort-button:hover { text-decoration: underline; }
     .grid-resize-handle { bottom: 0; cursor: col-resize; position: absolute; right: 0; top: 0; touch-action: none; width: 0.5rem; z-index: 1; }
@@ -356,6 +355,7 @@ class TurnkeyLitApp extends LitElement {
   @state() private globalMenu?: GlobalMenuDescription;
   @state() private viewActions: ServerActionCommand[] = [];
   @state() private actionPanelOpen = !window.matchMedia("(max-width: 760px)").matches;
+  private syncedSidebarMemory?: boolean;
   private readonly navbarMedia = window.matchMedia("(min-width: 768px)");
   @state() private navbarDesktop = this.navbarMedia.matches;
   @state() private navbarMenuOpen = false;
@@ -435,6 +435,7 @@ class TurnkeyLitApp extends LitElement {
     this.actionPanelMedia.removeEventListener("change", this.handleActionPanelViewportChange);
     this.navbarMedia.removeEventListener("change", this.handleNavbarViewportChange);
     this.routeGeneration++;
+    this.gridResizeObserver.disconnect();
     this.pollController?.abort();
     window.clearTimeout(this.pollTimer);
     window.clearTimeout(this.updateTimer);
@@ -444,6 +445,11 @@ class TurnkeyLitApp extends LitElement {
 
   protected updated(): void {
     this.applyLoginReturnUrl();
+    this.syncSidebarMemory();
+    const windowHeader = this.appInfo?.WindowHeader;
+    if (windowHeader && !this.activeModal && document.title !== windowHeader) {
+      document.title = windowHeader;
+    }
     const dialog = this.renderRoot.querySelector<HTMLDialogElement>("dialog.view-dialog");
     if (this.activeModal && dialog && !dialog.open) {
       dialog.showModal();
@@ -455,6 +461,35 @@ class TurnkeyLitApp extends LitElement {
       if (description) {
         this.loadRuntimeComponents(description.controls);
       }
+    }
+    for (const content of this.renderRoot.querySelectorAll<HTMLElement>(".tk-data-table__content--advanced")) {
+      this.gridResizeObserver.observe(content);
+      this.applyGridColumnSpans(content);
+    }
+  }
+
+  private readonly gridResizeObserver = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      this.applyGridColumnSpans(entry.target as HTMLElement);
+    }
+  });
+
+  // Mirrors AngularJS advancedTable: each column gets (available width / total colspan) * its colspan.
+  // The table is absolutely positioned inside its content box (core.css), so pixel widths never feed back into the layout.
+  private applyGridColumnSpans(content: HTMLElement): void {
+    const columns = [...content.querySelectorAll<HTMLTableColElement>("col[data-span]")];
+    if (columns.length === 0 || columns.some(column => column.hasAttribute("data-resized"))) {
+      return;
+    }
+    const fixedWidth = [...content.querySelectorAll<HTMLTableColElement>("col:not([data-span])")]
+      .reduce((sum, column) => sum + (parseFloat(getComputedStyle(column).width) || 0), 0);
+    const totalSpan = columns.reduce((sum, column) => sum + Number(column.dataset.span), 0);
+    const available = content.clientWidth - fixedWidth;
+    if (totalSpan <= 0 || available <= 0) {
+      return;
+    }
+    for (const column of columns) {
+      column.style.width = `${(available / totalSpan) * Number(column.dataset.span)}px`;
     }
   }
 
@@ -575,7 +610,7 @@ class TurnkeyLitApp extends LitElement {
       }
 
       this.viewDescription = viewDescription;
-      this.actionPanelOpen = !this.mobileViewport;
+      this.actionPanelOpen = !this.mobileViewport && (this.syncedSidebarMemory ?? true);
       this.viewState.vmId = vmId;
       await this.updateComplete;
       this.stateUnsubscribe = this.viewState.subscribe(() => this.requestUpdate());
@@ -1559,6 +1594,8 @@ class TurnkeyLitApp extends LitElement {
     const actions = this.viewActions
       .filter(action => action.ActionRenderPosition === position
         || (position === "ToolBarLeft" && action.ActionRenderPosition === "LeftSide"))
+      // AngularJS renders only GLOBAL (state) actions on the right side of the toolbar.
+      .filter(action => position !== "ToolBarRight" || action.VMClassName === "GLOBAL")
       .sort((left, right) => left.SortKey.localeCompare(right.SortKey));
     for (const command of actions) {
       const target = command.VMClassName === "GLOBAL"
@@ -2089,15 +2126,24 @@ class TurnkeyLitApp extends LitElement {
     name: string,
     context: LitComponentContext
   ): TemplateResult {
+    const commonClass = appendOuterCSSGridClass(
+      context,
+      `view-control tk-component tk-lit-component ${control.wrapperClass} ${context.style}`
+    );
     let reference;
     try {
       reference = resolveRuntimeComponent(name, document.baseURI);
     } catch (error) {
-      return this.renderMissingComponent(name, `components/custom/${name}/index.js`, String(error));
+      return this.renderMissingComponent(
+        name,
+        `components/custom/${name}/index.js`,
+        String(error),
+        commonClass,
+        control.wrapperStyle
+      );
     }
 
     const status = this.runtimeComponentStatuses.get(this.runtimeStatusKey(reference));
-    const commonClass = `tk-component tk-lit-component ${control.wrapperClass} ${context.style}`;
     if (status?.state === "loaded") {
       return html`<div class=${commonClass} style=${this.componentWrapperStyle(control.wrapperStyle, context.minSize)}>
         ${renderRuntimeComponent(reference, context)}
@@ -2366,7 +2412,23 @@ class TurnkeyLitApp extends LitElement {
           return leftKey.localeCompare(rightKey);
         })
         .map(([name, actions]) => ({ name, actions }));
-      const visibleColumns = control.columns.filter(item => item.attributes.NotVisible?.toLowerCase() !== "true");
+      const gridStatus = this.viewState?.getReference(this.viewState.root.attributes.VM_Status);
+      const columnNames = new Set(control.columns.map(item => item.attributes.BindInfoColumn));
+      // A column named <other column>_Style/_Visible/... only feeds its base column (see VMClass.GetSubCol).
+      const isCompanionColumn = (item: ViewMetaControl): boolean => {
+        const name = item.attributes.BindInfoColumn ?? "";
+        return /_(Visible|ReadOnly|Enabled|Style|Label|HelperText|Placeholder|AsExternalId)$/.test(name)
+          && columnNames.has(name.replace(/_[^_]+$/, ""));
+      };
+      const isColumnVisible = (item: ViewMetaControl): boolean => {
+        if (item.attributes.NotVisible?.toLowerCase() === "true" || isCompanionColumn(item)) {
+          return false;
+        }
+        const statusId = item.attributes.id?.replace(/\./g, "_");
+        const visibleValue = statusId ? gridStatus?.attributes[`${statusId}_Visible`] : undefined;
+        return visibleValue === undefined || Boolean(visibleValue);
+      };
+      const visibleColumns = control.columns.filter(isColumnVisible);
       const seekerVariables = this.viewState?.getReference(this.viewState.root.attributes.VM_Variables);
       const seekerNumber = (name: string): number | undefined => {
         const raw = seekerVariables?.attributes[name];
@@ -2415,6 +2477,7 @@ class TurnkeyLitApp extends LitElement {
           }
         },
         sortedCollection: this.sortGridRows(gridCollection, gridSort),
+        isColumnVisible,
         selectedRowId,
         multiSelect,
         sort: gridSort,
@@ -2625,7 +2688,7 @@ class TurnkeyLitApp extends LitElement {
       </section>`;
     }
     return this.viewDescription
-      ? html`<section class="view-canvas ${this.viewDescription.rootClassName}">
+      ? html`<section id="viewmodelSection" vmname=${this.route.viewName} class="view-canvas ${this.viewDescription.rootClassName}">
           ${this.viewDescription.controls.map(control => this.renderMetaControl(control))}
         </section>`
       : html`<section><h2>${this.route.viewName}</h2><dl><dt>View metadata</dt><dd>Loading view description…</dd></dl></section>`;
@@ -2661,9 +2724,38 @@ class TurnkeyLitApp extends LitElement {
     return html`<button type="button" class="action-toggle navbar__toggle navbar__toggle--sidebar"
       aria-label=${this.actionPanelOpen ? "Hide view actions" : "Show view actions"}
       aria-controls="view-actions-panel" aria-expanded=${this.actionPanelOpen}
-      @click=${() => { this.actionPanelOpen = !this.actionPanelOpen; }}>
+      @click=${() => this.toggleActionPanel()}>
       <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
     </button>`;
+  }
+
+  private sidebarVariables(): { vmClassId: string; attributes: Record<string, unknown> } | undefined {
+    const state = this.viewState;
+    return state ? state.getReference(state.root.attributes.VM_Variables) : undefined;
+  }
+
+  private toggleActionPanel(): void {
+    this.actionPanelOpen = !this.actionPanelOpen;
+    if (this.mobileViewport) {
+      return;
+    }
+    this.syncedSidebarMemory = this.actionPanelOpen;
+    const variables = this.sidebarVariables();
+    if (variables) {
+      this.queueUpdate(variables.vmClassId, "__UserSidebarShowMemory", this.actionPanelOpen);
+    }
+  }
+
+  // Server variable __UserSidebarShowMemory remembers the user's choice across reloads.
+  private syncSidebarMemory(): void {
+    if (this.mobileViewport) {
+      return;
+    }
+    const memory = this.sidebarVariables()?.attributes.__UserSidebarShowMemory;
+    if (typeof memory === "boolean" && memory !== this.syncedSidebarMemory) {
+      this.syncedSidebarMemory = memory;
+      this.actionPanelOpen = memory;
+    }
   }
 
   private handleActionPanelKeydown(event: KeyboardEvent): void {
@@ -2694,14 +2786,14 @@ class TurnkeyLitApp extends LitElement {
       <div class="constraints ${docked ? 'docked' : ''}">
         ${this.constraintsOpen ? html`<div class="constraints-panel" role="dialog" aria-label="Validation errors">
           ${present.map(group => html`<div class="constraints-group ${group.css}">
-            <div class="constraints-title"><span class="material-icons" aria-hidden="true">${group.icon}</span>
+            <div class="constraints-title"><span class="material-icons mi" aria-hidden="true">${group.icon}</span>
               ${group.messages.length === 1 ? group.singular : `${group.singular}s`}</div>
-            ${group.messages.map(message => html`<div class="constraints-message"><span class="material-icons" aria-hidden="true">radio_button_checked</span>${message}</div>`)}
+            ${group.messages.map(message => html`<div class="constraints-message"><span class="material-icons mi" aria-hidden="true">radio_button_checked</span>${message}</div>`)}
           </div>`)}
         </div>` : nothing}
         <button type="button" class="validation-card ${cardClass}" aria-expanded=${this.constraintsOpen}
           @click=${() => { this.constraintsOpen = !this.constraintsOpen; }}>
-          <span class="material-icons" aria-hidden="true">warning_amber</span>
+          <span class="material-icons mi" aria-hidden="true">warning_amber</span>
           <span class="validation-card__content"><span class="validation-card__title">${count} ${count === 1 ? "issue" : "issues"}</span>${docked ? html`<span class="validation-card__subtitle">click to see details</span>` : nothing}</span>
         </button>
       </div>`;
@@ -2717,7 +2809,7 @@ class TurnkeyLitApp extends LitElement {
           @click=${() => { this.actionPanelOpen = false; }}></button>
         <div class="view-workspace ${this.actionPanelOpen && hasActions ? "actions-open" : "actions-closed"}">
           ${this.renderLeftActions()}
-          <div class="view-content">${this.renderToolbar()}${content}</div>
+          <div id="viewmodelWrapper" class="view-content">${this.renderToolbar()}${content}</div>
         </div>
         ${this.renderConstraints()}
       </div>

@@ -31,6 +31,10 @@ function readControls(parent: Element): ViewMetaControl[] {
       for (const attribute of Array.from(element.attributes)) {
         attributes[attribute.name] = attribute.value;
       }
+      const spanWhenInGrid = wrapper?.getAttribute("ColSpanWhenInGrid");
+      if (spanWhenInGrid) {
+        attributes.ColSpanWhenInGrid = spanWhenInGrid;
+      }
       const taggedValues: Record<string, string> = {};
       for (const taggedValuesElement of Array.from(element.children)
         .filter(child => child.localName === "taggedvalues")) {
