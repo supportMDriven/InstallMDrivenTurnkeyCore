@@ -841,6 +841,9 @@ class TurnkeyLitApp extends LitElement {
           void this.navigateAfterSavePrompt(navigate, generation);
           return;
         }
+        if (this.openServerRequestedModal(navigate, state.root.className)) {
+          return;
+        }
         if (this.handleServerNavigation(navigate)) {
           return;
         }
@@ -1361,6 +1364,33 @@ class TurnkeyLitApp extends LitElement {
         this.closingModal = undefined;
       }
     }
+  }
+
+  // The server decides at run time that an action (e.g. ExportOutbox) ends in a modal, so the action itself is not flagged IsModal.
+  private openServerRequestedModal(command: NavigateCommand, rootClassName: string): boolean {
+    if (!(command.IsModal || command.IsPopUp) || command.Url || this.activeModal || !command.ActionName) {
+      return false;
+    }
+    const targetClientId = command.ClientIdForNavigationVerification;
+    if (targetClientId && targetClientId !== (this.connection?.connectionId ?? "") && targetClientId !== "AccessDenied") {
+      return false;
+    }
+    const action = {
+      CType: "ServerUpdateCommand_Action",
+      MNo: command.MNo,
+      VMClassName: rootClassName,
+      Action: command.ActionName,
+      Enable: true,
+      Presentation: command.View,
+      SortKey: "",
+      ActionRenderPosition: "",
+      View: command.View,
+      IsModal: command.IsModal,
+      IsPopUp: command.IsPopUp
+    } as ServerActionCommand;
+    // Not awaited: openModalForAction polls, and this runs inside the poll that is still in flight.
+    void this.openModalForAction(action, command.Id);
+    return true;
   }
 
   private handleServerNavigation(command: NavigateCommand): boolean {
