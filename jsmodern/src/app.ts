@@ -1763,7 +1763,8 @@ class TurnkeyLitApp extends LitElement {
             false,
             owner
               ? () => this.selectCollectionRow(item, owner.vmClassId, binding.collectionName)
-              : undefined
+              : undefined,
+            control.layoutChildren
           ))}
         </div>
       `)}
@@ -2246,7 +2247,8 @@ class TurnkeyLitApp extends LitElement {
     control: ViewMetaControl,
     row?: VmObject,
     isGridCell = false,
-    beforeAction?: () => void
+    beforeAction?: () => void,
+    recurseTemplate?: readonly ViewMetaControl[]
   ): TemplateResult | typeof nothing {
     if (control.tagName === "tk-layout-container") {
       const ownerClassName = control.attributes.PlacingContainerOwnerVMClass;
@@ -2270,7 +2272,13 @@ class TurnkeyLitApp extends LitElement {
       }
       return html`
         <div class=${wrapperClass} style=${control.wrapperStyle || nothing}>
-          ${control.layoutChildren.map(child => this.renderMetaControl(child, row, isGridCell, beforeAction))}
+          ${control.layoutChildren.map(child => this.renderMetaControl(
+            child,
+            row,
+            isGridCell,
+            beforeAction,
+            recurseTemplate
+          ))}
         </div>
       `;
     }
@@ -2319,6 +2327,30 @@ class TurnkeyLitApp extends LitElement {
     const helperText = typeof helperTextValue === "string" ? helperTextValue : "";
     if (!visible) {
       return nothing;
+    }
+    if (control.tagName === "tk-recursepoint") {
+      const recurseColumn = attributes.BindInfoColumn;
+      const children = row && recurseColumn
+        ? this.viewState?.getCollection(row.vmClassId, recurseColumn) ?? []
+        : [];
+      if (!recurseTemplate) {
+        return html`<div class="tk-recursepoint-error" role="alert">
+          Recursive control "${recurseColumn ?? control.wrapperClass}" has no template.
+        </div>`;
+      }
+      return html`<div class="tk-recursepoint ${control.wrapperClass}" style=${control.wrapperStyle || nothing}>
+        ${repeat(children, item => item.vmClassId, item => html`
+          <div class="tk-recursepoint__row">
+            ${recurseTemplate.map(child => this.renderMetaControl(
+              child,
+              item,
+              false,
+              beforeAction,
+              recurseTemplate
+            ))}
+          </div>
+        `)}
+      </div>`;
     }
     const writable = target !== undefined && column !== undefined && enabled && !readOnly
       && attributes.StaticStyle?.toLowerCase() !== "readonly"
