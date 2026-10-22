@@ -36,7 +36,7 @@ export function resolveRuntimeComponent(name: string, baseUrl: string): RuntimeC
   return {
     name: normalizedName,
     elementName: `tk-lit-custom-${normalizedName}`,
-    fileUrl: new URL(`components/custom/${normalizedName}/index.js`, baseUrl).toString(),
+    fileUrl: new URL(`../EXT_Components_lit/${normalizedName}/index.js`, baseUrl).toString(),
     kind: "custom"
   };
 }

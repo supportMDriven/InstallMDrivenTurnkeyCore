@@ -33,7 +33,13 @@ export interface LitComponentContext {
     readonly height: number;
   };
   onChange(value: VmValue): void;
+  setAttribute(attribute: string, value: VmValue): Promise<void>;
+  getStatusAttribute(attribute: string): VmAttributeValue | undefined;
+  getViewVariable(name: string): VmAttributeValue | undefined;
+  getObject(vmClassId: string): VmObject | undefined;
+  selectRow(row: VmObject): void;
   uploadFile(file: File): Promise<void>;
-  executeAction(actionName?: string, event?: MouseEvent): void;
+  executeAction(actionName?: string, event?: MouseEvent): Promise<boolean>;
+  executeRowAction(row: VmObject, actionName: string): Promise<boolean>;
   onError(error: unknown): void;
 }

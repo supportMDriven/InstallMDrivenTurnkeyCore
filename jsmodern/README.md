@@ -34,10 +34,11 @@ and `Blazor_Ext_Component` spellings). For example:
 <taggedvalue tag="Lit_Ext_Component" value="MySVGChart" />
 ```
 
-This loads `/L/components/custom/my-svg-chart/index.js`; the module must register
+This loads `/EXT_Components_lit/my-svg-chart/index.js` (resolved relative to the
+`/L/` base, so it also works when the app runs in a sub-folder); the module must register
 the `tk-lit-custom-my-svg-chart` custom element. PascalCase component names are
 normalized to lowercase kebab-case folders. Add the file under
-`jsmodern/components/custom/my-svg-chart/` and deploy it as a static asset. The
+`EXT_Components_lit/my-svg-chart/` (next to `jsmodern/`) and deploy it as a static asset. The
 Lit client does not need rebuilding when an extension file is added or changed.
 
 The custom element receives a `context` property with the control metadata,
@@ -48,10 +49,17 @@ helper text and style, visibility/enabled/read-only state, `isGridCell`, and
 `ColSpan`/`RowSpan`; the wrapper enforces these as minimum dimensions without
 forcing a fixed size.
 Use `context.onChange(value)` to request a bound value update and
-`context.executeAction(actionName, event)` to invoke an action; the client
-continues to own all Turnkey communication. Components may be rendered in a
-standalone control or in a grid cell. They should implement a `context` setter
-and update their presentation when it changes.
+`context.executeAction(actionName, event)` to invoke an action. The latter
+returns whether it completed successfully. Custom components can update a
+sibling attribute with `context.setAttribute(name, value)`, read a status
+attribute or view variable with `context.getStatusAttribute(name)` and
+`context.getViewVariable(name)`, resolve a VM object by ID with
+`context.getObject(vmClassId)`, select a bound collection row with
+`context.selectRow(row)`, and invoke one of its row actions with
+`context.executeRowAction(row, actionName)`. These operations keep Turnkey
+communication and view-model state in the client. Components may be rendered
+in a standalone control or in a grid cell. They should implement a `context`
+setter and update their presentation when it changes.
 
 ```js
 class SalesChart extends HTMLElement {
@@ -71,8 +79,16 @@ class SalesChart extends HTMLElement {
 customElements.define("tk-lit-custom-sales-chart", SalesChart);
 ```
 
+`TimelineChart` and `SteppedAreaChart` use the corresponding Google Charts types
+from the Angular client. They load Google's loader on demand through
+`../EXT_Components_lit/_shared/google-charts.js`, rather than adding it to the Lit
+bundle. Timeline data uses `Position`, `Name`, `Start`, and `End`; stepped-area
+data uses `RowDate`, `Legend1`, and `Legend2`, with semicolon-separated labels
+in the bound object's `<BindInfoColumn>_legend` attribute. These charts require
+network access to `www.gstatic.com`.
+
 Component names are restricted to lowercase kebab-case and map only to
-`components/custom/{normalized-name}/index.js` on the same origin. Extensions are trusted
+`EXT_Components_lit/{normalized-name}/index.js` on the same origin. Extensions are trusted
 application code. An invalid name, missing file, failed module, or module that
 does not register its expected custom element displays a visible fallback
 showing the component name, expected file, and load error.

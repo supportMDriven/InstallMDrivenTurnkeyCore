@@ -227,6 +227,7 @@ class TurnkeyLitApp extends LitElement {
     .view-canvas.FlexboxRendering .tk-placingcontainer { min-height: 0; min-width: 0; }
     .view-canvas.FlexboxRendering .tk-placingcontainer .tk-placingcontainer:not(.pcframe):not(:has(> .pcframe)) { min-height: min-content; }
     .view-canvas.FlexboxRendering .tk-placingcontainer.pcframe { overflow-y: auto; }
+    .view-canvas.FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer.pcframe { flex-shrink: 0; overflow-y: visible; }
     .view-content > .view-canvas { box-sizing: border-box; }
     .tk-list-view__row--current:has(> .tk-placingcontainer) { background: transparent; }
     .view-canvas.FlexboxRendering > .tk-placingcontainer:not(:has(.tk-data-table)) { flex: 0 0 auto; height: auto; max-height: none; }
@@ -236,7 +237,7 @@ class TurnkeyLitApp extends LitElement {
     .view-canvas:not(.CSSGridRendering) > .tk-data-table { min-height: 0; }
     .view-canvas .tk-data-table > .tk-data-table__content { flex: 1 1 auto; height: 0; min-height: 0; overflow: auto; }
     .view-canvas:not(.CSSGridRendering) .tk-data-table:has(> .tk-data-table__content--min-height):not([style*="flex-grow:0"]) { min-height: calc(var(--advanced-table-min-height, 250px) + 46px) !important; }
-    .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"] { height: 0; }
+    .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"]:has(> .tk-data-table__content) { height: 0; }
     .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"]:has(> .tk-data-table__content--min-height) { height: auto; }
     .view-canvas .tk-data-table[style*="flex-grow:0"] > .tk-data-table__content--min-height { flex: 0 0 auto; height: var(--advanced-table-min-height, 250px); }
     .view-canvas:not(.CSSGridRendering) .tk-data-table > .tk-data-table__content--min-height { min-height: var(--advanced-table-min-height, 250px); }
@@ -894,6 +895,33 @@ class TurnkeyLitApp extends LitElement {
     }
   }
 
+  private async setObjectAttribute(vmClassId: string, attribute: string, value: VmValue): Promise<void> {
+    const state = this.viewState;
+    if (!state?.getObject(vmClassId)) {
+      throw new Error(`Cannot update missing view-model object "${vmClassId}".`);
+    }
+    if (!await this.flushUpdates()) {
+      throw new Error("Could not send pending view-model updates.");
+    }
+
+    let command: ReturnType<ViewState["setAttribute"]>;
+    try {
+      command = state.setAttribute(
+        vmClassId,
+        attribute,
+        value,
+        this.appInfo?.InstanceId ?? -1
+      );
+    } catch (error) {
+      this.showError(error);
+      throw error;
+    }
+    this.pendingUpdates.set(`${vmClassId}:${attribute}`, command);
+    if (!await this.flushUpdates()) {
+      throw new Error(`Could not update "${attribute}" on "${state.getObject(vmClassId)?.className ?? vmClassId}".`);
+    }
+  }
+
   private async flushUpdates(): Promise<boolean> {
     if (this.pendingUpdates.size === 0) {
       return true;
@@ -1062,16 +1090,16 @@ class TurnkeyLitApp extends LitElement {
     }
   }
 
-  private async executeViewAction(vmClassName: string, actionName: string, event?: MouseEvent): Promise<void> {
+  private async executeViewAction(vmClassName: string, actionName: string, event?: MouseEvent): Promise<boolean> {
     const state = this.viewState;
     if (!state || this.executingActions.has(`${vmClassName}:${actionName}`)) {
-      return;
+      return false;
     }
     const confirmable = this.viewActions.find(candidate =>
       candidate.VMClassName === vmClassName && candidate.Action === actionName
     );
     if (!await this.confirmAction(confirmable)) {
-      return;
+      return false;
     }
     const clickPosition = event && (event.clientX > 0 || event.clientY > 0)
       ? { x: event.clientX, y: event.clientY }
@@ -1085,7 +1113,7 @@ class TurnkeyLitApp extends LitElement {
       window.clearTimeout(this.updateTimer);
       const updatesSent = await this.flushUpdates();
       if (!updatesSent || generation !== this.routeGeneration) {
-        return;
+        return false;
       }
       const action = this.viewActions.find(candidate =>
         candidate.VMClassName === vmClassName && candidate.Action === actionName
@@ -1096,7 +1124,7 @@ class TurnkeyLitApp extends LitElement {
           this.currentActionContextId(vmClassName),
           action.IsPopUp ? clickPosition : undefined
         );
-        return;
+        return true;
       }
       await this.transport.executeAction({
         VMId: state.vmId,
@@ -1106,8 +1134,10 @@ class TurnkeyLitApp extends LitElement {
       });
       await this.poll(generation);
       void this.notifyAfterAction(vmClassName, actionName);
+      return true;
     } catch (error) {
       this.showError(error);
+      return false;
     } finally {
       this.executingActions.delete(actionKey);
       this.requestUpdate();
@@ -1158,14 +1188,14 @@ class TurnkeyLitApp extends LitElement {
     action: ServerActionCommand,
     rowVMClassId: string,
     event?: MouseEvent
-  ): Promise<void> {
+  ): Promise<boolean> {
     const state = this.viewState;
     const row = state?.getObject(rowVMClassId);
     if (!state || !row || !action.Enable) {
-      return;
+      return false;
     }
     if (!await this.confirmAction(action)) {
-      return;
+      return false;
     }
     const clickPosition = event && (event.clientX > 0 || event.clientY > 0)
       ? { x: event.clientX, y: event.clientY }
@@ -1173,7 +1203,7 @@ class TurnkeyLitApp extends LitElement {
 
     const actionKey = `${action.VMClassName}:${action.Action}:${rowVMClassId}`;
     if (this.executingActions.has(actionKey)) {
-      return;
+      return false;
     }
     const generation = this.routeGeneration;
     this.executingActions.add(actionKey);
@@ -1182,11 +1212,11 @@ class TurnkeyLitApp extends LitElement {
       window.clearTimeout(this.updateTimer);
       const updatesSent = await this.flushUpdates();
       if (!updatesSent || generation !== this.routeGeneration) {
-        return;
+        return false;
       }
       if (action.IsModal || action.IsPopUp) {
         await this.openModalForAction(action, row.id, action.IsPopUp ? clickPosition : undefined);
-        return;
+        return true;
       }
       await this.transport.executeRowAction({
         VMId: state.vmId,
@@ -1195,8 +1225,10 @@ class TurnkeyLitApp extends LitElement {
         ClientIdForNavigationVerification: this.connection?.connectionId ?? ""
       });
       await this.poll(generation);
+      return true;
     } catch (error) {
       this.showError(error);
+      return false;
     } finally {
       this.executingActions.delete(actionKey);
       this.requestUpdate();
@@ -2061,7 +2093,7 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private async loadRuntimeComponent(name: string): Promise<void> {
-    let fileUrl = `components/custom/${name}/index.js`;
+    let fileUrl = `../EXT_Components_lit/${name}/index.js`;
     try {
       const reference = resolveRuntimeComponent(name, document.baseURI);
       fileUrl = reference.fileUrl;
@@ -2167,7 +2199,7 @@ class TurnkeyLitApp extends LitElement {
     } catch (error) {
       return this.renderMissingComponent(
         name,
-        `components/custom/${name}/index.js`,
+        `../EXT_Components_lit/${name}/index.js`,
         String(error),
         commonClass,
         control.wrapperStyle
@@ -2433,12 +2465,42 @@ class TurnkeyLitApp extends LitElement {
           this.queueUpdate(targetId, attribute, newValue);
         }
       },
+      setAttribute: (attribute, newValue) => {
+        if (!targetId) {
+          return Promise.reject(new Error("This component is not bound to a view-model object."));
+        }
+        return this.setObjectAttribute(targetId, attribute, newValue);
+      },
+      getStatusAttribute: name => {
+        const currentStatusObject = this.viewState?.getReference(this.viewState.root.attributes.VM_Status);
+        return currentStatusObject?.attributes[name];
+      },
+      getViewVariable: name => {
+        const variables = this.viewState?.getReference(this.viewState.root.attributes.VM_Variables);
+        return variables?.attributes[name];
+      },
+      getObject: vmClassId => this.viewState?.getObject(vmClassId),
+      selectRow: selectedRow => {
+        if (targetId && column) {
+          this.selectCollectionRow(selectedRow, targetId, column);
+          this.queueUpdate(selectedRow.vmClassId, "vSelected", true);
+        }
+      },
       uploadFile: file => this.uploadBoundFile(file, control, target, column, writable),
       executeAction: (action = actionName, event) => {
         if (action && targetClass) {
           beforeAction?.();
-          void this.executeViewAction(targetClass, action, event);
+          return this.executeViewAction(targetClass, action, event);
         }
+        return Promise.resolve(false);
+      },
+      executeRowAction: (actionRow, action) => {
+        const rowAction = this.viewActions.find(candidate =>
+          candidate.VMClassName === actionRow.className && candidate.Action === action
+        );
+        return rowAction
+          ? this.executeRowAction(rowAction, actionRow.vmClassId)
+          : Promise.resolve(false);
       },
       onError: error => this.showError(error)
     };

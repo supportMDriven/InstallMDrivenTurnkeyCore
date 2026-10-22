@@ -1,0 +1,19 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>harness</title></head>
+<body style="background:#f6f8fc;margin:0">
+<div id="host"></div>
+<script type="module">
+  await import("../EXT_Components_lit/timeline-chart/index.js");
+  await import("../EXT_Components_lit/stepped-area-chart/index.js");
+  const mode = location.hash.slice(1);
+  const root = mode === "light" ? document.getElementById("host") : document.getElementById("host").attachShadow({ mode: "open" });
+  const row = attributes => ({ attributes, id: "1", vmClassId: "1;X", className: "X" });
+  const t = document.createElement("tk-lit-custom-timeline-chart");
+  t.context = { minSize: { width: 0, height: 0 }, metadata: { attributes: { BindInfoColumn: "TimelineData" } }, object: { attributes: {} },
+    collection: [row({ Position: "A", Name: "One", Start: "2024-01-01", End: "2024-03-01" }), row({ Position: "B", Name: "Two", Start: "2024-02-01", End: "2024-06-01" })] };
+  const s = document.createElement("tk-lit-custom-stepped-area-chart");
+  s.context = { minSize: { width: 0, height: 0 }, metadata: { attributes: { BindInfoColumn: "PerformanceData" } }, object: { attributes: { PerformanceData_legend: "Year;RRP;List Price" } },
+    collection: [row({ RowDate: "2023-01-01", Legend1: 10, Legend2: 8 }), row({ RowDate: "2024-01-01", Legend1: 14, Legend2: 9 }), row({ RowDate: "2025-01-01", Legend1: 12, Legend2: 11 })] };
+  root.append(t, s);
+</script>
+</body></html>
