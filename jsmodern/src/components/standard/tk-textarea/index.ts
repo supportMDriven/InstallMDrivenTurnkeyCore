@@ -21,7 +21,7 @@ export function renderTextArea(context: LitComponentContext): TemplateResult {
     style=${context.metadata.wrapperStyle}>
     ${context.isGridCell ? "" : renderControlLabel(context)}
     <div class=${getStyleAndThisPlusMaybeInGrid(context, "tk-input-field__container")}>
-      <textarea id=${context.id ?? ""} rows="5"
+      <textarea id=${context.id ?? ""} rows=${context.metadata.attributes.rows ?? "5"}
         class=${getStyleAndThis(context, "tk-input-field__native")}
         aria-label=${context.isGridCell ? context.label : ""}
         .value=${keepWhileTyping(context.displayValue)}

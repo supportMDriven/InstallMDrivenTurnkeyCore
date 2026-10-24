@@ -71,12 +71,12 @@ function renderRow(
     ${columns.map((control, columnIndex) => html`
       <td class="tk-data-table__cell ${columnIndex === 0 && !context.multiSelect ? "firstvisiblecolumn" : ""} ${context.cellStyle(control, row)}" tabindex="-1">${safeRenderCell(context, control, row)}</td>
     `)}
-    <td class="row-menu-cell tk-data-table__cell">
+    ${context.rowMenuGroups.length > 0 ? html`<td class="row-menu-cell tk-data-table__cell">
       <button type="button" class="row-menu-trigger" aria-haspopup="menu"
         aria-label=${`Actions for ${row.className} ${row.id}`}
         aria-expanded=${context.rowMenu?.rowVMClassId === row.vmClassId}
         @click=${(event: MouseEvent) => context.onOpenRowMenu(event, row)}>⋮</button>
-    </td>
+    </td>` : nothing}
   </tr>`;
 }
 
@@ -215,7 +215,7 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
               return html`<col data-column-index=${index} data-span=${Number.isFinite(span) && span > 0 ? span : 1}
                 ?data-resized=${Boolean(width)} style=${width ? `width:${width}px` : nothing}>`;
             })}
-            <col style="width:3rem">
+            ${context.rowMenuGroups.length > 0 ? html`<col style="width:3rem">` : nothing}
           </colgroup>
           <thead><tr class="tk-data-table__header-row">
             ${context.multiSelect ? renderSelectAll(context) : nothing}
@@ -230,10 +230,10 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
                 : undefined;
               const label = typeof dynamicLabel === "string" && dynamicLabel.trim() !== ""
                 ? dynamicLabel
-                : item.attributes.StaticLabel || columnName || "";
+                : item.attributes.StaticLabel ?? columnName ?? "";
               return html`<th class="tk-data-table__header-cell"
                 aria-sort=${activeSort ? context.sort?.direction ?? "none" : "none"}>
-                ${columnName
+                ${columnName && label !== ""
                   ? html`<button type="button" class="grid-sort-button tk-data-table__header-button"
                       aria-label=${`Sort by ${label}`}
                       @click=${() => context.onSort(columnName)}>
@@ -252,7 +252,7 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
                   @keydown=${(event: KeyboardEvent) => context.onResizeByKeyboard(event, index)}></span>
               </th>`;
             })}
-            <th class="row-menu-cell" aria-hidden="true"></th>
+            ${context.rowMenuGroups.length > 0 ? html`<th class="row-menu-cell" aria-hidden="true"></th>` : nothing}
           </tr></thead>
           <tbody>
             ${repeat(context.sortedCollection, row => row.vmClassId, row => renderRow(context, columns, row))}

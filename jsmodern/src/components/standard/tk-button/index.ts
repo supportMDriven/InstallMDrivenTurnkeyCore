@@ -1,4 +1,4 @@
-import { html, TemplateResult } from "lit";
+import { html, nothing, TemplateResult } from "lit";
 import { LitComponentContext } from "../../control-context";
 import {
   appendOuterCSSGridClass,
@@ -10,6 +10,8 @@ export function renderButton(context: LitComponentContext): TemplateResult {
   const actionName = context.metadata.attributes.AbstractAction
     || context.metadata.attributes.BindInfoColumn
     || "";
+  // Metadata with an explicit blank StaticLabel means "no text" (icon-only button), as in the AngularJS client.
+  const blankLabel = !context.label && context.metadata.attributes.StaticLabel === "";
   return html`<div class="view-control ${appendOuterCSSGridClass(
     context,
     getStyleAndThis(context, "tk-component tk-button ctButton NoLabel")
@@ -21,7 +23,7 @@ export function renderButton(context: LitComponentContext): TemplateResult {
       title=${context.label}
       @click=${(event: MouseEvent) => context.executeAction(actionName, event)}>
       ${renderControlIcon(context.metadata, "before")}
-      <span class="tk-button__text">${context.label || actionName}</span>
+      ${blankLabel ? nothing : html`<span class="tk-button__text">${context.label || actionName}</span>`}
       ${renderControlIcon(context.metadata, "after")}
     </button>
   </div>`;

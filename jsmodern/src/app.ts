@@ -235,12 +235,13 @@ class TurnkeyLitApp extends LitElement {
     dialog.view-dialog .view-content > .view-canvas.FlexboxRendering, .popup-panel .view-content > .view-canvas.FlexboxRendering { flex: 0 0 auto; overflow: visible; }
     .view-canvas > .tk-data-table { display: flex; flex-direction: column; }
     .view-canvas:not(.CSSGridRendering) > .tk-data-table { min-height: 0; }
-    .view-canvas .tk-data-table > .tk-data-table__content { flex: 1 1 auto; height: 0; min-height: 0; overflow: auto; }
+    .view-canvas .tk-data-table > .tk-data-table__content { flex: 1 1 auto; height: 0; overflow: auto; }
+    :where(.view-canvas .tk-data-table > .tk-data-table__content) { min-height: 0; }
     .view-canvas:not(.CSSGridRendering) .tk-data-table:has(> .tk-data-table__content--min-height):not([style*="flex-grow:0"]) { min-height: calc(var(--advanced-table-min-height, 250px) + 46px) !important; }
     .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"]:has(> .tk-data-table__content) { height: 0; }
     .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"]:has(> .tk-data-table__content--min-height) { height: auto; }
     .view-canvas .tk-data-table[style*="flex-grow:0"] > .tk-data-table__content--min-height { flex: 0 0 auto; height: var(--advanced-table-min-height, 250px); }
-    .view-canvas:not(.CSSGridRendering) .tk-data-table > .tk-data-table__content--min-height { min-height: var(--advanced-table-min-height, 250px); }
+    :where(.view-canvas:not(.CSSGridRendering) .tk-data-table > .tk-data-table__content--min-height) { min-height: var(--advanced-table-min-height, 250px); }
     .view-canvas.CSSGridRendering .tk-data-table > .tk-data-table__content--min-height { min-height: 0; }
     .view-loading { align-content: center; box-sizing: border-box; color: #52616b; min-height: 12rem; padding: 2rem; text-align: center; }
     .view-control { min-width: 0; }
@@ -250,12 +251,13 @@ class TurnkeyLitApp extends LitElement {
     .view-control input[type="checkbox"] { width: auto; }
     .tk-component { min-width: 0; }
     .tk-input-field__container { display: flex; flex-direction: column; gap: 0.25rem; }
-    .tk-input-field__native, .tk-select__native, .tk-textarea__native { box-sizing: border-box; font: inherit; padding: 0.45rem; width: 100%; }
+    .tk-input-field__native, .tk-select__native, .tk-textarea__native { box-sizing: border-box; font: inherit; width: 100%; }
     .tk-checkbox__inner { align-items: center; display: flex; gap: 0.5rem; }
     .view-control .tk-checkbox__label { display: inline-flex; margin: 0; }
     .tk-label__icon { display: inline-block; margin-inline: 0.25rem; }
     .tk-button__native { align-items: center; display: inline-flex; font: inherit; gap: 0.35rem; }
     .tk-button__text { display: inline-block; }
+    .tk-data-table__cell .tk-button { max-width: none !important; min-width: 0 !important; }
     .mi, .material-icons { color: currentColor; direction: ltr; display: inline-block; font-family: "Material Icons"; font-feature-settings: "liga"; font-size: 1.2em; font-style: normal; font-weight: 400; letter-spacing: normal; line-height: 1; text-rendering: optimizeLegibility; text-transform: none; white-space: nowrap; -webkit-font-feature-settings: "liga"; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     .tk-select { position: relative; }
     .tk-select__dropdown-icon { pointer-events: none; }
@@ -2773,10 +2775,11 @@ class TurnkeyLitApp extends LitElement {
     wrapperStyle: string,
     minSize: LitComponentContext["minSize"]
   ): string {
+    // The server's wrapper style already carries the min-width/min-height Angular applies; re-adding
+    // VMColWidth*ColSpan here made controls (e.g. 750px) wider than in Angular and wrapped flex columns.
     return [
       wrapperStyle,
-      minSize.width > 0 ? `min-width:${minSize.width}px` : "",
-      minSize.height > 0 ? `min-height:${minSize.height}px` : ""
+      !/(^|;)\s*min-height\s*:/.test(wrapperStyle) && minSize.height > 0 ? `min-height:${minSize.height}px` : ""
     ].filter(Boolean).join(";");
   }
 

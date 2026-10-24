@@ -44,10 +44,11 @@ Lit client does not need rebuilding when an extension file is added or changed.
 The custom element receives a `context` property with the control metadata,
 bound object and value (or collection rows), resolved label, placeholder,
 helper text and style, visibility/enabled/read-only state, `isGridCell`, and
-`minSize` in pixels. The minimum width and height use the view's
-`VMColWidth`/`VMColHeight` (or `VMRowHeight`) multiplied by the control's
-`ColSpan`/`RowSpan`; the wrapper enforces these as minimum dimensions without
-forcing a fixed size.
+`minSize` in pixels. The size is `VMColWidth`/`VMColHeight` (or `VMRowHeight`)
+multiplied by the control's `ColSpan`/`RowSpan`. It is informational for the
+component; the wrapper does not apply it as `min-width`. The wrapper uses the
+server-provided style (which carries the minimum dimensions, as in the Angular client)
+and adds `min-height` from `minSize` only when that style has none.
 Use `context.onChange(value)` to request a bound value update and
 `context.executeAction(actionName, event)` to invoke an action. The latter
 returns whether it completed successfully. Custom components can update a
