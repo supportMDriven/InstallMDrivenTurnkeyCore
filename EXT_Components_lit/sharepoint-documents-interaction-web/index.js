@@ -118,10 +118,18 @@ class SharepointDocumentsInteractionWeb extends HTMLElement {
       });
     }
     this.querySelector("tbody").addEventListener("click", event => {
-      const button = event.target instanceof Element ? event.target.closest("button[data-vm-class-id]") : null;
+      const target = event.target instanceof Element ? event.target : null;
+      const button = target?.closest("button[data-vm-class-id]");
       const row = button && this._context?.getObject(button.dataset.vmClassId);
       if (row) {
         void this.openDocument(row);
+        return;
+      }
+      const rowId = target?.closest("tr[data-vm-class-id]")?.dataset.vmClassId;
+      const selected = rowId && this._context?.getObject(rowId);
+      if (selected) {
+        this._context.selectRow(selected);
+        this.render();
       }
     });
     this._built = true;
@@ -173,7 +181,10 @@ class SharepointDocumentsInteractionWeb extends HTMLElement {
     for (const row of this.sortedRows()) {
       const tableRow = document.createElement("tr");
       tableRow.className = "tk-data-table__row";
+      tableRow.dataset.vmClassId = row.vmClassId;
       tableRow.classList.toggle("vmCurrentRow", row.attributes.vCurrent === true);
+      tableRow.classList.toggle("current-row", row.attributes.vCurrent === true);
+      tableRow.classList.toggle("tk-data-table__row--current", row.attributes.vCurrent === true);
       tableRow.classList.toggle("vmSelectedRow", row.attributes.vSelected === true);
       for (const { name } of columns) {
         const cell = document.createElement("td");

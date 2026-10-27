@@ -15,7 +15,14 @@ class TimelineChart extends HTMLElement {
     this._context = undefined;
     this._chart = undefined;
     this._googlePromise = undefined;
-    this._resizeObserver = new ResizeObserver(() => this.draw());
+    // Redraw on width changes only: a height-driven redraw can feed back into the layout and grow the page endlessly.
+    this._lastWidth = 0;
+    this._resizeObserver = new ResizeObserver(() => {
+      const width = Math.round(this.clientWidth);
+      if (width === this._lastWidth) return;
+      this._lastWidth = width;
+      this.draw();
+    });
   }
 
   connectedCallback() {
@@ -37,8 +44,8 @@ class TimelineChart extends HTMLElement {
     if (!this.querySelector(".chart")) {
       this.innerHTML = `
         <style>
-          tk-lit-custom-timeline-chart { box-sizing: border-box; display: block; min-width: 0; width: 100%; }
-          tk-lit-custom-timeline-chart .chart { width: 100%; }
+          tk-lit-custom-timeline-chart { box-sizing: border-box; contain: inline-size; display: block; min-width: 0; width: 100%; }
+          tk-lit-custom-timeline-chart .chart { overflow: hidden; width: 100%; }
           tk-lit-custom-timeline-chart .error { color: #b00020; font: inherit; margin: .5rem 0; }
         </style>
         <div class="chart" role="img" aria-label="Timeline chart"></div>
@@ -79,7 +86,21 @@ class TimelineChart extends HTMLElement {
     }
     try {
       const google = globalThis.google;
-      this._chart.draw(google.visualization.arrayToDataTable(data), options);
+      // The timeline sizes itself from its container, so redrawing (e.g. after a click) in an already tall container
+      // makes it grow every time. Measure the natural height once per data shape, then pin it.
+      const container = this.querySelector(".chart");
+      const shape = `${rows.length}:${new Set(data.slice(1).map(r => r[0])).size}`;
+      if (this._pinnedShape !== shape) {
+        container.style.height = "";
+        this._pinnedHeight = undefined;
+      }
+      const drawOptions = this._pinnedHeight ? { ...options, height: this._pinnedHeight } : options;
+      this._chart.draw(google.visualization.arrayToDataTable(data), drawOptions);
+      if (!this._pinnedHeight) {
+        this._pinnedShape = shape;
+        this._pinnedHeight = Math.ceil(container.offsetHeight);
+        container.style.height = `${this._pinnedHeight}px`;
+      }
     } catch (error) {
       this.showError(error);
     }

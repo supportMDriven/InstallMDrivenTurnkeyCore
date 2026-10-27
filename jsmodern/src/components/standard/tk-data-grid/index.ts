@@ -29,6 +29,7 @@ export const dataGridStyles = css`
   .tk-data-table__page-button:hover:not(:disabled) { background: #edf1f4; }
   .tk-data-table__page-button:disabled { cursor: default; opacity: 0.35; }
   .tk-data-table__content--advanced { min-width: 0; position: relative; }
+  .grid-sort-arrow { font-size: 0.8rem; margin: 0 0 0 5px; vertical-align: bottom; line-height: 1.2rem; transform: translateY(-2.8px); }
 `;
 
 function safeRenderCell(context: DataGridContext, control: ViewMetaControl, row: VmObject): unknown {
@@ -238,7 +239,7 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
                       aria-label=${`Sort by ${label}`}
                       @click=${() => context.onSort(columnName)}>
                       ${label}${activeSort
-                        ? context.sort?.direction === "ascending" ? " ▲" : " ▼"
+                        ? html`<span class="mi grid-sort-arrow" aria-hidden="true">${context.sort?.direction === "ascending" ? "arrow_upward" : "arrow_downward"}</span>`
                         : ""}
                     </button>`
                   : label}

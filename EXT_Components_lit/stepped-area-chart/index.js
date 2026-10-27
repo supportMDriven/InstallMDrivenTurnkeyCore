@@ -12,7 +12,14 @@ class SteppedAreaChart extends HTMLElement {
     this._context = undefined;
     this._chart = undefined;
     this._googlePromise = undefined;
-    this._resizeObserver = new ResizeObserver(() => this.draw());
+    // Redraw on width changes only: a height-driven redraw can feed back into the layout and grow the page endlessly.
+    this._lastWidth = 0;
+    this._resizeObserver = new ResizeObserver(() => {
+      const width = Math.round(this.clientWidth);
+      if (width === this._lastWidth) return;
+      this._lastWidth = width;
+      this.draw();
+    });
   }
 
   connectedCallback() {

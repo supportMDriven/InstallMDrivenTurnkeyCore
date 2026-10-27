@@ -198,13 +198,23 @@ class TurnkeyLitApp extends LitElement {
     dialog.confirm-dialog::backdrop { background: #15232d55; }
     dialog.view-dialog .view-canvas { margin: 0; }
     .popup-backdrop { background: transparent; inset: 0; position: fixed; z-index: 1000; }
-    .popup-panel { background: white; border: 1px solid #c7d0d7; border-radius: 0.35rem; box-shadow: 0 0.35rem 1.25rem #0003; box-sizing: border-box; left: var(--popup-x); margin: 0; max-height: min(90vh, 60rem); max-width: min(90vw, 34rem); overflow: auto; padding: 1rem; position: fixed; top: var(--popup-y); width: min(34rem, calc(100vw - 2rem)); }
+    .popup-panel { background: white; border: 0; border-radius: 4px; box-shadow: 0 5px 5px -3px #0003, 0 8px 10px 1px #00000024, 0 3px 14px 2px #0000001f; box-sizing: border-box; display: flex; flex-direction: column; left: var(--popup-x); margin: 0; max-height: 100vh; max-width: 100vw; min-width: min(20rem, 100vw); overflow: hidden; padding: 0; position: fixed; top: var(--popup-y); width: max-content; }
+    .popup-panel > .view-workspace { flex: 1 1 auto; min-height: 0; overflow: auto; padding: 0 1rem 1rem; }
+    .popup-panel > .modal-header { margin-bottom: 0; padding: 0.5rem; }
     .popup-panel .view-workspace { grid-template-columns: minmax(0, 1fr); }
     .popup-panel .view-canvas { margin: 0; }
-    .modal-actions { background: white; border-top: 1px solid #dce1e5; display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; padding-top: 1rem; }
+    .modal-actions { background: white; border-top: 1px solid #dce1e5; display: flex; flex: 0 0 auto; gap: 0; justify-content: flex-end; margin-top: 1rem; padding-top: 1rem; }
     .view-dialog > .modal-actions { position: static; }
-    .modal-actions button { border: 1px solid #c7d0d7; border-radius: 0.3rem; padding: 0.45rem 0.85rem; }
-    .modal-actions button[type="submit"] { background: #263746; border-color: #263746; color: white; }
+    dialog.view-dialog[open] { display: flex; flex-direction: column; overflow: hidden; resize: both; min-width: 20rem; min-height: 12rem; max-width: calc(100vw - 0.5rem); max-height: calc(100vh - 0.5rem); }
+    .modal-header { cursor: move; touch-action: none; user-select: none; }
+    dialog.view-dialog[open] > .view-workspace { flex: 1 1 auto; min-height: 0; overflow: auto; }
+    .modal-header { align-items: center; border-bottom: 0.0667rem solid rgba(0, 0, 0, 0.12); display: flex; flex: 0 0 auto; gap: 0.25rem; justify-content: flex-end; margin-bottom: 0.5rem; padding-bottom: 0.25rem; }
+    .modal-header__button { align-items: center; background: transparent; border: 0; border-radius: 50%; color: inherit; cursor: pointer; display: inline-flex; height: 2rem; justify-content: center; padding: 0; width: 2rem; }
+    .modal-header__button:hover { background: rgba(0, 0, 0, 0.08); }
+    .modal-actions button { background: transparent; border: 0.0667rem solid currentColor; border-radius: 0.5rem; box-sizing: border-box; cursor: pointer; font: inherit; font-size: 0.8333rem; font-weight: 500; height: 2.25rem; margin-left: 0.8333rem; min-width: 8.333rem; padding: 0 0.3rem; }
+    .modal-actions button[type="submit"] { color: rgb(93, 184, 91); }
+    .modal-actions button[type="button"] { color: rgb(211, 46, 46); }
+    .modal-actions button:hover:not(:disabled) { background: color-mix(in srgb, currentColor 10%, transparent); }
     .modal-actions button:disabled { cursor: default; opacity: 0.55; }
     .status { background: white; border-radius: 0.4rem; margin-bottom: 1rem; padding: 0.8rem 1rem; }
     .status[hidden] { display: none; }
@@ -459,6 +469,16 @@ class TurnkeyLitApp extends LitElement {
     } else if (!this.activeModal && dialog?.open) {
       dialog.close();
     }
+    const popup = this.renderRoot.querySelector<HTMLElement>(".popup-panel");
+    if (popup) {
+      // Like AngularJS mdPanel: open at the click, then shift so the whole panel stays inside the viewport.
+      const backdrop = popup.parentElement as HTMLElement;
+      const anchorX = parseFloat(backdrop.style.getPropertyValue("--popup-x")) || 0;
+      const anchorY = parseFloat(backdrop.style.getPropertyValue("--popup-y")) || 0;
+      const box = popup.getBoundingClientRect();
+      popup.style.left = `${Math.max(0, Math.min(anchorX, window.innerWidth - box.width))}px`;
+      popup.style.top = `${Math.max(0, Math.min(anchorY, window.innerHeight - box.height))}px`;
+    }
     const descriptions = [this.viewDescription, this.activeModal?.parent.viewDescription];
     for (const description of descriptions) {
       if (description) {
@@ -487,13 +507,19 @@ class TurnkeyLitApp extends LitElement {
     const fixedWidth = [...content.querySelectorAll<HTMLTableColElement>("col:not([data-span])")]
       .reduce((sum, column) => sum + (parseFloat(getComputedStyle(column).width) || 0), 0);
     const totalSpan = columns.reduce((sum, column) => sum + Number(column.dataset.span), 0);
-    const available = content.clientWidth - fixedWidth;
+    // Whole pixels only, minus 1px for the collapsed table borders: a table even a fraction wider than the box toggles the scrollbars in a loop.
+    const available = Math.floor(content.clientWidth - fixedWidth) - 1;
     if (totalSpan <= 0 || available <= 0) {
       return;
     }
-    for (const column of columns) {
-      column.style.width = `${(available / totalSpan) * Number(column.dataset.span)}px`;
-    }
+    let assigned = 0;
+    columns.forEach((column, index) => {
+      const width = index === columns.length - 1
+        ? available - assigned
+        : Math.floor((available / totalSpan) * Number(column.dataset.span));
+      assigned += width;
+      column.style.width = `${width}px`;
+    });
   }
 
   // Enter anywhere (outside grids, text areas and buttons) triggers the seeker's search action.
@@ -1402,7 +1428,9 @@ class TurnkeyLitApp extends LitElement {
 
   // The server decides at run time that an action (e.g. ExportOutbox) ends in a modal, so the action itself is not flagged IsModal.
   private openServerRequestedModal(command: NavigateCommand, rootClassName: string): boolean {
-    if (!(command.IsModal || command.IsPopUp) || command.Url || this.activeModal || !command.ActionName) {
+    // A Url on an in-app view navigation (e.g. "mvc/ArticleCheckout/<id>") is the legacy link; the modal still opens in-app.
+    const externalUrl = command.Url && !(command.TargetIsInAppAndAngular && command.View);
+    if (!(command.IsModal || command.IsPopUp) || externalUrl || this.activeModal || !command.ActionName) {
       return false;
     }
     const targetClientId = command.ClientIdForNavigationVerification;
@@ -1423,7 +1451,7 @@ class TurnkeyLitApp extends LitElement {
       IsPopUp: command.IsPopUp
     } as ServerActionCommand;
     // Not awaited: openModalForAction polls, and this runs inside the poll that is still in flight.
-    void this.openModalForAction(action, command.Id);
+    void this.openModalForAction(action, command.Id, command.IsPopUp ? this.lastPopupClickPosition : undefined);
     return true;
   }
 
@@ -2485,7 +2513,13 @@ class TurnkeyLitApp extends LitElement {
       selectRow: selectedRow => {
         if (targetId && column) {
           this.selectCollectionRow(selectedRow, targetId, column);
-          this.queueUpdate(selectedRow.vmClassId, "vSelected", true);
+          for (const item of this.viewState?.getCollection(targetId, column) ?? []) {
+            const selected = item.vmClassId === selectedRow.vmClassId;
+            if (item.attributes.vSelected !== selected) {
+              this.viewState?.setAttributeLocally(item.vmClassId, "vSelected", selected);
+              this.queueUpdate(item.vmClassId, "vSelected", selected);
+            }
+          }
         }
       },
       uploadFile: file => this.uploadBoundFile(file, control, target, column, writable),
@@ -2943,6 +2977,87 @@ class TurnkeyLitApp extends LitElement {
     `;
   }
 
+  private openModalInOwnWindow(): void {
+    const url = new URL(viewRouteHash(this.route.viewName, this.route.objectId), document.baseURI);
+    window.open(url.toString(), "_blank");
+  }
+
+  // Pins the centered dialog to explicit left/top so it can be dragged and natively resized from its corner.
+  private pinDialog(dialog: HTMLDialogElement): void {
+    if (dialog.dataset.pinned) {
+      return;
+    }
+    const rect = dialog.getBoundingClientRect();
+    dialog.dataset.pinned = "true";
+    Object.assign(dialog.style, {
+      margin: "0",
+      inset: "auto",
+      left: `${rect.left}px`,
+      top: `${rect.top}px`,
+      width: `${rect.width}px`,
+      height: `${rect.height}px`
+    });
+  }
+
+  private startModalDrag(event: PointerEvent): void {
+    if (event.button !== 0 || (event.target as HTMLElement).closest("button")) {
+      return;
+    }
+    const header = event.currentTarget as HTMLElement;
+    const dialog = header.closest("dialog") as HTMLDialogElement;
+    this.pinDialog(dialog);
+    const startX = event.clientX - dialog.offsetLeft;
+    const startY = event.clientY - dialog.offsetTop;
+    header.setPointerCapture(event.pointerId);
+    const move = (e: PointerEvent) => {
+      const left = Math.min(Math.max(e.clientX - startX, 0), window.innerWidth - 48);
+      const top = Math.min(Math.max(e.clientY - startY, 0), window.innerHeight - 32);
+      dialog.style.left = `${left}px`;
+      dialog.style.top = `${top}px`;
+    };
+    const end = () => {
+      header.removeEventListener("pointermove", move);
+      header.removeEventListener("pointerup", end);
+      header.removeEventListener("pointercancel", end);
+    };
+    header.addEventListener("pointermove", move);
+    header.addEventListener("pointerup", end);
+    header.addEventListener("pointercancel", end);
+  }
+
+  private renderModalDialog(): TemplateResult {
+    return html`<dialog class="view-dialog" aria-label=${this.viewDescription?.name ?? this.route.viewName}
+      @pointerdown=${(event: PointerEvent) => {
+        // A press on the dialog itself (not a child) is the native resize grip.
+        if (event.target === event.currentTarget) {
+          this.pinDialog(event.currentTarget as HTMLDialogElement);
+        }
+      }}
+      @cancel=${(event: Event) => {
+        event.preventDefault();
+        void this.closeModal(false);
+      }}>
+      <div class="modal-header" @pointerdown=${(event: PointerEvent) => this.startModalDrag(event)}>
+        <button type="button" class="modal-header__button" title="Open in own window" aria-label="Open in own window"
+          @click=${() => this.openModalInOwnWindow()}><span class="mi" aria-hidden="true">open_in_new</span></button>
+        <button type="button" class="modal-header__button" title="Cancel" aria-label="Close"
+          @click=${() => void this.closeModal(false)}><span class="mi" aria-hidden="true">close</span></button>
+      </div>
+      ${this.renderErrorBanner()}
+      <div class="view-workspace">
+        <div class="view-content">${this.renderViewContent()}</div>
+      </div>
+      ${this.renderStatusMessage()}
+      <footer class="modal-actions">
+        ${this.appInfo?.IsDirty === true
+          ? html`<button type="button" @click=${() => void this.closeModal(false)}>Cancel</button>`
+          : nothing}
+        <button type="submit" ?disabled=${!this.modalOkEnabled}
+          @click=${() => void this.closeModal(true)}>OK</button>
+      </footer>
+    </dialog>`;
+  }
+
   private get modalOkEnabled(): boolean {
     const state = this.viewState;
     if (!state) {
@@ -2981,8 +3096,8 @@ class TurnkeyLitApp extends LitElement {
     const objects = this.viewState?.allObjects ?? [];
     if (this.activeModal?.action.IsPopUp) {
       const position = this.activeModal.popupPosition ?? { x: 16, y: 16 };
-      const popupX = Math.max(8, Math.min(position.x, window.innerWidth - 560));
-      const popupY = Math.max(8, Math.min(position.y, window.innerHeight - 260));
+      const popupX = Math.max(0, position.x);
+      const popupY = Math.max(0, position.y);
       return html`
         ${this.renderMetadataStyles()}
         ${this.renderParentView(this.activeModal.parent)}
@@ -2998,6 +3113,10 @@ class TurnkeyLitApp extends LitElement {
           }}>
           <section class="popup-panel" role="dialog" aria-modal="false"
             aria-label=${this.viewDescription?.name ?? this.route.viewName}>
+            <div class="modal-header">
+              <button type="button" class="modal-header__button" title="Close" aria-label="Close"
+                @click=${() => void this.closeModal(true)}><span class="mi" aria-hidden="true">close</span></button>
+            </div>
             ${this.renderErrorBanner()}
             <div class="view-workspace">
               <div class="view-content">${this.renderViewContent()}</div>
@@ -3012,22 +3131,7 @@ class TurnkeyLitApp extends LitElement {
       return html`
         ${this.renderMetadataStyles()}
         ${this.renderParentView(this.activeModal.parent)}
-        <dialog class="view-dialog" aria-label=${this.viewDescription?.name ?? this.route.viewName}
-          @cancel=${(event: Event) => {
-            event.preventDefault();
-            void this.closeModal(false);
-          }}>
-          ${this.renderErrorBanner()}
-          <div class="view-workspace">
-            <div class="view-content">${this.renderViewContent()}</div>
-          </div>
-          ${this.renderStatusMessage()}
-          <footer class="modal-actions">
-            <button type="button" @click=${() => void this.closeModal(false)}>Cancel</button>
-            <button type="submit" ?disabled=${!this.modalOkEnabled}
-              @click=${() => void this.closeModal(true)}>Ok</button>
-          </footer>
-        </dialog>
+        ${this.renderModalDialog()}
       `;
     }
 
@@ -3052,22 +3156,7 @@ class TurnkeyLitApp extends LitElement {
       }}>
         ${this.activeModal ? nothing : this.renderErrorBanner()}
         ${this.activeModal
-          ? html`<dialog class="view-dialog" aria-label=${this.viewDescription?.name ?? this.route.viewName}
-              @cancel=${(event: Event) => {
-                event.preventDefault();
-                void this.closeModal(false);
-              }}>
-              ${this.renderErrorBanner()}
-              <div class="view-workspace">
-                <div class="view-content">${this.renderViewContent()}</div>
-              </div>
-              ${this.renderStatusMessage()}
-              <footer class="modal-actions">
-                <button type="button" @click=${() => void this.closeModal(false)}>Cancel</button>
-                <button type="submit" ?disabled=${!this.modalOkEnabled}
-                  @click=${() => void this.closeModal(true)}>Ok</button>
-              </footer>
-            </dialog>`
+          ? this.renderModalDialog()
           : this.renderWorkspace(this.renderViewContent())}
         ${this.route.debug ? objects.map(object => this.renderObject(object)) : nothing}
         ${this.route.debug ? html`<pre>${JSON.stringify(objects, null, 2)}</pre>` : nothing}
