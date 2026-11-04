@@ -233,11 +233,12 @@ class TurnkeyLitApp extends LitElement {
     .view-content > .view-canvas.CSSGridRendering { box-sizing: border-box; flex: 1 1 0; min-height: 0; }
     .view-canvas.CSSGridRendering > .tk-data-table { contain: inline-size; }
     .view-content > .view-canvas:has(> .tk-data-table) { box-sizing: border-box; height: 100%; margin: 0; }
-    .view-content:has(> .view-canvas.FlexboxRendering) { display: flex; flex-direction: column; overflow: hidden; }
-    .view-content > .view-canvas.FlexboxRendering { box-sizing: border-box; display: flex; flex: 1 1 0; flex-direction: column; min-height: 0; overflow: auto !important; margin: 0; }
+    /* Like AngularJS: the wrapper (not the section) scrolls and its single auto column grows to the content's min-content width. */
+    .view-content:has(> .view-canvas.FlexboxRendering) { display: flex; flex-direction: column; grid-template-columns: auto; overflow: auto; }
+    .view-content > .view-canvas.FlexboxRendering { box-sizing: border-box; display: flex; flex: 1 1 0; flex-direction: column; min-width: auto; overflow: visible !important; margin: 0; }
     .view-canvas.FlexboxRendering > .tk-placingcontainer { flex: 1 1 auto; min-height: 0; min-width: 0; }
-    .view-canvas.FlexboxRendering .tk-placingcontainer { min-height: 0; min-width: 0; }
-    .view-canvas.FlexboxRendering .tk-placingcontainer .tk-placingcontainer:not(.pcframe):not(:has(> .pcframe)) { min-height: min-content; }
+    :where(.view-canvas.FlexboxRendering .tk-placingcontainer) { min-height: 0; }
+    :where(.view-canvas.FlexboxRendering .tk-placingcontainer .tk-placingcontainer:not(.pcframe):not(:has(> .pcframe))) { min-height: min-content; }
     .view-canvas.FlexboxRendering .tk-placingcontainer.pcframe { overflow-y: auto; }
     .view-canvas.FlexboxRendering > .tk-placingcontainer > .tk-placingcontainer > .tk-placingcontainer.pcframe { flex-shrink: 0; overflow-y: visible; }
     .view-content > .view-canvas { box-sizing: border-box; }
@@ -249,12 +250,13 @@ class TurnkeyLitApp extends LitElement {
     .view-canvas:not(.CSSGridRendering) > .tk-data-table { min-height: 0; }
     .view-canvas .tk-data-table > .tk-data-table__content { flex: 1 1 auto; height: 0; overflow: auto; }
     :where(.view-canvas .tk-data-table > .tk-data-table__content) { min-height: 0; }
-    .view-canvas:not(.CSSGridRendering) .tk-data-table:has(> .tk-data-table__content--min-height):not([style*="flex-grow:0"]) { min-height: calc(var(--advanced-table-min-height, 250px) + 46px) !important; }
+    .view-canvas:not(.CSSGridRendering) .tk-data-table:has(> .tk-data-table__content--min-height):not([style*="flex-grow:0"]):not([style*="min-height"]) { min-height: calc(var(--advanced-table-min-height, 250px) + 46px) !important; }
     .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"]:has(> .tk-data-table__content) { height: 0; }
     .view-canvas .tk-data-table[style*="flex-grow:0"][style*="min-height"]:has(> .tk-data-table__content--min-height) { height: auto; }
     .view-canvas .tk-data-table[style*="flex-grow:0"] > .tk-data-table__content--min-height { flex: 0 0 auto; height: var(--advanced-table-min-height, 250px); }
     :where(.view-canvas:not(.CSSGridRendering) .tk-data-table > .tk-data-table__content--min-height) { min-height: var(--advanced-table-min-height, 250px); }
     .view-canvas.CSSGridRendering .tk-data-table > .tk-data-table__content--min-height { min-height: 0; }
+    .svg100percent svg { height: 100%; width: 100%; }
     .view-loading { align-content: center; box-sizing: border-box; color: #52616b; min-height: 12rem; padding: 2rem; text-align: center; }
     .view-loading__gear { animation: view-loading-spin 4s linear infinite; color: #7d8b95; display: block; margin: 0 auto 0.5rem; }
     @keyframes view-loading-spin { to { transform: rotate(360deg); } }
@@ -2568,7 +2570,7 @@ class TurnkeyLitApp extends LitElement {
       placeholder,
       helperText,
       errors: attributes.id ? this.dataErrors.get(`${this.viewState?.vmId ?? ""}:${attributes.id}`) ?? [] : [],
-      style: isGridCell ? "" : style,
+      style,
       visible,
       enabled: enabled && !readOnly && attributes.disabled !== "true"
         && attributes.StaticStyle?.toLowerCase() !== "readonly",
@@ -2663,10 +2665,12 @@ class TurnkeyLitApp extends LitElement {
       const gridStatus = this.viewState?.getReference(this.viewState.root.attributes.VM_Status);
       const columnNames = new Set(control.columns.map(item => item.attributes.BindInfoColumn));
       // A column named <other column>_Style/_Visible/... only feeds its base column (see VMClass.GetSubCol).
+      // Like Angular/Blazor, _Style/_ReadOnly/_Placeholder columns only carry cell metadata and never render, even without a base column in the grid.
       const isCompanionColumn = (item: ViewMetaControl): boolean => {
         const name = item.attributes.BindInfoColumn ?? "";
-        return /_(Visible|ReadOnly|Enabled|Style|Label|HelperText|Placeholder|AsExternalId)$/.test(name)
-          && columnNames.has(name.replace(/_[^_]+$/, ""));
+        return /_(Style|ReadOnly|Placeholder)$/.test(name)
+          || (/_(Visible|Enabled|Label|HelperText|AsExternalId)$/.test(name)
+            && columnNames.has(name.replace(/_[^_]+$/, "")));
       };
       const isColumnVisible = (item: ViewMetaControl): boolean => {
         if (item.attributes.NotVisible?.toLowerCase() === "true" || isCompanionColumn(item)) {
@@ -2789,7 +2793,8 @@ class TurnkeyLitApp extends LitElement {
 
     // Like Blazor, these tagged values turn a field into typography (link, download or image).
     if (control.tagName !== "tk-button" && control.tagName !== "tk-image-upload" && control.tagName !== "tk-file-upload"
-      && ["DataIsLink", "BlobDownloadLink", "DataIsImageUrl"].some(name => control.taggedValues[name] !== undefined)) {
+      && (["DataIsLink", "BlobDownloadLink", "DataIsImageUrl"].some(name => control.taggedValues[name] !== undefined)
+        || control.taggedValues["Eco.BlobType"]?.toLowerCase() === "svg")) {
       return renderTypographyControl(context);
     }
 

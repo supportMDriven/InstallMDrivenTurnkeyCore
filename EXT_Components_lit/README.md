@@ -17,6 +17,13 @@ The `my-svg-chart` example used by `ViewOneThingWithMoreThings` renders the
 `LabelX` and numeric `ValueY` attributes from each row in its bound collection
 as a responsive SVG line chart.
 
+The `pivot-data-grid` component reads `XAxis`, `YAxis`, and `Values` collections
+from the bound object's attributes. Those collection values are VM object IDs,
+which the component resolves with `context.getObject`; axis rows provide
+`Header`/`HeaderKey`, and value rows provide `X`, `Y`, `Value`, and `Style`.
+Clicking a value selects that VM row through `context.selectRow`, setting it
+current so expressions such as `vCurrent_Cell.StabilityControlDates` update.
+
 The `sharepoint-documents-interaction-web` component supports document-reference
 collections. It gets the owning view-model class and collection column from
 `context.metadata.attributes.BindInfoNesting` and `BindInfoColumn`; it expects

@@ -61,7 +61,9 @@ export function renderTypographyControl(context: LitComponentContext): TemplateR
           @click=${(event: MouseEvent) => { if (!renderedAction || context.renderedActionEnabled) { void context.executeAction(undefined, event); } }}>
       </div>
     </div>`;
-  }  const renderAsHtml = context.metadata.taggedValues.DataIsHtml?.toLowerCase() === "true";
+  }
+  const isSvg = tagged["Eco.BlobType"]?.toLowerCase() === "svg";
+  const renderAsHtml = isSvg || tagged.DataIsHtml?.toLowerCase() === "true";
   const renderedContent = renderAsHtml
     ? unsafeHTML(decodeHtmlEntities(content))
     : content;
@@ -71,7 +73,7 @@ export function renderTypographyControl(context: LitComponentContext): TemplateR
   )}"
     style=${context.metadata.wrapperStyle}>
     ${context.isGridCell ? "" : renderControlLabel(context, "tk-label tk-static-text__label")}
-    ${renderTypography(tagName, context.id, renderedContent, getStyleAndThis(context, "tk-static-text__native"))}
+    ${renderTypography(tagName, context.id, renderedContent, getStyleAndThis(context, "tk-static-text__native") + (isSvg ? " svg100percent" : ""))}
   </div>`;
 }
 
