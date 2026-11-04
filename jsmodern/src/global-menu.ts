@@ -3,6 +3,7 @@ export interface GlobalMenuItem {
   readonly presentation: string;
   readonly actionName?: string;
   readonly newTab: boolean;
+  readonly divider?: boolean;
   readonly children: readonly GlobalMenuItem[];
 }
 
@@ -13,14 +14,16 @@ export interface GlobalMenuDescription {
 
 function parseItems(parent: Element): GlobalMenuItem[] {
   return Array.from(parent.children)
-    .filter(child => child.localName === "mi")
-    .map((element): GlobalMenuItem => ({
+    .filter(child => child.localName === "mi" || child.localName === "divider")
+    .map((element): GlobalMenuItem => element.localName === "divider"
+      ? { name: "", presentation: "", newTab: false, divider: true, children: [] }
+      : {
       name: element.getAttribute("name") ?? "",
       presentation: element.getAttribute("presentation") ?? element.getAttribute("name") ?? "",
       actionName: element.getAttribute("glaction") ?? undefined,
       newTab: element.getAttribute("newtab")?.toLowerCase() === "true",
       children: parseItems(element)
-    }));
+    });
 }
 
 export function parseGlobalMenu(xmlText: string): GlobalMenuDescription {

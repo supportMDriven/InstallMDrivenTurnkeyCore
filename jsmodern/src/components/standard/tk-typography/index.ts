@@ -29,6 +29,17 @@ export function renderTypographyControl(context: LitComponentContext): TemplateR
     context,
     getStyleAndThis(context, base)
   )}`;
+  const renderedAction = context.metadata.attributes.RendersAction;
+  if (renderedAction) {
+    const actionEnabled = context.renderedActionEnabled === true;
+    return html`<div class=${wrapperFor("tk-component tk-link--no-label tk-link ctLink")} style=${context.metadata.wrapperStyle}>
+      <a class="vmRenderedByAction tk-link__native" role="button" tabindex=${actionEnabled ? "0" : "-1"}
+        aria-disabled=${actionEnabled ? "false" : "true"}
+        style=${actionEnabled ? "cursor:pointer" : "pointer-events:none"}
+        @click=${(event: MouseEvent) => { event.preventDefault(); if (actionEnabled) { void context.executeAction(renderedAction, event); } }}
+        @keydown=${(event: KeyboardEvent) => { if (actionEnabled && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); void context.executeAction(renderedAction); } }}><span>${content || context.label}</span></a>
+    </div>`;
+  }
   if (tagged.DataIsLink !== undefined) {
     return html`<div class=${wrapperFor("tk-component tk-link--no-label tk-link ctLink")} style=${context.metadata.wrapperStyle}>
       <a href=${content} class="tk-link__native ripple-effect"><span class="tk-link__text">${context.label}</span></a>
@@ -45,8 +56,9 @@ export function renderTypographyControl(context: LitComponentContext): TemplateR
     return html`<div class=${wrapperFor("tk-component tk-image ctImage")} style=${context.metadata.wrapperStyle}>
       ${context.isGridCell ? "" : html`<label for=${context.id ?? ""} class="tk-label tk-image__label"><span class="tk-label__text">${context.label}</span></label>`}
       <div class="tk-image__native">
-        <img src=${content} class="img-responsive"
-          @click=${(event: MouseEvent) => context.executeAction(undefined, event)}>
+        <img src=${content} class="img-responsive vmRenderedByAction"
+          style=${renderedAction ? (context.renderedActionEnabled ? "cursor:pointer" : "pointer-events:none") : ""}
+          @click=${(event: MouseEvent) => { if (!renderedAction || context.renderedActionEnabled) { void context.executeAction(undefined, event); } }}>
       </div>
     </div>`;
   }  const renderAsHtml = context.metadata.taggedValues.DataIsHtml?.toLowerCase() === "true";

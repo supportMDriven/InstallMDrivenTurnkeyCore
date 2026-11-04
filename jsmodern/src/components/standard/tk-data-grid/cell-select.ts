@@ -29,8 +29,10 @@ function bodyRows(table: HTMLTableElement): HTMLTableRowElement[] {
 }
 
 function lastDataColumn(table: HTMLTableElement): number {
-  const headerCells = table.tHead?.rows[0]?.cells.length ?? 0;
-  return Math.max(0, headerCells - 2); // the final column holds the row menu
+  const headerRow = table.tHead?.rows[0];
+  const headerCells = headerRow?.cells.length ?? 0;
+  const hasMenuColumn = headerRow?.lastElementChild?.classList.contains("row-menu-cell") ?? false;
+  return Math.max(0, headerCells - (hasMenuColumn ? 2 : 1));
 }
 
 function cellFromEvent(table: HTMLTableElement, event: Event): HTMLTableCellElement | undefined {

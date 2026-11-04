@@ -54,7 +54,7 @@ function renderRow(
     class=${isCurrent
       ? "current-row vmCurrentRow tk-data-table__row tk-data-table__row--current"
       : "tk-data-table__row"}
-    @click=${() => context.onSelectRow(row)}
+    @click=${(event: MouseEvent) => context.onSelectRow(row, event.ctrlKey || event.metaKey)}
     @contextmenu=${(event: MouseEvent) => context.onOpenRowMenu(event, row)}
     @dblclick=${(event: MouseEvent) => context.onDoubleClickRow(event, row)}>
     ${context.multiSelect ? html`<td class="row-selection-cell tk-data-table__cell tk-data-table__cell--multiselect multiselectcol firstvisiblecolumn">
@@ -135,7 +135,7 @@ function renderSelectAll(context: DataGridContext): TemplateResult {
   </th>`;
 }
 
-function checkboxInteractive(withMixedMark = false): TemplateResult {
+export function checkboxInteractive(withMixedMark = false): TemplateResult {
   return html`<div class="tk-checkbox__interactive">
     ${withMixedMark ? html`<div class="tk-checkbox__mixedmark"></div>` : nothing}
     <svg viewBox="0 0 24 24" class="tk-checkbox__checkmark">
@@ -232,7 +232,7 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
               const label = typeof dynamicLabel === "string" && dynamicLabel.trim() !== ""
                 ? dynamicLabel
                 : item.attributes.StaticLabel ?? columnName ?? "";
-              return html`<th class="tk-data-table__header-cell"
+              return html`<th class="tk-data-table__header-cell" title=${label}
                 aria-sort=${activeSort ? context.sort?.direction ?? "none" : "none"}>
                 ${columnName && label !== ""
                   ? html`<button type="button" class="grid-sort-button tk-data-table__header-button"

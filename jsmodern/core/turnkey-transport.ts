@@ -76,6 +76,12 @@ export class TurnkeyTransport {
     return response.text();
   }
 
+  async getViewGlobalSettings(viewName: string, signal?: AbortSignal): Promise<string> {
+    const query = new URLSearchParams({ view: viewName });
+    const response = await this.request(`../Turnkey/ViewMeta?${query.toString()}`, { signal });
+    return response.text();
+  }
+
   async getGlobalActionsMeta(signal?: AbortSignal): Promise<string> {
     const response = await this.request("../Turnkey/GlobalActionsMeta2", { signal });
     return response.text();

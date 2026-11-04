@@ -50,7 +50,7 @@ export interface DataGridContext extends LitComponentContext {
   onMoveResize(event: PointerEvent): void;
   onEndResize(): void;
   onResizeByKeyboard(event: KeyboardEvent, columnIndex: number): void;
-  onSelectRow(row: VmObject): void;
+  onSelectRow(row: VmObject, additive?: boolean): void;
   onOpenRowMenu(event: MouseEvent, row: VmObject): void;
   onDoubleClickRow(event: MouseEvent, row: VmObject): void;
   onToggleSelection(row: VmObject, selected: boolean): void;

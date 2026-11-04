@@ -13,6 +13,7 @@ export interface LitComponentContext {
   readonly inputType: string;
   readonly selectedExternalId?: string;
   readonly actionExecuting: boolean;
+  readonly renderedActionEnabled?: boolean;
   readonly label: string;
   readonly placeholder: string;
   readonly helperText: string;

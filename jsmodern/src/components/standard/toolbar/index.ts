@@ -5,7 +5,7 @@ import { ToolbarAction, ToolbarContext, ToolbarEntry } from "./context";
 // Turnkey stylesheets (core.css and theme-default.css); only the <details> drop-down wiring lives here.
 export const toolbarStyles = css`
   #contentToolbar, #contentToolbar * { box-sizing: border-box; }
-#contentToolbar { padding: 0 8px; top: -4px; }
+#contentToolbar { padding: 10px 8px 0; top: -5px; user-select: none; -webkit-user-select: none; }
   #contentToolbar ul { margin: 0; padding: 0; }
   #contentToolbar .toolbar__container { align-items: center; }
   #contentToolbar .toolbar__item { width: auto; }

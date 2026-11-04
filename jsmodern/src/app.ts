@@ -30,9 +30,10 @@ import { renderTextArea } from "./components/standard/tk-textarea";
 import { renderTextField } from "./components/standard/tk-textfield";
 import { renderTypographyControl } from "./components/standard/tk-typography";
 import { renderFileUpload } from "./components/standard/tk-file-upload";
+import { renderImage } from "./components/standard/tk-image";
 import { renderImageUpload } from "./components/standard/tk-image-upload";
 import { DataGridContext } from "./components/standard/tk-data-grid/context";
-import { dataGridStyles, renderDataGrid } from "./components/standard/tk-data-grid";
+import { checkboxInteractive, dataGridStyles, renderDataGrid } from "./components/standard/tk-data-grid";
 import {
   LeftSideMenuContext,
   LeftSideMenuGroup
@@ -172,6 +173,7 @@ class TurnkeyLitApp extends LitElement {
     :where(header button.navbar__link, header button.dropdown__link) { background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
     header .navbar__link { width: auto; }
     header .dropdown__menu { z-index: 60; }
+    header .menu-divider { background: #e5e5e5; height: 1px; margin: 1px 0; padding: 0; }
     header .navbar__toggle { border: 0; padding: 0; }
     header .caret { border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid currentColor; display: inline-block; height: 0; vertical-align: middle; width: 0; }
     .login-section { align-items: center; display: flex; margin-left: auto; }
@@ -254,6 +256,9 @@ class TurnkeyLitApp extends LitElement {
     :where(.view-canvas:not(.CSSGridRendering) .tk-data-table > .tk-data-table__content--min-height) { min-height: var(--advanced-table-min-height, 250px); }
     .view-canvas.CSSGridRendering .tk-data-table > .tk-data-table__content--min-height { min-height: 0; }
     .view-loading { align-content: center; box-sizing: border-box; color: #52616b; min-height: 12rem; padding: 2rem; text-align: center; }
+    .view-loading__gear { animation: view-loading-spin 4s linear infinite; color: #7d8b95; display: block; margin: 0 auto 0.5rem; }
+    @keyframes view-loading-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .view-loading__gear { animation-duration: 12s; } }
     .view-control { min-width: 0; }
     .view-control h1, .view-control h2, .view-control h3, .view-control p { margin: 0; }
     .view-control label, .tk-label { display: block; }
@@ -313,11 +318,12 @@ class TurnkeyLitApp extends LitElement {
     table { border-collapse: collapse; width: 100%; }
     .view-control table { table-layout: fixed; }
     th, td { border-bottom: 1px solid #e1e5e8; overflow: hidden; padding: 0.5rem; text-align: left; text-overflow: ellipsis; }
-    th { background-clip: padding-box; background-color: white; box-shadow: inset 0 -1px 0 #e1e5e8, inset 0 1px 0 #e1e5e8; position: relative; }
+    th { background-clip: padding-box; background-color: white; box-shadow: inset 0 -1px 0 #e1e5e8; position: relative; }
     thead th { background-color: white; }
     .row-selection-cell { padding-left: 0.25rem; padding-right: 0.25rem; text-align: center; text-overflow: clip; }
-    .grid-sort-button { background: transparent; border: 0; color: inherit; font: inherit; font-weight: 600; padding: 0; text-align: left; width: 100%; }
-    .grid-sort-button:hover { text-decoration: underline; }
+    .grid-sort-button { background: transparent; border: 0; color: inherit; font: inherit; font-weight: 600;     padding: 0; text-align: left; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        th { white-space: nowrap; }
+        .grid-sort-button:hover { text-decoration: underline; }
     .grid-resize-handle { bottom: 0; cursor: col-resize; position: absolute; right: 0; top: 0; touch-action: none; width: 0.5rem; z-index: 1; }
     .tk-data-table__content--advanced .tk-data-table__header-cell .grid-resize-handle {
       bottom: 0;
@@ -338,7 +344,7 @@ class TurnkeyLitApp extends LitElement {
     .row-context-menu button { background: transparent; border: 0; display: block; padding: 0.45rem 0.7rem; text-align: left; width: 100%; }
     .row-context-menu button:hover:not(:disabled), .row-context-menu button:focus-visible { background: #edf1f4; }
     .row-context-menu button:disabled { color: #818a90; cursor: default; }
-    .row-menu-group { border-top: 1px solid #e1e5e8; color: #53616b; font-size: 0.8rem; margin-top: 0.25rem; padding: 0.45rem 0.7rem 0.2rem; }
+    .row-menu-group { color: #3d3d3d; font-size: 12px; margin-top: 10px; padding: 5px 24px 5px 12px; } .row-menu-group:first-child { margin-top: 0; }
     dl { display: grid; gap: 0.75rem 1rem; grid-template-columns: minmax(9rem, 0.35fr) 1fr; margin: 0; padding: 1rem; }
     dt { color: #53616b; overflow-wrap: anywhere; }
     dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
@@ -427,6 +433,8 @@ class TurnkeyLitApp extends LitElement {
     window.addEventListener("hashchange", this.handleRouteChange);
     window.addEventListener("beforeunload", this.handleBeforeUnload);
     window.addEventListener("keydown", this.handleSeekerEnter);
+    window.addEventListener("keydown", this.handleGlobalMenuEscape);
+    document.addEventListener("pointerdown", this.handleOutsideMenuPointerDown, true);
     this.actionPanelMedia.addEventListener("change", this.handleActionPanelViewportChange);
     this.navbarMedia.addEventListener("change", this.handleNavbarViewportChange);
     this.globalMenuLoad ??= this.loadGlobalMenu();
@@ -445,6 +453,8 @@ class TurnkeyLitApp extends LitElement {
     window.removeEventListener("hashchange", this.handleRouteChange);
     window.removeEventListener("beforeunload", this.handleBeforeUnload);
     window.removeEventListener("keydown", this.handleSeekerEnter);
+    window.removeEventListener("keydown", this.handleGlobalMenuEscape);
+    document.removeEventListener("pointerdown", this.handleOutsideMenuPointerDown, true);
     this.actionPanelMedia.removeEventListener("change", this.handleActionPanelViewportChange);
     this.navbarMedia.removeEventListener("change", this.handleNavbarViewportChange);
     this.routeGeneration++;
@@ -476,8 +486,12 @@ class TurnkeyLitApp extends LitElement {
       const anchorX = parseFloat(backdrop.style.getPropertyValue("--popup-x")) || 0;
       const anchorY = parseFloat(backdrop.style.getPropertyValue("--popup-y")) || 0;
       const box = popup.getBoundingClientRect();
-      popup.style.left = `${Math.max(0, Math.min(anchorX, window.innerWidth - box.width))}px`;
-      popup.style.top = `${Math.max(0, Math.min(anchorY, window.innerHeight - box.height))}px`;
+      const centered = this.isCenteredPopup();
+      // Centered by computed pixels rather than a transform, which would blur the text (same as AngularJS).
+      const targetX = centered ? (window.innerWidth - box.width) / 2 : anchorX;
+      const targetY = centered ? (window.innerHeight - box.height) / 2 : anchorY;
+      popup.style.left = `${Math.max(0, Math.min(targetX, window.innerWidth - box.width))}px`;
+      popup.style.top = `${Math.max(0, Math.min(targetY, window.innerHeight - box.height))}px`;
     }
     const descriptions = [this.viewDescription, this.activeModal?.parent.viewDescription];
     for (const description of descriptions) {
@@ -489,6 +503,13 @@ class TurnkeyLitApp extends LitElement {
       this.gridResizeObserver.observe(content);
       this.applyGridColumnSpans(content);
     }
+  }
+
+  // GlobalCenteredPopup is an application-wide switch: set on any loaded view, all popups are centred.
+  private isCenteredPopup(): boolean {
+    const descriptions = [this.viewDescription, this.activeModal?.parent.viewDescription, ...this.viewDescriptions.values()];
+    return descriptions.some(description => Object.entries(description?.globalSettings ?? {})
+      .some(([name, value]) => name.toLowerCase() === "globalcenteredpopup" && value.toLowerCase() === "true"));
   }
 
   private readonly gridResizeObserver = new ResizeObserver(entries => {
@@ -706,9 +727,20 @@ class TurnkeyLitApp extends LitElement {
       return inFlight;
     }
 
-    const request = this.transport.getViewMeta(viewName)
-      .then(xml => {
-        const description = parseViewDescription(xml, viewName);
+    const request = Promise.all([
+      this.transport.getViewMeta(viewName),
+      // The Blazor meta endpoint omits <gs> global settings; the classic ViewMeta endpoint (used by AngularJS) carries them.
+      this.transport.getViewGlobalSettings(viewName).then(text => {
+        const settings: Record<string, string> = {};
+        for (const gs of new DOMParser().parseFromString(text, "text/xml").querySelectorAll("root > gs")) {
+          settings[gs.getAttribute("name") ?? ""] = gs.getAttribute("value") ?? "";
+        }
+        return settings;
+      }).catch(() => ({} as Record<string, string>))
+    ])
+      .then(([xml, settings]) => {
+        const parsed = parseViewDescription(xml, viewName);
+        const description = { ...parsed, globalSettings: { ...settings, ...parsed.globalSettings } };
         this.viewDescriptions.set(viewName, description);
         return description;
       })
@@ -786,6 +818,24 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private pollRun?: { generation: number; promise: Promise<void> };
+  private dataVersion = 0;
+  private dataWaiters = new Set<() => void>();
+
+  // Resolves when a poll delivers something other than AppInfo, or after the timeout (an action that changes nothing).
+  private waitForData(sinceVersion: number, timeoutMs = 8000): Promise<void> {
+    if (this.dataVersion !== sinceVersion) {
+      return Promise.resolve();
+    }
+    return new Promise<void>(resolve => {
+      const done = () => {
+        window.clearTimeout(timer);
+        this.dataWaiters.delete(done);
+        resolve();
+      };
+      const timer = window.setTimeout(done, timeoutMs);
+      this.dataWaiters.add(done);
+    });
+  }
   private pollQueued = false;
 
   // Overlapping requests are coalesced so a large in-flight response is never aborted by a push or flush.
@@ -831,6 +881,20 @@ class TurnkeyLitApp extends LitElement {
       }
       // Data is applied first and side commands are isolated, so one bad AppInfo/action cannot block the view data.
       state.applyServerCommands(commands);
+      // Data, or an AppInfo reporting an idle server (long callback, nothing queued), means the action has settled.
+      const settled = commands.some(command => {
+        if (command.CType !== "ServerUpdateCommand_AppInfo") {
+          return false;
+        }
+        const info = command as unknown as { SuggestCallbackInSecs?: number; MarkersForActionsRunning?: number; AsyncQueueCount?: number };
+        return (info.SuggestCallbackInSecs ?? 0) > 1 && !info.MarkersForActionsRunning && !info.AsyncQueueCount;
+      });
+      if (settled) {
+        this.dataVersion++;
+        for (const wake of [...this.dataWaiters]) {
+          wake();
+        }
+      }
       for (const command of commands) {
         try {
           if (command.CType === "ServerUpdateCommand_AppInfo") {
@@ -1154,6 +1218,7 @@ class TurnkeyLitApp extends LitElement {
         );
         return true;
       }
+      const dataBefore = this.dataVersion;
       await this.transport.executeAction({
         VMId: state.vmId,
         VMClassName: vmClassName,
@@ -1161,6 +1226,8 @@ class TurnkeyLitApp extends LitElement {
         ClientIdForNavigationVerification: this.connection?.connectionId ?? ""
       });
       await this.poll(generation);
+      // Keep the button disabled until the result (e.g. search hits) has arrived, not just until the request returned.
+      await this.waitForData(dataBefore);
       void this.notifyAfterAction(vmClassName, actionName);
       return true;
     } catch (error) {
@@ -2310,7 +2377,8 @@ class TurnkeyLitApp extends LitElement {
     row?: VmObject,
     isGridCell = false,
     beforeAction?: () => void,
-    recurseTemplate?: readonly ViewMetaControl[]
+    recurseTemplate?: readonly ViewMetaControl[],
+    readOnlyDisplay = false
   ): TemplateResult | typeof nothing {
     if (control.tagName === "tk-layout-container") {
       const ownerClassName = control.attributes.PlacingContainerOwnerVMClass;
@@ -2389,6 +2457,21 @@ class TurnkeyLitApp extends LitElement {
     const helperText = typeof helperTextValue === "string" ? helperTextValue : "";
     if (!visible) {
       return nothing;
+    }
+    if (readOnlyDisplay && isGridCell) {
+      if (control.tagName === "tk-checkbox") {
+        return html`<div class="tk-checkbox__inner"><label class="tk-checkbox__content tk-checkbox__content--disabled"><input type="checkbox" class="tk-checkbox__native" disabled .checked=${value === true}>${checkboxInteractive()}</label></div>`;
+      }
+      if (control.tagName === "tk-textfield" || control.tagName === "tk-datepicker") {
+        const shown = value === null || value === undefined
+          ? ""
+          : value instanceof Date
+            ? (value.getFullYear() <= 1 ? "" : this.dateInputValue(value).slice(0, control.taggedValues.ShowTime?.toLowerCase()             === "true" ? undefined : 10))
+            : typeof value === "number" && stringFormat
+              ? formatNumber(value, stringFormat)
+              : typeof value === "object" ? "" : /^0*1-01-01/.test(String(value)) ? "" : String(value);
+        return html`<div title=${shown}>${shown}</div>`;
+      }
     }
     if (control.tagName === "tk-recursepoint") {
       const recurseColumn = attributes.BindInfoColumn;
@@ -2476,6 +2559,11 @@ class TurnkeyLitApp extends LitElement {
       inputType,
       selectedExternalId,
       actionExecuting: actionKey !== "" && this.executingActions.has(actionKey),
+      renderedActionEnabled: attributes.RendersAction
+        ? (statusObject?.attributes[`${targetClass}_${attributes.RendersAction}_Enabled`] as boolean | undefined)
+          ?? this.viewActions.find(candidate => candidate.VMClassName === targetClass && candidate.Action === attributes.RendersAction)?.Enable
+          ?? false
+        : undefined,
       label,
       placeholder,
       helperText,
@@ -2523,7 +2611,7 @@ class TurnkeyLitApp extends LitElement {
         }
       },
       uploadFile: file => this.uploadBoundFile(file, control, target, column, writable),
-      executeAction: (action = actionName, event) => {
+      executeAction: (action = attributes.RendersAction || actionName, event) => {
         if (action && targetClass) {
           beforeAction?.();
           return this.executeViewAction(targetClass, action, event);
@@ -2659,16 +2747,25 @@ class TurnkeyLitApp extends LitElement {
           true,
           targetId && column
             ? () => this.selectCollectionRow(item, targetId, column)
-            : undefined
+            : undefined,
+          undefined,
+          control.attributes.Editable?.toLowerCase() === "false"
         ),
         onSort: sortColumn => this.toggleGridSort(collectionKey, sortColumn),
         onBeginResize: (event, index) => this.beginGridColumnResize(event, collectionKey, index),
         onMoveResize: event => this.moveGridColumnResize(event),
         onEndResize: () => this.endGridColumnResize(),
         onResizeByKeyboard: (event, index) => this.resizeGridColumnByKeyboard(event, collectionKey, index),
-        onSelectRow: item => {
+        onSelectRow: (item, additive) => {
           if (targetId && column) {
             this.selectCollectionRow(item, targetId, column);
+            for (const other of this.viewState?.getCollection(targetId, column) ?? []) {
+              const selected = other.vmClassId === item.vmClassId || (additive === true && other.attributes.vSelected === true);
+              if ((other.attributes.vSelected === true) !== selected) {
+                this.viewState?.setAttributeLocally(other.vmClassId, "vSelected", selected);
+                this.queueUpdate(other.vmClassId, "vSelected", selected);
+              }
+            }
           }
         },
         onOpenRowMenu: (event, item) => {
@@ -2705,6 +2802,8 @@ class TurnkeyLitApp extends LitElement {
         return renderDatePicker(context);
       case "tk-file-upload":
         return renderFileUpload(context);
+      case "tk-image":
+        return renderImage(context);
       case "tk-image-upload":
         return renderImageUpload(context);
       case "tk-select":
@@ -2844,6 +2943,9 @@ class TurnkeyLitApp extends LitElement {
   private renderViewContent(): TemplateResult {
     if (!this.viewReady) {
       return html`<section class="view-loading" role="status" aria-busy="true">
+        <svg class="view-loading__gear" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.61-.22l-2.49 1a7.3 7.3 0 0 0-1.69-.98l-.38-2.65A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1a.5.5 0 0 0-.61.22l-2 3.46a.5.5 0 0 0 .12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46a.5.5 0 0 0-.12-.64l-2.11-1.65zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/>
+        </svg>
         <h2>${this.route.viewName}</h2>
         <p>Loading view…</p>
       </section>`;
@@ -3176,6 +3278,9 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private renderGlobalMenuItem(item: GlobalMenuItem, nested = false): TemplateResult | typeof nothing {
+    if (item.divider) {
+      return nested ? html`<div class="dropdown__item menu-divider" role="separator"></div>` : nothing;
+    }
     if (item.actionName) {
       const status = this.globalActionStatus.get(item.actionName);
       if (status?.visible === false) {
@@ -3193,8 +3298,40 @@ class TurnkeyLitApp extends LitElement {
       <button type="button" class=${nested ? "dropdown__link" : "navbar__link"} aria-haspopup="true"
         @click=${this.handleGlobalMenuToggle}>${item.presentation}${nested ? nothing : html`<span class="caret"></span>`}</button>
       <div class="dropdown__menu ${nested ? "dropdown--nested" : ""}">${item.children.map(child => this.renderGlobalMenuItem(child, true))}</div>`;
-    return nested ? html`<div class="dropdown__item dropdown">${menu}</div>` : html`<li class="navbar__item dropdown">${menu}</li>`;
+    return nested
+      ? html`<div class="dropdown__item dropdown"
+          @pointerenter=${this.handleSubmenuPointerEnter}
+          @pointerleave=${this.handleSubmenuPointerLeave}>${menu}</div>`
+      : html`<li class="navbar__item dropdown">${menu}</li>`;
   }
+
+  // Sub-menus open on hover (a Lit-only extension) and close shortly after the pointer leaves.
+  private readonly submenuCloseTimers = new WeakMap<HTMLElement, number>();
+
+  private readonly handleSubmenuPointerEnter = (event: PointerEvent): void => {
+    if (event.pointerType === "touch") {
+      return;
+    }
+    const container = event.currentTarget as HTMLElement;
+    window.clearTimeout(this.submenuCloseTimers.get(container));
+    const parent = container.parentElement;
+    for (const sibling of parent?.querySelectorAll<HTMLElement>(":scope > .dropdown.open") ?? []) {
+      if (sibling !== container) {
+        sibling.classList.remove("open");
+      }
+    }
+    if (!container.classList.contains("open")) {
+      container.querySelector<HTMLElement>(":scope > button")?.click();
+    }
+  };
+
+  private readonly handleSubmenuPointerLeave = (event: PointerEvent): void => {
+    if (event.pointerType === "touch") {
+      return;
+    }
+    const container = event.currentTarget as HTMLElement;
+    this.submenuCloseTimers.set(container, window.setTimeout(() => container.classList.remove("open"), 250));
+  };
 
   // The Turnkey stylesheets show a drop-down while its container carries the "open" class.
   private handleGlobalMenuToggle(event: Event): void {
@@ -3212,7 +3349,39 @@ class TurnkeyLitApp extends LitElement {
       }
     }
     container.classList.toggle("open", open);
+    if (open) {
+      // Menus taller than the window scroll instead of running off screen.
+      setTimeout(() => {
+        const menu = container.querySelector<HTMLElement>(":scope > .dropdown__menu");
+        if (menu) {
+          menu.style.maxHeight = "";
+          menu.style.overflowY = "";
+          menu.style.overflowX = "";
+          const available = window.innerHeight - menu.getBoundingClientRect().top - 8;
+          if (menu.scrollHeight > available) {
+            menu.style.maxHeight = `${Math.max(available, 120)}px`;
+            menu.style.overflowY = "auto";
+            menu.style.overflowX = "hidden";
+          }
+        }
+      }, 0);
+    }
   }
+
+  // Pointer events from inside the shadow root are retargeted to the host, so use the composed path.
+  private readonly handleOutsideMenuPointerDown = (event: PointerEvent): void => {
+    const insideMenu = event.composedPath().some(node =>
+      node instanceof HTMLElement && node.matches("nav[aria-label='Global menu']"));
+    if (!insideMenu) {
+      this.closeGlobalMenus();
+    }
+  };
+
+  private readonly handleGlobalMenuEscape = (event: KeyboardEvent): void => {
+    if (event.key === "Escape") {
+      this.closeGlobalMenus();
+    }
+  };
 
   private closeGlobalMenus(): void {
     this.renderRoot.querySelectorAll<HTMLElement>("nav[aria-label='Global menu'] .dropdown.open")

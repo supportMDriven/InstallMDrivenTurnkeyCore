@@ -13,6 +13,7 @@ import {
 
 export function renderSelect(context: LitComponentContext): TemplateResult {
   const presentationColumn = context.metadata.attributes.BindInfoPicklistItemPres ?? "Presentation";
+  const hasNullRow = (context.collection ?? []).some(option => option.id === NULL_EXTERNAL_ID);
   return html`<div class="view-control ${errorClass(context)}${appendOuterCSSGridClass(
     context,
     getStyleAndThisPlusMaybeNoLabel(context, "tk-component tk-select")
@@ -27,11 +28,11 @@ export function renderSelect(context: LitComponentContext): TemplateResult {
         const selected = (event.currentTarget as HTMLSelectElement).value;
         context.onChange(selected || NULL_EXTERNAL_ID);
       }}>
-      ${(context.collection ?? []).some(option => String(option.attributes[presentationColumn] ?? option.id).trim() === "")
+      ${(context.collection ?? []).some(option => option.id === NULL_EXTERNAL_ID || String(option.attributes[presentationColumn] ?? option.id).trim() === "")
         ? nothing
         : html`<option value="" ?selected=${!context.selectedExternalId}>${context.placeholder}</option>`}
       ${(context.collection ?? []).map(option => html`
-        <option value=${option.id} ?selected=${option.id === context.selectedExternalId}>
+        <option value=${option.id} ?selected=${option.id === (context.selectedExternalId || (hasNullRow ? NULL_EXTERNAL_ID : ""))}>
           ${String(option.attributes[presentationColumn] ?? option.id)}
         </option>
       `)}
