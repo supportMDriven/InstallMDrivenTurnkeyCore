@@ -197,6 +197,8 @@ class TurnkeyLitApp extends LitElement {
     .view-workspace { align-items: stretch; display: grid; gap: 0; grid-template-columns: 230px minmax(0, 1fr); height: 100%; min-height: 0; }
     .view-workspace.actions-closed { grid-template-columns: minmax(0, 1fr); }
     .view-content { background: transparent; box-sizing: border-box; min-height: 0; min-width: 0; overflow: auto; padding: 0; }
+    .view-content:has(> .view-loading-area) { display: flex; flex-direction: column; }
+    .view-loading-area { display: grid; flex: 1 0 auto; min-height: 0; }
     :host #viewmodelWrapper { grid-column: auto; height: 100%; }
     .view-dialog .view-content, .popup-panel .view-content { background: transparent; padding: 0; }
     .view-dialog .view-workspace { grid-template-columns: minmax(0, 1fr); }
@@ -3148,7 +3150,7 @@ class TurnkeyLitApp extends LitElement {
 
   private renderViewContent(): TemplateResult {
     if (!this.viewReady) {
-      return this.renderViewLoading();
+      return html`<div class="view-loading-area">${this.renderViewLoading()}</div>`;
     }
     return this.viewDescription
       ? html`<section id="viewmodelSection" vmname=${this.route.viewName} class="view-canvas ${this.viewDescription.rootClassName}">

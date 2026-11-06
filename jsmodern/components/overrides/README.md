@@ -27,8 +27,7 @@ An override module must register the corresponding element name, for example
 
 The element receives a `context` property implementing the contract documented
 in `../../README.md`. Treat override modules as trusted application code.
-Missing override files are normal and cause the bundled standard renderer to
-be used.
+Controls without a manifest entry use the bundled standard renderer.
 
 The left-side action menu can also be replaced at runtime by adding
 `"LeftSideMenu"` to the manifest and providing
@@ -44,4 +43,11 @@ be replaced the same way: add `"Toolbar"` to the manifest and provide
 `ToolbarContext` from `src/components/standard/toolbar/context.ts` (left and right
 entries, where a named entry is a submenu, plus an action callback).
 
-The placeholder shown while a view is loading can be replaced by adding "ViewLoading" to the manifest and providing iew-loading/index.js registering 	k-lit-override-view-loading. It receives the ViewLoadingContext from src/components/standard/view-loading/context.ts (the iewName being opened). See iew-loading/index.js.example.
+To replace the view loading placeholder, add `"ViewLoading"` to the manifest
+and provide `view-loading/index.js` registering `tk-lit-override-view-loading`.
+The element receives a `context` property with the `viewName` being opened;
+see `view-loading/index.js.example`. The placeholder is shown while a view is
+loading, not necessarily when returning to an already cached view.
+The custom element stretches to the available loading area. To center its
+content vertically, give its inner container `height: 100%` and
+`box-sizing: border-box`, then use flex or grid alignment.

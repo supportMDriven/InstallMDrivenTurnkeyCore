@@ -494,7 +494,7 @@
     <p>Loading view…</p>
   </section>`}(e)}renderViewContent(){return this.viewReady?this.viewDescription?We`<section id="viewmodelSection" vmname=${this.route.viewName} class="view-canvas ${this.viewDescription.rootClassName}">
           ${this.viewDescription.controls.map((e=>this.renderMetaControl(e)))}
-        </section>`:We`<section><h2>${this.route.viewName}</h2><dl><dt>View metadata</dt><dd>Loading view description…</dd></dl></section>`:this.renderViewLoading()}renderStatusMessage(){const e=/^OK(?:\b|:)/i.test(this.statusMessage.trim());return We`<div class="status notice" role="status" ?hidden=${e}>${this.statusMessage}</div>`}renderNavbarToggle(){return We`<button type="button" class="navbar__toggle navbar__toggle--default" aria-label="Toggle menu"
+        </section>`:We`<section><h2>${this.route.viewName}</h2><dl><dt>View metadata</dt><dd>Loading view description…</dd></dl></section>`:We`<div class="view-loading-area">${this.renderViewLoading()}</div>`}renderStatusMessage(){const e=/^OK(?:\b|:)/i.test(this.statusMessage.trim());return We`<div class="status notice" role="status" ?hidden=${e}>${this.statusMessage}</div>`}renderNavbarToggle(){return We`<button type="button" class="navbar__toggle navbar__toggle--default" aria-label="Toggle menu"
       aria-expanded=${this.navbarMenuOpen} @click=${()=>{this.navbarMenuOpen=!this.navbarMenuOpen}}>
       <span class="mi">more_vert</span>
     </button>`}navbarWrapperClass(){return this.navbarDesktop||this.navbarMenuOpen?"navbar__wrapper collapse in":"navbar__wrapper collapse"}renderActionToggle(){return 0===this.leftActionGroups().length||this.viewDescription?.hideSidebar?Ke:We`<button type="button" class="action-toggle navbar__toggle navbar__toggle--sidebar"
@@ -643,6 +643,8 @@
     .view-workspace { align-items: stretch; display: grid; gap: 0; grid-template-columns: 230px minmax(0, 1fr); height: 100%; min-height: 0; }
     .view-workspace.actions-closed { grid-template-columns: minmax(0, 1fr); }
     .view-content { background: transparent; box-sizing: border-box; min-height: 0; min-width: 0; overflow: auto; padding: 0; }
+    .view-content:has(> .view-loading-area) { display: flex; flex-direction: column; }
+    .view-loading-area { display: grid; flex: 1 0 auto; min-height: 0; }
     :host #viewmodelWrapper { grid-column: auto; height: 100%; }
     .view-dialog .view-content, .popup-panel .view-content { background: transparent; padding: 0; }
     .view-dialog .view-workspace { grid-template-columns: minmax(0, 1fr); }
