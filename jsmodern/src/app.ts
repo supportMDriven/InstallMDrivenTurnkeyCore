@@ -3362,6 +3362,17 @@ class TurnkeyLitApp extends LitElement {
           menu.style.maxHeight = "";
           menu.style.overflowY = "";
           menu.style.overflowX = "";
+          if (menu.classList.contains("dropdown--nested")) {
+            // Fixed positioning lets a nested menu escape its scrolling parent's clipping.
+            const anchor = container.getBoundingClientRect();
+            const width = menu.offsetWidth;
+            const left = anchor.right + width <= window.innerWidth ? anchor.right : Math.max(0, anchor.left - width);
+            menu.style.position = "fixed";
+            menu.style.left = `${left}px`;
+            menu.style.top = `${anchor.top}px`;
+            menu.style.marginLeft = "0";
+            menu.style.marginTop = "0";
+          }
           const available = window.innerHeight - menu.getBoundingClientRect().top - 8;
           if (menu.scrollHeight > available) {
             menu.style.maxHeight = `${Math.max(available, 120)}px`;
