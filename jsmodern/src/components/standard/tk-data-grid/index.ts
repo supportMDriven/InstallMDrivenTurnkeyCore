@@ -54,18 +54,27 @@ function renderRow(
     class=${isCurrent
       ? "current-row vmCurrentRow tk-data-table__row tk-data-table__row--current"
       : "tk-data-table__row"}
-    @click=${(event: MouseEvent) => context.onSelectRow(row, event.ctrlKey || event.metaKey)}
+    @click=${(event: MouseEvent) => {
+      // Checkbox clicks are handled by the checkbox itself; the label's click would otherwise bubble here and fight with it.
+      if ((event.target as HTMLElement).closest(".row-selection-cell")) {
+        return;
+      }
+      context.onSelectRow(row, event.ctrlKey || event.metaKey, event.shiftKey);
+    }}
     @contextmenu=${(event: MouseEvent) => context.onOpenRowMenu(event, row)}
     @dblclick=${(event: MouseEvent) => context.onDoubleClickRow(event, row)}>
     ${context.multiSelect ? html`<td class="row-selection-cell tk-data-table__cell tk-data-table__cell--multiselect multiselectcol firstvisiblecolumn">
       <label class="tk-checkbox__content ripple-effect">
         <input type="checkbox" class="tk-checkbox__native" aria-label=${`Select ${row.className} ${row.id}`}
           .checked=${row.attributes.vSelected === true}
-          @click=${(event: MouseEvent) => event.stopPropagation()}
-          @change=${(event: Event) => context.onToggleSelection(
-            row,
-            (event.currentTarget as HTMLInputElement).checked
-          )}>
+          @click=${(event: MouseEvent) => {
+            event.stopPropagation();
+            (event.currentTarget as HTMLInputElement).dataset.shift = event.shiftKey ? "1" : "";
+          }}
+          @change=${(event: Event) => {
+            const input = event.currentTarget as HTMLInputElement;
+            context.onToggleSelection(row, input.checked, input.dataset.shift === "1");
+          }}>
         ${checkboxInteractive()}
       </label>
     </td>` : nothing}
@@ -250,6 +259,7 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
                   @pointermove=${context.onMoveResize}
                   @pointerup=${context.onEndResize}
                   @pointercancel=${context.onEndResize}
+                  @dblclick=${(event: MouseEvent) => context.onResetResize(event, index)}
                   @keydown=${(event: KeyboardEvent) => context.onResizeByKeyboard(event, index)}></span>
               </th>`;
             })}

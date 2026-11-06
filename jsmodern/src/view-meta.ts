@@ -16,6 +16,7 @@ export interface ViewDescription {
   readonly vmColHeight: number;
   readonly rootClassName: string;
   readonly globalSettings: Readonly<Record<string, string>>;
+  readonly viewTaggedValues: Readonly<Record<string, string>>;
   readonly styles: string;
   readonly controls: readonly ViewMetaControl[];
 }
@@ -108,6 +109,10 @@ export function parseViewDescription(xmlText: string, expectedViewName: string):
     globalSettings: Object.fromEntries(
       Array.from(root.querySelectorAll(":scope > gs"))
         .map(setting => [setting.getAttribute("name") ?? "", setting.getAttribute("value") ?? ""])
+    ),
+    viewTaggedValues: Object.fromEntries(
+      Array.from(root.querySelectorAll(":scope > tv"))
+        .map(tv => [tv.getAttribute("name") ?? "", tv.getAttribute("value") ?? ""])
     ),
     styles: root.querySelector("style")?.textContent ?? "",
     controls: readControls(viewModelSection)

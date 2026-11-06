@@ -49,11 +49,12 @@ export interface DataGridContext extends LitComponentContext {
   onBeginResize(event: PointerEvent, columnIndex: number): void;
   onMoveResize(event: PointerEvent): void;
   onEndResize(): void;
+  onResetResize(event: MouseEvent, columnIndex: number): void;
   onResizeByKeyboard(event: KeyboardEvent, columnIndex: number): void;
-  onSelectRow(row: VmObject, additive?: boolean): void;
+  onSelectRow(row: VmObject, additive?: boolean, range?: boolean): void;
   onOpenRowMenu(event: MouseEvent, row: VmObject): void;
   onDoubleClickRow(event: MouseEvent, row: VmObject): void;
-  onToggleSelection(row: VmObject, selected: boolean): void;
+  onToggleSelection(row: VmObject, selected: boolean, range?: boolean): void;
   onDismissRowMenu(): void;
   onExecuteRowAction(action: ServerActionCommand, rowVMClassId: string, event: MouseEvent): void;
 }

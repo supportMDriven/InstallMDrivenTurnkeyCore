@@ -22,6 +22,7 @@ import { parseViewDescription, ViewDescription, ViewMetaControl } from "./view-m
 import { LitComponentContext } from "./components/control-context";
 import { formatNumber } from "./components/standard/formatting";
 import { appendOuterCSSGridClass } from "./components/standard/presentation";
+import { renderInPlacePopup } from "./components/standard/tk-inplacepopup";
 import { renderButton } from "./components/standard/tk-button";
 import { renderCheckbox } from "./components/standard/tk-checkbox";
 import { renderDatePicker } from "./components/standard/tk-datepicker";
@@ -33,6 +34,7 @@ import { renderFileUpload } from "./components/standard/tk-file-upload";
 import { renderImage } from "./components/standard/tk-image";
 import { renderImageUpload } from "./components/standard/tk-image-upload";
 import { DataGridContext } from "./components/standard/tk-data-grid/context";
+import { InactivityTimeout } from "./inactivity-timeout";
 import { checkboxInteractive, dataGridStyles, renderDataGrid } from "./components/standard/tk-data-grid";
 import {
   LeftSideMenuContext,
@@ -44,10 +46,14 @@ import {
 } from "./components/standard/left-side-menu";
 import { ToolbarAction, ToolbarContext, ToolbarEntry } from "./components/standard/toolbar/context";
 import { renderToolbar as renderStandardToolbar, toolbarStyles } from "./components/standard/toolbar";
+import type { ViewLoadingContext } from "./components/standard/view-loading/context";
+import { renderViewLoading as renderStandardViewLoading, viewLoadingStyles } from "./components/standard/view-loading";
 import {
   renderRuntimeComponent,
   resolveRuntimeComponent,
   resolveRuntimeOverride,
+  isValidOverrideTag,
+  namedOverrideFolders,
   runtimeComponentName
 } from "./components/runtime-component";
 
@@ -257,10 +263,6 @@ class TurnkeyLitApp extends LitElement {
     :where(.view-canvas:not(.CSSGridRendering) .tk-data-table > .tk-data-table__content--min-height) { min-height: var(--advanced-table-min-height, 250px); }
     .view-canvas.CSSGridRendering .tk-data-table > .tk-data-table__content--min-height { min-height: 0; }
     .svg100percent svg { height: 100%; width: 100%; }
-    .view-loading { align-content: center; box-sizing: border-box; color: #52616b; min-height: 12rem; padding: 2rem; text-align: center; }
-    .view-loading__gear { animation: view-loading-spin 4s linear infinite; color: #7d8b95; display: block; margin: 0 auto 0.5rem; }
-    @keyframes view-loading-spin { to { transform: rotate(360deg); } }
-    @media (prefers-reduced-motion: reduce) { .view-loading__gear { animation-duration: 12s; } }
     .view-control { min-width: 0; }
     .view-control h1, .view-control h2, .view-control h3, .view-control p { margin: 0; }
     .view-control label, .tk-label { display: block; }
@@ -314,6 +316,12 @@ class TurnkeyLitApp extends LitElement {
     .tk-input-field--invalid input, .tk-input-field--invalid textarea, .tk-input-field--invalid select { border-color: #b3261e !important; box-shadow: 0 0 0 1px #b3261e; }
     .tk-input-field__validation-state { color: #a12622; font-size: 0.875rem; }
     .tk-image-upload__interactive.uploading { opacity: 1; }
+    .tk-image-upload__interactive[hidden] { display: none !important; }
+    .tk-inplacepopup { position: relative; }
+    .tk-inplacepopup__popup { background: #fff; border: 0.5px solid #D0D5DD; border-radius: 8px; box-shadow: 0 10px 6px rgba(0,0,0,.04), 0 2px 1px rgba(0,0,0,.05); box-sizing: border-box; min-width: 16rem; padding: 8px; }
+    .tk-inplacepopup__popup.hidden { display: none; }
+    .tk-inplacepopup__popup.right-aligned { right: 0; top: 30px !important; }
+    .tk-inplacepopup__popup.left-aligned { left: 0; top: 30px !important; }
     .tk-lit-component-loading, .tk-lit-component-missing { border: 1px dashed #9aa7af; border-radius: 0.25rem; padding: 0.75rem; }
     .tk-lit-component-missing { overflow: auto; overflow-wrap: anywhere; }
     .tk-lit-component-missing { background: #fff5f3; color: #7d211d; }
@@ -364,7 +372,7 @@ class TurnkeyLitApp extends LitElement {
       .view-workspace > .view-content { width: 100%; }
       .action-panel-backdrop:not([hidden]) { background: #15232d55; border: 0; display: block; inset: 0; padding: 0; position: fixed; z-index: 19; }
     }
-  `, dataGridStyles, leftSideMenuStyles, toolbarStyles];
+  `, dataGridStyles, leftSideMenuStyles, toolbarStyles, viewLoadingStyles];
 
   @state() private route: ViewRoute = parseViewRoute(window.location.hash);
   @state() private viewReady = false;
@@ -389,7 +397,10 @@ class TurnkeyLitApp extends LitElement {
   @state() private gridSorts = new Map<string, GridSort>();
   @state() private gridColumnWidths = new Map<string, number>();
   @state() private uploadStates = new Map<string, UploadState>();
+  private parentScrollTop?: number;
+  private parentScrollRestoreOnce = false;
   @state() private rowContextMenu?: RowContextMenu;
+  @state() private openInPlacePopups = new Map<string, "left-aligned" | "right-aligned">();
   @state() private seekerMoreMenu?: { x: number; y: number };
   @state() private activeModal?: ActiveModal;
   @state() private statusMessage = "Opening view…";
@@ -415,6 +426,7 @@ class TurnkeyLitApp extends LitElement {
   private runtimeOverrideManifestRequest?: Promise<ReadonlySet<string>>;
   private closingModal?: ActiveModal;
   private lastPopupClickPosition = { x: 16, y: 16 };
+  private readonly gridSelectionAnchors = new Map<string, string>();
   private columnResize?: {
     readonly gridKey: string;
     readonly columnIndex: number;
@@ -429,6 +441,15 @@ class TurnkeyLitApp extends LitElement {
       this.actionPanelOpen = false;
     }
   };
+
+  private readonly inactivityTimeout = new InactivityTimeout({
+    onTimedOut: () => {
+      this.routeGeneration++;
+      this.pollController?.abort();
+      window.location.href = new URL("../Turnkey/Timedout", document.baseURI).toString();
+    }
+  });
+  private appliedTimeoutDescription: ViewDescription | undefined;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -447,6 +468,9 @@ class TurnkeyLitApp extends LitElement {
     if (!this.runtimeOverrideRequests.has("Toolbar")) {
       this.runtimeOverrideRequests.set("Toolbar", this.loadRuntimeOverride("Toolbar"));
     }
+    if (!this.runtimeOverrideRequests.has("ViewLoading")) {
+      this.runtimeOverrideRequests.set("ViewLoading", this.loadRuntimeOverride("ViewLoading"));
+    }
     void this.openCurrentRoute();
   }
 
@@ -460,6 +484,8 @@ class TurnkeyLitApp extends LitElement {
     this.actionPanelMedia.removeEventListener("change", this.handleActionPanelViewportChange);
     this.navbarMedia.removeEventListener("change", this.handleNavbarViewportChange);
     this.routeGeneration++;
+    this.inactivityTimeout.stop();
+    this.appliedTimeoutDescription = undefined;
     this.gridResizeObserver.disconnect();
     this.pollController?.abort();
     window.clearTimeout(this.pollTimer);
@@ -469,11 +495,28 @@ class TurnkeyLitApp extends LitElement {
   }
 
   protected updated(): void {
+    const description = this.viewDescription;
+    if (description && description !== this.appliedTimeoutDescription) {
+      this.appliedTimeoutDescription = description;
+      const viewMinutes = Number(description.viewTaggedValues.TurnkeyTimeoutMinutes);
+      const globalMinutes = Number(description.globalSettings.TurnkeyTimeoutMinutes);
+      this.inactivityTimeout.start(viewMinutes > 0 ? viewMinutes : globalMinutes);
+    }
     this.applyLoginReturnUrl();
     this.syncSidebarMemory();
     const windowHeader = this.appInfo?.WindowHeader;
     if (windowHeader && !this.activeModal && document.title !== windowHeader) {
       document.title = windowHeader;
+    }
+    if (this.parentScrollTop !== undefined) {
+      const parentContent = this.renderRoot.querySelector<HTMLElement>("main .view-content");
+      if (parentContent) {
+        parentContent.scrollTop = this.parentScrollTop;
+      }
+      if (this.parentScrollRestoreOnce) {
+        this.parentScrollTop = undefined;
+        this.parentScrollRestoreOnce = false;
+      }
     }
     const dialog = this.renderRoot.querySelector<HTMLDialogElement>("dialog.view-dialog");
     if (this.activeModal && dialog && !dialog.open) {
@@ -524,7 +567,7 @@ class TurnkeyLitApp extends LitElement {
   // The table is absolutely positioned inside its content box (core.css), so pixel widths never feed back into the layout.
   private applyGridColumnSpans(content: HTMLElement): void {
     const columns = [...content.querySelectorAll<HTMLTableColElement>("col[data-span]")];
-    if (columns.length === 0 || columns.some(column => column.hasAttribute("data-resized"))) {
+    if (columns.length === 0) {
       return;
     }
     const fixedWidth = [...content.querySelectorAll<HTMLTableColElement>("col:not([data-span])")]
@@ -536,12 +579,17 @@ class TurnkeyLitApp extends LitElement {
       return;
     }
     let assigned = 0;
+    const resized = columns.some(column => column.hasAttribute("data-resized"));
     columns.forEach((column, index) => {
       const width = index === columns.length - 1
         ? available - assigned
         : Math.floor((available / totalSpan) * Number(column.dataset.span));
       assigned += width;
-      column.style.width = `${width}px`;
+      // The designed width is the floor the last (expanding) column may shrink back to after manual resizing.
+      column.dataset.designWidth = String(width);
+      if (!resized) {
+        column.style.width = `${width}px`;
+      }
     });
   }
 
@@ -734,15 +782,24 @@ class TurnkeyLitApp extends LitElement {
       // The Blazor meta endpoint omits <gs> global settings; the classic ViewMeta endpoint (used by AngularJS) carries them.
       this.transport.getViewGlobalSettings(viewName).then(text => {
         const settings: Record<string, string> = {};
-        for (const gs of new DOMParser().parseFromString(text, "text/xml").querySelectorAll("root > gs")) {
+        const tags: Record<string, string> = {};
+        const meta = new DOMParser().parseFromString(text, "text/xml");
+        for (const gs of meta.querySelectorAll("root > gs")) {
           settings[gs.getAttribute("name") ?? ""] = gs.getAttribute("value") ?? "";
         }
-        return settings;
-      }).catch(() => ({} as Record<string, string>))
+        for (const tv of meta.querySelectorAll("root > tv")) {
+          tags[tv.getAttribute("name") ?? ""] = tv.getAttribute("value") ?? "";
+        }
+        return { settings, tags };
+      }).catch(() => ({ settings: {} as Record<string, string>, tags: {} as Record<string, string> }))
     ])
-      .then(([xml, settings]) => {
+      .then(([xml, { settings, tags }]) => {
         const parsed = parseViewDescription(xml, viewName);
-        const description = { ...parsed, globalSettings: { ...settings, ...parsed.globalSettings } };
+        const description = {
+          ...parsed,
+          globalSettings: { ...settings, ...parsed.globalSettings },
+          viewTaggedValues: { ...tags, ...parsed.viewTaggedValues }
+        };
         this.viewDescriptions.set(viewName, description);
         return description;
       })
@@ -1390,6 +1447,8 @@ class TurnkeyLitApp extends LitElement {
 
     const generation = this.routeGeneration;
     const parent = this.captureViewSession();
+    // The parent view is re-created under the popup, so remember where it was scrolled.
+    this.parentScrollTop = this.renderRoot.querySelector<HTMLElement>("main .view-content")?.scrollTop;
     this.pollController?.abort();
     this.pollController = undefined;
     window.clearTimeout(this.pollTimer);
@@ -1485,6 +1544,7 @@ class TurnkeyLitApp extends LitElement {
       this.pollTimer = undefined;
       this.stateUnsubscribe?.();
       this.restoreViewSession(modal.parent);
+      this.parentScrollRestoreOnce = true;
       await this.poll(generation);
     } catch (error) {
       this.showError(error);
@@ -1542,10 +1602,16 @@ class TurnkeyLitApp extends LitElement {
     }
 
     if (command.Url) {
+      // Server URLs are relative to the Turnkey root, not to this client's sub-path.
+      const target = new URL(command.Url, new URL("../", document.baseURI));
+      if (/\/account\/login$/i.test(target.pathname)) {
+        target.searchParams.delete("returnURL");
+        target.searchParams.set("ReturnUrl", `${window.location.pathname}${window.location.hash}`);
+      }
       if (command.NewTab || command.IsModal || command.IsPopUp) {
-        window.open(command.Url, "_blank", "noopener");
+        window.open(target.toString(), "_blank", "noopener");
       } else {
-        window.location.assign(command.Url);
+        window.location.assign(target.toString());
       }
       return true;
     }
@@ -1968,6 +2034,16 @@ class TurnkeyLitApp extends LitElement {
     if (!handle || !(handle instanceof HTMLElement) || !columnElement) {
       return;
     }
+    // Freeze every column and the table at pixel sizes so a 100% table width cannot redistribute the delta onto the other columns.
+    const cols = [...(table?.querySelectorAll<HTMLTableColElement>("col") ?? [])];
+    const widths = cols.map(col => col.getBoundingClientRect().width);
+    cols.forEach((col, i) => { col.style.width = `${widths[i]}px`; });
+    // Stops the span ResizeObserver from redistributing widths if the scrollbars change while dragging.
+    columnElement.setAttribute("data-resized", "");
+    if (table) {
+      table.style.setProperty("min-width", "0", "important");
+      table.style.width = `${widths.reduce((sum, w) => sum + w, 0)}px`;
+    }
     this.columnResize = {
       gridKey,
       columnIndex,
@@ -1983,7 +2059,52 @@ class TurnkeyLitApp extends LitElement {
       return;
     }
     const width = Math.max(48, this.columnResize.startWidth + event.clientX - this.columnResize.startX);
-    this.columnResize.columnElement.style.width = `${width}px`;
+    const { columnElement } = this.columnResize;
+    const table = columnElement.closest("table");
+    if (table) {
+      const delta = width - parseFloat(columnElement.style.width || `${width}`);
+      table.style.width = `${parseFloat(table.style.width || "0") + delta}px`;
+    }
+    columnElement.style.width = `${width}px`;
+    const content = table?.parentElement;
+    const last = table ? [...table.querySelectorAll<HTMLTableColElement>("col[data-span]")].pop() : undefined;
+    if (table && content && last && last !== columnElement) {
+      const cols = [...table.querySelectorAll<HTMLTableColElement>("col")];
+      const total = cols.reduce((sum, col) => sum + parseFloat(col.style.width || `${col.getBoundingClientRect().width}`), 0);
+      const excess = total - (Math.floor(content.clientWidth) - 1);
+      const design = Number(last.dataset.designWidth) || 0;
+      const lastWidth = parseFloat(last.style.width || `${last.getBoundingClientRect().width}`);
+      if (excess > 0 && lastWidth > design) {
+        const shrink = Math.min(excess, lastWidth - design);
+        last.style.width = `${lastWidth - shrink}px`;
+        table.style.width = `${total - shrink}px`;
+      }
+    }
+  }
+
+  private resetGridColumnWidth(gridKey: string, columnIndex: number, handle: HTMLElement): void {
+    const table = handle.closest("table");
+    const content = table?.parentElement;
+    const column = table?.querySelector<HTMLTableColElement>(`col[data-column-index="${columnIndex}"]`);
+    const design = Number(column?.dataset.designWidth);
+    if (!table || !content || !column || !design) {
+      return;
+    }
+    const cols = [...table.querySelectorAll<HTMLTableColElement>("col")];
+    cols.forEach(col => { col.style.width = `${col.getBoundingClientRect().width}px`; });
+    column.style.width = `${design}px`;
+    const last = [...table.querySelectorAll<HTMLTableColElement>("col[data-span]")].pop();
+    let total = cols.reduce((sum, col) => sum + parseFloat(col.style.width), 0);
+    if (last && last !== column) {
+      const lastDesign = Number(last.dataset.designWidth) || 0;
+      const target = Math.max(lastDesign, parseFloat(last.style.width) + (Math.floor(content.clientWidth) - 1 - total));
+      last.style.width = `${target}px`;
+      total = cols.reduce((sum, col) => sum + parseFloat(col.style.width), 0);
+    }
+    table.style.width = `${total}px`;
+    const widths = new Map(this.gridColumnWidths);
+    widths.set(`${gridKey}:${columnIndex}`, design);
+    this.gridColumnWidths = widths;
   }
 
   private endGridColumnResize(): void {
@@ -1991,6 +2112,20 @@ class TurnkeyLitApp extends LitElement {
       return;
     }
     const { gridKey, columnIndex, columnElement } = this.columnResize;
+    const table = columnElement.closest("table");
+    const content = table?.parentElement;
+    if (table && content) {
+      // Leftover space goes to the last data column so fixed (multi-select / row-menu) columns keep their width and the others do not shift.
+      const dataColumns = [...table.querySelectorAll<HTMLTableColElement>("col[data-span]")];
+      const all = [...table.querySelectorAll<HTMLTableColElement>("col")];
+      const total = all.reduce((sum, col) => sum + col.getBoundingClientRect().width, 0);
+      const slack = Math.floor(content.clientWidth) - 1 - Math.ceil(total);
+      const last = dataColumns[dataColumns.length - 1];
+      if (slack > 0 && last) {
+        last.style.width = `${last.getBoundingClientRect().width + slack}px`;
+      }
+    }
+    table?.style.removeProperty("min-width");
     const widths = new Map(this.gridColumnWidths);
     widths.set(`${gridKey}:${columnIndex}`, columnElement.getBoundingClientRect().width);
     this.gridColumnWidths = widths;
@@ -2236,7 +2371,7 @@ class TurnkeyLitApp extends LitElement {
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      const overrideName = tagName === "LeftSideMenu" ? "left-side-menu" : tagName === "Toolbar" ? "toolbar" : tagName;
+      const overrideName = namedOverrideFolders[tagName] ?? tagName;
       const fileUrl = reference?.fileUrl ?? `components/overrides/${overrideName}/index.js`;
       this.setRuntimeComponentStatus(
         reference ? this.runtimeStatusKey(reference) : `override:${tagName}`,
@@ -2261,11 +2396,8 @@ class TurnkeyLitApp extends LitElement {
           const manifest: unknown = await response.json();
           if (!manifest || typeof manifest !== "object" || !("overrides" in manifest)
             || !Array.isArray(manifest.overrides)
-            || !manifest.overrides.every(
-              (tag): tag is string => typeof tag === "string"
-                && (tag === "LeftSideMenu" || tag === "Toolbar" || /^tk-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(tag))
-            )) {
-            throw new TypeError("Override manifest must contain an overrides array of valid tk-* control tags, LeftSideMenu or Toolbar.");
+            || !manifest.overrides.every((tag): tag is string => typeof tag === "string" && isValidOverrideTag(tag))) {
+            throw new TypeError("Override manifest must contain an overrides array of valid tk-* control tags, LeftSideMenu, Toolbar or ViewLoading.");
           }
           return new Set(manifest.overrides);
         });
@@ -2759,12 +2891,24 @@ class TurnkeyLitApp extends LitElement {
         onBeginResize: (event, index) => this.beginGridColumnResize(event, collectionKey, index),
         onMoveResize: event => this.moveGridColumnResize(event),
         onEndResize: () => this.endGridColumnResize(),
+        onResetResize: (event, index) => this.resetGridColumnWidth(collectionKey, index, event.currentTarget as HTMLElement),
         onResizeByKeyboard: (event, index) => this.resizeGridColumnByKeyboard(event, collectionKey, index),
-        onSelectRow: (item, additive) => {
+        onSelectRow: (item, additive, range) => {
           if (targetId && column) {
             this.selectCollectionRow(item, targetId, column);
+            const rows = gridContext.sortedCollection;
+            const anchorId = this.gridSelectionAnchors.get(collectionKey);
+            const anchorIndex = range ? rows.findIndex(r => r.vmClassId === anchorId) : -1;
+            const itemIndex = rows.findIndex(r => r.vmClassId === item.vmClassId);
+            const inRange = new Set(anchorIndex >= 0
+              ? rows.slice(Math.min(anchorIndex, itemIndex), Math.max(anchorIndex, itemIndex) + 1).map(r => r.vmClassId)
+              : []);
+            if (anchorIndex < 0) {
+              this.gridSelectionAnchors.set(collectionKey, item.vmClassId);
+            }
             for (const other of this.viewState?.getCollection(targetId, column) ?? []) {
-              const selected = other.vmClassId === item.vmClassId || (additive === true && other.attributes.vSelected === true);
+              const selected = other.vmClassId === item.vmClassId || inRange.has(other.vmClassId)
+                || (additive === true && other.attributes.vSelected === true);
               if ((other.attributes.vSelected === true) !== selected) {
                 this.viewState?.setAttributeLocally(other.vmClassId, "vSelected", selected);
                 this.queueUpdate(other.vmClassId, "vSelected", selected);
@@ -2782,7 +2926,22 @@ class TurnkeyLitApp extends LitElement {
             this.handleRowDoubleClick(event, item, targetId, column);
           }
         },
-        onToggleSelection: (item, selected) => this.queueUpdate(item.vmClassId, "vSelected", selected),
+        onToggleSelection: (item, selected, range) => {
+          const rows = gridContext.sortedCollection;
+          const anchorIndex = range ? rows.findIndex(r => r.vmClassId === this.gridSelectionAnchors.get(collectionKey)) : -1;
+          const itemIndex = rows.findIndex(r => r.vmClassId === item.vmClassId);
+          this.gridSelectionAnchors.set(collectionKey, item.vmClassId);
+          if (anchorIndex < 0) {
+            this.queueUpdate(item.vmClassId, "vSelected", selected);
+            return;
+          }
+          for (const other of rows.slice(Math.min(anchorIndex, itemIndex), Math.max(anchorIndex, itemIndex) + 1)) {
+            if ((other.attributes.vSelected === true) !== selected) {
+              this.viewState?.setAttributeLocally(other.vmClassId, "vSelected", selected);
+              this.queueUpdate(other.vmClassId, "vSelected", selected);
+            }
+          }
+        },
         onDismissRowMenu: () => { this.rowContextMenu = undefined; },
         onExecuteRowAction: (menuAction, rowVMClassId, event) => {
           void this.executeRowAction(menuAction, rowVMClassId, event);
@@ -2799,6 +2958,17 @@ class TurnkeyLitApp extends LitElement {
     }
 
     switch (control.tagName) {
+      case "tk-inplacepopup": {
+        const popupKey = attributes.id ?? "";
+        return renderInPlacePopup(
+          context,
+          html`${control.columns.map(child => this.renderMetaControl(child, row, isGridCell, beforeAction, recurseTemplate))}`,
+          {
+            alignment: this.openInPlacePopups.get(popupKey),
+            onOpen: event => this.openInPlacePopup(popupKey, event)
+          }
+        );
+      }
       case "tk-button":
         return renderButton(context);
       case "tk-checkbox":
@@ -2823,6 +2993,24 @@ class TurnkeyLitApp extends LitElement {
         return renderTextField(context);
     }
     return nothing;
+  }
+
+  private openInPlacePopup(key: string, event: MouseEvent): void {
+    event.preventDefault();
+    const button = event.currentTarget as HTMLElement;
+    const alignment = button.getBoundingClientRect().x > window.innerWidth / 2 ? "right-aligned" : "left-aligned";
+    this.openInPlacePopups = new Map(this.openInPlacePopups).set(key, alignment);
+    const closeWhenClickOutside = (clickEvent: MouseEvent): void => {
+      const path = clickEvent.composedPath();
+      const popup = this.renderRoot.querySelector(`[data-inplace-popup="${CSS.escape(key)}"]`);
+      if (!path.includes(button) && !(popup && path.includes(popup))) {
+        const remaining = new Map(this.openInPlacePopups);
+        remaining.delete(key);
+        this.openInPlacePopups = remaining;
+        window.removeEventListener("click", closeWhenClickOutside);
+      }
+    };
+    window.addEventListener("click", closeWhenClickOutside);
   }
 
   private async uploadBoundFile(
@@ -2945,15 +3133,22 @@ class TurnkeyLitApp extends LitElement {
     `;
   }
 
+  private renderViewLoading(): TemplateResult {
+    const context: ViewLoadingContext = { viewName: this.route.viewName };
+    const reference = resolveRuntimeOverride("ViewLoading", document.baseURI);
+    const status = this.runtimeComponentStatuses.get(this.runtimeStatusKey(reference));
+    if (status?.state === "loaded") {
+      return html`${renderRuntimeComponent(reference, context)}`;
+    }
+    if (status?.state === "failed") {
+      return this.renderMissingComponent("ViewLoading", status.fileUrl, status.error);
+    }
+    return renderStandardViewLoading(context);
+  }
+
   private renderViewContent(): TemplateResult {
     if (!this.viewReady) {
-      return html`<section class="view-loading" role="status" aria-busy="true">
-        <svg class="view-loading__gear" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true" focusable="false">
-          <path fill="currentColor" d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.61-.22l-2.49 1a7.3 7.3 0 0 0-1.69-.98l-.38-2.65A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1a.5.5 0 0 0-.61.22l-2 3.46a.5.5 0 0 0 .12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46a.5.5 0 0 0-.12-.64l-2.11-1.65zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/>
-        </svg>
-        <h2>${this.route.viewName}</h2>
-        <p>Loading view…</p>
-      </section>`;
+      return this.renderViewLoading();
     }
     return this.viewDescription
       ? html`<section id="viewmodelSection" vmname=${this.route.viewName} class="view-canvas ${this.viewDescription.rootClassName}">

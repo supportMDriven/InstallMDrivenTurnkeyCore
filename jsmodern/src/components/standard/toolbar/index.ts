@@ -13,7 +13,7 @@ export const toolbarStyles = css`
   #contentToolbar summary { cursor: pointer; list-style: none; }
   #contentToolbar summary::-webkit-details-marker { display: none; }
   #contentToolbar details[open] > .dropdown__menu { display: flex; }
-  #contentToolbar .dropdown__menu { list-style: none; z-index: 60; }
+  #contentToolbar .dropdown__menu { list-style: none; padding: 5px 0; z-index: 60; }
   #contentToolbar .dropdown__item { width: 100%; }
   #contentToolbar .vmactions__item { display: flex; }
 `;

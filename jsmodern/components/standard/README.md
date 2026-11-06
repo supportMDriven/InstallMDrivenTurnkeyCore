@@ -52,3 +52,5 @@ Use the matching `tk-*` metadata tag as the standard implementation name when
 creating an override. Runtime override modules are separate from these bundled
 standard implementations; copying or modifying an override does not require
 rebuilding the Lit client.
+
+The loading placeholder shown while a view opens is rendered by iew-loading/. It can be overridden at runtime with the ViewLoading manifest entry; see components/overrides/README.md.

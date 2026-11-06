@@ -43,3 +43,5 @@ be replaced the same way: add `"Toolbar"` to the manifest and provide
 `toolbar/index.js` registering `tk-lit-override-toolbar`. It receives the
 `ToolbarContext` from `src/components/standard/toolbar/context.ts` (left and right
 entries, where a named entry is a submenu, plus an action callback).
+
+The placeholder shown while a view is loading can be replaced by adding "ViewLoading" to the manifest and providing iew-loading/index.js registering 	k-lit-override-view-loading. It receives the ViewLoadingContext from src/components/standard/view-loading/context.ts (the iewName being opened). See iew-loading/index.js.example.

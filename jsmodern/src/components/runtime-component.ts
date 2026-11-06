@@ -41,13 +41,25 @@ export function resolveRuntimeComponent(name: string, baseUrl: string): RuntimeC
   };
 }
 
+// Named (non tk-*) shell components that can be overridden, mapped to their override folder.
+export const namedOverrideFolders: Readonly<Record<string, string>> = {
+  LeftSideMenu: "left-side-menu",
+  Toolbar: "toolbar",
+  ViewLoading: "view-loading"
+};
+
+export function isValidOverrideTag(tagName: string): boolean {
+  return Object.prototype.hasOwnProperty.call(namedOverrideFolders, tagName)
+    || /^tk-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(tagName);
+}
+
 export function resolveRuntimeOverride(tagName: string, baseUrl: string): RuntimeComponentReference {
-  const isLeftSideMenu = tagName === "LeftSideMenu" || tagName === "Toolbar";
-  if (!isLeftSideMenu && !/^tk-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(tagName)) {
+  if (!isValidOverrideTag(tagName)) {
     throw new TypeError(`Invalid standard control tag "${tagName}".`);
   }
-  const name = tagName === "LeftSideMenu" ? "left-side-menu" : tagName === "Toolbar" ? "toolbar" : tagName;
-  const elementName = isLeftSideMenu ? name : tagName.slice(3);
+  const named = Object.prototype.hasOwnProperty.call(namedOverrideFolders, tagName);
+  const name = named ? namedOverrideFolders[tagName] : tagName;
+  const elementName = named ? name : tagName.slice(3);
   return {
     name,
     elementName: `tk-lit-override-${elementName}`,
@@ -55,7 +67,6 @@ export function resolveRuntimeOverride(tagName: string, baseUrl: string): Runtim
     kind: "override"
   };
 }
-
 export function renderRuntimeComponent<T>(
   reference: RuntimeComponentReference,
   context: T

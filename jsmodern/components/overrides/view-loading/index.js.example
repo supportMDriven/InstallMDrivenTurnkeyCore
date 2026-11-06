@@ -1,0 +1,16 @@
+class ViewLoadingOverride extends HTMLElement {
+  set context(value) {
+    this._context = value;
+    this.render();
+  }
+
+  render() {
+    if (!this._context) return;
+    const text = document.createElement("p");
+    text.setAttribute("role", "status");
+    text.textContent = `Opening ${this._context.viewName}…`;
+    this.replaceChildren(text);
+  }
+}
+
+customElements.define("tk-lit-override-view-loading", ViewLoadingOverride);
