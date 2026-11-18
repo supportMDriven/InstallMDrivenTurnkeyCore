@@ -43,6 +43,8 @@ export interface DataGridContext extends LitComponentContext {
     readonly y: number;
   };
   readonly rowMenuGroups: readonly DataGridActionGroup[];
+  readonly hasRowMenuColumn: boolean;
+  hasRowActions(row: VmObject): boolean;
   cellStyle(control: ViewMetaControl, row: VmObject): string;
   renderCell(control: ViewMetaControl, row: VmObject): TemplateResult | typeof nothing;
   onSort(column: string): void;

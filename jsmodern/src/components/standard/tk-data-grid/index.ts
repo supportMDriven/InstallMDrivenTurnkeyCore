@@ -81,11 +81,11 @@ function renderRow(
     ${columns.map((control, columnIndex) => html`
       <td class="tk-data-table__cell ${columnIndex === 0 && !context.multiSelect ? "firstvisiblecolumn" : ""} ${context.cellStyle(control, row)}" tabindex="-1">${safeRenderCell(context, control, row)}</td>
     `)}
-    ${context.rowMenuGroups.length > 0 ? html`<td class="row-menu-cell tk-data-table__cell">
-      <button type="button" class="row-menu-trigger" aria-haspopup="menu"
+    ${context.hasRowMenuColumn ? html`<td class="row-menu-cell tk-data-table__cell">
+      ${context.hasRowActions(row) ? html`<button type="button" class="row-menu-trigger" aria-haspopup="menu"
         aria-label=${`Actions for ${row.className} ${row.id}`}
         aria-expanded=${context.rowMenu?.rowVMClassId === row.vmClassId}
-        @click=${(event: MouseEvent) => context.onOpenRowMenu(event, row)}>⋮</button>
+        @click=${(event: MouseEvent) => context.onOpenRowMenu(event, row)}>⋮</button>` : nothing}
     </td>` : nothing}
   </tr>`;
 }
@@ -225,7 +225,7 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
               return html`<col data-column-index=${index} data-span=${Number.isFinite(span) && span > 0 ? span : 1}
                 ?data-resized=${Boolean(width)} style=${width ? `width:${width}px` : nothing}>`;
             })}
-            ${context.rowMenuGroups.length > 0 ? html`<col style="width:3rem">` : nothing}
+            ${context.hasRowMenuColumn ? html`<col style="width:3rem">` : nothing}
           </colgroup>
           <thead><tr class="tk-data-table__header-row">
             ${context.multiSelect ? renderSelectAll(context) : nothing}
@@ -263,7 +263,7 @@ export function renderDataGrid(context: DataGridContext): TemplateResult {
                   @keydown=${(event: KeyboardEvent) => context.onResizeByKeyboard(event, index)}></span>
               </th>`;
             })}
-            ${context.rowMenuGroups.length > 0 ? html`<th class="row-menu-cell" aria-hidden="true"></th>` : nothing}
+            ${context.hasRowMenuColumn ? html`<th class="row-menu-cell" aria-hidden="true"></th>` : nothing}
           </tr></thead>
           <tbody>
             ${repeat(context.sortedCollection, row => row.vmClassId, row => renderRow(context, columns, row))}

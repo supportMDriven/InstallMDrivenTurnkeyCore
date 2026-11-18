@@ -2077,24 +2077,22 @@ class TurnkeyLitApp extends LitElement {
     const width = Math.max(48, this.columnResize.startWidth + event.clientX - this.columnResize.startX);
     const { columnElement } = this.columnResize;
     const table = columnElement.closest("table");
-    if (table) {
-      const delta = width - parseFloat(columnElement.style.width || `${width}`);
-      table.style.width = `${parseFloat(table.style.width || "0") + delta}px`;
-    }
     columnElement.style.width = `${width}px`;
     const content = table?.parentElement;
     const last = table ? [...table.querySelectorAll<HTMLTableColElement>("col[data-span]")].pop() : undefined;
-    if (table && content && last && last !== columnElement) {
+    if (table && content && last) {
       const cols = [...table.querySelectorAll<HTMLTableColElement>("col")];
       const total = cols.reduce((sum, col) => sum + parseFloat(col.style.width || `${col.getBoundingClientRect().width}`), 0);
-      const excess = total - (Math.floor(content.clientWidth) - 1);
+      const slack = Math.floor(content.clientWidth) - 1 - total;
       const design = Number(last.dataset.designWidth) || 0;
       const lastWidth = parseFloat(last.style.width || `${last.getBoundingClientRect().width}`);
-      if (excess > 0 && lastWidth > design) {
-        const shrink = Math.min(excess, lastWidth - design);
-        last.style.width = `${lastWidth - shrink}px`;
-        table.style.width = `${total - shrink}px`;
-      }
+      const adjustment = slack > 0
+        ? slack
+        : last !== columnElement && lastWidth > design
+          ? -Math.min(-slack, lastWidth - design)
+          : 0;
+      last.style.width = `${lastWidth + adjustment}px`;
+      table.style.width = `${total + adjustment}px`;
     }
   }
 
@@ -2790,6 +2788,10 @@ class TurnkeyLitApp extends LitElement {
     }
     if (control.tagName === "tk-data-grid") {
       const gridCollection = collection ?? [];
+      const rowClassesWithActions = new Set(
+        [...new Set(gridCollection.map(item => item.className))]
+          .filter(className => this.rowActions(className).length > 0)
+      );
       const collectionKey = targetId && column ? `${targetId}:${column}` : "";
       const multiSelect = control.taggedValues.MultiSelect?.toLowerCase() === "true";
       const selectedRowId = this.selectedRows.get(collectionKey);
@@ -2895,6 +2897,8 @@ class TurnkeyLitApp extends LitElement {
           y: menu.y
         } : undefined,
         rowMenuGroups,
+        hasRowMenuColumn: rowClassesWithActions.size > 0,
+        hasRowActions: item => rowClassesWithActions.has(item.className),
         cellStyle: (cellControl, item) => this.cellStyleFor(cellControl, item),
         renderCell: (cellControl, item) => this.renderMetaControl(
           cellControl,

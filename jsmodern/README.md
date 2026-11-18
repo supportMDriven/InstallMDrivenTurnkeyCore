@@ -144,7 +144,8 @@ send the selected item's external ID through the bound column's `_AsExternalId`
 companion, matching the existing Turnkey clients. The streamed current choice
 is reflected on its matching option, including null choices. Collection
 rows can be selected (updating `vCurrent`) and expose actions from streamed
-Turnkey action commands through a row menu; double-click executes the first
+Turnkey action commands through a row menu. Grids with row actions keep an
+action-button column visible whether the menu is open or closed; double-click executes the first
 enabled navigating row action in server sort order. Grid cells use column
 headers as their visible labels instead of repeating control labels per row.
 Grid headers sort the displayed rows locally, and their resize handles adjust
