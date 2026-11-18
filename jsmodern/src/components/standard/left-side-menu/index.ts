@@ -25,8 +25,9 @@ function renderItem(context: LeftSideMenuContext, group: LeftSideMenuGroup, acti
   const base = state ? "tk-state-action" : "tk-sidebar__item";
   return html`<button type="button" class="${base} ${command.Class ?? ""} ${disabled ? "disabled" : ""}"
     ?disabled=${disabled} title=${command.HintWhenEnabled || command.Presentation || ""}
+    aria-label=${command.Presentation ? nothing : command.HintWhenEnabled || command.Icon || command.Action}
     @click=${(event: MouseEvent) => context.onAction(command, group.targetVMClassId, event)}>
-    ${command.Presentation || command.Action}
+    ${command.Presentation}
   </button>`;
 }
 

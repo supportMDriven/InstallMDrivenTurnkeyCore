@@ -2,7 +2,6 @@ import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signal
 import { LitElement, css, html, nothing, TemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import {
   ServerUpdateCommand,
   ServerActionCommand,
@@ -33,6 +32,7 @@ import { renderTypographyControl } from "./components/standard/tk-typography";
 import { renderFileUpload } from "./components/standard/tk-file-upload";
 import { renderImage } from "./components/standard/tk-image";
 import { renderImageUpload } from "./components/standard/tk-image-upload";
+import { renderTimePicker } from "./components/standard/tk-timepicker";
 import { DataGridContext } from "./components/standard/tk-data-grid/context";
 import { InactivityTimeout } from "./inactivity-timeout";
 import { checkboxInteractive, dataGridStyles, renderDataGrid } from "./components/standard/tk-data-grid";
@@ -48,6 +48,20 @@ import { ToolbarAction, ToolbarContext, ToolbarEntry } from "./components/standa
 import { renderToolbar as renderStandardToolbar, toolbarStyles } from "./components/standard/toolbar";
 import type { ViewLoadingContext } from "./components/standard/view-loading/context";
 import { renderViewLoading as renderStandardViewLoading, viewLoadingStyles } from "./components/standard/view-loading";
+import {
+  ApplicationNameContext,
+  GlobalActionsContext,
+  HeaderSpaceContext,
+  LeftSideToggleContext,
+  LoginSectionContext
+} from "./components/standard/global-header/context";
+import {
+  renderApplicationName,
+  renderGlobalActions,
+  renderHeaderSpace,
+  renderLeftSideToggle,
+  renderLoginSection
+} from "./components/standard/global-header";
 import {
   renderRuntimeComponent,
   resolveRuntimeComponent,
@@ -173,7 +187,10 @@ class TurnkeyLitApp extends LitElement {
     header { flex: 0 0 auto; position: relative; z-index: 50; }
     header[hidden] { display: none; }
     nav { align-items: center; background: #fff; border-bottom: 1px solid #dce1e5; display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0.6rem 1rem; }
-    header nav { background: transparent; border: 0; flex: 1; min-width: 0; padding: 0; }
+    header nav { background: transparent; border: 0; flex: 0 1 auto; min-width: 0; padding: 0; }
+    .navbar__space { flex: 1 1 0; min-width: 0; }
+    .navbar--desktop tk-lit-override-global-actions { display: flex; flex: 0 1 auto; min-width: 0; }
+    tk-lit-override-login-section { display: flex; margin-left: auto; }
     header nav ul { margin: 0; padding: 0; }
     header .navbar__item.dropdown { position: relative; }
     :where(header button.navbar__link, header button.dropdown__link) { background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
@@ -273,6 +290,7 @@ class TurnkeyLitApp extends LitElement {
     .tk-component { min-width: 0; }
     .tk-input-field__container { display: flex; flex-direction: column; gap: 0.25rem; }
     .tk-input-field__native, .tk-select__native, .tk-textarea__native { box-sizing: border-box; font: inherit; width: 100%; }
+    .tk-timepicker .tk-input-field__container, .tk-timepicker .tk-input-field__native { width: 100%; }
     .tk-checkbox__inner { align-items: center; display: flex; gap: 0.5rem; }
     .view-control .tk-checkbox__label { display: inline-flex; margin: 0; }
     .tk-label__icon { display: inline-block; margin-inline: 0.25rem; }
@@ -464,14 +482,10 @@ class TurnkeyLitApp extends LitElement {
     this.navbarMedia.addEventListener("change", this.handleNavbarViewportChange);
     this.globalMenuLoad ??= this.loadGlobalMenu();
     void this.loadLoginSection();
-    if (!this.runtimeOverrideRequests.has("LeftSideMenu")) {
-      this.runtimeOverrideRequests.set("LeftSideMenu", this.loadRuntimeOverride("LeftSideMenu"));
-    }
-    if (!this.runtimeOverrideRequests.has("Toolbar")) {
-      this.runtimeOverrideRequests.set("Toolbar", this.loadRuntimeOverride("Toolbar"));
-    }
-    if (!this.runtimeOverrideRequests.has("ViewLoading")) {
-      this.runtimeOverrideRequests.set("ViewLoading", this.loadRuntimeOverride("ViewLoading"));
+    for (const name of ["LeftSideMenu", "Toolbar", "ViewLoading", "LeftSideToggle", "ApplicationName", "GlobalActions", "HeaderSpace", "LoginSection"]) {
+      if (!this.runtimeOverrideRequests.has(name)) {
+        this.runtimeOverrideRequests.set(name, this.loadRuntimeOverride(name));
+      }
     }
     void this.openCurrentRoute();
   }
@@ -2392,6 +2406,9 @@ class TurnkeyLitApp extends LitElement {
       const manifestUrl = new URL("components/overrides/manifest.json", document.baseURI);
       this.runtimeOverrideManifestRequest = fetch(manifestUrl, { cache: "no-store" })
         .then(async response => {
+          if (response.status === 404) {
+            return new Set<string>();
+          }
           if (!response.ok) {
             throw new Error(`Override manifest request failed (${response.status} ${response.statusText}).`);
           }
@@ -2399,7 +2416,7 @@ class TurnkeyLitApp extends LitElement {
           if (!manifest || typeof manifest !== "object" || !("overrides" in manifest)
             || !Array.isArray(manifest.overrides)
             || !manifest.overrides.every((tag): tag is string => typeof tag === "string" && isValidOverrideTag(tag))) {
-            throw new TypeError("Override manifest must contain an overrides array of valid tk-* control tags, LeftSideMenu, Toolbar or ViewLoading.");
+            throw new TypeError(`Override manifest must contain an overrides array of valid tk-* control tags or named components: ${Object.keys(namedOverrideFolders).join(", ")}.`);
           }
           return new Set(manifest.overrides);
         });
@@ -2987,6 +3004,8 @@ class TurnkeyLitApp extends LitElement {
         return renderSelect(context);
       case "tk-textarea":
         return renderTextArea(context);
+      case "tk-timepicker":
+        return renderTimePicker(context);
       case "tk-textfield":
         return renderTextField(context);
       case "tk-typography":
@@ -3183,15 +3202,45 @@ class TurnkeyLitApp extends LitElement {
   };
 
   private renderActionToggle(): TemplateResult | typeof nothing {
-    if (this.leftActionGroups().length === 0 || this.viewDescription?.hideSidebar) {
-      return nothing;
+    const context: LeftSideToggleContext = {
+      available: this.leftActionGroups().length > 0 && !this.viewDescription?.hideSidebar,
+      open: this.actionPanelOpen,
+      mobileViewport: this.mobileViewport,
+      onToggle: () => this.toggleActionPanel()
+    };
+    return this.renderHeaderPart("LeftSideToggle", context, renderLeftSideToggle);
+  }
+
+  private renderHeaderPart<T>(
+    name: string,
+    context: T,
+    standard: (context: T) => TemplateResult | typeof nothing
+  ): TemplateResult | typeof nothing {
+    const reference = resolveRuntimeOverride(name, document.baseURI);
+    const status = this.runtimeComponentStatuses.get(this.runtimeStatusKey(reference));
+    if (status?.state === "loaded") {
+      return renderRuntimeComponent(reference, context);
     }
-    return html`<button type="button" class="action-toggle navbar__toggle navbar__toggle--sidebar"
-      aria-label=${this.actionPanelOpen ? "Hide view actions" : "Show view actions"}
-      aria-controls="view-actions-panel" aria-expanded=${this.actionPanelOpen}
-      @click=${() => this.toggleActionPanel()}>
-      <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-    </button>`;
+    if (status?.state === "failed") {
+      return this.renderMissingComponent(name, status.fileUrl, status.error);
+    }
+    return standard(context);
+  }
+
+  private renderApplicationName(): TemplateResult | typeof nothing {
+    const context: ApplicationNameContext = {
+      name: this.globalMenu?.applicationName || "MDriven Turnkey",
+      homeUrl: `${new URL("./", document.baseURI).pathname}#/Index`
+    };
+    return this.renderHeaderPart("ApplicationName", context, renderApplicationName);
+  }
+
+  private renderHeaderSpace(): TemplateResult {
+    const context: HeaderSpaceContext = {
+      applicationName: this.globalMenu?.applicationName || "MDriven Turnkey",
+      viewName: this.route.viewName
+    };
+    return html`<div class="navbar__space">${this.renderHeaderPart("HeaderSpace", context, renderHeaderSpace)}</div>`;
   }
 
   private sidebarVariables(): { vmClassId: string; attributes: Record<string, unknown> } | undefined {
@@ -3378,11 +3427,12 @@ class TurnkeyLitApp extends LitElement {
       <header class="navbar ${this.navbarDesktop ? "navbar--desktop" : ""}" @keydown=${this.handleActionPanelKeydown} ?hidden=${this.viewDescription?.hideMenubar === true}>
         <div class="navbar__header">
           ${this.renderActionToggle()}
-          <a class="navbar__brand" href="${new URL("./", document.baseURI).pathname}#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a>
+          ${this.renderApplicationName()}
           ${this.renderNavbarToggle()}
         </div>
         <div class=${this.navbarWrapperClass()} @click=${this.handleNavbarWrapperClick}>
           ${this.renderGlobalMenu()}
+          ${this.renderHeaderSpace()}
           ${this.renderLoginSection()}
         </div>
       </header>
@@ -3444,11 +3494,12 @@ class TurnkeyLitApp extends LitElement {
       <header class="navbar ${this.navbarDesktop ? "navbar--desktop" : ""}" ?hidden=${this.activeModal !== undefined || this.viewDescription?.hideMenubar === true}>
         <div class="navbar__header">
           ${this.activeModal ? nothing : this.renderActionToggle()}
-          <a class="navbar__brand" href="${new URL("./", document.baseURI).pathname}#/Index">${this.globalMenu?.applicationName || "MDriven Turnkey"}</a>
+          ${this.renderApplicationName()}
           ${this.renderNavbarToggle()}
         </div>
         <div class=${this.navbarWrapperClass()} @click=${this.handleNavbarWrapperClick}>
           ${this.renderGlobalMenu()}
+          ${this.renderHeaderSpace()}
           ${this.renderLoginSection()}
         </div>
       </header>
@@ -3477,34 +3528,6 @@ class TurnkeyLitApp extends LitElement {
     } catch (error) {
       this.showError(error);
     }
-  }
-
-  private renderGlobalMenuItem(item: GlobalMenuItem, nested = false): TemplateResult | typeof nothing {
-    if (item.divider) {
-      return nested ? html`<div class="dropdown__item menu-divider" role="separator"></div>` : nothing;
-    }
-    if (item.actionName) {
-      const status = this.globalActionStatus.get(item.actionName);
-      if (status?.visible === false) {
-        return nothing;
-      }
-      const button = html`<button type="button" class=${nested ? "dropdown__link" : "navbar__link"}
-        ?disabled=${status?.enabled === false}
-        @click=${() => void this.executeGlobalAction(item)}>${item.presentation}</button>`;
-      return nested ? html`<div class="dropdown__item">${button}</div>` : html`<li class="navbar__item">${button}</li>`;
-    }
-    if (item.children.length === 0) {
-      return nothing;
-    }
-    const menu = html`
-      <button type="button" class=${nested ? "dropdown__link" : "navbar__link"} aria-haspopup="true"
-        @click=${this.handleGlobalMenuToggle}>${item.presentation}${nested ? nothing : html`<span class="caret"></span>`}</button>
-      <div class="dropdown__menu ${nested ? "dropdown--nested" : ""}">${item.children.map(child => this.renderGlobalMenuItem(child, true))}</div>`;
-    return nested
-      ? html`<div class="dropdown__item dropdown"
-          @pointerenter=${this.handleSubmenuPointerEnter}
-          @pointerleave=${this.handleSubmenuPointerLeave}>${menu}</div>`
-      : html`<li class="navbar__item dropdown">${menu}</li>`;
   }
 
   // Sub-menus open on hover (a Lit-only extension) and close shortly after the pointer leaves.
@@ -3630,10 +3653,12 @@ class TurnkeyLitApp extends LitElement {
   }
 
   private renderLoginSection(): TemplateResult | typeof nothing {
-    if (!this.loginMarkup) {
-      return nothing;
-    }
-    return html`<div class="login-section" @click=${this.handleLoginSectionClick}>${unsafeHTML(this.loginMarkup)}</div>`;
+    const context: LoginSectionContext = {
+      markup: this.loginMarkup,
+      returnUrl: `${window.location.pathname}${window.location.hash}`,
+      onClick: this.handleLoginSectionClick
+    };
+    return this.renderHeaderPart("LoginSection", context, renderLoginSection);
   }
 
   // The server markup logs out with javascript:document.getElementById(...), which cannot see into the shadow root.
@@ -3644,16 +3669,30 @@ class TurnkeyLitApp extends LitElement {
     }
     event.preventDefault();
     if (link.getAttribute("href")?.includes("logoutForm")) {
-      this.renderRoot.querySelector<HTMLFormElement>("#logoutForm")?.submit();
+      const root = link.getRootNode();
+      if (root instanceof Document || root instanceof ShadowRoot) {
+        root.querySelector<HTMLFormElement>("#logoutForm")?.submit();
+      }
     }
   };
 
   private renderGlobalMenu(): TemplateResult | typeof nothing {
-    return this.globalMenu && !this.viewDescription?.hideMenubar
-      ? html`<nav aria-label="Global menu">
-          <ul class="navbar__list">${this.globalMenu.items.map(item => this.renderGlobalMenuItem(item))}</ul>
-        </nav>`
-      : nothing;
+    const context: GlobalActionsContext = {
+      items: this.globalMenu?.items ?? [],
+      actionStatus: this.globalActionStatus,
+      onAction: item => {
+        if (!this.navbarDesktop) {
+          this.navbarMenuOpen = false;
+        }
+        return this.executeGlobalAction(item);
+      },
+      onMenuToggle: event => this.handleGlobalMenuToggle(event),
+      onSubmenuPointerEnter: this.handleSubmenuPointerEnter,
+      onSubmenuPointerLeave: this.handleSubmenuPointerLeave
+    };
+    return this.renderHeaderPart("GlobalActions", context, current =>
+      this.globalMenu && !this.viewDescription?.hideMenubar ? renderGlobalActions(current) : nothing
+    );
   }
 
   private async executeGlobalAction(item: GlobalMenuItem): Promise<void> {

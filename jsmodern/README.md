@@ -101,7 +101,9 @@ modules register `tk-lit-override-textfield` and receive the same `context`
 contract as custom components. Add active override control tags to
 `components/overrides/manifest.json`; the client loads that manifest once and
 only imports declared overrides, avoiding 404 probes for missing components.
-Undeclared overrides leave the bundled standard renderer active. See the folder READMEs and
+If the manifest is absent, all bundled standard renderers remain active. Copy
+`components/overrides/not-in-effect-manifest.json` to `manifest.json` to enable
+the example configuration. Undeclared overrides leave the bundled standard renderer active. See the folder READMEs and
 `components/overrides/tk-textfield/index.js.example` for the copy-and-edit workflow.
 
 Bundled standard renderers for buttons, checkboxes, date pickers, selects,

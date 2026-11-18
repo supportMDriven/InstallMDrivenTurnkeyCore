@@ -29,11 +29,20 @@ Turnkey communication or action state. To replace it at runtime, add
 `tk-lit-override-left-side-menu`. Its element receives a `context` property
 matching `LeftSideMenuContext` from `left-side-menu/context.ts`.
 
+The global header's sidebar toggle, application name, global actions, empty
+space, and login section have separate standard renderers and override
+contexts in `src/components/standard/global-header/`. See
+`components/overrides/README.md` for the five runtime override names.
+
 `tk-file-upload` and `tk-image-upload` are standard controls backed by Turnkey's
 `UploadFileMultiPart` endpoint. The app owns upload transport, progress/error
 state, and refreshes view state after successful uploads; the components own
 the file picker and control presentation. Image uploads render the bound image
 URL supplied by the viewmodel.
+
+`tk-timepicker` renders a native time input for TimeSpan values. It sends
+edits through the normal Date-valued Turnkey update path and supports empty
+values.
 
 Metadata `IsListView="True"` placing containers are intentionally handled by
 the generic app renderer rather than by a component. The app resolves their

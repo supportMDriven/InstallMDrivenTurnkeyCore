@@ -1,0 +1,7 @@
+class HeaderSpaceOverride extends HTMLElement {
+  set context(value) {
+    this.textContent = value.viewName;
+  }
+}
+
+customElements.define("tk-lit-override-header-space", HeaderSpaceOverride);

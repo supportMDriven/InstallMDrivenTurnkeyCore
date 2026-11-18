@@ -45,7 +45,12 @@ export function resolveRuntimeComponent(name: string, baseUrl: string): RuntimeC
 export const namedOverrideFolders: Readonly<Record<string, string>> = {
   LeftSideMenu: "left-side-menu",
   Toolbar: "toolbar",
-  ViewLoading: "view-loading"
+  ViewLoading: "view-loading",
+  LeftSideToggle: "left-side-toggle",
+  ApplicationName: "application-name",
+  GlobalActions: "global-actions",
+  HeaderSpace: "header-space",
+  LoginSection: "login-section"
 };
 
 export function isValidOverrideTag(tagName: string): boolean {
